@@ -277,8 +277,9 @@
 							gnode.data.image = pnl.img
 						}
 						img = gnode.data.image
-						//console.log("*** CALL REDRAW WITH ***",gnode.data,img)
+						
 						gnode.redrawtext(gnode.data.name,img)
+						
 					}
 					break;
 				case "save":
@@ -295,7 +296,7 @@
 							gnode.data.image = pnl.img
 						}
 						img = gnode.data.image
-						//console.log("*** CALL REDRAW WITH ***",gnode.data,img)
+						
 						gnode.redrawtext(gnode.data.name,img)
 					}
 					break;
@@ -345,6 +346,9 @@
 					ev.stopPropagation()
 					switch (menu.menuitems[i].name) {
 						case 'EDIT':
+						    console.log("*** STROKE ***",gnode.shape.attr('stroke'))
+							// SET STROKE ALTCOLOR
+							gnode.shape.attr({stroke:'#f06'})
 						    panelcontroller("hide",gnode)
 							panelcontroller("show",gnode)
 							//panelObject = createPanel(ev.clientX,ev.clientY,gnode)
@@ -668,7 +672,7 @@ let redraw:never
 
 </script>
 
-<div class="editor-container">
+<div class= "editor-container" id= "editor-container-id">
 			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={true} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:change={readFile}>
 	</div>

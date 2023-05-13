@@ -194,6 +194,22 @@ onMount(async () => {
 		component = panels.find((item:any) => item.type == currentnode.data.type).component;
 	}
 
+	const closeModal = (event:any) =>{
+		const modal = document.getElementById("modal-editor-div-id");
+		if(modal)
+			modal.style.display = "none";
+	}
+
+	const panelSave = (event:any) =>{
+		currentnode.shape.attr({stroke:'#008080'})
+		panelcontroller('save',currentnode,saved)
+	}
+
+	const panelHide = (event:any) =>{
+		currentnode.shape.attr({stroke:'#008080'})
+		panelcontroller('hide',currentnode,saved)
+	}
+
 </script>
 	<div class="class-div-editor-container" id="div-graph-menu" >
 		<div class="class-div-menu-container">
@@ -209,8 +225,8 @@ onMount(async () => {
 			<div class="class-panel-header" >
 				<div class="class-last-item">
 					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-					<input type="image" src="SAVE.svg" on:click={panelcontroller('save',currentnode,saved)} alt="Submit" width="25" height="25"> 
-					 <input type="image" src="EXIT.svg" on:click={panelcontroller('hide',currentnode,saved)} alt="Submit" width="25" height="25"> 
+					<input type="image" src="SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
+					 <input type="image" src="EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 
 				</div>
 			</div>
 			<div class= "class-panel-row">
@@ -239,6 +255,13 @@ onMount(async () => {
 		</div>
     </div>	
 	<svelte:window on:keydown={handleKeydown}/>
+	<div class="modal-editor-div" id="modal-editor-div-id">
+		<div class="modal-editor-content">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<span class="modal-close" on:click={closeModal}>&times;</span>
+			<p>Some text in the Modal..</p>
+		</div>
+	</div>
 <style>
 
 .class-div-menu-container {
@@ -300,9 +323,42 @@ label {
   margin-bottom: 5px;
   font-weight: bold;
 }
- /* .class-last-item{
-	display: flex;
-	margin-left:auto;
-  }*/
+ /* The Modal (background) */
+.modal-editor-div {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.modal-editor-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.modal-close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style> 

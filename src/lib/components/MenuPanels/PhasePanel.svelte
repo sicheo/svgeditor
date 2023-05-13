@@ -10,6 +10,7 @@ export let callback = (param:any=null)=>{}
 let name = ''
 let address = ''
 let data: any
+let modal: any
 
 
 let phases:any[] = [
@@ -52,6 +53,7 @@ const opcontdiv = document.getElementById("class-operations")
 
 onMount(async ()=>{
    const opcontdiv = document.getElementById("class-operations")
+   modal = document.getElementById("modal-editor-div-id")
    if(opcontdiv){
         opcontdiv.addEventListener(
               "panelsave",
@@ -211,6 +213,11 @@ function onEditOperation(event:any){
     }
     
     console.log("EDIT OPERATION",id)
+
+    // OPEN MODAL DIV
+    const modal = document.getElementById("modal-editor-div-id");
+	if(modal)
+	    modal.style.display = "block";
 }
 
 function onDeleteOperation(event:any){
@@ -233,7 +240,7 @@ function onDeleteOperation(event:any){
 <div class="class-panel-content">
 	<div class= "class-panel-row">
             <label class= "class-panel-cell" name="select">
-                Phase
+                PHASE
 	             <select type="sourcedriver" name="select" bind:value={node.data.name} on:change={changeImage}>
 					{#each phases as Phase, index(Phase.uid)}
 						<option value={Phase.name}>{Phase.name}</option>
@@ -242,9 +249,8 @@ function onDeleteOperation(event:any){
             </label>
     </div>
    <div class= "class-panel-row">
-            <span>OPERATIONS</span>
             <label class= "class-panel-cell" name="addtask">
-                OP. ADD
+                OPERATIONS
 	             <input name= "addtask" id= "add-operation-button" type='image' alt='ADD TASK' src='/add.svg'  on:click={addOperationEvent} disabled/>
             </label>
     </div>
@@ -262,6 +268,7 @@ function onDeleteOperation(event:any){
   grid-auto-rows: minmax(50px, auto);
   font-family: Arial, Helvetica, sans-serif;
   font-size: smaller;
+  font-weight: bold;
   padding-top: 10px;
 }
 
@@ -278,14 +285,14 @@ function onDeleteOperation(event:any){
 .class-operation-tool-row {
   display: block;
   justify-content:right;
-  font-size: smaller;
+  font-size: small;
 }
 
 .class-panel-row {
   display: flex;
   justify-content:right;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: smaller;
+  font-size: small;
 }
 
 label {
