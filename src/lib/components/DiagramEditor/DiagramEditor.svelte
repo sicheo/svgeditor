@@ -23,6 +23,9 @@ export let  mainmenuclear: any = (param:any)=>{}
 export let menubuild:any = (param:any)=>{}
 export let menuenabled:boolean = true
 export let panelcontroller:any
+export let width = 1200
+export let height = 600
+
 export let  nodeoptions:any = {
 				horizontal:true,
 				vertical:false,
@@ -68,7 +71,7 @@ onMount(async () => {
 		
 		
 
-		draw = await SVG().addTo('#div-graph-container').size(1400, 600).panZoom({ zoomMin: 0.2, zoomMax: 10, zoomFactor: 0.1 })
+		draw = await SVG().addTo('#div-graph-container').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 10, zoomFactor: 0.1 })
 		draw.id("svg-graph-container")
 		draw.viewbox(0,0,1400,600)
 		
@@ -213,7 +216,7 @@ onMount(async () => {
 			<div class= "class-panel-row">
 				<label class= "class-panel-cell">
 					ID
-					<input type="text" name="name"  bind:value={currentnode.nodeid} class="panel-input panel-input-text" disabled>
+					<input type="text" name="name"  bind:value={currentnode.nnametext} class="panel-input panel-input-text" disabled>
 				</label>
 			</div>
 			<div class= "class-panel-row" style="border-bottom: 1px solid;">
@@ -244,9 +247,10 @@ onMount(async () => {
 }
 .class-div-graph-container {
   grid-area: graph;
-  width: 100%;
+  width: 80%;
 }
 .class-div-panel-container {
+  display:block;
   grid-area: panel;
   max-width: 240 px;
   border: 1px solid;
@@ -256,7 +260,7 @@ onMount(async () => {
 
 .class-div-editor-container {
   display: grid;
-  grid-template-columns: 25% 25% 25% 19%;
+  grid-template-columns: 25% 25% 25% auto;
   grid-template-rows: auto;
   grid-template-areas: 
     "header header header header"
@@ -271,14 +275,34 @@ onMount(async () => {
   font-size: smaller;
   margin: 5px;
 }
-/*
+
+/*.class-panel-header {
+  display: flex;
+  float: right;
+  grid-template-columns: auto;
+  grid-auto-rows: minmax(30px, auto);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: smaller;
+  margin: 5px;
+}*/
+
 .class-last-item{
 	float: right;
 	margin-left:180px;
-  }*/
-  .class-last-item{
+  }
+
+label {
+  display: block;
+  /*flex-direction: row;
+  justify-content: flex-end;*/
+  text-align: left;
+  width: 190px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+ /* .class-last-item{
 	display: flex;
 	margin-left:auto;
-  }
+  }*/
 
 </style> 

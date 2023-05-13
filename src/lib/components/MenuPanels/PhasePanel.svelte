@@ -75,13 +75,7 @@ onMount(async ()=>{
           "panelshow",
           (e) => {
             console.log("**** FIRED EVENT SHOW******")
-            if(node.saved && node.saved.operations){
-                for(let i=0; i< node.saved.operations.length;i++){
-                    const operation = node.saved.operations[i]
-                    //console.log("**** FIRED EVENT SHOW******", operation)
-                    addOperation(operation)
-                }
-            }
+            setTimeout(redrawOperations,1000)
           },
           false
         );
@@ -99,14 +93,31 @@ function changeImage(){
     element.disabled = false
 }
 
+function redrawOperations(){
+    if(node.saved && node.saved.operations){
+        console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        for(let i=0; i< node.saved.operations.length;i++){
+            const operation = node.saved.operations[i]
+            //console.log("**** FIRED EVENT SHOW******", operation)
+            addOperation(operation)
+        }
+    }
+}
+
 function addOperationEvent(){
-    const operation = {name:'',uid: uuidv4(),data:null}
+    const operation = {name:'',uid: null,data:null}
     addOperation(operation)
 }
 
 function addOperation(operation:any){
-    //const operation = {name:'',uid: uuidv4(),data:null}
+    if(operation.uid == null)
+        operation.uid = uuidv4()
+    if(operation.name == '')
+        operation.name = operations[0].name
+
     const opcontdiv = document.getElementById("class-operations")
+    if(!opcontdiv)
+        return
     opcontdiv.style.cssText += 'display:block;';
     // OPEARATION DIV
     const opdiv = document.createElement("div");
@@ -124,7 +135,7 @@ function addOperation(operation:any){
     editElement.setAttribute('alt', 'EDIT');
     editElement.setAttribute('width', '20');
     editElement.setAttribute('height', '20');
-    editElement.id = "EDIT-"+operation.uid
+    editElement.id = "EDIT_"+operation.uid
     editElement.addEventListener('click',onEditOperation)
     tooldiv.appendChild(editElement);
     opdiv.appendChild(tooldiv);
@@ -136,7 +147,7 @@ function addOperation(operation:any){
     delElement.setAttribute('alt', 'DELETE');
     delElement.setAttribute('width', '20');
     delElement.setAttribute('height', '20');
-    delElement.id = "DELETE-"+operation.uid
+    delElement.id = "DELETE_"+operation.uid
     delElement.addEventListener('click',onDeleteOperation)
     tooldiv.appendChild(delElement);
     opdiv.appendChild(tooldiv);
@@ -164,8 +175,7 @@ function addOperation(operation:any){
     selectList.addEventListener('change',onChangeOperation)
    
     opcontdiv.appendChild(opdiv);
-    if(operation.name == '')
-        operation.name = operations[0].name
+    
     onAddOperation(operation)
      console.log("ADD OPERATION",operation)
     
@@ -175,8 +185,9 @@ function onAddOperation(operation:any){
     if(!node.data.operations)
         node.data.operations = []
      
-     //operation.name = operations[0].name
-     node.data.operations.push(operation)
+     const found = node.data.operations.find((item:any)=>{return (item.uid == operation.uid)})
+     if(!found)
+        node.data.operations.push(operation)
 }
 
 function onChangeOperation(event:any){
@@ -195,8 +206,9 @@ function onChangeOperation(event:any){
 function onEditOperation(event:any){
     const element = event.target
     let id:any
-    if(element)
-        id = element.id
+    if(element){
+        id = element.id.split('_')[1]
+    }
     
     console.log("EDIT OPERATION",id)
 }
@@ -205,12 +217,14 @@ function onDeleteOperation(event:any){
     const element = event.target
    let id:any
     if(element){
-        id = element.id
+        id = element.id.split('_')[1]
     
         console.log("DELETE OPERATION",id)
 
         const parent = element.parentElement.parentElement
         parent.innerHTML = ''
+
+        node.data.operations = node.data.operations.filter((item:any)=> { return (item.uid != id)})
     }
 }
 
@@ -218,9 +232,9 @@ function onDeleteOperation(event:any){
 
 <div class="class-panel-content">
 	<div class= "class-panel-row">
-            <label class= "class-panel-cell">
+            <label class= "class-panel-cell" name="select">
                 Phase
-	             <select type="sourcedriver" name="type" bind:value={node.data.name} on:change={changeImage}>
+	             <select type="sourcedriver" name="select" bind:value={node.data.name} on:change={changeImage}>
 					{#each phases as Phase, index(Phase.uid)}
 						<option value={Phase.name}>{Phase.name}</option>
 					{/each}
@@ -228,10 +242,10 @@ function onDeleteOperation(event:any){
             </label>
     </div>
    <div class= "class-panel-row">
-            <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label class= "class-panel-cell">
+            <span>OPERATIONS</span>
+            <label class= "class-panel-cell" name="addtask">
                 OP. ADD
-	             <input id= "add-operation-button" type='image' alt='ADD TASK' src='/add.svg'  on:click={addOperationEvent} disabled/>
+	             <input name= "addtask" id= "add-operation-button" type='image' alt='ADD TASK' src='/add.svg'  on:click={addOperationEvent} disabled/>
             </label>
     </div>
     <div class= "class-operation-row" id= "class-operations">   
@@ -275,21 +289,21 @@ function onDeleteOperation(event:any){
 }
 
 label {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  text-align: right;
+  display: block;
+  text-align: left;
   width: 160px;
-  line-height: 22px;
+  /*line-height: 22px;*/
   margin-bottom: 10px;
+  margin-left: 3px;
+  font-weight: bold;
 }
+
+
 
 input {
   height: 20px;
   flex: 0 0 80px;
   margin-left: 5px;
 }
-.hr-solid {
-    border-bottom: 1px solid var(--color);
-}
+
 </style>

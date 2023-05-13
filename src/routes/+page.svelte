@@ -288,7 +288,7 @@
 						panelOperation.dispatchEvent(eventSave);
 					if(gnode){
 						gnode.saved = structuredClone(gnode.data)
-						console.log("**** PANEL SAVE ****",gnode.saved.operations)
+						console.log("**** PANEL SAVE ****",gnode.data)
 						if(!gnode.data.image || gnode.data.image == ''){
 						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
 						if(pnl)

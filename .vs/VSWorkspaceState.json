@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\lib",
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\MenuPanels",
+    "\\src\\routes"
+  ],
+  "SelectedNode": "\\src\\routes\\+page.svelte",
+  "PreviewInSolutionExplorer": false
+}
