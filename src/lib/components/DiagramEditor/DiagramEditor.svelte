@@ -195,11 +195,7 @@ onMount(async () => {
 		component = panels.find((item:any) => item.type == currentnode.data.type).component;
 	}
 
-	const closeModal = (event:any) =>{
-		const modal = document.getElementById("modal-editor-div-id");
-		if(modal)
-			modal.style.display = "none";
-	}
+	
 
 	const panelSave = (event:any) =>{
 		currentnode.shape.attr({stroke:'#008080'})
@@ -266,8 +262,6 @@ onMount(async () => {
 	<svelte:window on:keydown={handleKeydown}/>
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid=''>
 		<div class="modal-editor-content">
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<span class="modal-close" on:click={closeModal}>&times;</span>
 			<OperationEditor bind:node = {currentnode} />
 		</div>
 	</div>
@@ -308,7 +302,7 @@ onMount(async () => {
   margin: 5px;
 }
 
-/*.class-panel-header {
+.class-panel-header {
   display: flex;
   float: right;
   grid-template-columns: auto;
@@ -316,7 +310,7 @@ onMount(async () => {
   font-family: Arial, Helvetica, sans-serif;
   font-size: smaller;
   margin: 5px;
-}*/
+}
 
 .class-last-item{
 	float: right;

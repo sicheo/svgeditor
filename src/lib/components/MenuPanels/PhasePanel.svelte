@@ -148,6 +148,20 @@ function redrawOperations(){
     }
 }
 
+function drawOperations(){
+    if(node.data && node.data.operations){
+        console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
+        const opcontdiv = document.getElementById("class-operations")
+        if(opcontdiv)
+            opcontdiv.innerHTML = ''
+        for(let i=0; i< node.data.operations.length;i++){
+            const operation = node.data.operations[i]
+            //console.log("**** FIRED EVENT SHOW******", operation)
+            addOperation(operation)
+        }
+    }
+}
+
 function addOperationEvent(){
     const operation = {name:'',uid: null,data:null}
     addOperation(operation)
@@ -194,6 +208,30 @@ function addOperation(operation:any){
     delElement.id = "DELETE_"+operation.uid
     delElement.addEventListener('click',onDeleteOperation)
     tooldiv.appendChild(delElement);
+    opdiv.appendChild(tooldiv);
+
+    // UPARROW  IMAGE INPUT
+    var upArrowElement = document.createElement("input");
+    upArrowElement.type =  'image';
+    upArrowElement.setAttribute('src', 'UPARROW.svg');
+    upArrowElement.setAttribute('alt', 'MOVEUP');
+    upArrowElement.setAttribute('width', '20');
+    upArrowElement.setAttribute('height', '20');
+    upArrowElement.id = "MOVEUP_"+operation.uid
+    upArrowElement.addEventListener('click',onMoveUpOperation)
+    tooldiv.appendChild(upArrowElement);
+    opdiv.appendChild(tooldiv);
+
+    // DOWNARROW  IMAGE INPUT
+    var downArrowElement = document.createElement("input");
+    downArrowElement.type =  'image';
+    downArrowElement.setAttribute('src', 'DOWNARROW.svg');
+    downArrowElement.setAttribute('alt', 'MOVEDOWN');
+    downArrowElement.setAttribute('width', '20');
+    downArrowElement.setAttribute('height', '20');
+    downArrowElement.id = "MOVEDOWN_"+operation.uid
+    downArrowElement.addEventListener('click',onMoveDownOperation)
+    tooldiv.appendChild(downArrowElement);
     opdiv.appendChild(tooldiv);
 
     // OPERATION TYPE LABEL
@@ -279,7 +317,38 @@ function onDeleteOperation(event:any){
     }
 }
 
+function moveItem (array:any, to:any, from:any) {
+    const item = array[from];
+    array.splice(from, 1);
+    array.splice(to, 0, item);
+    return array;
+};
 
+function onMoveUpOperation(event:any){
+   const element = event.target
+   let id:any
+    if(element){
+        id = element.id.split('_')[1]
+        console.log("MOVEUP OPERATION",id)
+        const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
+        if(index > 0)
+            node.data.operations = moveItem(node.data.operations,index-1,index)
+        drawOperations()
+    }
+}
+
+function onMoveDownOperation(event:any){
+   const element = event.target
+   let id:any
+    if(element){
+        id = element.id.split('_')[1]
+        console.log("MOVEDOWN OPERATION",id)
+         const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
+        if(index < node.data.operations.length-1)
+            node.data.operations = moveItem(node.data.operations,index+1,index)
+        drawOperations()
+    }
+}
 
 </script>
 
