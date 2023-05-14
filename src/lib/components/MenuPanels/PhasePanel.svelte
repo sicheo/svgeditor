@@ -1,6 +1,6 @@
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid';
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 
 export let node:any ={data:{}}
 export let color = "Teal"
@@ -49,36 +49,77 @@ let operations:any[] = [
 
 const opcontdiv = document.getElementById("class-operations")
 
-
+const saveEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT SAVE******")
+                                    //opcontdiv.innerHTML = '';
+                                }
+const hideEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT HIDE******")
+                                    //opcontdiv.innerHTML = '';
+                                }
+const showEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT HIDE******")
+                                    setTimeout(redrawOperations,400)
+                                }
 
 onMount(async ()=>{
+   console.log("MOUNT PANEL PHASE")
+   
+   node.data.level = 'level1'
    const opcontdiv = document.getElementById("class-operations")
+   // GET MODAL
    modal = document.getElementById("modal-editor-div-id")
+   // ENABLE ADD BUTTON
+    if(node.saved && node.saved.operations){
+        const element = document.getElementById("add-operation-button")
+        if(element)
+            element.disabled = false
+    }
+
+
    if(opcontdiv){
         opcontdiv.addEventListener(
               "panelsave",
-              (e) => {
-                console.log("**** FIRED EVENT SAVE******")
-                //opcontdiv.innerHTML = '';
-              },
+              saveEventHandler,
               false
          );
 
         opcontdiv.addEventListener(
           "panelhide",
-          (e) => {
-            console.log("**** FIRED EVENT HIDE******")
-             //opcontdiv.innerHTML = '';
-          },
+          hideEventHandler,
           false
         );
 
         opcontdiv.addEventListener(
           "panelshow",
-          (e) => {
-            console.log("**** FIRED EVENT SHOW******")
-            setTimeout(redrawOperations,1000)
-          },
+          showEventHandler,
+          false
+        );
+    }
+
+ });
+
+ onDestroy(async ()=>{
+    console.log("DESTROY PANEL PHASE")
+   const opcontdiv = document.getElementById("class-operations")
+   modal = document.getElementById("modal-editor-div-id")
+
+   if(opcontdiv){
+        opcontdiv.removeEventListener(
+              "panelsave",
+              saveEventHandler,
+              false
+         );
+
+        opcontdiv.addEventListener(
+          "panelhide",
+          hideEventHandler,
+          false
+        );
+
+        opcontdiv.addEventListener(
+          "panelshow",
+          showEventHandler,
           false
         );
     }
@@ -93,6 +134,7 @@ function changeImage(){
         node.data.image = phase.image
     const element = document.getElementById("add-operation-button")
     element.disabled = false
+    node.data.level = 'level1'
 }
 
 function redrawOperations(){
@@ -216,8 +258,10 @@ function onEditOperation(event:any){
 
     // OPEN MODAL DIV
     const modal = document.getElementById("modal-editor-div-id");
-	if(modal)
+	if(modal){
+        modal.setAttribute("data-opuid",id)
 	    modal.style.display = "block";
+    }
 }
 
 function onDeleteOperation(event:any){
@@ -234,6 +278,8 @@ function onDeleteOperation(event:any){
         node.data.operations = node.data.operations.filter((item:any)=> { return (item.uid != id)})
     }
 }
+
+
 
 </script>
 

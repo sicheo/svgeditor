@@ -20,17 +20,19 @@
   import gpath from "$lib/components/DiagramEditor/classes/gpath"
   import {_calcDAttr} from "$lib/components/DiagramEditor/classes/gutils"
   import graphutils from '$lib/scripts/graphutils'
+   
   
   // ** NEW **//
   let graphtype = "TREE"
   let graph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
   let currentnode:any ={data:{type:'MASTER',level:'level0',name:''}}
   let draw:any
+  let callback = ()=>{}
   
 
   let panels:any [] = [
-	    {type:'MASTER',component:MRecordPanel,name:'Master',level:'level0',img:'/MASTER.svg'},
-	    {type:'PHASE',component:PhasePanel,name:'Phase',level:'level1',img:'/DISPENSING.svg'},
+	    {type:'MASTER',component:MRecordPanel,name:'Master',level:'level0',img:'/MASTER.svg',fireEvents:false},
+	    {type:'PHASE',component:PhasePanel,name:'Phase',level:'level1',img:'/DISPENSING.svg',fireEvents:true},
 		/*{type:'COMPANY',component:CompanyPanel,name:'Company',level:'level1',img:'/image-company.svg'},
 		{type:'FACTORY',component:FactoryPanel,name:'Factory',level:'level2',img:'/image-factory.svg'},
 		{type:'DEPARTMENT',component:DepartmentPanel,name:'Department',level:'level3',img:'/image-department.svg'},
@@ -46,6 +48,16 @@
 	const graphAddNode = (nodinfo:any,node:any,draw:any) =>{
 		graph.nodes.push(nodinfo)
 		graph.gnodes.push(node)
+		graph.svg = draw.svg()
+	}
+
+	const graphUpdateNode = (nodinfo:any,node:any,draw:any) =>{
+		const nodeindex = graph.nodes.findIndex((item:any) => { return (item.id == nodinfo.id)})
+		if(nodeindex > -1)
+			graph.nodes[nodeindex] = nodinfo
+		const gnodeindex = graph.gnodes.findIndex((item:any) => { return (item.id == node.id)})
+		if(gnodeindex > -1)
+			graph.gnodes[gnodeindex] = node
 		graph.svg = draw.svg()
 	}
 
@@ -158,6 +170,7 @@
 			// ADD EVENT LISTENERS
 			setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
+			console.log("**** REBUILD GRAPH *****", nd)
 		}
 		// DRAW PATHS
 		for(let i=0;i<graphin.paths.length;i++){
@@ -239,6 +252,7 @@
 
 	const graphFunctions = {
 							addNode:graphAddNode,
+							updateNode:graphUpdateNode,
 							addPath:graphAddPath,
 							removeNode:graphRemoveNode,
 							removePath:graphRemovePath,
@@ -261,12 +275,15 @@
 			const panelOperation = document.getElementById("class-operations")
 
 			const panel = document.querySelector('#editor-panel')
+			let templatePanel:any
+			if(gnode)
+				templatePanel = panels.find((item:any) => { return (item.type == gnode.data.type) })
 			let img
 			switch(action){
 				case "hide":
 				    img = ''
 					panel.style.visibility = 'hidden'
-					if(panelOperation)
+					if(panelOperation && templatePanel && templatePanel.fireEvents)
 						panelOperation.dispatchEvent(eventHide);
 					if(gnode){
 						gnode.data = structuredClone(gnode.saved)
@@ -285,11 +302,10 @@
 				case "save":
 				    img = ''
 					panel.style.visibility = 'hidden'
-					if(panelOperation)
+					if(panelOperation && templatePanel && templatePanel.fireEvents)
 						panelOperation.dispatchEvent(eventSave);
 					if(gnode){
 						gnode.saved = structuredClone(gnode.data)
-						console.log("**** PANEL SAVE ****",gnode.data)
 						if(!gnode.data.image || gnode.data.image == ''){
 						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
 						if(pnl)
@@ -298,12 +314,11 @@
 						img = gnode.data.image
 						
 						gnode.redrawtext(gnode.data.name,img)
+						graphFunctions.updateNode(gnode.getNodeInfo(),gnode,draw)
 					}
 					break;
 				case "show":
 					currentnode = gnode
-					if(panelOperation)
-						panelOperation.dispatchEvent(eventShow);
 					if(gnode)
 						gnode.data = structuredClone(gnode.saved)
 					if(gnode.data && gnode.data.type)
@@ -311,6 +326,9 @@
 					else
 						component = panels.find((item:any) => (item.type == 'PHASE')).component; 
 					panel.style.visibility = 'visible'
+					if(panelOperation && templatePanel && templatePanel.fireEvents){
+					    panelOperation.dispatchEvent(eventShow)
+					}
 					break;
 				case "visibility":
 					return(panel.style.visibility)
@@ -371,7 +389,7 @@
 			tree.root = graphutils.getTreeFromGraph(graph,graph.nodes[0],null)
 		}
 		
-		//console.log(graph)
+		console.log(graph)
 	    //console.log(tree.root)
 		let backgraph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
 		//console.log(graphutils.getGraphFromTree(tree.root,backgraph,0))
@@ -453,20 +471,17 @@
 
 	
 
-	const  readFile = async function() {
-		const element = document.getElementById("file-graph-input")
+	const  readFile = async function(event:any) {
+		//const element = document.getElementById("file-graph-input")
+		const element = event.target
 		if(element){
 			element.onchange = async () => {
+				console.log("*** FILE ON CHANGE EVENT FIRED ****")
 				const file = element.files[0];
-				//console.log(selectedFile);
 				const fileContent = await file.text();
 				let graphtml = JSON.parse(fileContent)
 				graphFunctions.rebuildGraph(graphtml,null)
 			}
-			/*let file = evt.target.files[0];
-			const fileContent = await file.text();
-			let graphtml = JSON.parse(fileContent)
-			graphFunctions.rebuildGraph(graphtml,null)*/
 		}
 	}
 
@@ -674,7 +689,7 @@ let redraw:never
 
 <div class= "editor-container" id= "editor-container-id">
 			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={true} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
-			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:change={readFile}>
+			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 	</div>
 
 

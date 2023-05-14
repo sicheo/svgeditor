@@ -1,5 +1,5 @@
 <script lang="ts">
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 
 export let node:any ={data:{}}
 export let color = "Teal"
@@ -11,14 +11,17 @@ let address = ''
 let data = {name:'',address:'',type:'MASTER',level:'level0'}
 
 onMount(async ()=>{
-    /*data.name = node.data.name
-    data.address = node.data.address*/
+    console.log("MOUNT PANEL RECORD")
+    
+  });
+
+  onMount(async ()=>{
+    console.log("DESTROY PANEL RECORD")
+    
   });
 
 function setNode(event:any){
-    /*node.data.name = name
-    node.data.address = address*/
-    //node.data = data
+   
      node.data.image='/MASTER.svg'
     node.data.level = 'level0'
     callback()

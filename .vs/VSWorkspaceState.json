@@ -9,6 +9,6 @@
     "\\src\\lib\\components\\MenuPanels",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\MRecordPanel.svelte",
+  "SelectedNode": "\\src\\app.d.ts",
   "PreviewInSolutionExplorer": false
 }

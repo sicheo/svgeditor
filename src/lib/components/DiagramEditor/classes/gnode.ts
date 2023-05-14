@@ -338,6 +338,7 @@ export default class gnode {
         let nodeinfo: any = {}
         nodeinfo.id = this.nodeid
         nodeinfo.data = this.data
+        //nodeinfo.saved = this.saved
         // THIS SHOULD BE UNIQUE
         nodeinfo.data.uid = this.nodenum
         nodeinfo.data.x = this.x

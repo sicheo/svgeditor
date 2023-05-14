@@ -9,7 +9,8 @@ import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import {_calcDAttr} from "./classes/gutils"
 import { fly } from 'svelte/transition';
-    
+import OperationEditor from "../OperationEditor/OperationEditor.svelte"
+
 // EXPORTS
 export let graphtype = 'DAG'
 export let graph:any
@@ -210,6 +211,14 @@ onMount(async () => {
 		panelcontroller('hide',currentnode,saved)
 	}
 
+	const getOpUid = ()=>{
+		let uid: string|null = '1234'
+		const modal = document.getElementById("modal-editor-div-id");
+		if(modal)
+			uid = modal.getAttribute("data-opuid");
+		return(uid)
+	}
+
 </script>
 	<div class="class-div-editor-container" id="div-graph-menu" >
 		<div class="class-div-menu-container">
@@ -250,16 +259,16 @@ onMount(async () => {
 				</label>
 			</div>	
 			
-				<svelte:component this={component} bind:node={currentnode}/>
+				<svelte:component this={component} bind:node={currentnode} />
 			
 		</div>
     </div>	
 	<svelte:window on:keydown={handleKeydown}/>
-	<div class="modal-editor-div" id="modal-editor-div-id">
+	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid=''>
 		<div class="modal-editor-content">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<span class="modal-close" on:click={closeModal}>&times;</span>
-			<p>Some text in the Modal..</p>
+			<OperationEditor bind:node = {currentnode} />
 		</div>
 	</div>
 <style>
