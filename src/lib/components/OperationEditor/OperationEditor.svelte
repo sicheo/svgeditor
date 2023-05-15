@@ -2,7 +2,9 @@
 import { onMount} from "svelte";
 import IntersectionObserver from "svelte-intersection-observer";
 import SvelteTable from "svelte-table";
+    import CompanyPanel from "../MenuPanels/CompanyPanel.svelte";
 import EditComponent from "./EditComponent.svelte";
+import SelectComponent from "./SelectComponent.svelte";
 
 export let node:any ={data:{}}
 
@@ -13,11 +15,42 @@ let operation:any
 let operationname:any
 let phasename:any
 
-const rows = [
+let rows:any = [
   { id: 1, type: "Task", name: "CLOSE VALVE", tag:"VLV-002-UDC", checkType: "BOOLEAN", expected: "YES",checkMode:"MANUAL", system:"NA" },
   { id: 2, type: "Control", name : "START T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
   { id: 3, type: "Control", name : "END T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
 ];
+
+let typeOptions = [
+    {id: 1,name:"Task"},
+    {id:2,name:"Control"}
+]
+
+let checkTypeOptions = [
+    {id: 1,name:"BOOLEAN"},
+    {id:2,name:"ANALOG"},
+    {id:3,name:"STRING"}
+]
+
+let checkModeOptions = [
+    {id: 1,name:"AUTOMATIC"},
+    {id:2,name:"MANUAL"}
+]
+
+let optionsArray = [
+    {name: "type", options: typeOptions},
+    {name: "checkType", options: checkTypeOptions},
+    {name: "checkMode", options: checkModeOptions}
+]
+
+
+
+function moveItem (array:any, to:any, from:any) {
+    const item = array[from];
+    array.splice(from, 1);
+    array.splice(to, 0, item);
+    return array;
+};
 
 const onEditButtonClick = (row:any) =>{
     alert(`Edit ${row.name}`)
@@ -28,11 +61,21 @@ const onDeleteButtonClick = (row:any) =>{
 }
 
 const onUpButtonClick = (row:any) =>{
-    alert(`Move up ${row.name}`)
+    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
+    if(index > 0)
+        rows = moveItem(rows,index-1,index)
 }
 
 const onDownButtonClick = (row:any) =>{
-    alert(`Move down ${row.name}`)
+    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
+     if(index < rows.length-1)
+        rows = moveItem(rows,index+1,index)
+}
+
+const onSelectComponent = (row:any,tag:any,value:any) =>{
+    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
+     if(index > -1)
+        rows[index][tag] = value
 }
 
 // define column configs
@@ -63,11 +106,14 @@ const columns = [
   {
     key: "type",
     title: "TYPE",
-    value: (v:any) => v.type,
+    //value: (v:any) => v.type,
     sortable: true,
-    renderValue: (v:any) => v.type.toUpperCase(),
+    //renderValue: (v:any) => v.type.toUpperCase(),
     filterOptions: ["Task","Control"],
-    headerClass: "table-header-class",
+    renderComponent: {
+        component: SelectComponent,
+        props: { typeTag:"type",optionsArray, onSelectComponent },
+      },
   },
   {
     key: "name",
@@ -120,10 +166,14 @@ const columns = [
   {
     key: "checkType",
     title: "CHECKTYPE",
-    value: (v:any) => v.checkType,
+    //value: (v:any) => v.checkType,
     sortable: true,
-    renderValue: (v:any) => v.checkType.toUpperCase(),
-    filterOptions: ["BOOLEAN","ANALOG","STRING"]
+    //renderValue: (v:any) => v.checkType.toUpperCase(),
+    filterOptions: ["BOOLEAN","ANALOG","STRING"],
+    renderComponent: {
+        component: SelectComponent,
+        props: { typeTag:"checkType",optionsArray, onSelectComponent },
+      },
   },
   {
     key: "expected",
@@ -152,10 +202,14 @@ const columns = [
   {
     key: "checkMode",
     title: "CHECKMODE",
-    value: (v:any) => v.checkMode,
+    //value: (v:any) => v.checkMode,
     sortable: true,
-    renderValue: (v:any) => v.checkMode.toUpperCase(),
-    filterOptions: ["AUTOMATIC","MANUAL"]
+    //renderValue: (v:any) => v.checkMode.toUpperCase(),
+    filterOptions: ["AUTOMATIC","MANUAL"],
+     renderComponent: {
+        component: SelectComponent,
+        props: { typeTag:"checkMode",optionsArray, onSelectComponent },
+      },
   },
   {
     key: "system",
@@ -243,7 +297,7 @@ onMount(async ()=>{
 		
 		<div class= "class-panel-row">
             TASK/CONTROL LIST
-            <SvelteTable columns="{columns}" rows="{rows}"></SvelteTable>
+            <SvelteTable columns="{columns}" bind:rows="{rows}"></SvelteTable>
 		</div>
 	</div>
 	</IntersectionObserver>
