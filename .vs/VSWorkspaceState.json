@@ -4,11 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\classes",
-    "\\src\\lib\\components\\MenuPanels",
+    "\\src\\lib\\components\\OperationEditor",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\app.d.ts",
+  "SelectedNode": "\\src\\lib\\components\\OperationEditor\\OperationEditor.svelte",
   "PreviewInSolutionExplorer": false
 }

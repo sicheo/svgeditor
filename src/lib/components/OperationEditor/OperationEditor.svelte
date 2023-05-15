@@ -2,6 +2,7 @@
 import { onMount} from "svelte";
 import IntersectionObserver from "svelte-intersection-observer";
 import SvelteTable from "svelte-table";
+import EditComponent from "./EditComponent.svelte";
 
 export let node:any ={data:{}}
 
@@ -17,6 +18,22 @@ const rows = [
   { id: 2, type: "Control", name : "START T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
   { id: 3, type: "Control", name : "END T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
 ];
+
+const onEditButtonClick = (row:any) =>{
+    alert(`Edit ${row.name}`)
+}
+
+const onDeleteButtonClick = (row:any) =>{
+    alert(`Delete ${row.name}`)
+}
+
+const onUpButtonClick = (row:any) =>{
+    alert(`Move up ${row.name}`)
+}
+
+const onDownButtonClick = (row:any) =>{
+    alert(`Move down ${row.name}`)
+}
 
 // define column configs
 const columns = [
@@ -164,6 +181,15 @@ const columns = [
     },
     filterValue: (v:any) => v.system.charAt(0).toLowerCase(),
   },
+  {
+      key: "edit",
+      title: "",
+      sortable: false,
+      renderComponent: {
+        component: EditComponent,
+        props: { onEditButtonClick, onDeleteButtonClick, onUpButtonClick,onDownButtonClick },
+      },
+    }
 ]
 
 onMount(async ()=>{
@@ -182,6 +208,8 @@ onMount(async ()=>{
  const exitEditor = (event:any) =>{
 			modal.style.display = "none";
 }
+
+
 
 </script>
      <IntersectionObserver {element} on:observe={(e) => {
@@ -207,8 +235,7 @@ onMount(async ()=>{
             </label>
 				<div class="class-last-item">
 					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-                    <input type="image" src="edit.svg"  alt="Submit" width="25" height="25" > 
-                    <input type="image" src="DELETE.svg"  alt="Submit" width="25" height="25" > 
+                    <input type="image" src="add.svg"  alt="Submit" width="25" height="25" > 
 					<input type="image" src="SAVE.svg"  alt="Submit" width="25" height="25" > 
 					<input type="image" src="EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
 				</div>
