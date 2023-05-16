@@ -32,14 +32,26 @@ function setNode(event:any){
 <div class="class-panel-content">
 	<div class= "class-panel-row">
             <label class= "class-panel-cell">
-                Name
-	            <input type="text" name="name"  bind:value="{node.data.name}" on:change={setNode} class="panel-input panel-input-text">
+                Doc Code
+	            <input type="text" name="name"  bind:value="{node.data.doccode}" on:change={setNode} class="panel-input panel-input-text">
             </label>
     </div>
     <div class= "class-panel-row">
             <label class= "class-panel-cell">
-                Product
-	            <input type="text" name="name"  bind:value="{node.data.product}" on:change={setNode} class="panel-input panel-input-text">
+                Product Code
+	            <input type="text" name="name"  bind:value="{node.data.prodcode}" on:change={setNode} class="panel-input panel-input-text">
+            </label>
+    </div>
+    <div class= "class-panel-row">
+            <label class= "class-panel-cell">
+                Project Code
+	            <input type="text" name="name"  bind:value="{node.data.projcode}" on:change={setNode} class="panel-input panel-input-text">
+            </label>
+    </div>
+     <div class= "class-panel-row">
+            <label class= "class-panel-cell">
+                SAP Code
+	            <input type="text" name="name"  bind:value="{node.data.sapcode}" on:change={setNode} class="panel-input panel-input-text">
             </label>
     </div>
     <div class= "class-panel-row">   
@@ -79,7 +91,7 @@ label {
   flex-direction: row;
   justify-content: flex-end;
   text-align: right;
-  width: 160px;
+  width: 200px;
   line-height: 22px;
   margin-bottom: 10px;
 }

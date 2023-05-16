@@ -13,7 +13,7 @@ export default class gmenu {
 
     constructor(draw: any, options: any = {}) {
         this._draw = draw
-        if (options.memuitems)
+        if (options.menuitems)
             this.menuitems = options.menuitems
         if (options.x)
             this.x = options.x
@@ -25,7 +25,7 @@ export default class gmenu {
             this.heigth = options.heigth
         if (options.direction)
             this.direction = options.direction
-
+       
     }
 
     public draw() {

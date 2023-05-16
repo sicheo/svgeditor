@@ -9,6 +9,8 @@
   import DiagramEditor from '$lib/components/DiagramEditor/DiagramEditor.svelte';
   import PhasePanel from '$lib/components/MenuPanels/PhasePanel.svelte'
   import MRecordPanel from '$lib/components/MenuPanels/MRecordPanel.svelte'
+  import Templates from '$lib/components/DiagramEditor/pdf/templates.js'
+  import Document from '$lib/components/DiagramEditor/pdf/Document'
   import CompanyPanel from '$lib/components/MenuPanels/CompanyPanel.svelte'
   import FactoryPanel from '$lib/components/MenuPanels/FactoryPanel.svelte'
   import DepartmentPanel from '$lib/components/MenuPanels/DepartmentPanel.svelte'
@@ -252,8 +254,30 @@
 		mainmenuimport()
 	}
 
-	const graphPrintPdf = () =>{
-
+	const nodePrintPdf = (gnode:any) =>{
+		let template:any = {pages:[]}
+		let replacement:any
+		let doc:any
+		switch(gnode.data.type){
+			case "MASTER":
+			    doc = new Document()
+			    replacement = [
+					{in:"$DOCCODE",out:gnode.data.doccode},
+					{in:"$PRODCODE",out:gnode.data.prodcode},
+					{in:"$PROJ",out:gnode.data.projcode},
+					{in:"$SAPCODE",out:gnode.data.sapcode},
+				]
+				template = JSON.parse(JSON.stringify(Templates.MRecordTemplate))
+				// FILL TEMPLATE WITH ACTUAL VALUES
+				doc.replaceTags(template.pages[0],replacement)
+				// BUILD PDF WITH FILLED TEMPLATE
+				doc.buildPage(template.pages[0])
+				doc.saveDoc(template)
+				break
+			case "PHASE":
+				break
+		}
+		console.log("++++ PRINT PDF FOR NODE ****",template)
 	}
 
 	const graphFunctions = {
@@ -351,6 +375,7 @@
 	const	menubuild = (x:any,y:any,width:any,height:any,gnode:any) =>{
 			const menuitems: any[] = [
 				{ name: 'EDIT', image: '/edit.svg', item: null },
+				{ name: 'PDF', image: '/PDF2.svg', item: null },
 				{ name: 'EXIT', image: '/close.svg', item: null }
 			]
 			const mwidth = 10
@@ -381,6 +406,9 @@
 							break
 						case 'EXIT':
 							gnode.remove()
+							break
+						case 'PDF':
+							nodePrintPdf(gnode)
 							break
 					}
 				})

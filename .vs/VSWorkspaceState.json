@@ -1,14 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\data",
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\classes",
     "\\src\\lib\\components\\DiagramEditor\\pdf",
-    "\\src\\routes"
+    "\\src\\lib\\components\\MenuPanels"
   ],
-  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\classes\\ggraph.ts",
+  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\MRecordPanel.svelte",
   "PreviewInSolutionExplorer": false
 }
