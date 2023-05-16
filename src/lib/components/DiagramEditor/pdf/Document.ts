@@ -25,6 +25,15 @@ export default class Document {
             
     }
 
+    buildDocument(template: any) {
+        for (let i = 0; i < template.pages.length; i++) {
+            const pagetemplate = template.pages[i]
+            this.buildPage(pagetemplate)
+            if (i < template.pages.length-1)
+                this.doc.addPage(pagetemplate.pageFormat, pagetemplate.pageOrientation)
+        }
+    }
+
     buildPage(template: any) {
         if (template.pageheader)
             this.buildPageHeader(template.pageheader)

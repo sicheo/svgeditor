@@ -80,7 +80,82 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", text: "Footer example" }
+                        { type: "text", text: "Pag. 1/2" }
+                    ]
+                }
+            }
+        },
+        {
+            pageFormat: "a4",
+            pageOrientation: "p",
+            pageheader: {
+                position: { x: 20, y: 20 },
+                font: {
+                    fontName: "times",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: 10
+                },
+                content: {
+                    rows: [
+                        { type: "text", text: "Codice documento:  $DOCCODE  Lotto:" }
+                    ]
+                }
+            },
+            pagebody: {
+                paragraphs: [
+                    {
+                        position: { x: 20, y: 40 },
+                        font: {
+                            fontName: "times",
+                            fontStyle: "normal",
+                            fontWeight: "bold",
+                            fontSize: 12
+                        },
+                        rows: [
+                            { type: "text", text: "STORIA DELLE REVISIONI" }
+                        ]
+                    },
+                    {
+                        position: { x: 20, y: 60 },
+                        font: {
+                            fontName: "times",
+                            fontStyle: "normal",
+                            fontWeight: "bold",
+                            fontSize: 12
+                        },
+                        rows: [
+                            { type: "text", text: "1.1 ELENCO BATCH RECORD CONNESSI" },
+                            { type: "text", text: "   N.A." }
+                        ]
+                    },
+                    {
+                        position: { x: 20, y: 85 },
+                        font: {
+                            fontName: "times",
+                            fontStyle: "normal",
+                            fontWeight: "bold",
+                            fontSize: 12
+                        },
+                        rows: [
+                            { type: "text", text: "1.2 SCOPO" },
+                            { type: "text", text: "   \u2022 Descrivere il metodo per la produzione della drug substance XXXXXXX, a partire da XXXXX e da\n XXXXXXXX" },
+                            { type: "text", text: "   \u2022 Registrare le operazioni di produzione" }
+                        ]
+                    }
+                ]
+            },
+            pagefooter: {
+                position: { x: 20, y: 280 },
+                font: {
+                    fontName: "times",
+                    fontStyle: "normal",
+                    fontWeight: "normal",
+                    fontSize: 10
+                },
+                content: {
+                    rows: [
+                        { type: "text", text: "Pag. 2/2" }
                     ]
                 }
             }

@@ -271,7 +271,7 @@
 				// FILL TEMPLATE WITH ACTUAL VALUES
 				doc.replaceTags(template.pages[0],replacement)
 				// BUILD PDF WITH FILLED TEMPLATE
-				doc.buildPage(template.pages[0])
+				doc.buildDocument(template)
 				doc.saveDoc(template)
 				break
 			case "PHASE":
