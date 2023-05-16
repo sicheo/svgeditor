@@ -11,12 +11,12 @@ let address = ''
 let data = {name:'',address:'',type:'MASTER',level:'level0'}
 
 onMount(async ()=>{
-    console.log("MOUNT PANEL RECORD")
+    //console.log("MOUNT PANEL RECORD")
     
   });
 
-  onMount(async ()=>{
-    console.log("DESTROY PANEL RECORD")
+  onDestroy(async ()=>{
+    //console.log("DESTROY PANEL RECORD")
     
   });
 

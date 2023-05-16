@@ -20,6 +20,8 @@
   import gpath from "$lib/components/DiagramEditor/classes/gpath"
   import {_calcDAttr} from "$lib/components/DiagramEditor/classes/gutils"
   import graphutils from '$lib/scripts/graphutils'
+ 
+
    
   
   // ** NEW **//
@@ -170,7 +172,7 @@
 			// ADD EVENT LISTENERS
 			setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
-			console.log("**** REBUILD GRAPH *****", nd)
+			//console.log("**** REBUILD GRAPH *****", nd)
 		}
 		// DRAW PATHS
 		for(let i=0;i<graphin.paths.length;i++){
@@ -248,6 +250,10 @@
 
 	const graphImportGraph = () =>{
 		mainmenuimport()
+	}
+
+	const graphPrintPdf = () =>{
+
 	}
 
 	const graphFunctions = {
@@ -364,7 +370,7 @@
 					ev.stopPropagation()
 					switch (menu.menuitems[i].name) {
 						case 'EDIT':
-						    console.log("*** STROKE ***",gnode.shape.attr('stroke'))
+						    //console.log("*** STROKE ***",gnode.shape.attr('stroke'))
 							// SET STROKE ALTCOLOR
 							gnode.shape.attr({stroke:'#f06'})
 						    panelcontroller("hide",gnode)
@@ -476,7 +482,7 @@
 		const element = event.target
 		if(element){
 			element.onchange = async () => {
-				console.log("*** FILE ON CHANGE EVENT FIRED ****")
+				//console.log("*** FILE ON CHANGE EVENT FIRED ****")
 				const file = element.files[0];
 				const fileContent = await file.text();
 				let graphtml = JSON.parse(fileContent)

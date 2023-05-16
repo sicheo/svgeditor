@@ -262,7 +262,7 @@ onMount(async () => {
 	<svelte:window on:keydown={handleKeydown}/>
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid=''>
 		<div class="modal-editor-content">
-			<OperationEditor bind:node = {currentnode} />
+			<OperationEditor node = {currentnode} />
 		</div>
 	</div>
 <style>

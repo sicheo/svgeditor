@@ -50,20 +50,20 @@ let operations:any[] = [
 const opcontdiv = document.getElementById("class-operations")
 
 const saveEventHandler = (e:any) => {
-                                    console.log("**** FIRED EVENT SAVE******")
+                                    //console.log("**** FIRED EVENT SAVE******")
                                     //opcontdiv.innerHTML = '';
                                 }
 const hideEventHandler = (e:any) => {
-                                    console.log("**** FIRED EVENT HIDE******")
+                                    //console.log("**** FIRED EVENT HIDE******")
                                     //opcontdiv.innerHTML = '';
                                 }
 const showEventHandler = (e:any) => {
-                                    console.log("**** FIRED EVENT HIDE******")
+                                    //console.log("**** FIRED EVENT HIDE******")
                                     setTimeout(redrawOperations,400)
                                 }
 
 onMount(async ()=>{
-   console.log("MOUNT PANEL PHASE")
+   //console.log("MOUNT PANEL PHASE")
    
    node.data.level = 'level1'
    const opcontdiv = document.getElementById("class-operations")
@@ -100,7 +100,7 @@ onMount(async ()=>{
  });
 
  onDestroy(async ()=>{
-    console.log("DESTROY PANEL PHASE")
+    //console.log("DESTROY PANEL PHASE")
    const opcontdiv = document.getElementById("class-operations")
    modal = document.getElementById("modal-editor-div-id")
 
@@ -139,7 +139,7 @@ function changeImage(){
 
 function redrawOperations(){
     if(node.saved && node.saved.operations){
-        console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
         for(let i=0; i< node.saved.operations.length;i++){
             const operation = node.saved.operations[i]
             //console.log("**** FIRED EVENT SHOW******", operation)
@@ -150,7 +150,7 @@ function redrawOperations(){
 
 function drawOperations(){
     if(node.data && node.data.operations){
-        console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
+        //console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
         const opcontdiv = document.getElementById("class-operations")
         if(opcontdiv)
             opcontdiv.innerHTML = ''
@@ -163,7 +163,7 @@ function drawOperations(){
 }
 
 function addOperationEvent(){
-    const operation = {name:'',uid: null,data:null}
+    const operation = {name:'',uid: null,tasks:null}
     addOperation(operation)
 }
 
@@ -259,7 +259,7 @@ function addOperation(operation:any){
     opcontdiv.appendChild(opdiv);
     
     onAddOperation(operation)
-     console.log("ADD OPERATION",operation)
+     //console.log("ADD OPERATION",operation)
     
 }
 
@@ -281,7 +281,7 @@ function onChangeOperation(event:any){
         if(index > -1)
             node.data.operations[index].name = element.value
 
-        console.log("CHANGE OPERATION",node)
+       
     }
 }
 
@@ -292,8 +292,7 @@ function onEditOperation(event:any){
         id = element.id.split('_')[1]
     }
     
-    console.log("EDIT OPERATION",id)
-
+   
     // OPEN MODAL DIV
     const modal = document.getElementById("modal-editor-div-id");
 	if(modal){
@@ -308,7 +307,7 @@ function onDeleteOperation(event:any){
     if(element){
         id = element.id.split('_')[1]
     
-        console.log("DELETE OPERATION",id)
+        
 
         const parent = element.parentElement.parentElement
         parent.innerHTML = ''
@@ -329,7 +328,7 @@ function onMoveUpOperation(event:any){
    let id:any
     if(element){
         id = element.id.split('_')[1]
-        console.log("MOVEUP OPERATION",id)
+       
         const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
         if(index > 0)
             node.data.operations = moveItem(node.data.operations,index-1,index)
@@ -342,7 +341,7 @@ function onMoveDownOperation(event:any){
    let id:any
     if(element){
         id = element.id.split('_')[1]
-        console.log("MOVEDOWN OPERATION",id)
+        
          const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
         if(index < node.data.operations.length-1)
             node.data.operations = moveItem(node.data.operations,index+1,index)

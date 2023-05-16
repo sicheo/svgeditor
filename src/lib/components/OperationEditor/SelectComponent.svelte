@@ -15,7 +15,7 @@
 </script>
 
 	<div class="class-last-item">
-		 <select type="sourcedriver" name="select" bind:value={row[typeTag]} on:change={onSelectLocal} disabled>
+		 <select type="sourcedriver" name="select" bind:value={row[typeTag]} on:change={onSelectLocal} id= "{typeTag +'-op-select-'+row.id}"  disabled>
 			{#each Options.options as Option, index(Option.id)}
 				<option value={Option.name}>{Option.name}</option>
 			{/each}

@@ -4,9 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\OperationEditor",
+    "\\src\\lib\\components\\DiagramEditor",
+    "\\src\\lib\\components\\DiagramEditor\\classes",
+    "\\src\\lib\\components\\DiagramEditor\\pdf",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\OperationEditor\\OperationEditor.svelte",
+  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\classes\\ggraph.ts",
   "PreviewInSolutionExplorer": false
 }

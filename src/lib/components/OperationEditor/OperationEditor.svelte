@@ -1,10 +1,10 @@
 <script lang="ts">
 import { onMount} from "svelte";
-import IntersectionObserver from "svelte-intersection-observer";
 import SvelteTable from "svelte-table";
-    import CompanyPanel from "../MenuPanels/CompanyPanel.svelte";
 import EditComponent from "./EditComponent.svelte";
 import SelectComponent from "./SelectComponent.svelte";
+import InputComponent from "./InputComponent.svelte";
+
 
 export let node:any ={data:{}}
 
@@ -15,11 +15,49 @@ let operation:any
 let operationname:any
 let phasename:any
 
-let rows:any = [
+/*let rows:any = [
   { id: 1, type: "Task", name: "CLOSE VALVE", tag:"VLV-002-UDC", checkType: "BOOLEAN", expected: "YES",checkMode:"MANUAL", system:"NA" },
   { id: 2, type: "Control", name : "START T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
   { id: 3, type: "Control", name : "END T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
-];
+];*/
+
+let rows:any = []
+let isRowsInit:boolean = false
+let isEntered:boolean = false
+
+const mutationCallback = (mutationList:any) =>{
+    mutationList.forEach((mutation) => {
+    switch (mutation.type) {
+      case "attributes":
+        switch (mutation.attributeName) {
+          case "data-opuid":
+            opuid = mutation.target.getAttribute("data-opuid")
+            const index = findOperation(node)
+            if(index > -1){
+	            phasename = node.data.operations[index].name
+		        operationname = node.data.operations[index].name
+                if( !node.data.operations[index].tasks || node.data.operations[index].tasks.length == 0){
+                    node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+                }
+                else{
+                    rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
+                    isRowsInit= true
+                }
+            }
+            break;
+        }
+        break;
+    }
+  });
+}
+onMount(async ()=>{
+   modal = document.getElementById("modal-editor-div-id")
+
+   const observer = new MutationObserver(mutationCallback);
+
+   observer.observe(modal, { attributes:true,attributeFilter: ["data-opuid"]});
+
+ });
 
 let typeOptions = [
     {id: 1,name:"Task"},
@@ -53,11 +91,34 @@ function moveItem (array:any, to:any, from:any) {
 };
 
 const onEditButtonClick = (row:any) =>{
-    alert(`Edit ${row.name}`)
+    const selectType = document.getElementById("type-op-select-"+row.id)
+    if(selectType)
+        selectType.disabled = !selectType.disabled
+    const selectCheckType = document.getElementById("checkType-op-select-"+row.id)
+    if(selectCheckType)
+        selectCheckType.disabled = !selectCheckType.disabled
+    const selectCheckMode = document.getElementById("checkMode-op-select-"+row.id)
+    if(selectCheckMode)
+        selectCheckMode.disabled = !selectCheckMode.disabled
+    const inputName = document.getElementById("name-op-input-"+row.id)
+    if(inputName)
+        inputName.disabled = !inputName.disabled
+    const inputTag = document.getElementById("tag-op-input-"+row.id)
+    if(inputTag)
+        inputTag.disabled = !inputTag.disabled
+    const inputExpected = document.getElementById("expected-op-input-"+row.id)
+    if(inputExpected)
+        inputExpected.disabled = !inputExpected.disabled
+    const inputSystem = document.getElementById("system-op-input-"+row.id)
+    if(inputSystem)
+        inputSystem.disabled = !inputSystem.disabled
 }
 
 const onDeleteButtonClick = (row:any) =>{
-    alert(`Delete ${row.name}`)
+    rows = rows.filter((item:any) =>{ return (item.name != row.name)})
+    for(let i=0;i<rows.length;i++)
+        rows[i].id = i+1
+
 }
 
 const onUpButtonClick = (row:any) =>{
@@ -78,6 +139,35 @@ const onSelectComponent = (row:any,tag:any,value:any) =>{
         rows[index][tag] = value
 }
 
+const onInputComponent = (row:any,tag:any,value:any) =>{
+    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
+    //console.log("*** ON INPUT COMPONENT ****", index,tag,value)
+     if(index > -1)
+        rows[index][tag] = value
+}
+
+const exitEditor = (event:any) =>{
+     rows = []
+     isRowsInit=false
+     console.log("***** EXIT OPTIONS *****",isRowsInit)
+     modal.style.display = "none";
+}
+
+const addOption = (event:any) =>{
+		const newoption = { id: rows.length+1, type: "Task", name: "", tag:"", checkType: "BOOLEAN", expected: "",checkMode:"MANUAL", system:"NA" }
+        rows.push(newoption)
+        rows = rows
+}
+
+const saveOption = (event:any) =>{
+	const index = node.data.operations.findIndex((item:any) => { return (item.uid == opuid)})
+    node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+    rows = []
+    isRowsInit=false
+    console.log("***** SAVE OPTIONS *****",node.data.operations[index],isRowsInit)
+    modal.style.display = "none";
+}
+
 // define column configs
 const columns = [
   {
@@ -86,7 +176,7 @@ const columns = [
     value: (v:any) => v.id,
     sortable: true,
     selectOnClick:true,
-    filterOptions: (rows:any) => {
+    /*filterOptions: (rows:any) => {
       // generate groupings of 0-10, 10-20 etc...
       let nums:any = {}
       rows.forEach((row:any) => {
@@ -100,7 +190,7 @@ const columns = [
         .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
       return Object.values(nums)
     },
-    filterValue: (v:any) => Math.floor(v.id / 10),
+    filterValue: (v:any) => Math.floor(v.id / 10),*/
     headerClass: "table-header-class",
   },
   {
@@ -138,6 +228,10 @@ const columns = [
       return Object.values(letrs)
     },
     filterValue: (v:any) => v.name.charAt(0).toLowerCase(),
+    renderComponent: {
+        component: InputComponent,
+        props: { typeTag:"name",onInputComponent },
+      },
   },
   {
     key: "tag",
@@ -162,6 +256,10 @@ const columns = [
       return Object.values(letrs)
     },
     filterValue: (v:any) => v.tag.charAt(0).toLowerCase(),
+    renderComponent: {
+        component: InputComponent,
+        props: { typeTag:"tag",onInputComponent },
+      },
   },
   {
     key: "checkType",
@@ -198,6 +296,10 @@ const columns = [
       return Object.values(letrs)
     },
     filterValue: (v:any) => v.expected.charAt(0).toLowerCase(),
+     renderComponent: {
+        component: InputComponent,
+        props: { typeTag:"expected",onInputComponent },
+      },
   },
   {
     key: "checkMode",
@@ -234,6 +336,10 @@ const columns = [
       return Object.values(letrs)
     },
     filterValue: (v:any) => v.system.charAt(0).toLowerCase(),
+     renderComponent: {
+        component: InputComponent,
+        props: { typeTag:"system", onInputComponent },
+      },
   },
   {
       key: "edit",
@@ -246,34 +352,18 @@ const columns = [
     }
 ]
 
-onMount(async ()=>{
-   console.log("MOUNT OPERATION EDITOR",node)
-   // GET MODAL
-   modal = document.getElementById("modal-editor-div-id")
 
- });
 
  const findOperation = (currnode:any)=>{
+     let index = -1
 	 if(currnode.data.operations)
-		operation = currnode.data.operations.find((item:any) =>{ return  (item.uid == opuid ) })
-		return operation
+		index = currnode.data.operations.findIndex((item:any) =>{ return  (item.uid == opuid ) })
+		return index
  }
-
- const exitEditor = (event:any) =>{
-			modal.style.display = "none";
-}
-
 
 
 </script>
-     <IntersectionObserver {element} on:observe={(e) => {
-		    opuid = modal.getAttribute("data-opuid")
-			operation = findOperation(node)
-			phasename = node.data.name
-			if(operation)
-				operationname = operation.name
-		    console.log("**** IS ITERSECTING ******* ",opuid,operation)}} >
-    
+     
 	<div class= "operation-editor-class" bind:this={element} >
 		<div class="class-panel-header" style="border-bottom: 1px solid;">
 			    <div class= "class-header-title">
@@ -289,8 +379,8 @@ onMount(async ()=>{
             </label>
 				<div class="class-last-item">
 					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-                    <input type="image" src="add.svg"  alt="Submit" width="25" height="25" > 
-					<input type="image" src="SAVE.svg"  alt="Submit" width="25" height="25" > 
+                    <input type="image" src="add.svg"  on:click={addOption} alt="Submit" width="25" height="25" > 
+					<input type="image" src="SAVE.svg"  on:click={saveOption} alt="Submit" width="25" height="25" > 
 					<input type="image" src="EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
@@ -300,7 +390,7 @@ onMount(async ()=>{
             <SvelteTable columns="{columns}" bind:rows="{rows}"></SvelteTable>
 		</div>
 	</div>
-	</IntersectionObserver>
+	
 
 <style>
 
