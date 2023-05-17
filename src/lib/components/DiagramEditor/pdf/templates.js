@@ -19,7 +19,7 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", text: "Codice documento:  $DOCCODE  Lotto:" }
+                        { type: "text", content: "Codice documento:  $DOCCODE  Lotto:" }
                     ]
                 }
             },
@@ -34,9 +34,9 @@ const MRecordTemplate = {
                             fontSize: 14
                         },
                         rows: [
-                            { type: "text", text: "Dipartimento DRUG SUBSTANCE DEVELOPMENT (DSD)" },
-                            { type: "text", text: "BATCH RECORD DI PROCESSO" },
-                            { type: "text", text: "Progetto: $PROJCODE" }
+                            { type: "text", content: "Dipartimento DRUG SUBSTANCE DEVELOPMENT (DSD)" },
+                            { type: "text", content: "BATCH RECORD DI PROCESSO" },
+                            { type: "text", content: "Progetto: $PROJCODE" }
                         ]
                     },
                     {
@@ -48,10 +48,10 @@ const MRecordTemplate = {
                             fontSize: 10
                         },
                         rows: [
-                            { type: "text", text: "Fase di Sintesi: Processo di Sintesi fino a Drug Substance" },
-                            { type: "text", text: "Codice Prodotto:  $PRODCODE " },
-                            { type: "text", text: "Codice e descrizione SAP:  $SAPCODE" },
-                            { type: "text", text: "Codice Documento:  $DOCCODE" }
+                            { type: "text", content: "Fase di Sintesi: Processo di Sintesi fino a Drug Substance" },
+                            { type: "text", content: "Codice Prodotto:  $PRODCODE " },
+                            { type: "text", content: "Codice e descrizione SAP:  $SAPCODE" },
+                            { type: "text", content: "Codice Documento:  $DOCCODE" }
                         ]
                     },
                     {
@@ -63,9 +63,9 @@ const MRecordTemplate = {
                             fontSize: 10
                         },
                         rows: [
-                            { type: "text", text: "CCP di produzione n.               Lotto:" },
-                            { type: "text", text: "Note: _____________________________________________________" },
-                            { type: "text", text: "Data:                                     Firma:" }
+                            { type: "text", content: "CCP di produzione n.               Lotto:" },
+                            { type: "text", content: "Note: _____________________________________________________" },
+                            { type: "text", content: "Data:                                     Firma:" }
                         ]
                     }
                 ]
@@ -80,7 +80,7 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", text: "Pag. 1/2" }
+                        { type: "text", content: "Pag. 1/2" }
                     ]
                 }
             }
@@ -98,7 +98,7 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", text: "Codice documento:  $DOCCODE  Lotto:" }
+                        { type: "text", content: "Codice documento:  $DOCCODE  Lotto:" }
                     ]
                 }
             },
@@ -113,20 +113,29 @@ const MRecordTemplate = {
                             fontSize: 12
                         },
                         rows: [
-                            { type: "text", text: "STORIA DELLE REVISIONI" }
+                            { type: "text", content: "STORIA DELLE REVISIONI" }
                         ]
                     },
                     {
-                        position: { x: 20, y: 60 },
+                        position: { x: 20, y: 45 },
                         font: {
                             fontName: "times",
                             fontStyle: "normal",
                             fontWeight: "bold",
-                            fontSize: 12
+                            fontSize: 9
                         },
                         rows: [
-                            { type: "text", text: "1.1 ELENCO BATCH RECORD CONNESSI" },
-                            { type: "text", text: "   N.A." }
+                            {
+                                type: "table",
+                                content: {
+                                    columns: [["Elenco delle modifiche effettuate", "Sostituisce documento"]],
+                                    rows: [
+                                        ["aggiornamento al template in vigore", "$DOCCODE"],
+                                        ["Aggiornato il numero di paragrafi nella suddivisione dei moduli", "$DOCCODE"],
+                                        ["Typo error: correzione nei punti XXX", "$DOCCODE"]
+                                    ]
+                                }
+                            },
                         ]
                     },
                     {
@@ -138,9 +147,22 @@ const MRecordTemplate = {
                             fontSize: 12
                         },
                         rows: [
-                            { type: "text", text: "1.2 SCOPO" },
-                            { type: "text", text: "   \u2022 Descrivere il metodo per la produzione della drug substance XXXXXXX, a partire da XXXXX e da\n XXXXXXXX" },
-                            { type: "text", text: "   \u2022 Registrare le operazioni di produzione" }
+                            { type: "text", content: "1.1 ELENCO BATCH RECORD CONNESSI" },
+                            { type: "text", content: "   N.A." }
+                        ]
+                    },
+                    {
+                        position: { x: 20, y: 110 },
+                        font: {
+                            fontName: "times",
+                            fontStyle: "normal",
+                            fontWeight: "bold",
+                            fontSize: 12
+                        },
+                        rows: [
+                            { type: "text", content: "1.2 SCOPO" },
+                            { type: "text", content: "   \u2022 Descrivere il metodo per la produzione della drug substance XXXXXXX, a partire da XXXXX e da\n XXXXXXXX" },
+                            { type: "text", content: "   \u2022 Registrare le operazioni di produzione" }
                         ]
                     }
                 ]
@@ -155,7 +177,7 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", text: "Pag. 2/2" }
+                        { type: "text", content: "Pag. 2/2" }
                     ]
                 }
             }

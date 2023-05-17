@@ -10,6 +10,7 @@ export let node:any ={data:{}}
 
 let modal:any
 let opuid:any
+let optype:any
 let element:any;
 let operation:any
 let operationname:any
@@ -22,7 +23,6 @@ let phasename:any
 ];*/
 
 let rows:any = []
-let isRowsInit:boolean = false
 let isEntered:boolean = false
 
 const mutationCallback = (mutationList:any) =>{
@@ -32,17 +32,34 @@ const mutationCallback = (mutationList:any) =>{
         switch (mutation.attributeName) {
           case "data-opuid":
             opuid = mutation.target.getAttribute("data-opuid")
+            optype = mutation.target.getAttribute("data-optype")
+            console.log("*** MUTATION ***",node.data,optype)
             const index = findOperation(node)
-            if(index > -1){
-	            phasename = node.data.operations[index].name
-		        operationname = node.data.operations[index].name
-                if( !node.data.operations[index].tasks || node.data.operations[index].tasks.length == 0){
-                    node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
-                }
-                else{
-                    rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
-                    isRowsInit= true
-                }
+            switch(optype){
+                case "operations":
+                    if(index > -1){
+	                    phasename = node.data.name
+		                operationname = node.data.operations[index].name
+                        if( !node.data.operations[index].tasks || node.data.operations[index].tasks.length == 0){
+                            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+                        }
+                        else{
+                            rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
+                        }
+                    }
+                    break;
+                case "machines":
+                    phasename = node.data.type
+                    if(index > -1){
+		                operationname = node.data.machines[index].name
+                        if( !node.data.machines[index].tasks || node.data.machines[index].tasks.length == 0){
+                            node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
+                        }
+                        else{
+                            rows = JSON.parse(JSON.stringify(node.data.machines[index].tasks))
+                        }
+                    }
+                    break;
             }
             break;
         }
@@ -148,8 +165,6 @@ const onInputComponent = (row:any,tag:any,value:any) =>{
 
 const exitEditor = (event:any) =>{
      rows = []
-     isRowsInit=false
-     console.log("***** EXIT OPTIONS *****",isRowsInit)
      modal.style.display = "none";
 }
 
@@ -160,11 +175,22 @@ const addOption = (event:any) =>{
 }
 
 const saveOption = (event:any) =>{
-	const index = node.data.operations.findIndex((item:any) => { return (item.uid == opuid)})
-    node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+    let index = -1
+    switch(optype){ 
+        case "operations":
+	        index = node.data.operations.findIndex((item:any) => { return (item.uid == opuid)})
+            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+            break
+        case "machines":
+	        index = node.data.machines.findIndex((item:any) => { return (item.uid == opuid)})
+            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+            break
+        case "inputs":
+	        index = node.data.inputs.findIndex((item:any) => { return (item.uid == opuid)})
+            node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
+            break
+    }
     rows = []
-    isRowsInit=false
-    console.log("***** SAVE OPTIONS *****",node.data.operations[index],isRowsInit)
     modal.style.display = "none";
 }
 
@@ -356,9 +382,17 @@ const columns = [
 
  const findOperation = (currnode:any)=>{
      let index = -1
-	 if(currnode.data.operations)
-		index = currnode.data.operations.findIndex((item:any) =>{ return  (item.uid == opuid ) })
-		return index
+     switch(optype){
+         case "operations":
+	         if(currnode.data.operations)
+		        index = currnode.data.operations.findIndex((item:any) =>{ return  (item.uid == opuid ) })
+                break
+         case "machines":
+            if(currnode.data.machines)
+		        index = currnode.data.machines.findIndex((item:any) =>{ return  (item.uid == opuid ) })
+                break
+     }
+     return index
  }
 
 

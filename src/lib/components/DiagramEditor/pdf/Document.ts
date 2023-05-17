@@ -1,4 +1,7 @@
 import { jsPDF } from "jspdf";
+import 'jspdf-autotable';
+// https://github.com/eKoopmans/html2pdf.js
+
 
 export default class Document {
     doc: any
@@ -52,7 +55,7 @@ export default class Document {
             for (let i = 0; i < template.content.rows.length; i++) {
                 const row = template.content.rows[i]
                 const linespace = this.doc.getFontSize()*i +2  
-                this.doc.text(row.text, template.position.x, template.position.y+linespace)
+                this.drawElement(row.type,row.content, template.position.x, template.position.y+linespace)
             }
         }
     }
@@ -66,7 +69,7 @@ export default class Document {
             for (let i = 0; i < template.content.rows.length; i++) {
                 const row = template.content.rows[i]
                 const linespace = this.doc.getFontSize() * i + 2
-                this.doc.text(row.text, template.position.x, template.position.y + linespace)
+                this.drawElement(row.type,row.content, template.position.x, template.position.y + linespace)
             }
         }
     }
@@ -81,7 +84,7 @@ export default class Document {
             for (let j = 0; j < paragraph.rows.length; j++) {
                 const row = paragraph.rows[j]
                 const linespace = this.doc.getFontSize() * j + 2
-                this.doc.text(row.text, paragraph.position.x, paragraph.position.y + linespace)
+                this.drawElement(row.type,row.content, paragraph.position.x, paragraph.position.y + linespace)
             }
         }
     }
@@ -117,9 +120,27 @@ export default class Document {
 
     private replacetText(row: any, repl: any) {
         for (let i = 0; i < repl.length; i++) {
-            row.text = row.text.replace(repl[i].in, repl[i].out)
+            if(row.type == 'text')
+                row.content = row.content.replace(repl[i].in, repl[i].out)
         }
         return row
+    }
+
+    private drawElement(type: any, element: any, x: number, y: number) {
+        switch (type) {
+            case "text":
+                this.doc.text(element, x, y)
+                break
+            case "table":
+                this.doc.autoTable({
+                    head: element.columns,
+                    body: element.rows,
+                    startY: y
+                })
+                break
+            default:
+                break
+        }
     }
    
 }

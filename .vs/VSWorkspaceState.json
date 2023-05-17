@@ -9,6 +9,6 @@
     "\\src\\lib\\components\\DiagramEditor\\pdf",
     "\\src\\lib\\components\\MenuPanels"
   ],
-  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\MRecordPanel.svelte",
+  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\PhasePanel.svelte",
   "PreviewInSolutionExplorer": false
 }

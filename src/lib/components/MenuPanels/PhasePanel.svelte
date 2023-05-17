@@ -296,6 +296,7 @@ function onEditOperation(event:any){
     // OPEN MODAL DIV
     const modal = document.getElementById("modal-editor-div-id");
 	if(modal){
+        modal.setAttribute("data-optype","operations")
         modal.setAttribute("data-opuid",id)
 	    modal.style.display = "block";
     }
