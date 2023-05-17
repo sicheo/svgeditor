@@ -7,11 +7,9 @@ export let color = "Teal"
 export let callback = (param:any=null)=>{}
 
 
-let name = ''
-let address = ''
-let data = {name:'',address:'',type:'MASTER',level:'level0'}
+let modal: any
 
-let equipments:any[] = [
+let machines:any[] = [
     {uid:1,name:'REATTORE-XX-XX',type:"REACTOR",image:'/DISPENSING.svg'},
     {uid:2,name:'SERBATOIO-XX-XX',type:"TANK",image:'/REACTION.svg'},
     {uid:3,name:'MIXER-XX-XX',type:"MIXER",image:'/WORKUP.svg'},
@@ -26,11 +24,118 @@ let operations:any[] = [
     {uid:1,name:'Initial Check',image:'/DISPENSING.svg'}
 ]
 
+let inputs:any[] = [
+    {uid:1,name:'MXXXXXXXXXA',image:'/DISPENSING.svg'},
+    {uid:2,name:'MXXXXXXXXXB',image:'/DISPENSING.svg'},
+    {uid:3,name:'PXXXXXXXXXX',image:'/DISPENSING.svg'}
+]
+
+const saveEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT SAVE******")
+                                    //opcontdiv.innerHTML = '';
+                                }
+const hideEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT HIDE******")
+                                    //opcontdiv.innerHTML = '';
+                                }
+const showEventHandler = (e:any) => {
+                                    console.log("**** FIRED EVENT SHOW******")
+                                    setTimeout(redrawOperations,400)
+                                }
 
 onMount(async ()=>{
-    //console.log("MOUNT PANEL RECORD")
+       node.data.level = 'level0'
+       const opcontdiv = document.getElementById("class-operations")
+       const opmacdiv = document.getElementById("class-machines")
+       const opinpdiv = document.getElementById("class-inputs")
+
+       console.log("**** MRecordPANEL *****", opcontdiv, opmacdiv, opinpdiv)
+
+       // GET MODAL
+       modal = document.getElementById("modal-editor-div-id")
+
+       if(opcontdiv){
+            opcontdiv.addEventListener(
+                "panelsave",
+                saveEventHandler,
+                false
+             );
+            opcontdiv.addEventListener(
+                "panelhide",
+                hideEventHandler,
+                false
+            );
+            opcontdiv.addEventListener(
+                "panelshow",
+                showEventHandler,
+                false
+            );
+        }
+
+        /*if(opmacdiv){
+            opmacdiv.addEventListener(
+                "panelsave",
+                saveEventHandler,
+                false
+             );
+            opmacdiv.addEventListener(
+                "panelhide",
+                hideEventHandler,
+                false
+            );
+            opmacdiv.addEventListener(
+                "panelshow",
+                showEventHandler,
+                false
+            );
+        }
+
+        if(opinpdiv){
+            opinpdiv.addEventListener(
+                "panelsave",
+                saveEventHandler,
+                false
+             );
+            opinpdiv.addEventListener(
+                "panelhide",
+                hideEventHandler,
+                false
+            );
+            opinpdiv.addEventListener(
+                "panelshow",
+                showEventHandler,
+                false
+            );
+        }*/
     
   });
+
+  function redrawOperations(){
+    if(node.saved && node.saved.operations){
+        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        for(let i=0; i< node.saved.operations.length;i++){
+            const operation = node.saved.operations[i]
+            //console.log("**** FIRED EVENT SHOW******", operation)
+            addElement(operation,operations,"class-operations",node,"operations","modal-editor-div-id")
+        }
+    }
+    if(node.saved && node.saved.machines){
+        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        for(let i=0; i< node.saved.machines.length;i++){
+            const machine = node.saved.machines[i]
+            //console.log("**** FIRED EVENT SHOW******", operation)
+            addElement(machine,machines,"class-machines",node,"machines","modal-editor-div-id")
+        }
+    }
+    if(node.saved && node.saved.inputs){
+        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        for(let i=0; i< node.saved.inputs.length;i++){
+            const input = node.saved.inputs[i]
+            //console.log("**** FIRED EVENT SHOW******", operation)
+            addElement(input,inputs,"class-inputs",node,"inputs","modal-editor-div-id")
+        }
+    }
+}
 
   onDestroy(async ()=>{
     //console.log("DESTROY PANEL RECORD")
@@ -45,15 +150,17 @@ function setNode(event:any){
 }
 
 const addInputEvent = (e:any)=>{
+    const input = {name:'',uid: null,tasks:null}
+    addElement(input,inputs,"class-inputs",node,"inputs","modal-editor-div-id")
 }
 
 const addMachineEvent = (e:any)=>{
-    const equipment = {name:'',uid: null,machines:null}
-    addElement(equipment,equipments,"class-machines",node,"machines","modal-editor-div-id")
+    const machine = {name:'',uid: null,tasks:null}
+    addElement(machine,machines,"class-machines",node,"machines","modal-editor-div-id")
 }
 
 const addOperationEvent = (e:any)=>{
-    const operation = {name:'',uid: null,operations:null}
+    const operation = {name:'',uid: null,tasks:null}
     addElement(operation,operations,"class-operations",node,"operations","modal-editor-div-id")
 }
 
@@ -85,12 +192,12 @@ const addOperationEvent = (e:any)=>{
 	            <input type="text" name="name"  bind:value="{node.data.sapcode}" on:change={setNode} class="panel-input panel-input-text">
             </label>
     </div>
-    <div class= "class-panel-row">   
+    <!--div class= "class-panel-row">   
             <div class= "class-panel-cell" style="--color:{color}">
                 <hr class = "hr-solid" />
             </div>
-    </div>
-     <div class= "class-panel-row">
+    </!--div-->
+     <div class= "class-panel-row panel-row-tool">
             <label class= "class-panel-cell" name="addinput">
                 INPUTS
 	             <input name= "addinput" id= "add-input-button" type='image' alt='ADD INPUT' src='/add.svg'  on:click={addInputEvent} />
@@ -99,7 +206,7 @@ const addOperationEvent = (e:any)=>{
     <div class= "class-input-row" id= "class-inputs">   
         
     </div>
-    <div class= "class-panel-row">
+    <div class= "class-panel-row panel-row-tool">
             <label class= "class-panel-cell" name="addmachine">
                 EQUIPMENTS
 	             <input name= "addtask" id= "add-machine-button" type='image' alt='ADD INPUT' src='/add.svg'  on:click={addMachineEvent} />
@@ -108,7 +215,7 @@ const addOperationEvent = (e:any)=>{
     <div class= "class-input-row" id= "class-machines">
         
     </div>
-    <div class= "class-panel-row">
+    <div class= "class-panel-row panel-row-tool">
             <label class= "class-panel-cell" name="addtask">
                 OPERATIONS
 	             <input name= "addtask" id= "add-operation-button" type='image' alt='ADD TASK' src='/add.svg'  on:click={addOperationEvent} />
@@ -144,6 +251,12 @@ const addOperationEvent = (e:any)=>{
   display: flex;
   justify-content:left;
   font-size: smaller;
+}
+
+.class-panel-row.panel-row-tool {
+  margin-top: 10px;
+  border-top: 1px solid #4CAF50;
+  background-color: #DFDFDF;
 }
 
 label {

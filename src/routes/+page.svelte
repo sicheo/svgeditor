@@ -35,8 +35,8 @@
   
 
   let panels:any [] = [
-	    {type:'MASTER',component:MRecordPanel,name:'Master',level:'level0',img:'/MASTER.svg',fireEvents:false},
-	    {type:'PHASE',component:PhasePanel,name:'Phase',level:'level1',img:'/DISPENSING.svg',fireEvents:true},
+	    {type:'MASTER',component:MRecordPanel,name:'Master Node',level:'level0',img:'/MASTER.svg',fireEvents:true},
+	    {type:'PHASE',component:PhasePanel,name:'Phase Node',level:'level1',img:'/DISPENSING.svg',fireEvents:true},
 		/*{type:'COMPANY',component:CompanyPanel,name:'Company',level:'level1',img:'/image-company.svg'},
 		{type:'FACTORY',component:FactoryPanel,name:'Factory',level:'level2',img:'/image-factory.svg'},
 		{type:'DEPARTMENT',component:DepartmentPanel,name:'Department',level:'level3',img:'/image-department.svg'},

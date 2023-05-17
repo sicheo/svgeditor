@@ -21,7 +21,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     // OPERATION DIV TOOLDIV
     const tooldiv = document.createElement("div");
     tooldiv.classList.add(tooldivname);
-    tooldiv.style.cssText += 'margin-top:4px;border-top: 1px solid #4CAF50;display:block';
+    tooldiv.style.cssText += 'margin-top:4px;display:block';
 
     // EDIT  IMAGE INPUT
     var editElement = document.createElement("input");
@@ -95,6 +95,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
 
     opcontdiv.appendChild(opdiv);
 
+    console.log("***** ADD ELEMENT ******", elem)
     onAdd(elem,node,optype)
     //console.log("ADD OPERATION",operation)
 }

@@ -6,8 +6,9 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\pdf",
-    "\\src\\lib\\components\\MenuPanels"
+    "\\src\\lib\\components\\MenuPanels",
+    "\\src\\lib\\components\\MenuPanels\\lib",
+    "\\src\\lib\\components\\OperationEditor"
   ],
   "SelectedNode": "\\src\\lib\\components\\MenuPanels\\PhasePanel.svelte",
   "PreviewInSolutionExplorer": false

@@ -26,7 +26,7 @@ let rows:any = []
 let isEntered:boolean = false
 
 const mutationCallback = (mutationList:any) =>{
-    mutationList.forEach((mutation) => {
+    mutationList.forEach((mutation:any) => {
     switch (mutation.type) {
       case "attributes":
         switch (mutation.attributeName) {
@@ -57,6 +57,18 @@ const mutationCallback = (mutationList:any) =>{
                         }
                         else{
                             rows = JSON.parse(JSON.stringify(node.data.machines[index].tasks))
+                        }
+                    }
+                    break;
+                case "inputs":
+                    phasename = node.data.type
+                    if(index > -1){
+		                operationname = node.data.inputs[index].name
+                        if( !node.data.inputs[index].tasks || node.data.inputs[index].tasks.length == 0){
+                            node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
+                        }
+                        else{
+                            rows = JSON.parse(JSON.stringify(node.data.inputs[index].tasks))
                         }
                     }
                     break;
@@ -182,8 +194,9 @@ const saveOption = (event:any) =>{
             node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
             break
         case "machines":
+            console.log("***** MACHINE SAVE ******", opuid, node.data.machines)
 	        index = node.data.machines.findIndex((item:any) => { return (item.uid == opuid)})
-            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+            node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
             break
         case "inputs":
 	        index = node.data.inputs.findIndex((item:any) => { return (item.uid == opuid)})
@@ -391,6 +404,10 @@ const columns = [
             if(currnode.data.machines)
 		        index = currnode.data.machines.findIndex((item:any) =>{ return  (item.uid == opuid ) })
                 break
+        case "inputs":
+            if(currnode.data.inputs)
+		        index = currnode.data.inputs.findIndex((item:any) =>{ return  (item.uid == opuid ) })
+                break
      }
      return index
  }
@@ -401,7 +418,7 @@ const columns = [
 	<div class= "operation-editor-class" bind:this={element} >
 		<div class="class-panel-header" style="border-bottom: 1px solid;">
 			    <div class= "class-header-title">
-					OPERATION EDITOR   - 
+					TASK EDITOR   - 
 				</div>
 				<label class= "class-panel-cell" name="select">
                 PHASE
