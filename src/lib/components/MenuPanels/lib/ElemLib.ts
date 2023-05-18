@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export function addElement(elem: any, array: any, divname: any, node: any, optype: any, modalTag: any = 'modal-editor-div-id') {
-   
+
     if (elem.uid == null)
         elem.uid = uuidv4()
     if (elem.name == '')
@@ -95,9 +95,8 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
 
     opcontdiv.appendChild(opdiv);
 
-    console.log("***** ADD ELEMENT ******", elem)
     onAdd(elem,node,optype)
-    //console.log("ADD OPERATION",operation)
+   
 }
 
 export function moveItem(node: any, to: any, from: any, type: any) {
@@ -107,27 +106,55 @@ export function moveItem(node: any, to: any, from: any, type: any) {
             item = node.data.operations[from];
             node.data.operations.splice(from, 1);
             node.data.operations.splice(to, 0, item);
-            return node.data.operations;
+            return node;
         case "machines":
             item = node.data.machines[from];
             node.data.machines.splice(from, 1);
             node.data.machines.splice(to, 0, item);
-            return node.data.machines;
+            return node;
         case "inputs":
             item = node.data.inputs[from];
             node.data.inputs.splice(from, 1);
             node.data.inputs.splice(to, 0, item);
-            return node.data.inputs;
+            return node;
     }
 };
 
-function onAdd(elem: any,node:any,type:any) {
-    if (!dataArrayIsNull(node,type))
+function updateTotals(node:any) {
+    // UPDATE NUMBER OF ITEMS
+    const totals = document.getElementsByClassName("tool-counter")
+    for (let i = 0; i < totals.length; i++) {
+        const total = totals[i]
+        total.value = 0
+        switch (total.id) {
+            case "total-inputs":
+                if (node.data.inputs)
+                    total.value = node.data.inputs.length
+                break;
+            case "total-machines":
+                if (node.data.machines)
+                    total.value = node.data.machines.length
+                break;
+            case "total-operations":
+                if (node.data.operations)
+                    total.value = node.data.operations.length
+                break;
+        }
+    }
+}
+
+function onAdd(elem: any, node: any, type: any) {
+    
+
+    if (dataArrayIsNull(node,type))
         dataArrayInit(node,type)
 
-    const found = dataArrayFind(node,elem.id,type)
-    if (!found)
-        dataArrayPush(node,elem,type)
+    const found = dataArrayFind(node,elem.uid,type)
+    if (!found) {
+        dataArrayPush(node, elem, type)
+    }
+
+    updateTotals(node)
     
 }
 
@@ -158,7 +185,9 @@ function onDelete(event: any, node: any,type:any){
         const parent = element.parentElement.parentElement
         parent.innerHTML = ''
 
-        node = dataArrayFilter(node,id,type)
+        node = dataArrayFilter(node, id, type)
+        updateTotals(node)
+
     }
 }
 
@@ -171,7 +200,7 @@ function onMoveUp(event: any, array: any, divname: any, node: any, type:any,moda
         const index = dataArrayFindIndex(node, id, type)
         if (index > 0)
             node = moveItem(node, index - 1, index,type)
-        drawOperations(array, divname, node, modalTag)
+        drawOperations(array, divname, node, type,modalTag)
     }
 }
 
@@ -184,11 +213,11 @@ function onMoveDown(event: any, array: any, divname: any, node: any, type:any, m
         const index = dataArrayFindIndex(node, id, type)
         if (index < dataArrayLength(node, type) - 1)
             node = moveItem(node, index + 1, index,type)
-        drawOperations(array, divname, node,modalTag)
+        drawOperations(array, divname, node,type,modalTag)
     }
 }
 
-function drawOperations(array: any, divname: any, node: any, type:any, modalTag: any = 'modal-editor-div-id') {
+function drawOperations(array: any, divname: any, node: any, type: any, modalTag: any = 'modal-editor-div-id') {
     if (node) {
         //console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
         const opcontdiv = document.getElementById(divname)
@@ -196,7 +225,6 @@ function drawOperations(array: any, divname: any, node: any, type:any, modalTag:
             opcontdiv.innerHTML = ''
         for (let i = 0; i < dataArrayLength(node,type); i++) {
             const elem = dataArrayGet(node,i,type)
-            //console.log("**** FIRED EVENT SHOW******", operation)
             addElement(elem, array, divname, node,modalTag)
         }
     }
@@ -207,30 +235,36 @@ function onChange(event: any, node: any,type:any) {
     let id: any
     if (element) {
         id = element.id
-        const index = dataArrayFindIndex(node,id,type)
+        const index = dataArrayFindIndex(node, id, type)
         if (index > -1)
             dataArrayAssign(node,index,element.value,type)
 
     }
 }
 
-function dataArrayFilter(node: any, id: any, type:any) {
+function dataArrayFilter(node: any, id: any, type: any) {
     let retArray = [];
     switch (type) {
         case "operations":
-            if (node.data.operations)
-            retArray = node.data.operations.filter((item: any) => { return (item.uid == id) })
+            if (node.data.operations) {
+                retArray = node.data.operations.filter((item: any) => { return (item.uid != id) })
+                node.data.operations = retArray
+            }
             break
         case "machines":
-            if (node.data.machines)
-            retArray = node.data.machines.filter((item: any) => { return (item.uid == id) })
+            if (node.data.machines) { 
+                retArray = node.data.machines.filter((item: any) => { return (item.uid != id) })
+                node.data.machines = retArray
+            }
             break
         case "inputs":
-            if (node.data.inputs)
-            retArray = node.data.inputs.filter((item: any) => { return (item.uid == id) })
+            if (node.data.inputs) { 
+                retArray = node.data.inputs.filter((item: any) => { return (item.uid != id) })
+                node.data.inputs = retArray
+            }
             break
     }
-    return retArray
+    return node
 }
 
 function dataArrayFindIndex(node: any, id: any, type: any) {
@@ -257,15 +291,15 @@ function dataArrayFind(node: any, id: any, type: any) {
     switch (type) {
         case "operations":
             if (node.data.operations)
-            ret = node.data.operations.find((item: any) => { return (item.uid == id) })
+                ret = node.data.operations.find((item: any) => { return (item.uid == id) })
             break
         case "machines":
             if (node.data.machines)
-            ret = node.data.machines.find((item: any) => { return (item.uid == id) })
+                ret = node.data.machines.find((item: any) => { return (item.uid == id) })
             break
         case "inputs":
             if (node.data.inputs)
-            ret = node.data.inputs.find((item: any) => { return (item.uid == id) })
+                ret = node.data.inputs.find((item: any) => { return (item.uid == id) })
             break
     }
     return ret
@@ -274,13 +308,13 @@ function dataArrayFind(node: any, id: any, type: any) {
 function dataArrayAssign(node: any, index: any, value: any, type: any) {
     switch (type) {
         case "operations":
-            node.data.operations[index] = value
+            node.data.operations[index].name = value
             break
         case "machines":
-            node.data.machines[index] = value
+            node.data.machines[index].name = value
             break
         case "inputs":
-            node.data.inputs[index] = value
+            node.data.inputs[index].name = value
             break
     }
 }
@@ -351,7 +385,6 @@ function dataArrayIsNull(node: any, type: any) {
 }
 
 function dataArrayPush(node: any, elem:any, type: any) {
-   
     switch (type) {
         case "operations":
             if (!node.data.operations)

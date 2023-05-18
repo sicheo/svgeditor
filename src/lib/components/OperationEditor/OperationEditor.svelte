@@ -33,7 +33,6 @@ const mutationCallback = (mutationList:any) =>{
           case "data-opuid":
             opuid = mutation.target.getAttribute("data-opuid")
             optype = mutation.target.getAttribute("data-optype")
-            console.log("*** MUTATION ***",node.data,optype)
             const index = findOperation(node)
             switch(optype){
                 case "operations":

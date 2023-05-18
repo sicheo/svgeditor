@@ -7,9 +7,9 @@
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
     "\\src\\lib\\components\\MenuPanels",
-    "\\src\\lib\\components\\MenuPanels\\lib",
-    "\\src\\lib\\components\\OperationEditor"
+    "\\src\\lib\\components\\OperationEditor",
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\PhasePanel.svelte",
+  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\DiagramEditor.svelte",
   "PreviewInSolutionExplorer": false
 }
