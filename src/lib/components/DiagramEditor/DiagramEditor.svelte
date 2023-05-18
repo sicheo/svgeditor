@@ -9,12 +9,12 @@ import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import {_calcDAttr} from "./classes/gutils"
 import { fly } from 'svelte/transition';
-import OperationEditor from "../OperationEditor/OperationEditor.svelte"
+import TaskEditor from "../TaskEditor/TaskEditor.svelte"
 
 // EXPORTS
 export let graphtype = 'DAG'
 export let graph:any
-export let currentnode:any ={data:{type:'PHASE',level:'level1'}}
+export let currentnode:any ={data:{type:'MASTER',level:'level1'}}
 export let draw:any
 export let mainmenusave: any = (param:any)=>{}
 export let mainmenuload: any = (param:any)=>{}
@@ -37,7 +37,7 @@ export let  nodeoptions:any = {
 export let panels:any
 export let color = 'Teal'
 export let bgcolor = '#f9f9f9'
-export let component:any = panels.find((item:any) => item.type == 'ROOT').component;
+export let component:any = panels.find((item:any) => item.type == 'MASTER').component;
 
 
 let drawcurve = false
@@ -262,7 +262,7 @@ onMount(async () => {
 	<svelte:window on:keydown={handleKeydown}/>
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid='' data-optype=''>
 		<div class="modal-editor-content">
-			<OperationEditor node = {currentnode} />
+			<TaskEditor node = {currentnode} />
 		</div>
 	</div>
 <style>

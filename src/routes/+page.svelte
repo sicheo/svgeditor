@@ -298,22 +298,23 @@
 
 	const panelcontroller = (action:any,gnode:any)=>{
 		    // ADD EVENT TO PANEL ELEMENT
-			const eventSave = new Event("panelsave");
-			const eventHide = new Event("panelhide");
-			const eventShow = new Event("panelshow");
+			let eventSave:any
+			let eventHide:any
+			let eventShow:any
 			const panelOperation = document.getElementById("class-operations")
 
 			const panel = document.querySelector('#editor-panel')
 			let templatePanel:any
-			if(gnode)
+			if(gnode){
 				templatePanel = panels.find((item:any) => { return (item.type == gnode.data.type) })
+				eventSave = new CustomEvent("panelsave",{detail: {node: gnode.data.type}})
+				eventHide = new CustomEvent("panelhide",{detail: {node: gnode.data.type}});
+				eventShow = new CustomEvent("panelshow",{detail: {node: gnode.data.type}});
+			}
 			let img
 			switch(action){
 				case "hide":
 				    img = ''
-					panel.style.visibility = 'hidden'
-					if(panelOperation && templatePanel && templatePanel.fireEvents)
-						panelOperation.dispatchEvent(eventHide);
 					if(gnode){
 						gnode.data = structuredClone(gnode.saved)
 						//console.log("**** PANEL HIDE ****",gnode.data)
@@ -327,12 +328,12 @@
 						gnode.redrawtext(gnode.data.name,img)
 						
 					}
+					if(panelOperation && templatePanel && templatePanel.fireEvents)
+						panelOperation.dispatchEvent(eventHide);
+					panel.style.visibility = 'hidden'
 					break;
 				case "save":
 				    img = ''
-					panel.style.visibility = 'hidden'
-					if(panelOperation && templatePanel && templatePanel.fireEvents)
-						panelOperation.dispatchEvent(eventSave);
 					if(gnode){
 						gnode.saved = structuredClone(gnode.data)
 						if(!gnode.data.image || gnode.data.image == ''){
@@ -345,6 +346,9 @@
 						gnode.redrawtext(gnode.data.name,img)
 						graphFunctions.updateNode(gnode.getNodeInfo(),gnode,draw)
 					}
+					if(panelOperation && templatePanel && templatePanel.fireEvents)
+						panelOperation.dispatchEvent(eventSave);
+					panel.style.visibility = 'hidden'
 					break;
 				case "show":
 					currentnode = gnode
@@ -353,11 +357,11 @@
 					if(gnode.data && gnode.data.type)
 						component = panels.find((item:any) => (item.type == gnode.data.type)).component;
 					else
-						component = panels.find((item:any) => (item.type == 'PHASE')).component; 
-					panel.style.visibility = 'visible'
+						component = panels.find((item:any) => (item.type == 'MASTER')).component; 
 					if(panelOperation && templatePanel && templatePanel.fireEvents){
 					    panelOperation.dispatchEvent(eventShow)
 					}
+					panel.style.visibility = 'visible'
 					break;
 				case "visibility":
 					return(panel.style.visibility)

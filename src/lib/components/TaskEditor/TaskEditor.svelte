@@ -4,6 +4,8 @@ import SvelteTable from "svelte-table";
 import EditComponent from "./EditComponent.svelte";
 import SelectComponent from "./SelectComponent.svelte";
 import InputComponent from "./InputComponent.svelte";
+import TextAreaComponent from "./TextAreaComponent.svelte";
+
 
 
 export let node:any ={data:{}}
@@ -46,9 +48,10 @@ const mutationCallback = (mutationList:any) =>{
                             rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
                         }
                     }
+                    console.log("*** INPUT ROWS ****", rows)
                     break;
                 case "machines":
-                    phasename = node.data.type
+                    phasename = node.data.name
                     if(index > -1){
 		                operationname = node.data.machines[index].name
                         if( !node.data.machines[index].tasks || node.data.machines[index].tasks.length == 0){
@@ -60,7 +63,7 @@ const mutationCallback = (mutationList:any) =>{
                     }
                     break;
                 case "inputs":
-                    phasename = node.data.type
+                    phasename = node.data.name
                     if(index > -1){
 		                operationname = node.data.inputs[index].name
                         if( !node.data.inputs[index].tasks || node.data.inputs[index].tasks.length == 0){
@@ -140,6 +143,9 @@ const onEditButtonClick = (row:any) =>{
     const inputSystem = document.getElementById("system-op-input-"+row.id)
     if(inputSystem)
         inputSystem.disabled = !inputSystem.disabled
+    const textAreaDescription = document.getElementById("description-op-input-"+row.id)
+    if(textAreaDescription)
+        textAreaDescription.disabled = !textAreaDescription.disabled
 }
 
 const onDeleteButtonClick = (row:any) =>{
@@ -174,13 +180,20 @@ const onInputComponent = (row:any,tag:any,value:any) =>{
         rows[index][tag] = value
 }
 
+const onTextAreaComponent = (row:any,tag:any,value:any) =>{
+    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
+    console.log("*** ON TXTAREA COMPONENT ****", index,tag,value)
+     if(index > -1)
+        rows[index][tag] = value
+}
+
 const exitEditor = (event:any) =>{
      rows = []
      modal.style.display = "none";
 }
 
 const addOption = (event:any) =>{
-		const newoption = { id: rows.length+1, type: "Task", name: "", tag:"", checkType: "BOOLEAN", expected: "",checkMode:"MANUAL", system:"NA" }
+		const newoption = { id: rows.length+1, type: "Task", name: "", tag:"", checkType: "BOOLEAN", expected: "",description:"",checkMode:"MANUAL", system:"NA" }
         rows.push(newoption)
         rows = rows
 }
@@ -202,6 +215,7 @@ const saveOption = (event:any) =>{
             node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
             break
     }
+    console.log("*** SAVED ROWS ****", rows)
     rows = []
     modal.style.display = "none";
 }
@@ -337,6 +351,16 @@ const columns = [
      renderComponent: {
         component: InputComponent,
         props: { typeTag:"expected",onInputComponent },
+      },
+  },
+  {
+    key: "description",
+    title: "DESCRIPTION",
+    value: (v:any) => v.description,
+    sortable: false,
+     renderComponent: {
+        component: TextAreaComponent,
+        props: { typeTag:"description",onTextAreaComponent },
       },
   },
   {

@@ -1,6 +1,8 @@
 <script lang="ts">
 import { v4 as uuidv4 } from 'uuid';
 import { onMount, onDestroy } from 'svelte';
+import {addElement} from './lib/ElemLib'
+
 
 export let node:any ={data:{}}
 export let color = "Teal"
@@ -47,26 +49,27 @@ let operations:any[] = [
 
 ]
 
-const opcontdiv = document.getElementById("class-operations")
+let opcontdiv:any
 
 const saveEventHandler = (e:any) => {
                                     //console.log("**** FIRED EVENT SAVE******")
-                                    //opcontdiv.innerHTML = '';
+                                    opcontdiv.innerHTML = '';
                                 }
 const hideEventHandler = (e:any) => {
                                     //console.log("**** FIRED EVENT HIDE******")
-                                    //opcontdiv.innerHTML = '';
+                                    opcontdiv.innerHTML = '';
                                 }
 const showEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT HIDE******")
-                                    setTimeout(redrawOperations,400)
+                                    //node = e.detail.node
+                                    if(e.detail.node == "PHASE")
+                                        setTimeout(redrawOperations,50)
                                 }
 
 onMount(async ()=>{
    //console.log("MOUNT PANEL PHASE")
    
    node.data.level = 'level1'
-   const opcontdiv = document.getElementById("class-operations")
+   opcontdiv = document.getElementById("class-operations")
    // GET MODAL
    modal = document.getElementById("modal-editor-div-id")
    // ENABLE ADD BUTTON
@@ -101,8 +104,8 @@ onMount(async ()=>{
 
  onDestroy(async ()=>{
     //console.log("DESTROY PANEL PHASE")
-   const opcontdiv = document.getElementById("class-operations")
-   modal = document.getElementById("modal-editor-div-id")
+   //const opcontdiv = document.getElementById("class-operations")
+   //modal = document.getElementById("modal-editor-div-id")
 
    if(opcontdiv){
         opcontdiv.removeEventListener(
@@ -138,217 +141,22 @@ function changeImage(){
 }
 
 function redrawOperations(){
+    opcontdiv.innerHTML = '';
     if(node.saved && node.saved.operations){
-        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        node.data.operations = null
         for(let i=0; i< node.saved.operations.length;i++){
             const operation = node.saved.operations[i]
-            //console.log("**** FIRED EVENT SHOW******", operation)
-            addOperation(operation)
+            addElement(operation,operations,"class-operations",node,"operations","modal-editor-div-id")
         }
     }
 }
 
-function drawOperations(){
-    if(node.data && node.data.operations){
-        //console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
-        const opcontdiv = document.getElementById("class-operations")
-        if(opcontdiv)
-            opcontdiv.innerHTML = ''
-        for(let i=0; i< node.data.operations.length;i++){
-            const operation = node.data.operations[i]
-            //console.log("**** FIRED EVENT SHOW******", operation)
-            addOperation(operation)
-        }
-    }
-}
-
-function addOperationEvent(){
+const addOperationEvent = (e:any)=>{
     const operation = {name:'',uid: null,tasks:null}
-    addOperation(operation)
+    addElement(operation,operations,"class-operations",node,"operations","modal-editor-div-id")
 }
 
-function addOperation(operation:any){
-    if(operation.uid == null)
-        operation.uid = uuidv4()
-    if(operation.name == '')
-        operation.name = operations[0].name
 
-    const opcontdiv = document.getElementById("class-operations")
-    if(!opcontdiv)
-        return
-    opcontdiv.style.cssText += 'display:block;';
-    // OPEARATION DIV
-    const opdiv = document.createElement("div");
-    opdiv.classList.add("class-operation-row");
-    opdiv.style.cssText += 'margin-top:4px;';
-    // OPERATION DIV TOOLDIV
-    const tooldiv = document.createElement("div");
-    tooldiv.classList.add("class-operation-tool-row");
-    tooldiv.style.cssText += 'margin-top:4px;border-top: 1px solid #4CAF50;display:block';
-    
-    // EDIT  IMAGE INPUT
-    var editElement = document.createElement("input");
-    editElement.type =  'image';
-    editElement.setAttribute('src', 'edit.svg');
-    editElement.setAttribute('alt', 'EDIT');
-    editElement.setAttribute('width', '20');
-    editElement.setAttribute('height', '20');
-    editElement.id = "EDIT_"+operation.uid
-    editElement.addEventListener('click',onEditOperation)
-    tooldiv.appendChild(editElement);
-    opdiv.appendChild(tooldiv);
-
-    // DELETE  IMAGE INPUT
-    var delElement = document.createElement("input");
-    delElement.type =  'image';
-    delElement.setAttribute('src', 'DELETE.svg');
-    delElement.setAttribute('alt', 'DELETE');
-    delElement.setAttribute('width', '20');
-    delElement.setAttribute('height', '20');
-    delElement.id = "DELETE_"+operation.uid
-    delElement.addEventListener('click',onDeleteOperation)
-    tooldiv.appendChild(delElement);
-    opdiv.appendChild(tooldiv);
-
-    // UPARROW  IMAGE INPUT
-    var upArrowElement = document.createElement("input");
-    upArrowElement.type =  'image';
-    upArrowElement.setAttribute('src', 'UPARROW.svg');
-    upArrowElement.setAttribute('alt', 'MOVEUP');
-    upArrowElement.setAttribute('width', '20');
-    upArrowElement.setAttribute('height', '20');
-    upArrowElement.id = "MOVEUP_"+operation.uid
-    upArrowElement.addEventListener('click',onMoveUpOperation)
-    tooldiv.appendChild(upArrowElement);
-    opdiv.appendChild(tooldiv);
-
-    // DOWNARROW  IMAGE INPUT
-    var downArrowElement = document.createElement("input");
-    downArrowElement.type =  'image';
-    downArrowElement.setAttribute('src', 'DOWNARROW.svg');
-    downArrowElement.setAttribute('alt', 'MOVEDOWN');
-    downArrowElement.setAttribute('width', '20');
-    downArrowElement.setAttribute('height', '20');
-    downArrowElement.id = "MOVEDOWN_"+operation.uid
-    downArrowElement.addEventListener('click',onMoveDownOperation)
-    tooldiv.appendChild(downArrowElement);
-    opdiv.appendChild(tooldiv);
-
-    // OPERATION TYPE LABEL
-    var label = document.createElement('label');
-    label.innerHTML = "OP TYPE";  
-    label.style.cssText += 'padding:4px;';
-    opdiv.appendChild(label);
-
-    // OPERATION TYPE SELECT
-    var selectList = document.createElement("select");
-    selectList.id = operation.uid;
-    if(operation.name !='')
-        selectList.value = operation.name
-    opdiv.appendChild(selectList);
-    for (var i = 0; i < operations.length; i++) {
-        var option = document.createElement("option");
-        option.value = operations[i].name;
-        option.text = operations[i].name;
-         if(operation.name !='' && operation.name == operations[i].name)
-            option.selected = true
-        selectList.appendChild(option);
-    }
-    selectList.addEventListener('change',onChangeOperation)
-   
-    opcontdiv.appendChild(opdiv);
-    
-    onAddOperation(operation)
-     //console.log("ADD OPERATION",operation)
-    
-}
-
-function onAddOperation(operation:any){
-    if(!node.data.operations)
-        node.data.operations = []
-     
-     const found = node.data.operations.find((item:any)=>{return (item.uid == operation.uid)})
-     if(!found)
-        node.data.operations.push(operation)
-}
-
-function onChangeOperation(event:any){
-    const element = event.target
-    let id:any
-    if(element){
-        id = element.id
-        const index = node.data.operations.findIndex((item:any)=>{return(item.uid == id)})
-        if(index > -1)
-            node.data.operations[index].name = element.value
-
-       
-    }
-}
-
-function onEditOperation(event:any){
-    const element = event.target
-    let id:any
-    if(element){
-        id = element.id.split('_')[1]
-    }
-    
-   
-    // OPEN MODAL DIV
-    const modal = document.getElementById("modal-editor-div-id");
-	if(modal){
-        modal.setAttribute("data-optype","operations")
-        modal.setAttribute("data-opuid",id)
-	    modal.style.display = "block";
-    }
-}
-
-function onDeleteOperation(event:any){
-    const element = event.target
-   let id:any
-    if(element){
-        id = element.id.split('_')[1]
-    
-        
-
-        const parent = element.parentElement.parentElement
-        parent.innerHTML = ''
-
-        node.data.operations = node.data.operations.filter((item:any)=> { return (item.uid != id)})
-    }
-}
-
-function moveItem (array:any, to:any, from:any) {
-    const item = array[from];
-    array.splice(from, 1);
-    array.splice(to, 0, item);
-    return array;
-};
-
-function onMoveUpOperation(event:any){
-   const element = event.target
-   let id:any
-    if(element){
-        id = element.id.split('_')[1]
-       
-        const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
-        if(index > 0)
-            node.data.operations = moveItem(node.data.operations,index-1,index)
-        drawOperations()
-    }
-}
-
-function onMoveDownOperation(event:any){
-   const element = event.target
-   let id:any
-    if(element){
-        id = element.id.split('_')[1]
-        
-         const index = node.data.operations.findIndex((item:any) => { return (item.uid == id ) })
-        if(index < node.data.operations.length-1)
-            node.data.operations = moveItem(node.data.operations,index+1,index)
-        drawOperations()
-    }
-}
 
 </script>
 

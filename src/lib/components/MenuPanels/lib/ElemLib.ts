@@ -73,7 +73,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
 
     // OPERATION TYPE LABEL
     var label = document.createElement('label');
-    label.innerHTML = "OP TYPE";
+    label.innerHTML = "TYPE";
     label.style.cssText += 'padding:4px;';
     opdiv.appendChild(label);
 

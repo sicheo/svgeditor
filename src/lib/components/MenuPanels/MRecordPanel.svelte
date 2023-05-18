@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount, onDestroy } from 'svelte';
-import {addElement, moveItem} from './lib/ElemLib'
+import {addElement} from './lib/ElemLib'
 
 export let node:any ={data:{}}
 export let color = "Teal"
@@ -10,6 +10,8 @@ export let callback = (param:any=null)=>{}
 let modal: any
 
 let opcontdiv:any
+let opmacdiv:any
+let opinpdiv:any
 
 let totalOperations = "0"
 let totalMachines = "0"
@@ -38,22 +40,28 @@ let inputs:any[] = [
 
 const saveEventHandler = (e:any) => {
                                     //console.log("**** FIRED EVENT SAVE******")
-                                    //opcontdiv.innerHTML = '';
+                                   opcontdiv.innerHTML = '';
+                                   opmacdiv.innerHTML = '';
+                                   opinpdiv.innerHTML = '';
                                 }
 const hideEventHandler = (e:any) => {
                                     //console.log("**** FIRED EVENT HIDE******")
-                                    //opcontdiv.innerHTML = '';
+                                    opcontdiv.innerHTML = '';
+                                    opmacdiv.innerHTML = '';
+                                    opinpdiv.innerHTML = '';
                                 }
 const showEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT SHOW******")
-                                    setTimeout(redrawOperations,400)
+                                    //node = e.detail.node
+                                    if(e.detail.node == "MASTER")
+                                        setTimeout(redrawOperations,50)
                                 }
 
 onMount(async ()=>{
        node.data.level = 'level0'
+       node.data.name = "MASTER"
        opcontdiv = document.getElementById("class-operations")
-       //const opmacdiv = document.getElementById("class-machines")
-       //const opinpdiv = document.getElementById("class-inputs")
+       opmacdiv = document.getElementById("class-machines")
+       opinpdiv = document.getElementById("class-inputs")
 
        // GET MODAL
        modal = document.getElementById("modal-editor-div-id")
@@ -101,20 +109,26 @@ onMount(async ()=>{
   });
 
   function redrawOperations(){
+      opcontdiv.innerHTML = '';
+      opmacdiv.innerHTML = '';
+      opinpdiv.innerHTML = '';
+
     if(node.saved && node.saved.operations){
-        //console.log("OPERATIONS LENGTH ---->",node.saved.operations.length)
+        node.data.operations = null
         for(let i=0; i< node.saved.operations.length;i++){
             const operation = node.saved.operations[i]
             addElement(operation,operations,"class-operations",node,"operations","modal-editor-div-id")
         }
     }
     if(node.saved && node.saved.machines){
+        node.data.machines = null
         for(let i=0; i< node.saved.machines.length;i++){
             const machine = node.saved.machines[i]
             addElement(machine,machines,"class-machines",node,"machines","modal-editor-div-id")
         }
     }
     if(node.saved && node.saved.inputs){
+        node.data.inputs = null
         for(let i=0; i< node.saved.inputs.length;i++){
             const input = node.saved.inputs[i]
             addElement(input,inputs,"class-inputs",node,"inputs","modal-editor-div-id")

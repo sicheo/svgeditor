@@ -1,15 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\data",
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
+    "\\src\\lib\\components\\DiagramEditor\\classes",
+    "\\src\\lib\\components\\DiagramEditor\\pdf",
     "\\src\\lib\\components\\MenuPanels",
-    "\\src\\lib\\components\\OperationEditor",
+    "\\src\\lib\\components\\MenuPanels\\lib",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\DiagramEditor.svelte",
+  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\PhasePanel.svelte",
   "PreviewInSolutionExplorer": false
 }
