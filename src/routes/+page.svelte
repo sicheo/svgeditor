@@ -264,12 +264,12 @@
 			    replacement = [
 					{in:"$DOCCODE",out:gnode.data.doccode},
 					{in:"$PRODCODE",out:gnode.data.prodcode},
-					{in:"$PROJ",out:gnode.data.projcode},
+					{in:"$PROJCODE",out:gnode.data.projcode},
 					{in:"$SAPCODE",out:gnode.data.sapcode},
 				]
 				template = JSON.parse(JSON.stringify(Templates.MRecordTemplate))
 				// FILL TEMPLATE WITH ACTUAL VALUES
-				doc.replaceTags(template.pages[0],replacement)
+				doc.replaceTags(template,replacement)
 				// BUILD PDF WITH FILLED TEMPLATE
 				doc.buildDocument(template)
 				doc.saveDoc(template)
@@ -277,7 +277,6 @@
 			case "PHASE":
 				break
 		}
-		console.log("++++ PRINT PDF FOR NODE ****",template)
 	}
 
 	const graphFunctions = {

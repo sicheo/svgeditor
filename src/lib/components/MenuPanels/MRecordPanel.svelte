@@ -150,35 +150,37 @@ const addOperationEvent = (e:any)=>{
 </script>
 
 <div class="class-panel-content">
-	<div class= "class-panel-row">
-            <label class= "class-panel-cell">
-                Doc Code
-	            <input type="text" name="name"  bind:value="{node.data.doccode}" on:change={setNode} class="panel-input panel-input-text">
-            </label>
-    </div>
-    <div class= "class-panel-row">
-            <label class= "class-panel-cell">
-                Product Code
-	            <input type="text" name="name"  bind:value="{node.data.prodcode}" on:change={setNode} class="panel-input panel-input-text">
-            </label>
-    </div>
-    <div class= "class-panel-row">
-            <label class= "class-panel-cell">
-                Project Code
-	            <input type="text" name="name"  bind:value="{node.data.projcode}" on:change={setNode} class="panel-input panel-input-text">
-            </label>
-    </div>
-     <div class= "class-panel-row">
-            <label class= "class-panel-cell">
-                SAP Code
-	            <input type="text" name="name"  bind:value="{node.data.sapcode}" on:change={setNode} class="panel-input panel-input-text">
-            </label>
+    <div class = "class-parameter-list">
+	    <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    Doc Code
+	                <input type="text" name="name"  bind:value="{node.data.doccode}" on:change={setNode} class="panel-input panel-input-text">
+                </label>
+        </div>
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    Product Code
+	                <input type="text" name="name"  bind:value="{node.data.prodcode}" on:change={setNode} class="panel-input panel-input-text">
+                </label>
+        </div>
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    Project Code
+	                <input type="text" name="name"  bind:value="{node.data.projcode}" on:change={setNode} class="panel-input panel-input-text">
+                </label>
+        </div>
+         <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    SAP Code
+	                <input type="text" name="name"  bind:value="{node.data.sapcode}" on:change={setNode} class="panel-input panel-input-text">
+                </label>
+        </div>
     </div>
     <!--div class= "class-panel-row">   
             <div class= "class-panel-cell" style="--color:{color}">
                 <hr class = "hr-solid" />
             </div>
-    </!--div-->
+    <//div>!--div-->
      <div class= "class-panel-row panel-row-tool">
             <label class= "class-panel-cell" name="addinput" style= "width: 300px">
                 INPUTS
@@ -230,6 +232,12 @@ const addOperationEvent = (e:any)=>{
   font-size: smaller;
   font-weight: bold;
   padding-top: 10px;
+}
+
+.class-parameter-list {
+  max-height: 80px;
+  overflow: auto;
+ 
 }
 
 .class-panel-row {

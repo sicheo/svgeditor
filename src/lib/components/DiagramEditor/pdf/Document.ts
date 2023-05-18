@@ -5,27 +5,37 @@ import 'jspdf-autotable';
 
 export default class Document {
     doc: any
+    public currentfont:any
    
   
 
     constructor(docoptions:any=null) {
         
         this.doc = new jsPDF(docoptions);
+        this.currentfont = {
+            fontName: "times",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: 12
+        }
     }
 
     replaceTags(template: any, replacement: any) {
-        if (template.pageheader) {
-            this.replaceInHeader(template.pageheader, replacement)
+        for (let i = 0; i < template.pages.length; i++) {
+            const page = template.pages[i]
+            if (page.pageheader) {
+                this.replaceInHeader(page.pageheader, replacement)
+            }
+
+            if (page.pagebody) {
+                this.replaceInBody(page.pagebody, replacement)
+            }
+
+            if (page.pagefooter) {
+                this.replaceInFooter(page.pagefooter, replacement)
+            }
         }
 
-        if (template.pagebody) {
-            this.replaceInBody(template.pagebody, replacement)
-        }
-
-        if (template.pagefooter) {
-            this.replaceInFooter(template.pagefooter, replacement)
-        }
-            
     }
 
     buildDocument(template: any) {
@@ -50,12 +60,13 @@ export default class Document {
         if (template.font) {
             this.doc.setFont(template.font.fontName, template.font.fontStyle, template.font.fontWeigth)
             this.doc.setFontSize(template.font.fontSize)
+            this.currentfont =  template.font
         }
         if (template.content) {
             for (let i = 0; i < template.content.rows.length; i++) {
                 const row = template.content.rows[i]
                 const linespace = this.doc.getFontSize()*i +2  
-                this.drawElement(row.type,row.content, template.position.x, template.position.y+linespace)
+                this.drawElement(row.type,row.content, template.position.x, template.position.y+linespace,row.options)
             }
         }
     }
@@ -64,12 +75,13 @@ export default class Document {
         if (template.font) {
             this.doc.setFont(template.font.fontName, template.font.fontStyle, template.font.fontWeigth)
             this.doc.setFontSize(template.font.fontSize)
+            this.currentfont = template.font
         }
         if (template.content) {
             for (let i = 0; i < template.content.rows.length; i++) {
                 const row = template.content.rows[i]
                 const linespace = this.doc.getFontSize() * i + 2
-                this.drawElement(row.type,row.content, template.position.x, template.position.y + linespace)
+                this.drawElement(row.type,row.content, template.position.x, template.position.y + linespace,row.options)
             }
         }
     }
@@ -80,11 +92,12 @@ export default class Document {
             if (paragraph.font) {
                 this.doc.setFont(paragraph.font.fontName, paragraph.font.fontStyle, paragraph.font.fontWeigth)
                 this.doc.setFontSize(paragraph.font.fontSize)
+                this.currentfont = paragraph.font
             }
             for (let j = 0; j < paragraph.rows.length; j++) {
                 const row = paragraph.rows[j]
                 const linespace = this.doc.getFontSize() * j + 2
-                this.drawElement(row.type,row.content, paragraph.position.x, paragraph.position.y + linespace)
+                this.drawElement(row.type,row.content, paragraph.position.x, paragraph.position.y + linespace,row.options)
             }
         }
     }
@@ -96,7 +109,7 @@ export default class Document {
     private replaceInHeader(templ:any,repl:any) {
         if (templ.content) {
             for (let i = 0; i < templ.content.rows.length; i++) {
-                templ.content.rows[i] = this.replacetText(templ.content.rows[i],repl)
+                templ.content.rows[i] = this.replaceText(templ.content.rows[i],repl)
             }
         }
     }
@@ -105,7 +118,7 @@ export default class Document {
         for (let i = 0; i < templ.paragraphs.length; i++) {
             const paragraph = templ.paragraphs[i]
             for (let j = 0; j < paragraph.rows.length; j++) {
-                paragraph.rows[j] = this.replacetText(paragraph.rows[j], repl)
+                paragraph.rows[j] = this.replaceText(paragraph.rows[j], repl)
             }
         }
     }
@@ -113,23 +126,38 @@ export default class Document {
     private replaceInFooter(templ: any, repl: any) {
         if (templ.content) {
             for (let i = 0; i < templ.content.rows.length; i++) {
-                templ.content.rows[i] = this.replacetText(templ.content.rows[i], repl)
+                templ.content.rows[i] = this.replaceText(templ.content.rows[i], repl)
             }
         }
     }
 
-    private replacetText(row: any, repl: any) {
+    private replaceText(row: any, repl: any) {
         for (let i = 0; i < repl.length; i++) {
             if(row.type == 'text')
                 row.content = row.content.replace(repl[i].in, repl[i].out)
+            if (row.type == 'table') {
+                for (let j = 0; j < row.content.rows.length; j++) {
+                    for (let k = 0; k < row.content.columns[0].length; k++) {
+                        row.content.rows[j][k] = row.content.rows[j][k].replace(repl[i].in, repl[i].out)
+                    }
+                }
+            }
         }
         return row
     }
 
-    private drawElement(type: any, element: any, x: number, y: number) {
+    private drawElement(type: any, element: any, x: number, y: number, options: any = null) {
         switch (type) {
             case "text":
+                if (options && options.font) {
+                    this.doc.setFont(options.font.fontName, options.font.fontStyle, options.font.fontWeigth)
+                }
+                    
                 this.doc.text(element, x, y)
+                if (options && options.font) {
+                    this.doc.setFont(this.currentfont.fontName, this.currentfont.fontStyle, this.currentfont.fontWeigth)
+                }
+
                 break
             case "table":
                 this.doc.autoTable({
