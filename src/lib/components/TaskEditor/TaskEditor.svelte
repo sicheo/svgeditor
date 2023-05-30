@@ -5,6 +5,8 @@ import EditComponent from "./EditComponent.svelte";
 import SelectComponent from "./SelectComponent.svelte";
 import InputComponent from "./InputComponent.svelte";
 import TextAreaComponent from "./TextAreaComponent.svelte";
+import SelectInput from "./SelectInput.svelte";
+
 
 
 
@@ -26,6 +28,9 @@ let phasename:any
 
 let rows:any = []
 let isEntered:boolean = false
+let component = "SVELTETABLE"
+let optionInputs:any = []
+let inputUid: any
 
 const mutationCallback = (mutationList:any) =>{
     mutationList.forEach((mutation:any) => {
@@ -48,7 +53,7 @@ const mutationCallback = (mutationList:any) =>{
                             rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
                         }
                     }
-                    console.log("*** INPUT ROWS ****", rows)
+                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
                     break;
                 case "machines":
                     phasename = node.data.name
@@ -61,6 +66,7 @@ const mutationCallback = (mutationList:any) =>{
                             rows = JSON.parse(JSON.stringify(node.data.machines[index].tasks))
                         }
                     }
+                    optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
                     break;
                 case "inputs":
                     phasename = node.data.name
@@ -73,6 +79,7 @@ const mutationCallback = (mutationList:any) =>{
                             rows = JSON.parse(JSON.stringify(node.data.inputs[index].tasks))
                         }
                     }
+                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
                     break;
             }
             break;
@@ -92,7 +99,8 @@ onMount(async ()=>{
 
 let typeOptions = [
     {id: 1,name:"Task"},
-    {id:2,name:"Control"}
+    {id:2,name:"Control"},
+    {id:3,name:"Static"}
 ]
 
 let checkTypeOptions = [
@@ -102,6 +110,7 @@ let checkTypeOptions = [
 ]
 
 let checkModeOptions = [
+    {id: 0,name:"NOCHECK"},
     {id: 1,name:"AUTOMATIC"},
     {id:2,name:"MANUAL"}
 ]
@@ -182,7 +191,6 @@ const onInputComponent = (row:any,tag:any,value:any) =>{
 
 const onTextAreaComponent = (row:any,tag:any,value:any) =>{
     const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-    console.log("*** ON TXTAREA COMPONENT ****", index,tag,value)
      if(index > -1)
         rows[index][tag] = value
 }
@@ -198,6 +206,40 @@ const addOption = (event:any) =>{
         rows = rows
 }
 
+const cloneOption = (event:any) =>{
+	switch(optype){ 
+        case "operations":
+	        optionInputs = JSON.parse(JSON.stringify(node.data.operations))
+            break
+        case "machines":
+            optionInputs = JSON.parse(JSON.stringify(node.data.machines))
+            break
+        case "inputs":
+	        optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
+            break
+    }
+    component = "SELECTINPUT"
+}
+
+const onChangeSelectInput = (e:any)=>{
+    const value = e.target.value
+    let found: any
+    switch(optype){ 
+        case "operations":
+	        found= node.data.operations.find((item:anu)=>{ return (item.uid == value)})
+            break
+        case "machines":
+            found= node.data.machines.find((item:anu)=>{ return (item.uid == value)})
+            break
+        case "inputs":
+	        found= node.data.inputs.find((item:anu)=>{ return (item.uid == value)})
+            break
+    }
+    if(found)
+        rows = JSON.parse(JSON.stringify(found.tasks))
+    component = "SVELTETABLE"
+}
+
 const saveOption = (event:any) =>{
     let index = -1
     switch(optype){ 
@@ -206,7 +248,6 @@ const saveOption = (event:any) =>{
             node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
             break
         case "machines":
-            console.log("***** MACHINE SAVE ******", opuid, node.data.machines)
 	        index = node.data.machines.findIndex((item:any) => { return (item.uid == opuid)})
             node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
             break
@@ -215,7 +256,6 @@ const saveOption = (event:any) =>{
             node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
             break
     }
-    console.log("*** SAVED ROWS ****", rows)
     rows = []
     modal.style.display = "none";
 }
@@ -453,15 +493,20 @@ const columns = [
             </label>
 				<div class="class-last-item">
 					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-                    <input type="image" src="add.svg"  on:click={addOption} alt="Submit" width="25" height="25" > 
-					<input type="image" src="SAVE.svg"  on:click={saveOption} alt="Submit" width="25" height="25" > 
-					<input type="image" src="EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
+                    <input type="image" src="../add.svg"  on:click={addOption} alt="Submit" width="25" height="25" > 
+                    <input type="image" src="../CLONE.svg"  on:click={cloneOption} alt="Submit" width="25" height="25" >
+					<input type="image" src="../SAVE.svg"  on:click={saveOption} alt="Submit" width="25" height="25" > 
+					<input type="image" src="../EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
 		
 		<div class= "class-panel-row">
             TASK/CONTROL LIST
-            <SvelteTable columns="{columns}" bind:rows="{rows}"></SvelteTable>
+            {#if component == 'SVELTETABLE'}
+                <SvelteTable columns="{columns}" bind:rows="{rows}"/>
+            {:else}
+                <SelectInput bind:optionInputs={optionInputs} onChangeSelectInput={onChangeSelectInput}/>
+            {/if}
 		</div>
 	</div>
 	

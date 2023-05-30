@@ -5,6 +5,18 @@ const MRecordTemplate = {
     docAuthor: "DOCUMENT AUTHOR",
     docRevision: "DOCUMENT REVISION",
     docDate: "DOCUMENT DATE",
+    docfooter: {
+        position: { x: 20, y: 280 },
+        font: {
+            fontName: "times",
+            fontStyle: "normal",
+            fontWeight: "normal",
+            fontSize: 10
+        },
+        content: {
+           
+        }
+    },
     pages: [
         {
             pageFormat: "a4",
@@ -69,20 +81,6 @@ const MRecordTemplate = {
                         ]
                     }
                 ]
-            },
-            pagefooter: {
-                position: { x: 20, y: 280 },
-                font: {
-                    fontName: "times",
-                    fontStyle: "normal",
-                    fontWeight: "normal",
-                    fontSize: 10
-                },
-                content: {
-                    rows: [
-                        { type: "text", content: "Pag. 1/2" }
-                    ]
-                }
             }
         },
         {
@@ -260,20 +258,23 @@ const MRecordTemplate = {
                                 }
                             },
                             {
-                                type: "table",
+                                type: "autotable",
                                 content: {
-                                    columns: [["Descrizione", "Fornitore","Codice SAP","Fornula Bruta","P.M.","P.Eb (\u00b0C)","a (a 20 \u00b0C) (gr/ml)"]],
-                                    rows: [
-                                        ["MXXXXXXXX", "XXXXXXXX","CXXXXXX","XXXXXXXX","XXXXXX","NA","NA"],
-                                    ]
+                                    columns: [["Descrizione", "Fornitore","Codice SAP","Formula Bruta","P.M.","P.Eb (\u00b0C)","d (a 20 \u00b0C) (gr/ml)"]],
+                                    from: "inputs",
+                                    type: "LISTMATERIALS",
                                 }
                             },
                         ]
                     }
                 ]
-            },
-            pagefooter: {
-                position: { x: 20, y: 280 },
+            }
+        },
+        {
+            pageFormat: "a4",
+            pageOrientation: "p",
+            pageheader: {
+                position: { x: 20, y: 20 },
                 font: {
                     fontName: "times",
                     fontStyle: "normal",
@@ -282,12 +283,55 @@ const MRecordTemplate = {
                 },
                 content: {
                     rows: [
-                        { type: "text", content: "Pag. 2/2" }
+                        { type: "text", content: "Codice documento:  $DOCCODE  Lotto:" }
                     ]
                 }
+            },
+            pagebody: {
+                paragraphs: [
+                    {
+                        position: { x: 20, y: 40 },
+                        font: {
+                            fontName: "times",
+                            fontStyle: "normal",
+                            fontWeight: "bold",
+                            fontSize: 12
+                        },
+                        rows: [
+                            {
+                                type: "text", content: "1.10 AUTORIZZAZIONE ALLA PRODUZIONE", options: {
+                                    font: {
+                                        fontName: "times",
+                                        fontStyle: "bold",
+                                        fontWeight: "bold",
+                                        fontSize: 12
+                                    }
+                                }
+                            },
+                            {
+                                type: "text", content: "Elenco dei locali operativi destinati alla presente produzione (indicare sia i locali di produzione che quelli di\nstoccaggio materie prime,reagenti e intermedi di processo)", options: {
+                                    font: {
+                                        fontName: "times",
+                                        fontStyle: "normal",
+                                        fontWeight: "normal",
+                                        fontSize: 12
+                                    }
+                                }
+                            },
+                            {
+                                type: "autotable",
+                                content: {
+                                    columns: [["Verifica", "Si/No"]],
+                                    from: "operations",
+                                    type: "INITIALCHECKS",
+                                }
+                            },
+                        ]
+                    }
+                ]
             }
         }
-  ]
+    ]
 }
 
 const Templates = {

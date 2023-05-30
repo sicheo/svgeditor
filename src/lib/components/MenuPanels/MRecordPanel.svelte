@@ -29,13 +29,13 @@ let machines:any[] = [
 ]
 
 let operations:any[] = [
-    {uid:1,name:'Initial Check',image:'/DISPENSING.svg'}
+    {uid:1,name:'INITIALCHECK',image:'/DISPENSING.svg'}
 ]
 
 let inputs:any[] = [
-    {uid:1,name:'MXXXXXXXXXA',image:'/DISPENSING.svg'},
-    {uid:2,name:'MXXXXXXXXXB',image:'/DISPENSING.svg'},
-    {uid:3,name:'PXXXXXXXXXX',image:'/DISPENSING.svg'}
+    {uid:1,name:'LISTMATERIALS',image:'/DISPENSING.svg'},
+    {uid:2,name:'LISTMATSECURITY',image:'/DISPENSING.svg'},
+    {uid:3,name:'COMPATIBILITY',image:'/DISPENSING.svg'}
 ]
 
 const saveEventHandler = (e:any) => {

@@ -26,7 +26,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     // EDIT  IMAGE INPUT
     var editElement = document.createElement("input");
     editElement.type = 'image';
-    editElement.setAttribute('src', 'edit.svg');
+    editElement.setAttribute('src', '../edit.svg');
     editElement.setAttribute('alt', 'EDIT');
     editElement.setAttribute('width', '20');
     editElement.setAttribute('height', '20');
@@ -38,7 +38,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     // DELETE  IMAGE INPUT
     var delElement = document.createElement("input");
     delElement.type = 'image';
-    delElement.setAttribute('src', 'DELETE.svg');
+    delElement.setAttribute('src', '../DELETE.svg');
     delElement.setAttribute('alt', 'DELETE');
     delElement.setAttribute('width', '20');
     delElement.setAttribute('height', '20');
@@ -50,7 +50,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     // UPARROW  IMAGE INPUT
     var upArrowElement = document.createElement("input");
     upArrowElement.type = 'image';
-    upArrowElement.setAttribute('src', 'UPARROW.svg');
+    upArrowElement.setAttribute('src', '../UPARROW.svg');
     upArrowElement.setAttribute('alt', 'MOVEUP');
     upArrowElement.setAttribute('width', '20');
     upArrowElement.setAttribute('height', '20');
@@ -62,7 +62,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     // DOWNARROW  IMAGE INPUT
     var downArrowElement = document.createElement("input");
     downArrowElement.type = 'image';
-    downArrowElement.setAttribute('src', 'DOWNARROW.svg');
+    downArrowElement.setAttribute('src', '../DOWNARROW.svg');
     downArrowElement.setAttribute('alt', 'MOVEDOWN');
     downArrowElement.setAttribute('width', '20');
     downArrowElement.setAttribute('height', '20');

@@ -10,6 +10,7 @@ import gpath from "./classes/gpath"
 import {_calcDAttr} from "./classes/gutils"
 import { fly } from 'svelte/transition';
 import TaskEditor from "../TaskEditor/TaskEditor.svelte"
+import SubGraph from "../DiagramEditor/SubGraph.svelte"
 
 // EXPORTS
 export let graphtype = 'DAG'
@@ -22,7 +23,7 @@ export let  mainmenuimport: any = (param:any)=>{}
 export let  mainmenuexport: any = (param:any)=>{}
 export let  mainmenuclear: any = (param:any)=>{}
 export let menubuild:any = (param:any)=>{}
-export let menuenabled:boolean = true
+export let menuenabled:boolean = false
 export let panelcontroller:any
 export let width = 1200
 export let height = 600
@@ -31,7 +32,7 @@ export let  nodeoptions:any = {
 				horizontal:true,
 				vertical:false,
 				shapetype:'RECT',
-				width:100,
+				width:120,
 				height:80
 			}
 export let panels:any
@@ -131,7 +132,7 @@ onMount(async () => {
 							graph.addPath(path.getPathInfo(),path,draw)
 						}
 						break;
-					default:
+					case "FEEDBACK":
 						drawcurve=false
 						draw.off('mousemove')
 						startsock.addPath(path)
@@ -230,8 +231,8 @@ onMount(async () => {
 			<div class="class-panel-header" >
 				<div class="class-last-item">
 					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-					<input type="image" src="SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
-					 <input type="image" src="EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 
+					<input type="image" src="/SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
+					 <input type="image" src="/EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 
 				</div>
 			</div>
 			<div class= "class-panel-row">
@@ -263,6 +264,11 @@ onMount(async () => {
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid='' data-optype=''>
 		<div class="modal-editor-content">
 			<TaskEditor node = {currentnode} />
+		</div>
+	</div>
+	<div class="modal-subgraph-div" id="modal-subgraph-div-id">
+		<div class="modal-subgraph-content" id="modal-subgraph-content-id">
+			<SubGraph bind:node={currentnode}/>
 		</div>
 	</div>
 <style>
@@ -363,5 +369,29 @@ label {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+/* SUBGRAPH*/
+.modal-subgraph-div {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.0); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-subgraph-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  height: 60%;
 }
 </style> 
