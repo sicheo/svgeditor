@@ -11,7 +11,7 @@
   <div class="main-content">
    <MainTab image="ICO_UP2_DATA.png" title="UP2DATA CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor}/>
     <div class="login-container">
-        <Login color={color} bgcolor={bgcolor}></Login>
+        <Login target="/UP2DATA/MONITOR" color={color} bgcolor={bgcolor}></Login>
     </div>
   </div>
 </main>

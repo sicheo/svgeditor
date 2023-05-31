@@ -77,7 +77,7 @@ onMount(async () => {
 		draw.id("svg-graph-container")
 		draw.viewbox(0,0,1400,600)
 		
-		
+		let style = draw.style('#svg-graph-container', {border: '1px solid rgba(0, 0, 0, .2)'})
 		
 
 		draw.on("startcurve", (ev:any) => {
@@ -382,7 +382,7 @@ label {
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.0); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.1); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -392,6 +392,6 @@ label {
   padding: 20px;
   border: 1px solid #888;
   width: 60%;
-  height: 60%;
+  height: 65%;
 }
 </style> 

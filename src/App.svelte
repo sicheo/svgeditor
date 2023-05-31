@@ -10,6 +10,8 @@ import UP2LEARN from "./routes/up2learn/Up2LearnMain.svelte"
 import HOME from "./routes/Home.svelte"
 import UP2CLONEMONITOR from "./routes/up2clone/monitor/Up2CloneMonitor.svelte" 
 import UP2CLONEBUILD from "./routes/up2clone/build/Up2CloneBuild.svelte" 
+import UP2DATAMONITOR from "./routes/up2data/monitor/Up2DataMonitor.svelte" 
+import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte" 
 
 export let url = "/";
 
@@ -23,6 +25,8 @@ export let url = "/";
     <Route path="/UP2LEARN" component={UP2LEARN} />
     <Route path="/UP2CLONE/MONITOR" component={UP2CLONEMONITOR} />
     <Route path="/UP2CLONE/BUILD" component={UP2CLONEBUILD} />
+    <Route path="/UP2DATA/MONITOR" component={UP2DATAMONITOR} />
+    <Route path="/UP2DATA/BUILD" component={UP2DATABUILD} />
     <Route path="/" component={HOME}/>
   </div>
 </Router>

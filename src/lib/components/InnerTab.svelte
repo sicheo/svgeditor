@@ -7,7 +7,7 @@ export let bgcolor = "#d5e8d4"
 </script>
 
 <div class="inner-tab-component" style="--color:{color}; --background-color:{bgcolor}">
-	<svelte:component this={component} bind:options={options}/>
+	<svelte:component this={component} bind:options={options} {color} {bgcolor}/>
 </div>
 
 <style>

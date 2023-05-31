@@ -16,7 +16,7 @@ export default class gnode {
     imgwidth = 30
     imgheight = 30
     imagefile = 'default.svg'
-    nnametext = "NAME"
+    nnametext = ""
     ndescrtext = "DESCRIPTION"
     vertical = false
     horizontal = true
@@ -104,10 +104,12 @@ export default class gnode {
         switch (this.shapetype) {
             case 'ELLIPSE':
                 this.shape = this.node.ellipse(this.width, this.height).stroke({ width: 1, color: this.color }).fill(this.background).move(this.x, this.y)
+                this.image = this.node.image(this.imagefile).attr({ width: this.imgwidth, height: this.imgheight }).move(this.x + this.width / 2 - this.imgwidth / 2, this.y + this.height / 2 - this.imgheight / 2)
                 var nnmamelen = this.nnametext.length * (this.fontsize - 3) / 2
                 this.nname = this.node.text(this.nnametext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).fill(this.background).move(this.x + this.width / 2 - nnmamelen, this.y + this.height / 2 - this.radius * 2)
                 var ndescrtextlen = this.ndescrtext.length * (this.fontsize - 3) / 2
-                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen, this.y + this.height / 3 - this.fontsize + this.radius * 2)
+                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen, this.y + this.height / 2 - this.fontsize + this.radius * 2)
+                this.menu = this.menucallback(this.x, this.y, this.width, this.height, this)
                 break
             case "DIAMANT":
                 const x1 = this.x

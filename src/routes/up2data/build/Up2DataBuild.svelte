@@ -9,14 +9,14 @@
  
 
   let component = 'MainTabTools'
-  let bgcolor ="#d5e8d4"
-  let color = "#007d35"
+  let bgcolor ="#f4e2d2"
+  let color = "#ac611b"
   let pages = [
-      {name:"MONITOR",link:"/UP2CLONE/MONITOR"},
-      {name:"BUILD",link:"/UP2CLONE/BUILD"}
+      {name:"MONITOR",link:"/UP2DATA/MONITOR"},
+      {name:"BUILD",link:"/UP2DATA/BUILD"}
   ]
 
-  let page = "MONITOR"
+  let page = "BUILD"
 
   let onBuddyClick = (e:any)=>{
     
@@ -27,14 +27,14 @@ let  onSysConfClick = (e:any)=>{
 }
 
 let  onLogoutClick = (e:any)=>{
-    navigate("/UP2CLONE", {replaceState:true})
+    navigate("/UP2DATA", {replaceState:true})
 }
 
 </script>
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_CLONE.png" title="UP2CLONE CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_DATA.png" title="UP2CLONE CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">

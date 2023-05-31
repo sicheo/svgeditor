@@ -93,7 +93,7 @@ const menufunctions = {
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={BuildCloneTools} options={menufunctions}/>
+            <InnerTab component={BuildCloneTools} options={menufunctions} {color} {bgcolor}/>
             <Up2CloneEditor bind:graph={graph} menufunctions={menufunctions}/>
         </div>
     </div>

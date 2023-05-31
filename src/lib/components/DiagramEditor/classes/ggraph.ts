@@ -235,6 +235,10 @@ export default class ggraph {
         node.node.on('dblclick', (event: any) => {
             event.stopPropagation()
         })
+
+        node.node.on('contextmenu', (event: any) => {
+            event.stopImmediatePropagation()
+        })
     }
 
 	rebuild(graphin: any, panels:any[],opts: any=null){

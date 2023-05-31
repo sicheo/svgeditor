@@ -6,11 +6,14 @@ import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
+import ContextMenu from './ContextMenu/ContextMenu.svelte'
 
 
 
 export let node:any
 export let graphtype = 'DAG'
+export let bgcolor ="#d5e8d4"
+export let color = "#007d35"
 
 let modal:any
 let draw:any
@@ -96,6 +99,7 @@ subgraph.clear = graphClear
 
 // NODE MENU BUILDER
 const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
+	    console.log("*** LOCAL MENU BUILD *****")
 		const menuitems: any[] = [
 			{ name: 'EDIT', image: '/edit.svg', item: null },
 			{ name: 'EXIT', image: '/close.svg', item: null }
@@ -133,8 +137,10 @@ onMount(async ()=>{
 	let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
 	// ADDNG LOCAL SVG 
 	draw = await SVG().addTo('#modal-subgraph-content-id').size(800, 400).panZoom({ zoomMin: 0.2, zoomMax: 10, zoomFactor: 0.1 })
-	draw.id("svg-graph-container")
+	draw.id("svg-subgraph-container")
 	draw.viewbox(0,0,800,400)
+
+	let style = draw.style('#svg-subgraph-container', {border: '1px solid rgba(0, 0, 0, .2)'})
    
 	let startnode:any
 	let endnode:any
@@ -206,17 +212,19 @@ onMount(async ()=>{
 			}
 		})
 
-		draw.on("dblclick", async (ev:any) => {
+		/*draw.on("dblclick", async (ev:any) => {
 			const point = draw.point(ev.clientX, ev.clientY)
 			const options = {
 				x:point.x,
 				y:point.y,
 				nodeid:"NODE-"+subgraph.getNodenum(),
 				nodenum:subgraph.getNodenum(),
-				nnametext:"TASK-"+subgraph.getNodenum(),
+				nnametext:"NODE-"+subgraph.getNodenum(),
 				data:{level:'level0',type:'TASK',name:''},
-				//imagefile:panels[0].img,
-				ndescrtext: 'TASK'
+				imagefile:"/TASK.svg",
+				imgwidth: 15,
+				imgheight: 15,
+				ndescrtext: 'OPERATION'
 			}
 			const nopts = {
 				...nodeoptions,
@@ -226,13 +234,58 @@ onMount(async ()=>{
 			nd = new gnode(draw,menubuild,subgraph,null,nopts)
 			nd.draw()
 			subgraph.addNode(nd.getNodeInfo(),nd,draw)
+		})*/
+
+		draw.on("contextmenu", async (ev:any) => {
+			ev.preventDefault()
+			let contextMenu = document.getElementById("context-menu");
+			let mouseX = ev.clientX;
+			let mouseY = ev.clientY;
+			let menuHeight = contextMenu.getBoundingClientRect().height;
+			let menuWidth = contextMenu.getBoundingClientRect().width;
+			let width = window.innerWidth;
+			let height = window.innerHeight;
+			if (width - mouseX <= 200) {
+            contextMenu.style.borderRadius = "5px 0 5px 5px";
+            contextMenu.style.left = width - menuWidth + "px";
+            contextMenu.style.top = mouseY + "px";
+            //right bottom
+            if (height - mouseY <= 200) {
+              contextMenu.style.top = mouseY - menuHeight + "px";
+              contextMenu.style.borderRadius = "5px 5px 0 5px";
+            }
+          }
+          //left
+          else {
+            contextMenu.style.borderRadius = "0 5px 5px 5px";
+            contextMenu.style.left = mouseX + "px";
+            contextMenu.style.top = mouseY + "px";
+            //left bottom
+            if (height - mouseY <= 200) {
+              contextMenu.style.top = mouseY - menuHeight + "px";
+              contextMenu.style.borderRadius = "5px 5px 5px 0";
+            }
+          }
+          //display the menu
+          contextMenu.style.visibility = "visible";
+			console.log("RIGHT MENU CLICKED")
+			
+		})
+
+		draw.on("click", async (ev:any) => {
+			let contextMenu = document.getElementById("context-menu");
+			if(contextMenu){
+				if (!contextMenu.contains(ev.target)) {
+					contextMenu.style.visibility = "hidden";
+				}
+			}
 		})
 
  });
 
 const saveTasks = (e:any)=>{
-	console.log("***** CLEAR *****")
-	rect.remove()
+	console.log("***** SAVE *****",subgraph)
+	
 	
 }
 const exitEditor = (event:any) =>{
@@ -242,13 +295,15 @@ const exitEditor = (event:any) =>{
 </script>
 
 	<div class="subgraph-comp-content">
-		<span>{node.data.name} ACTIVITY SEQUENCE</span>
+		<span style="--color:{color};">{node.data.name} PHASE OPERATIONS</span>
 		<!--input type="text"  value="{node.data.name}" disabled/--> 
 		<div class="subgraph-comp-tool">
 			<input type="image" src="../SAVE.svg"  on:click={saveTasks} alt="Submit" width="25" height="25" >
 			<input type="image" src="../EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
 		</div>
 	</div>
+
+	<ContextMenu {menubuild} graph={subgraph} {draw} />
 
 <style>
 .subgraph-comp-content span{
