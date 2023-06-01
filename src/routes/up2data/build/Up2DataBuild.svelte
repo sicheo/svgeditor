@@ -5,16 +5,14 @@
   import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2DataEditor from './Up2DataEditor.svelte'
- 
+  import {dataNavigation} from '../../../lib/ustore.js'
  
 
   let component = 'MainTabTools'
   let bgcolor ="#f4e2d2"
   let color = "#ac611b"
-  let pages = [
-      {name:"MONITOR",link:"/UP2DATA/MONITOR"},
-      {name:"BUILD",link:"/UP2DATA/BUILD"}
-  ]
+
+  let pages = $dataNavigation
 
   let page = "BUILD"
 

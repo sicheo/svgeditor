@@ -7,7 +7,6 @@
   import NullPage from '../../../lib/components/NullPage.svelte'
   import {cloneNavigation} from '../../../lib/ustore.js'
  
- 
 
   let component = 'MainTabTools'
   let bgcolor ="#d5e8d4"
@@ -15,7 +14,6 @@
   
 
   let pages = $cloneNavigation
-
   let page = "MONITOR"
 
   let onBuddyClick = (e:any)=>{

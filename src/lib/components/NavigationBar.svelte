@@ -1,5 +1,6 @@
 <script lang="ts">
 import { navigate } from "svelte-routing";
+import {role} from '../ustore.js'
 
 export let color = "#007d35"
 export let bgcolor = "#d5e8d4"
@@ -14,7 +15,9 @@ const goToPage = (e:any)=>{
  <div class="site-navigation-bar" style="--color:{color}; --background-color:{bgcolor}">
 	<div class="site-navigation-span" style="--color:{color}; --background-color:{bgcolor}">{page}</div>
 	{#each pages as Item}
-		<input type="button" value="{Item.name}" name="{Item.link}" on:click={goToPage}/>
+		{#if Item.roles.includes($role)}
+			<input type="button" value="{Item.name}" name="{Item.link}" on:click={goToPage}/>
+		{/if}
 	{/each}
 </div> 
 

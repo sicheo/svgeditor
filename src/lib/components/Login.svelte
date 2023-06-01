@@ -2,6 +2,7 @@
 
 import {login} from '../script/api.js'
 import {navigate} from 'svelte-routing'
+import {role,user} from '../ustore.js'
 
 export let userid = ''
 export let password = ''
@@ -12,11 +13,12 @@ export let bgcolor = "#d5e8d4"
 
 const handleSubmit=(e)=>{
        let loginFields={userid,password};
-	   console.log(loginFields)
        // CALL LOGN API
        login(userid,password,true)
        .then((res:any) =>{
-           console.log(res)
+           console.log(res.data)
+           $role = res.data.role
+           $user = userid
            // CONTROL RESULT
            if(res.error == null){
                 navigate(target, {replaceState:true}) 

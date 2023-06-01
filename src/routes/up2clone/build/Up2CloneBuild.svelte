@@ -5,16 +5,16 @@
   import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from './Up2CloneEditor.svelte'
+   import {cloneNavigation} from '../../../lib/ustore.js'
  
  
 
   let component = 'MainTabTools'
   let bgcolor ="#d5e8d4"
   let color = "#007d35"
-  let pages = [
-      {name:"MONITOR",link:"/UP2CLONE/MONITOR"},
-      {name:"BUILD",link:"/UP2CLONE/BUILD"}
-  ]
+ 
+
+  let pages = $cloneNavigation
 
   let page = "BUILD"
 

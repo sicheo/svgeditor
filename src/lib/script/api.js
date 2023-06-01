@@ -106,3 +106,27 @@ export const login = async function (userid, password, mock = false) {
     })
 }
 
+export const getMasters = async function (options, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "login",
+            options: options
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getMasters(body))
+        }
+    })
+}
+

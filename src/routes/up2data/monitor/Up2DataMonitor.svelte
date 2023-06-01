@@ -5,16 +5,15 @@
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import NullPage from '../../../lib/components/NullPage.svelte'
+  import {dataNavigation} from '../../../lib/ustore.js'
  
  
 
   let component = 'MainTabTools'
   let bgcolor ="#f4e2d2"
   let color = "#ac611b"
-  let pages = [
-      {name:"MONITOR",link:"/UP2DATA/MONITOR"},
-      {name:"BUILD",link:"/UP2DATA/BUILD"}
-  ]
+  
+  let pages = $dataNavigation
 
   let page = "MONITOR"
 
@@ -34,7 +33,7 @@ let  onLogoutClick = (e:any)=>{
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_DATA.png" title="UP2CLONE CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_DATA.png" title="UP2DATA CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">
