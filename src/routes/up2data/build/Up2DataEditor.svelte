@@ -1,11 +1,6 @@
 <script lang="ts">
   // https://loading.io/css/
   import DiagramEditor from '../../../lib/components/DiagramEditor/DiagramEditor.svelte'
-  import PhasePanel from '../../../lib/components/MenuPanels/PhasePanel.svelte'
-  import MRecordPanel from '../../../lib/components/MenuPanels/MRecordPanel.svelte'
-  import Templates from '../../../lib/components/DiagramEditor/pdf/templates.js'
-  import Document from '../../../lib/components/DiagramEditor/pdf/Document'
-  import PdfViewer from '../../../lib/components/DiagramEditor/pdf/PdfViewer.svelte'
   import CompanyPanel from '../../../lib/components/MenuPanels/CompanyPanel.svelte'
   import FactoryPanel from '../../../lib/components/MenuPanels/FactoryPanel.svelte'
   import DepartmentPanel from '../../../lib/components/MenuPanels/DepartmentPanel.svelte'
@@ -25,12 +20,19 @@
 
   // ** NEW **//
   let graphtype = "TREE"
-  let currentnode:any ={data:{type:'MASTER',level:'level0',name:''}}
+  let currentnode:any ={data:{type:'COMPANY',level:'level0',name:''}}
   let draw:any
   let width = 900
   let height = 500
+  let  nodeoptions:any = {
+				horizontal:true,
+				vertical:false,
+				shapetype:'RECT',
+				width:100,
+				height:80
+			}
  
-  let pdfUrl:any =''
+ 
 
   const mainmenuclear = menufunctions.menuclear
   const mainmenuimport = menufunctions.menuimport
@@ -38,12 +40,16 @@
   const mainmenusave = menufunctions.menusave
   const mainmenuload = menufunctions.menuload
 
-  let panels:any [] = [
-	    {type:'MASTER',component:MRecordPanel,name:'Master Node',level:'level0',img:'/MASTER.svg',fireEvents:true},
-	    {type:'PHASE',component:PhasePanel,name:'Phase Node',level:'level1',img:'/DISPENSING.svg',fireEvents:true},
+ let datapanels = [
+		{type:'COMPANY',component:CompanyPanel,name:'Company',level:'level1',img:'/image-company.svg'},
+		{type:'FACTORY',component:FactoryPanel,name:'Factory',level:'level2',img:'/image-factory.svg'},
+		{type:'DEPARTMENT',component:DepartmentPanel,name:'Department',level:'level3',img:'/image-department.svg'},
+		{type:'LINE',component:LinePanel,name:'Line',level:'level4',img:'/image-line.svg'},
+		{type:'EQUIPMENT',component:EquipmentPanel,name:'Equipment',level:'level5',img:'/image-equipment.svg'},
+		{type:'CONTROLLER',component:ControllerPanel,name:'Controller',level:'level6',img:'/image-controller.svg'},
 	]
 
-  let component:any = panels.find((item:any) => item.type == 'MASTER').component;
+  let component:any = datapanels.find((item:any) => item.type == 'COMPANY').component;
 
   // GRAPH MANIPULATION
 
@@ -123,7 +129,7 @@
 				horizontal:true,
 				vertical:false,
 				shapetype:'RECT',
-				width:120,
+				width:100,
 				height:80
 			}
 		if(opts)
@@ -131,9 +137,9 @@
 		for(let i=0;i<graphin.nodes.length;i++){
 			let node = graphin.nodes[i]
 			let panelObject
-			let img = panels[0].img
-			let type = panels[0].type
-			const pnl = panels.find((item:any)=>(item.level == node.data.level))
+			let img = datapanels[0].img
+			let type = datapanels[0].type
+			const pnl = datapanels.find((item:any)=>(item.level == node.data.level))
 			if(pnl){
 				if(node.data.image)
 					img=node.data.image
@@ -148,7 +154,7 @@
 				y:node.data.y,
 				nodeid:"NODE-"+node.data.uid,
 				nodenum:node.data.uid,
-				nnametext:"PHASE-"+node.data.uid,
+				nnametext:"NODE-"+node.data.uid,
 				imagefile:img,
 				ndescrtext: node.data.name,
 				data:gdata,
@@ -245,40 +251,7 @@
 		mainmenuimport()
 	}
 
-	const nodePrintPdf = async (gnode:any) =>{
-		let template:any = {pages:[]}
-		let replacement:any
-		let doc:any
-		switch(gnode.data.type){
-			case "MASTER":
-			    doc = new Document(gnode.data)
-			    replacement = [
-					{in:"$DOCCODE",out:gnode.data.doccode},
-					{in:"$PRODCODE",out:gnode.data.prodcode},
-					{in:"$PROJCODE",out:gnode.data.projcode},
-					{in:"$SAPCODE",out:gnode.data.sapcode},
-				]
-				template = JSON.parse(JSON.stringify(Templates.MRecordTemplate))
-				// FILL TEMPLATE WITH ACTUAL VALUES
-				doc.replaceTags(template,replacement)
-				// BUILD PDF WITH FILLED TEMPLATE
-				const iframe = document.getElementById("pdf-div-id")
-				doc.buildDocument(template)
-				doc.saveDoc(template)
-				.then((res:any) =>{
-					var blob = dataURItoBlob(res);
-					pdfUrl = URL.createObjectURL(blob);
-
-					iframe.style.display = 'flex'
-				})
-				.catch((error:any) =>{
-					console.log(error)
-				})
-				break
-			case "PHASE":
-				break
-		}
-	}
+	
 
 	const graphFunctions = {
 							addNode:graphAddNode,
@@ -298,80 +271,31 @@
 						}
 
 	const panelcontroller = (action:any,gnode:any)=>{
-		    // ADD EVENT TO PANEL ELEMENT
-			let eventSave:any
-			let eventHide:any
-			let eventShow:any
-			const panelOperation = document.getElementById("class-operations")
-
 			const panel = document.querySelector('#editor-panel')
-			let templatePanel:any
-			if(gnode){
-				templatePanel = panels.find((item:any) => { return (item.type == gnode.data.type) })
-				eventSave = new CustomEvent("panelsave",{detail: {node: gnode.data.type}})
-				eventHide = new CustomEvent("panelhide",{detail: {node: gnode.data.type}});
-				eventShow = new CustomEvent("panelshow",{detail: {node: gnode.data.type}});
-			}
-			let img
 			switch(action){
 				case "hide":
-				    img = ''
-					if(gnode){
-						gnode.data = structuredClone(gnode.saved)
-						//console.log("**** PANEL HIDE ****",gnode.data)
-						if(!gnode.data.image || gnode.data.image == ''){
-						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
-						if(pnl)
-							gnode.data.image = pnl.img
-						}
-						img = gnode.data.image
-						
-						gnode.redrawtext(gnode.data.name,img)
-						
-					}
-					if(panelOperation && templatePanel && templatePanel.fireEvents)
-						panelOperation.dispatchEvent(eventHide);
 					panel.style.visibility = 'hidden'
-					break;
-				case "save":
-				    img = ''
 					if(gnode){
-						gnode.saved = structuredClone(gnode.data)
-						if(!gnode.data.image || gnode.data.image == ''){
-						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
+						let img = 'image-company.svg'
+						const pnl = datapanels.find((item:any)=>(item.type == gnode.data.type))
 						if(pnl)
-							gnode.data.image = pnl.img
-						}
-						img = gnode.data.image
-						
+							img = pnl.img
 						gnode.redrawtext(gnode.data.name,img)
-						graphFunctions.updateNode(gnode.getNodeInfo(),gnode,draw)
 					}
-					if(panelOperation && templatePanel && templatePanel.fireEvents)
-						panelOperation.dispatchEvent(eventSave);
-					panel.style.visibility = 'hidden'
 					break;
 				case "show":
+				console.log("****** Up2DataEdotor *******",datapanels,gnode)
 					currentnode = gnode
-					if(gnode)
-						gnode.data = structuredClone(gnode.saved)
 					if(gnode.data && gnode.data.type)
-						component = panels.find((item:any) => (item.type == gnode.data.type)).component;
+						component = datapanels.find((item:any) => (item.type == gnode.data.type)).component;
 					else
-						component = panels.find((item:any) => (item.type == 'MASTER')).component; 
-					if(panelOperation && templatePanel && templatePanel.fireEvents){
-					    panelOperation.dispatchEvent(eventShow)
-					}
-					panel.style.visibility = 'visible'
+						component = datapanels.find((item:any) => (item.type == 'COMPANY')).component; 
+						panel.style.visibility = 'visible'
 					break;
 				case "visibility":
 					return(panel.style.visibility)
 					break;
 			}
-			// CANCEL OPERATIONS IF PRESENT
-			const operationElement = document.getElementById("class-operations")
-			if(operationElement)
-				operationElement.innerHTML= ''
 			return('OK')
 		}
 
@@ -379,8 +303,6 @@
 	const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 			const menuitems: any[] = [
 				{ name: 'EDIT', image: '/edit.svg', item: null },
-				{ name: 'SUBGRAPH', image: '/SUBGRAPH.svg', item: null },
-				{ name: 'PDF', image: '/PDF2.svg', item: null },
 				{ name: 'EXIT', image: '/close.svg', item: null }
 			]
 			const mwidth = 10
@@ -411,15 +333,6 @@
 							break
 						case 'EXIT':
 							gnode.remove()
-							break
-						case 'PDF':
-							await nodePrintPdf(gnode)
-							break
-						case 'SUBGRAPH':
-							const subgraphdiv = document.getElementById("modal-subgraph-div-id")
-							currentnode=gnode
-							if(subgraphdiv)
-								subgraphdiv.style.display = 'block'
 							break
 					}
 				})
@@ -576,64 +489,22 @@
 	}
 
 
-const onHidePdf = (e:any)=>{
-	const iframe = document.getElementById("pdf-div-id")
-	iframe.style.display = 'none'
-}
 
-const  dataURItoBlob = (dataURI)=>
-{
-    // convert base64/URLEncoded data component to raw binary data held in a string
-    let byteString:any
 
-    if(dataURI.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(dataURI.split(',')[1]);
-    else
-        byteString = unescape(dataURI.split(',')[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-    // write the bytes of the string to a typed array
-    var ia = new Uint8Array(byteString.length);
-    for(var i = 0; i < byteString.length; i++)
-    {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ia], {type: mimeString});
-}
 
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 	</div>
 
-	<div class="pdf-div" id="pdf-div-id">
-		 <input type="image" class= "image-tool-component" src="/EXIT.svg" on:click={onHidePdf} alt="ALT IMAGE" height="30" />
-
-		 <PdfViewer bind:url={pdfUrl} />
-	</div>
+	
 
 <style>
 .editor-container{
 	position:absolute;
 }
-.pdf-div{
-	position:relative;
-	display:none;
-	justify-content: center;
-	text-align: right ;
-	max-width:100vw;
-	max-height:30vh;
-	background-color: #ffffff;
-	/*z-index: 100;*/
-}
 
-.pdf-div input{
-	margin-bottom:20px;
-}
 
 </style>

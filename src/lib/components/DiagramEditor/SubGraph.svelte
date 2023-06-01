@@ -2,7 +2,7 @@
 
 import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
-import gnode from "./classes/gnode"
+//import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
@@ -14,8 +14,10 @@ export let node:any
 export let graphtype = 'DAG'
 export let bgcolor ="#d5e8d4"
 export let color = "#007d35"
+export let contextname = "context-menu"
 
 let modal:any
+let contextmenu:any
 let draw:any
 let rect:any
 let subgraph:any = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
@@ -99,7 +101,6 @@ subgraph.clear = graphClear
 
 // NODE MENU BUILDER
 const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
-	    console.log("*** LOCAL MENU BUILD *****")
 		const menuitems: any[] = [
 			{ name: 'EDIT', image: '/edit.svg', item: null },
 			{ name: 'EXIT', image: '/close.svg', item: null }
@@ -133,6 +134,7 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 
 onMount(async ()=>{
 	modal = document.getElementById("modal-subgraph-div-id")
+	contextmenu = document.getElementById(contextname)
 	let draggable = (await import("@svgdotjs/svg.draggable.js")); 
 	let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
 	// ADDNG LOCAL SVG 
@@ -238,7 +240,7 @@ onMount(async ()=>{
 
 		draw.on("contextmenu", async (ev:any) => {
 			ev.preventDefault()
-			let contextMenu = document.getElementById("context-menu");
+			let contextMenu = document.getElementById(contextname);
 			let mouseX = ev.clientX;
 			let mouseY = ev.clientY;
 			let menuHeight = contextMenu.getBoundingClientRect().height;
@@ -268,12 +270,11 @@ onMount(async ()=>{
           }
           //display the menu
           contextMenu.style.visibility = "visible";
-			console.log("RIGHT MENU CLICKED")
 			
 		})
 
 		draw.on("click", async (ev:any) => {
-			let contextMenu = document.getElementById("context-menu");
+			let contextMenu = document.getElementById(contextname);
 			if(contextMenu){
 				if (!contextMenu.contains(ev.target)) {
 					contextMenu.style.visibility = "hidden";
@@ -303,7 +304,7 @@ const exitEditor = (event:any) =>{
 		</div>
 	</div>
 
-	<ContextMenu {menubuild} graph={subgraph} {draw} />
+	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} />
 
 <style>
 .subgraph-comp-content span{

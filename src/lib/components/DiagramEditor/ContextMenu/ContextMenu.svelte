@@ -5,6 +5,11 @@ import gmenu from "../classes/gmenu"
 export let draw:any
 export let graph:any
 export let menubuild:any
+export let contextname = "context-menu"
+export let menuitems = [
+	{uid:1,id:'context-menu-node',name:'Add Operation'},
+	{uid:2,id:'context-menu-choice',name:'Add Choice'},
+]
 
 let operations:any[] = [
     {uid:1,name:'Dispensing',image:'/DISPENSING.svg'},
@@ -40,7 +45,6 @@ let  nodeoptions:any = {
 let choicedim = 60
 
 const locmenubuild = (x:any,y:any,width:any,height:any,gnode:any) =>{
-	   console.log("*** LOCAL MENU BUILD LOCAL *****")
 		const menuitems: any[] = [
 			{ name: 'EDIT', image: '/edit.svg', item: null },
 			{ name: 'EXIT', image: '/close.svg', item: null }
@@ -84,7 +88,6 @@ let addNode = (ev:any) =>{
 	switch(type){
 		case "context-menu-node":
 		    operation = ev.target.value
-			console.log("**** ADD OPERATION ***", operation)
 			nodeoptions.shapetype = 'RECT'
 			nodeoptions.nnametext="NODE-"+graph.getNodenum()
 			mbuild= menubuild,
@@ -122,32 +125,32 @@ let addNode = (ev:any) =>{
 		...options,
 	}
 	let nd:any
-	console.log("**** CONTEXT MENU NODE *****",mbuild)
 	nd = new gnode(draw,mbuild,graph,null,nopts)
 	
 	nd.draw()
 	graph.addNode(nd.getNodeInfo(),nd,draw)
-	let contextMenu = document.getElementById("context-menu");
+	let contextMenu = document.getElementById(contextname);
 	 contextMenu.style.visibility = "hidden";
 }
 
 
 </script>
 
-<div id="context-menu">
+<div class="context-menu" id="{contextname}">
   <!--select id="context-menu-node" type="sourcedriver" name="select" on:change={addNode}>
 	                <option value=""></option>
 					{#each operations as Operation, index(Operation.uid)}
 						<option value={Operation.name}>{Operation.name}</option>
 					{/each}
  </!--select-->
-  <div class="item" id="context-menu-node" on:click={addNode}>Add Operation</div>
-  <div class="item" id="context-menu-choice" on:click={addNode}>Add Choice</div>
+  {#each menuitems as Menu}
+	  <div class="item" id="{Menu.id}" on:click={addNode}>{Menu.name}</div>
+  {/each}
 </div>
 
 
 <style>
-#context-menu {
+.context-menu {
  background-color: #ffffff;
  box-shadow: 0 0 20px rgba(37, 40, 42, 0.22);
  color: #1f194c;

@@ -1,6 +1,14 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\routes",
+    "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\build",
+    "\\src\\routes\\up2clone\\monitor",
+    "\\src\\routes\\up2data",
+    "\\src\\routes\\up2data\\build"
   ],
+  "SelectedNode": "\\src\\routes\\up2clone\\build\\Up2CloneEditor.svelte",
   "PreviewInSolutionExplorer": false
 }

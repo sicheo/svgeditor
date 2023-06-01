@@ -2,9 +2,9 @@
   import { navigate } from "svelte-routing";
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import NullComponent from '../../../lib/components/NullComponent.svelte'
+  import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../../lib/components/NullPage.svelte'
+  import Up2DataEditor from './Up2DataEditor.svelte'
  
  
 
@@ -30,19 +30,71 @@ let  onLogoutClick = (e:any)=>{
     navigate("/UP2DATA", {replaceState:true})
 }
 
+// MENU MANAGEMENT
+let graph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
+
+const upload = async ()=>{
+		try{
+			let textFileUrl = null;
+			//const jsontree = await getTreeFile($token,$currentcompany.name)
+			const graphToSave = {nodes:graph.nodes,paths:graph.paths,svg:graph.svg}
+			let fileData = new Blob([JSON.stringify(graphToSave)], {type: 'text/plain'});
+			    if (textFileUrl !== null) {
+					window.URL.revokeObjectURL(textFileUrl);
+				}		
+			textFileUrl = window.URL.createObjectURL(fileData);
+			var a = document.createElement("a");
+			a.href = textFileUrl
+			a.download = 'TEST.json';
+			a.click(); 
+		}catch(error){
+			console.log(error)
+		}
+   }
+
+const menusave = ()=>{ console.log("** MENUSAVE **")}
+const menuload = ()=>{
+}
+const menuimport = ()=>{
+    const element = document.getElementById("file-graph-input")
+    if(element)
+	    element.click()
+}
+const menuexport = ()=>{
+    upload()
+}
+const menuclear = ()=>{
+    if(graph.gnodes && graph.gnodes.length >0){
+		if( graph.gnodes[0]){
+			graph.gnodes[0].remove()
+		}
+	}
+    const panel = document.getElementById("editor-panel")
+    if(panel)
+        panel.style.visibility = 'hidden'
+}
+
+const menufunctions = {
+    menusave: menusave,
+    menuload: menuload,
+    menuimport: menuimport,
+    menuexport: menuexport,
+    menuclear: menuclear
+}
+
 </script>
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_DATA.png" title="UP2CLONE CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_DATA.png" title="UP2DATA CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <NullPage bgcolor="#FFFFFF"/>
+            <InnerTab component={BuildCloneTools} options={menufunctions} {color} {bgcolor}/>
+            <Up2DataEditor bind:graph={graph} menufunctions={menufunctions}/>
         </div>
     </div>
     </div>

@@ -16,9 +16,7 @@ export let color = "#007d35"
 export let bgcolor = "#d5e8d4"
 
 onMount(() => {
-    console.log("IMAGE: ",image)
      const modal = document.getElementById("u2t-main-tab-modal-id")
-     console.log("MOUNT MODAL",modal)
      locit = items
   });
 

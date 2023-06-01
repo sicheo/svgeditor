@@ -28,6 +28,7 @@ export let panelcontroller:any
 export let width = 1200
 export let height = 600
 
+
 export let  nodeoptions:any = {
 				horizontal:true,
 				vertical:false,
@@ -44,6 +45,7 @@ export let component:any = panels.find((item:any) => item.type == 'MASTER').comp
 let drawcurve = false
 let path:any 
 let saved:any
+let contextname = "context-menu"
 
 
 
@@ -153,9 +155,9 @@ onMount(async () => {
 				nodeid:"NODE-"+graph.getNodenum(),
 				nodenum:graph.getNodenum(),
 				nnametext:"PHASE-"+graph.getNodenum(),
-				data:{level:'level0',type:'MASTER',name:''},
+				data:{level:'level0',type:currentnode.type,name:''},
 				imagefile:panels[0].img,
-				ndescrtext: 'MASTER'
+				ndescrtext: currentnode.type
 			}
 			const nopts = {
 				...nodeoptions,
@@ -268,7 +270,7 @@ onMount(async () => {
 	</div>
 	<div class="modal-subgraph-div" id="modal-subgraph-div-id">
 		<div class="modal-subgraph-content" id="modal-subgraph-content-id">
-			<SubGraph bind:node={currentnode}/>
+			<SubGraph bind:node={currentnode} {contextname}/>
 		</div>
 	</div>
 <style>
