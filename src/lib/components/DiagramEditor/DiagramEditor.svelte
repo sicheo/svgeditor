@@ -5,12 +5,16 @@
 
 import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
-import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import {_calcDAttr} from "./classes/gutils"
 import { fly } from 'svelte/transition';
 import TaskEditor from "../TaskEditor/TaskEditor.svelte"
 import SubGraph from "../DiagramEditor/SubGraph.svelte"
+import ContextMenu from './ContextMenu/ContextMenu.svelte'
+import {graphmenuitems} from '../../ustore.js'
+import {getMenuItems} from '../../script/api.js'
+
+
 
 // EXPORTS
 export let graphtype = 'DAG'
@@ -29,13 +33,14 @@ export let width = 1200
 export let height = 600
 
 
-export let  nodeoptions:any = {
+export const  nodeoptions:any = {
 				horizontal:true,
 				vertical:false,
 				shapetype:'RECT',
 				width:120,
 				height:80
 			}
+
 export let panels:any
 export let color = 'Teal'
 export let bgcolor = '#f9f9f9'
@@ -45,10 +50,9 @@ export let component:any = panels.find((item:any) => item.type == 'MASTER').comp
 let drawcurve = false
 let path:any 
 let saved:any
-let contextname = "context-menu"
+let contextname = "context-graph-menu"
+let contextnamesub = "context-subgraph-menu"
 
-
-	{uid:1,id:'context-menu-master-node',name:'Add Master',items:[{ value: 'seven', label: 'Seven',type: 'context-menu-master-node'}]},
 const mainmenuitems: any[] = [
 				{ name: 'SAVE', image: './edit.svg', callback: mainmenusave },
 				{ name: 'LOAD', image: './edit.svg', callback: mainmenuload },
@@ -65,6 +69,11 @@ onMount(async () => {
 		let draggable = (await import("@svgdotjs/svg.draggable.js")); 
 		let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
 		
+		// LOAD MENUITEMS
+		for(let i=0;i<$graphmenuitems.length;i++){
+			const body = await getMenuItems($graphmenuitems[i].id,true)
+			$graphmenuitems[i].items = body.data
+		}
 		
 		let startnode:any
 		let endnode:any
@@ -147,29 +156,49 @@ onMount(async () => {
 			}
 		})
 
-		draw.on("dblclick", async (ev:any) => {
-			const point = draw.point(ev.clientX, ev.clientY)
-			const options = {
-				x:point.x,
-				y:point.y,
-				nodeid:"NODE-"+graph.getNodenum(),
-				nodenum:graph.getNodenum(),
-				nnametext:"PHASE-"+graph.getNodenum(),
-				data:{level:'level0',type:currentnode.type,name:''},
-				imagefile:panels[0].img,
-				ndescrtext: currentnode.type
-			}
-			const nopts = {
-				...nodeoptions,
-				...options,
-			}
-			let nd:any
-			nd = new gnode(draw,menubuild,graph,panelObject,nopts)
-			if (panelObject)
-				panelObject.remove()
-			nd.draw()
-			graph.addNode(nd.getNodeInfo(),nd,draw)
+		draw.on("contextmenu", async (ev:any) => {
+			console.log("**** CONTEXT FIRED BY DIAHRAM EDITOR *****",contextname)
+			ev.preventDefault()
+			let contextMenu = document.getElementById(contextname);
+			let mouseX = ev.clientX;
+			let mouseY = ev.clientY;
+			let menuHeight = contextMenu.getBoundingClientRect().height;
+			let menuWidth = contextMenu.getBoundingClientRect().width;
+			let width = window.innerWidth;
+			let height = window.innerHeight;
+			if (width - mouseX <= 200) {
+            contextMenu.style.borderRadius = "5px 0 5px 5px";
+            contextMenu.style.left = width - menuWidth + "px";
+            contextMenu.style.top = mouseY + "px";
+            //right bottom
+            if (height - mouseY <= 200) {
+              contextMenu.style.top = mouseY - menuHeight + "px";
+              contextMenu.style.borderRadius = "5px 5px 0 5px";
+            }
+          }
+          //left
+          else {
+            contextMenu.style.borderRadius = "0 5px 5px 5px";
+            contextMenu.style.left = mouseX + "px";
+            contextMenu.style.top = mouseY + "px";
+            //left bottom
+            if (height - mouseY <= 200) {
+              contextMenu.style.top = mouseY - menuHeight + "px";
+              contextMenu.style.borderRadius = "5px 5px 5px 0";
+            }
+          }
+          //display the menu
+          contextMenu.style.visibility = "visible";
 			
+		})
+
+		draw.on("click", async (ev:any) => {
+			let contextMenu = document.getElementById(contextname);
+			if(contextMenu){
+				if (!contextMenu.contains(ev.target)) {
+					contextMenu.style.visibility = "hidden";
+				}
+			}
 		})
 
 	});
@@ -208,14 +237,6 @@ onMount(async () => {
 	const panelHide = (event:any) =>{
 		currentnode.shape.attr({stroke:'#008080'})
 		panelcontroller('hide',currentnode,saved)
-	}
-
-	const getOpUid = ()=>{
-		let uid: string|null = '1234'
-		const modal = document.getElementById("modal-editor-div-id");
-		if(modal)
-			uid = modal.getAttribute("data-opuid");
-		return(uid)
 	}
 
 </script>
@@ -270,9 +291,10 @@ onMount(async () => {
 	</div>
 	<div class="modal-subgraph-div" id="modal-subgraph-div-id">
 		<div class="modal-subgraph-content" id="modal-subgraph-content-id">
-			<SubGraph bind:node={currentnode} {contextname}/>
+			<SubGraph bind:node={currentnode} contextname={contextnamesub}/>
 		</div>
 	</div>
+	<ContextMenu {menubuild} graph={graph} {draw} contextname={contextname} menuitems={$graphmenuitems} />
 <style>
 
 .class-div-menu-container {

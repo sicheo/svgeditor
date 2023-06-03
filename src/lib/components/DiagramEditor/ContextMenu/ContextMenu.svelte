@@ -1,39 +1,15 @@
 <script lang="ts">
 import gnode from "../classes/gnode"
 import gmenu from "../classes/gmenu"
+import SelectComponent from "./SelectComponent.svelte"
 
 export let draw:any
 export let graph:any
 export let menubuild:any
 export let contextname = "context-menu"
-export let menuitems = [
-	{uid:1,id:'context-menu-node',name:'Add Operation'},
-	{uid:2,id:'context-menu-choice',name:'Add Choice'},
-]
+export let menuitems = []
 
-let operations:any[] = [
-    {uid:1,name:'Dispensing',image:'/DISPENSING.svg'},
-    {uid:2,name:'Inertization',image:'/REACTION.svg'},
-    {uid:3,name:'Solid Reagents Loading',image:'/WORKUP.svg'},
-    {uid:4,name:'Liquids Loading',image:'/ISOLATION.svg'},
-    {uid:5,name:'Thermoregulation',image:'/CLEANING.svg'},
-    {uid:6,name:'Distillation (vacuum)',image:'/DRYING.svg'},
-    {uid:7,name:'Distillation (atmospheric)',image:'/MILLING.svg'},
-    {uid:8,name:'Vacuum',image:'/DISPENSING.svg'},
-    {uid:9,name:'Pressuriation',image:'/REACTION.svg'},
-    {uid:10,name:'Flush',image:'/WORKUP.svg'},
-    {uid:11,name:'Degasing',image:'/ISOLATION.svg'},
-    {uid:12,name:'Stirring (multistep)',image:'/CLEANING.svg'},
-    {uid:13,name:'Filtration',image:'/DRYING.svg'},
-    {uid:14,name:'Discharge',image:'/MILLING.svg'},
-    {uid:15,name:'Dosing Reagents',image:'/REACTION.svg'},
-    {uid:16,name:'Sampling ',image:'/WORKUP.svg'},
-    {uid:17,name:'Transfer',image:'/ISOLATION.svg'},
-    {uid:18,name:'Recycle',image:'/CLEANING.svg'},
-    {uid:19,name:'Rinse',image:'/DRYING.svg'},
-    {uid:20,name:'Storage',image:'/MILLING.svg'},
-
-]
+let value = new Array(menuitems.length)
 
 let  nodeoptions:any = {
 				horizontal:true,
@@ -84,51 +60,84 @@ const locmenubuild = (x:any,y:any,width:any,height:any,gnode:any) =>{
 let addNode = (ev:any) =>{
 	const type = ev.target.id
 	let mbuild:any
-	let operation:any
-	switch(type){
-		case "context-menu-node":
-		    operation = ev.target.value
-			nodeoptions.shapetype = 'RECT'
-			nodeoptions.nnametext="NODE-"+graph.getNodenum()
-			mbuild= menubuild,
-			nodeoptions.data={level:'level0',type:'TASK',name:''}
-			nodeoptions.ndescrtext= 'OPERATION'
-			nodeoptions.width = 120
-			nodeoptions.height = 50
-			nodeoptions.imagefile = "/TASK.svg"
-			nodeoptions.imgwidth = 15
-			nodeoptions.imgheight = 15
-			break
-		case "context-menu-choice":
-			nodeoptions.shapetype = 'ELLIPSE'
-			//nodeoptions.nnametext="CHOICE-"+graph.getNodenum()
-			mbuild=locmenubuild
-			nodeoptions.nnametext=""
-			nodeoptions.data={level:'level0',type:'CHOICE',name:''}
-			nodeoptions.ndescrtext= 'CHOICE'
-			nodeoptions.width= choicedim
-			nodeoptions.height = choicedim
-			nodeoptions.imagefile = "/CHOICE.svg"
-			nodeoptions.imgwidth = 15
-			nodeoptions.imgheight = 15
-			break
+	let retitem:any
+	for(let i=0; i< value.length;i++){
+		if(value[i] && value[i].type == type)
+			retitem = value[i]
 	}
-	const point = draw.point(ev.clientX, ev.clientY)
-	const options = {
-		x:point.x,
-		y:point.y,
-		nodeid:"NODE-"+graph.getNodenum(),
-		nodenum:graph.getNodenum(),
+	console.log("***** SELECT CHANGED *****",retitem)
+	if(retitem){
+		switch(type){
+			case "context-menu-operation-node":
+				//operation = ev.target.value
+				nodeoptions.shapetype = 'RECT'
+				nodeoptions.nnametext="NODE-"+graph.getNodenum()
+				mbuild= menubuild,
+				nodeoptions.data={level:'level0',type:'TASK',name:retitem.label}
+				nodeoptions.ndescrtext= retitem.label
+				nodeoptions.width = 120
+				nodeoptions.height = 50
+				nodeoptions.imagefile = retitem.image
+				nodeoptions.imgwidth = 15
+				nodeoptions.imgheight = 15
+				break
+			case "context-menu-choice-node":
+				nodeoptions.shapetype = 'ELLIPSE'
+				//nodeoptions.nnametext="CHOICE-"+graph.getNodenum()
+				mbuild=locmenubuild
+				nodeoptions.nnametext=""
+				nodeoptions.data={level:'level0',type:'CHOICE',name:''}
+				nodeoptions.ndescrtext= 'CHOICE'
+				nodeoptions.width= choicedim
+				nodeoptions.height = choicedim
+				nodeoptions.imagefile = "/CHOICE.svg"
+				nodeoptions.imgwidth = 15
+				nodeoptions.imgheight = 15
+				break
+			case "context-menu-master-node":
+				//operation = ev.target.value
+				nodeoptions.shapetype = 'RECT'
+				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
+				mbuild= menubuild,
+				nodeoptions.data={level:'level0',type:'MASTER',name:'MASTER'}
+				nodeoptions.ndescrtext= 'MASTER'
+				nodeoptions.width = 120
+				nodeoptions.height = 80
+				nodeoptions.imagefile = "/MASTER.svg"
+				nodeoptions.imgwidth = 30
+				nodeoptions.imgheight = 30
+				break
+			case "context-menu-phase-node":
+				//operation = ev.target.value
+				nodeoptions.shapetype = 'RECT'
+				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
+				mbuild= menubuild,
+				nodeoptions.data={level:'level1',type:'PHASE',name:retitem.label}
+				nodeoptions.ndescrtext= retitem.label
+				nodeoptions.width = 120
+				nodeoptions.height = 80
+				nodeoptions.imagefile = retitem.image
+				nodeoptions.imgwidth = 30
+				nodeoptions.imgheight = 30
+				break
+		}
+		const point = draw.point(ev.clientX, ev.clientY)
+		const options = {
+			x:point.x,
+			y:point.y,
+			nodeid:"NODE-"+graph.getNodenum(),
+			nodenum:graph.getNodenum(),
+		}
+		const nopts = {
+			...nodeoptions,
+			...options,
+		}
+		let nd:any
+		nd = new gnode(draw,mbuild,graph,null,nopts)
+		console.log("***** SELECT CHANGED DRAWING NEW NODE *****",nd)
+		nd.draw()
+		graph.addNode(nd.getNodeInfo(),nd,draw)
 	}
-	const nopts = {
-		...nodeoptions,
-		...options,
-	}
-	let nd:any
-	nd = new gnode(draw,mbuild,graph,null,nopts)
-	
-	nd.draw()
-	graph.addNode(nd.getNodeInfo(),nd,draw)
 	let contextMenu = document.getElementById(contextname);
 	 contextMenu.style.visibility = "hidden";
 }
@@ -137,36 +146,24 @@ let addNode = (ev:any) =>{
 </script>
 
 <div class="context-menu" id="{contextname}">
-  <!--select id="context-menu-node" type="sourcedriver" name="select" on:change={addNode}>
-	                <option value=""></option>
-					{#each operations as Operation, index(Operation.uid)}
-						<option value={Operation.name}>{Operation.name}</option>
-					{/each}
- </!--select-->
   {#each menuitems as Menu}
-	  <div class="item" id="{Menu.id}" on:click={addNode}>{Menu.name}</div>
+	  <!--div class="item" id="{Menu.id}" on:click={addNode}>{Menu.name}</!--div-->
+	  <SelectComponent bind:value={value[Menu.uid-1]} name={Menu.name} itemId={Menu.id} handleChange={addNode} items={Menu.items}/>
   {/each}
 </div>
 
-
+ 
 <style>
 .context-menu {
  background-color: #ffffff;
  box-shadow: 0 0 20px rgba(37, 40, 42, 0.22);
  color: #1f194c;
- width: 10em;
+ width:18em;
  padding: 0.8em 0.6em;
- font-size: 1rem;
+ font-size: 0.8rem;
  position: fixed;
  visibility: hidden;
+ z-index: 999;
 }
 
-.item {
- padding: 0.3em 1.2em;
-}
-
-.item:hover {
- background-color: rgba(44, 141, 247, 0.2);
- cursor: pointer;
-}
 </style>

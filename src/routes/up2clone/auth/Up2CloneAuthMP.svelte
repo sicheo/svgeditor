@@ -8,9 +8,13 @@ import TextAreaComponent from "../../../lib/components/TaskEditor/TextAreaCompon
 import {getMasters} from '../../../lib/script/api.js'
 
 
+
 let rows = []
+
 onMount(async ()=>{
-   rows = await getMasters()
+   const response = await getMasters(null,true)
+   rows = response.data
+   console.log("****** Up2CloneAuthMP ******",rows)
 
  });
 
@@ -90,31 +94,15 @@ let optionsArray = [
       },
   },
   {
-    key: "product",
-    title: "PRODUCT",
-    value: (v:any) => v.product,
+    key: "status",
+    title: "STATUS",
+    value: (v:any) => v.status,
     sortable: true,
-    filterOptions: (rows:any) => {
-      // use first letter of last_name to generate filter
-      let letrs:any = {}
-      rows.forEach((row:any) => {
-        let letr = row.product.charAt(0)
-        if (letrs[letr] === undefined)
-          letrs[letr] = {
-            name: `${letr.toUpperCase()}`,
-            value: letr.toLowerCase(),
-          }
-      })
-      // fix order
-      letrs = Object.entries(letrs)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(letrs)
-    },
-    filterValue: (v:any) => v.product.charAt(0).toLowerCase(),
+    //renderValue: (v:any) => v.checkType.toUpperCase(),
+    filterOptions: ["AUTH","NOAUTH"],
     renderComponent: {
-        component: InputComponent,
-        props: { typeTag:"product",onInputComponent },
+        component: SelectComponent,
+        props: { typeTag:"status",optionsArray, onSelectComponent },
       },
   },
   {
@@ -146,15 +134,31 @@ let optionsArray = [
       },
   },
   {
-    key: "status",
-    title: "STATUS",
-    //value: (v:any) => v.checkType,
+    key: "product",
+    title: "PRODUCT",
+    value: (v:any) => v.product,
     sortable: true,
-    //renderValue: (v:any) => v.checkType.toUpperCase(),
-    filterOptions: ["AUTH","NOAUTH"],
+    filterOptions: (rows:any) => {
+      // use first letter of last_name to generate filter
+      let letrs:any = {}
+      rows.forEach((row:any) => {
+        let letr = row.product.charAt(0)
+        if (letrs[letr] === undefined)
+          letrs[letr] = {
+            name: `${letr.toUpperCase()}`,
+            value: letr.toLowerCase(),
+          }
+      })
+      // fix order
+      letrs = Object.entries(letrs)
+        .sort()
+        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
+      return Object.values(letrs)
+    },
+    filterValue: (v:any) => v.product.charAt(0).toLowerCase(),
     renderComponent: {
-        component: SelectComponent,
-        props: { typeTag:"status",optionsArray, onSelectComponent },
+        component: InputComponent,
+        props: { typeTag:"product",onInputComponent },
       },
   },
   

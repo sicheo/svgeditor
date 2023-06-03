@@ -97,7 +97,7 @@ export default class gnode {
     }
 
     public draw() {
-
+        console.log("++++++ DRAWING +++++++")
         this.node = this._draw.nested()
         this.node.id(this.nodeid)
         // BUILD SHAPE

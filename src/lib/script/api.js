@@ -112,7 +112,7 @@ export const getMasters = async function (options, mock = false) {
         const body = {
             type: "api",
             version: 1.0,
-            command: "login",
+            command: "getMasters",
             options: options
         }
         if (!mock) {
@@ -126,6 +126,32 @@ export const getMasters = async function (options, mock = false) {
                 })
         } else {
             resolve(mocks.getMasters(body))
+        }
+    })
+}
+
+export const getMenuItems = async function (menu, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMenuItems",
+            options: {
+                menu:menu
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getMenuItems(body))
         }
     })
 }

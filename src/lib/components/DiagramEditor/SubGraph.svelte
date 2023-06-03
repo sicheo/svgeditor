@@ -2,11 +2,13 @@
 
 import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
-//import gnode from "./classes/gnode"
 import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
+import {submenuitems} from '../../ustore.js'
+import {getMenuItems} from '../../script/api.js'
+
 
 
 
@@ -30,6 +32,8 @@ let  nodeoptions:any = {
 				width:120,
 				height:50
 			}
+
+
 
 // MINIMUM NEEDED GRAPH FUNCTIONS
 const graphAddNode = (nodinfo:any,node:any,draw:any) =>{
@@ -133,6 +137,13 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 	}
 
 onMount(async ()=>{
+	// LOAD MENUITEMS
+		for(let i=0;i<$submenuitems.length;i++){
+			const body = await getMenuItems($submenuitems[i].id,true)
+			$submenuitems[i].items = body.data
+		}
+
+
 	modal = document.getElementById("modal-subgraph-div-id")
 	contextmenu = document.getElementById(contextname)
 	let draggable = (await import("@svgdotjs/svg.draggable.js")); 
@@ -239,6 +250,7 @@ onMount(async ()=>{
 		})*/
 
 		draw.on("contextmenu", async (ev:any) => {
+			console.log("**** CONTEXT FIRED BY SUBGRAPH EDITOR *****",contextname)
 			ev.preventDefault()
 			let contextMenu = document.getElementById(contextname);
 			let mouseX = ev.clientX;
@@ -291,6 +303,8 @@ const saveTasks = (e:any)=>{
 }
 const exitEditor = (event:any) =>{
 	subgraph.clear()
+	// CLOSE CONTEXT MENU
+	contextmenu.style.display = "none"
     modal.style.display = "none";
 }
 </script>
@@ -304,7 +318,7 @@ const exitEditor = (event:any) =>{
 		</div>
 	</div>
 
-	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} />
+	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} menuitems={$submenuitems} />
 
 <style>
 .subgraph-comp-content span{

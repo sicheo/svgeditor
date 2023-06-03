@@ -110,9 +110,9 @@ let checkTypeOptions = [
 ]
 
 let checkModeOptions = [
-    {id: 0,name:"NOCHECK"},
-    {id: 1,name:"AUTOMATIC"},
-    {id:2,name:"MANUAL"}
+    {id: 1,name:"NOCHECK"},
+    {id: 2,name:"AUTOMATIC"},
+    {id:3,name:"MANUAL"}
 ]
 
 let optionsArray = [
@@ -356,7 +356,7 @@ const columns = [
   {
     key: "checkType",
     title: "CHECKTYPE",
-    //value: (v:any) => v.checkType,
+    value: (v:any) => v.checkType,
     sortable: true,
     //renderValue: (v:any) => v.checkType.toUpperCase(),
     filterOptions: ["BOOLEAN","ANALOG","STRING"],
@@ -406,10 +406,10 @@ const columns = [
   {
     key: "checkMode",
     title: "CHECKMODE",
-    //value: (v:any) => v.checkMode,
+    value: (v:any) => v.checkMode,
     sortable: true,
     //renderValue: (v:any) => v.checkMode.toUpperCase(),
-    filterOptions: ["AUTOMATIC","MANUAL"],
+    filterOptions: ["NOCHECK","AUTOMATIC","MANUAL"],
      renderComponent: {
         component: SelectComponent,
         props: { typeTag:"checkMode",optionsArray, onSelectComponent },

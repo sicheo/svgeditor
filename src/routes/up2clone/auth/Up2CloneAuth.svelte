@@ -4,7 +4,7 @@
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../../lib/components/NullPage.svelte'
+  import Up2CloneAuthMP from './Up2CloneAuthMP.svelte'
   import {cloneNavigation} from '../../../lib/ustore.js'
  
 
@@ -40,7 +40,7 @@ let  onLogoutClick = (e:any)=>{
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <NullPage bgcolor="#FFFFFF"/>
+            <Up2CloneAuthMP />
         </div>
     </div>
     </div>
