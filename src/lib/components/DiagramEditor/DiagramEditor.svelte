@@ -48,7 +48,7 @@ let saved:any
 let contextname = "context-menu"
 
 
-
+	{uid:1,id:'context-menu-master-node',name:'Add Master',items:[{ value: 'seven', label: 'Seven',type: 'context-menu-master-node'}]},
 const mainmenuitems: any[] = [
 				{ name: 'SAVE', image: './edit.svg', callback: mainmenusave },
 				{ name: 'LOAD', image: './edit.svg', callback: mainmenuload },
