@@ -11,8 +11,8 @@
 
 </script>
     <div class="select-component-class">
-		<Select items={items} id={itemId} bind:value={value}/>
-		<div class="item" id="{itemId}" on:click={handleChange}>{name}</div>
+		<Select items={items} id={itemId} bind:value={value} --font-size="12px" --height="18px" placeholder={name}/>
+		<input type="image" id="{itemId}" class= "item" src="/add.svg" on:click={handleChange} alt="ALT IMAGE" height="30" />
 	</div>
 
 <style>

@@ -6,7 +6,7 @@ import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
-import {submenuitems} from '../../ustore.js'
+//import {submenuitems} from '../../ustore.js'
 import {getMenuItems} from '../../script/api.js'
 
 
@@ -17,6 +17,8 @@ export let graphtype = 'DAG'
 export let bgcolor ="#d5e8d4"
 export let color = "#007d35"
 export let contextname = "context-menu"
+export let submenuoptions:any = []
+
 
 let modal:any
 let contextmenu:any
@@ -138,9 +140,9 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 
 onMount(async ()=>{
 	// LOAD MENUITEMS
-		for(let i=0;i<$submenuitems.length;i++){
-			const body = await getMenuItems($submenuitems[i].id,true)
-			$submenuitems[i].items = body.data
+		for(let i=0;i<submenuoptions.length;i++){
+			const body = await getMenuItems(submenuoptions[i].id,true)
+			submenuoptions[i].items = body.data
 		}
 
 
@@ -250,7 +252,7 @@ onMount(async ()=>{
 		})*/
 
 		draw.on("contextmenu", async (ev:any) => {
-			console.log("**** CONTEXT FIRED BY SUBGRAPH EDITOR *****",contextname)
+			console.log("**** CONTEXT FIRED BY SUBGRAPH EDITOR *****",contextname,ev.clientX,ev.clientY)
 			ev.preventDefault()
 			let contextMenu = document.getElementById(contextname);
 			let mouseX = ev.clientX;
@@ -318,7 +320,7 @@ const exitEditor = (event:any) =>{
 		</div>
 	</div>
 
-	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} menuitems={$submenuitems} />
+	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} menuitems={submenuoptions} />
 
 <style>
 .subgraph-comp-content span{

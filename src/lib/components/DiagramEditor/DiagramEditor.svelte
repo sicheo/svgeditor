@@ -11,7 +11,7 @@ import { fly } from 'svelte/transition';
 import TaskEditor from "../TaskEditor/TaskEditor.svelte"
 import SubGraph from "../DiagramEditor/SubGraph.svelte"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
-import {graphmenuitems} from '../../ustore.js'
+//import {clonegraphmenuitems} from '../../ustore.js'
 import {getMenuItems} from '../../script/api.js'
 
 
@@ -45,6 +45,8 @@ export let panels:any
 export let color = 'Teal'
 export let bgcolor = '#f9f9f9'
 export let component:any = panels.find((item:any) => item.type == 'MASTER').component;
+export let menuoptions:any
+export let submenuoptions:any
 
 
 let drawcurve = false
@@ -70,9 +72,9 @@ onMount(async () => {
 		let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
 		
 		// LOAD MENUITEMS
-		for(let i=0;i<$graphmenuitems.length;i++){
-			const body = await getMenuItems($graphmenuitems[i].id,true)
-			$graphmenuitems[i].items = body.data
+		for(let i=0;i<menuoptions.length;i++){
+			const body = await getMenuItems(menuoptions[i].id,true)
+			menuoptions[i].items = body.data
 		}
 		
 		let startnode:any
@@ -291,10 +293,10 @@ onMount(async () => {
 	</div>
 	<div class="modal-subgraph-div" id="modal-subgraph-div-id">
 		<div class="modal-subgraph-content" id="modal-subgraph-content-id">
-			<SubGraph bind:node={currentnode} contextname={contextnamesub}/>
+			<SubGraph bind:node={currentnode} contextname={contextnamesub} {submenuoptions}/>
 		</div>
 	</div>
-	<ContextMenu {menubuild} graph={graph} {draw} contextname={contextname} menuitems={$graphmenuitems} />
+	<ContextMenu {menubuild} graph={graph} {draw} contextname={contextname} menuitems={menuoptions} />
 <style>
 
 .class-div-menu-container {

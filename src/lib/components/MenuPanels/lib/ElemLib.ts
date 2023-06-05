@@ -31,7 +31,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     editElement.setAttribute('width', '20');
     editElement.setAttribute('height', '20');
     editElement.id = "EDIT_" + elem.uid
-    editElement.addEventListener('click', (e: any) => { onEdit(e, optype,modalTag) })
+    editElement.addEventListener('click', (e: any) => { onEdit(e, optype, modalTag) })
     tooldiv.appendChild(editElement);
     opdiv.appendChild(tooldiv);
 
@@ -43,7 +43,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     delElement.setAttribute('width', '20');
     delElement.setAttribute('height', '20');
     delElement.id = "DELETE_" + elem.uid
-    delElement.addEventListener('click', (e: any) => { onDelete(e,node,optype) })
+    delElement.addEventListener('click', (e: any) => { onDelete(e, node, optype) })
     tooldiv.appendChild(delElement);
     opdiv.appendChild(tooldiv);
 
@@ -55,7 +55,7 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
     upArrowElement.setAttribute('width', '20');
     upArrowElement.setAttribute('height', '20');
     upArrowElement.id = "MOVEUP_" + elem.uid
-    upArrowElement.addEventListener('click', (e: any) => { onMoveUp(e, array, divname, node, optype,modalTag) })
+    upArrowElement.addEventListener('click', (e: any) => { onMoveUp(e, array, divname, node, optype, modalTag) })
     tooldiv.appendChild(upArrowElement);
     opdiv.appendChild(tooldiv);
 
@@ -95,13 +95,13 @@ export function addElement(elem: any, array: any, divname: any, node: any, optyp
 
     opcontdiv.appendChild(opdiv);
 
-    onAdd(elem,node,optype)
-   
+    onAdd(elem, node, optype)
+
 }
 
 export function moveItem(node: any, to: any, from: any, type: any) {
     let item
-    switch (type) { 
+    switch (type) {
         case "operations":
             item = node.data.operations[from];
             node.data.operations.splice(from, 1);
@@ -120,7 +120,7 @@ export function moveItem(node: any, to: any, from: any, type: any) {
     }
 };
 
-function updateTotals(node:any) {
+function updateTotals(node: any) {
     // UPDATE NUMBER OF ITEMS
     const totals = document.getElementsByClassName("tool-counter")
     for (let i = 0; i < totals.length; i++) {
@@ -144,27 +144,27 @@ function updateTotals(node:any) {
 }
 
 function onAdd(elem: any, node: any, type: any) {
-    
 
-    if (dataArrayIsNull(node,type))
-        dataArrayInit(node,type)
 
-    const found = dataArrayFind(node,elem.uid,type)
+    if (dataArrayIsNull(node, type))
+        dataArrayInit(node, type)
+
+    const found = dataArrayFind(node, elem.uid, type)
     if (!found) {
         dataArrayPush(node, elem, type)
     }
 
     updateTotals(node)
-    
+
 }
 
-function onEdit(event: any,optype:any,modaltag:string) {
+function onEdit(event: any, optype: any, modaltag: string) {
     const element = event.target
     let id: any
     if (element) {
         id = element.id.split('_')[1]
     }
-    
+
     // OPEN MODAL DIV
     const modal = document.getElementById(modaltag);
     if (modal) {
@@ -174,7 +174,7 @@ function onEdit(event: any,optype:any,modaltag:string) {
     }
 }
 
-function onDelete(event: any, node: any,type:any){
+function onDelete(event: any, node: any, type: any) {
     const element = event.target
     let id: any
     if (element) {
@@ -191,7 +191,7 @@ function onDelete(event: any, node: any,type:any){
     }
 }
 
-function onMoveUp(event: any, array: any, divname: any, node: any, type:any,modalTag: any = 'modal-editor-div-id') {
+function onMoveUp(event: any, array: any, divname: any, node: any, type: any, modalTag: any = 'modal-editor-div-id') {
     const element = event.target
     let id: any
     if (element) {
@@ -199,12 +199,12 @@ function onMoveUp(event: any, array: any, divname: any, node: any, type:any,moda
 
         const index = dataArrayFindIndex(node, id, type)
         if (index > 0)
-            node = moveItem(node, index - 1, index,type)
-        drawOperations(array, divname, node, type,modalTag)
+            node = moveItem(node, index - 1, index, type)
+        drawOperations(array, divname, node, type, modalTag)
     }
 }
 
-function onMoveDown(event: any, array: any, divname: any, node: any, type:any, modalTag: any = 'modal-editor-div-id') {
+function onMoveDown(event: any, array: any, divname: any, node: any, type: any, modalTag: any = 'modal-editor-div-id') {
     const element = event.target
     let id: any
     if (element) {
@@ -212,8 +212,8 @@ function onMoveDown(event: any, array: any, divname: any, node: any, type:any, m
 
         const index = dataArrayFindIndex(node, id, type)
         if (index < dataArrayLength(node, type) - 1)
-            node = moveItem(node, index + 1, index,type)
-        drawOperations(array, divname, node,type,modalTag)
+            node = moveItem(node, index + 1, index, type)
+        drawOperations(array, divname, node, type, modalTag)
     }
 }
 
@@ -223,21 +223,21 @@ function drawOperations(array: any, divname: any, node: any, type: any, modalTag
         const opcontdiv = document.getElementById(divname)
         if (opcontdiv)
             opcontdiv.innerHTML = ''
-        for (let i = 0; i < dataArrayLength(node,type); i++) {
-            const elem = dataArrayGet(node,i,type)
-            addElement(elem, array, divname, node,modalTag)
+        for (let i = 0; i < dataArrayLength(node, type); i++) {
+            const elem = dataArrayGet(node, i, type)
+            addElement(elem, array, divname, node, modalTag)
         }
     }
 }
 
-function onChange(event: any, node: any,type:any) {
+function onChange(event: any, node: any, type: any) {
     const element = event.target
     let id: any
     if (element) {
         id = element.id
         const index = dataArrayFindIndex(node, id, type)
         if (index > -1)
-            dataArrayAssign(node,index,element.value,type)
+            dataArrayAssign(node, index, element.value, type)
 
     }
 }
@@ -252,13 +252,13 @@ function dataArrayFilter(node: any, id: any, type: any) {
             }
             break
         case "machines":
-            if (node.data.machines) { 
+            if (node.data.machines) {
                 retArray = node.data.machines.filter((item: any) => { return (item.uid != id) })
                 node.data.machines = retArray
             }
             break
         case "inputs":
-            if (node.data.inputs) { 
+            if (node.data.inputs) {
                 retArray = node.data.inputs.filter((item: any) => { return (item.uid != id) })
                 node.data.inputs = retArray
             }
@@ -272,15 +272,15 @@ function dataArrayFindIndex(node: any, id: any, type: any) {
     switch (type) {
         case "operations":
             if (node.data.operations)
-            index = node.data.operations.findIndex((item: any) => { return (item.uid == id) })
+                index = node.data.operations.findIndex((item: any) => { return (item.uid == id) })
             break
         case "machines":
             if (node.data.machines)
-            index = node.data.machines.findIndex((item: any) => { return (item.uid == id) })
+                index = node.data.machines.findIndex((item: any) => { return (item.uid == id) })
             break
         case "inputs":
             if (node.data.inputs)
-            index = node.data.inputs.findIndex((item: any) => { return (item.uid == id) })
+                index = node.data.inputs.findIndex((item: any) => { return (item.uid == id) })
             break
     }
     return index
@@ -320,7 +320,7 @@ function dataArrayAssign(node: any, index: any, value: any, type: any) {
 }
 
 function dataArrayGet(node: any, index: any, type: any) {
-    let val:any = null
+    let val: any = null
     switch (type) {
         case "operations":
             val = node.data.operations[index]
@@ -384,7 +384,7 @@ function dataArrayIsNull(node: any, type: any) {
     return isNull
 }
 
-function dataArrayPush(node: any, elem:any, type: any) {
+function dataArrayPush(node: any, elem: any, type: any) {
     switch (type) {
         case "operations":
             if (!node.data.operations)

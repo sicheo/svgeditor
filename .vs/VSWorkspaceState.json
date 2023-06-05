@@ -1,8 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\lib",
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\MenuPanels",
+    "\\src\\lib\\components\\MenuPanels\\lib",
+    "\\src\\routes",
+    "\\src\\routes\\up2clone\\build"
   ],
-  "SelectedNode": "\\src\\lib",
+  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\lib\\ElemLib.ts",
   "PreviewInSolutionExplorer": false
 }

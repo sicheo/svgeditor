@@ -37,7 +37,8 @@ const upload = async ()=>{
 		try{
 			let textFileUrl = null;
 			//const jsontree = await getTreeFile($token,$currentcompany.name)
-			const graphToSave = {nodes:graph.nodes,paths:graph.paths,svg:graph.svg}
+			//const graphToSave = {nodes:graph.nodes,paths:graph.paths,svg:graph.svg}
+            const graphToSave = {nodes:graph.nodes,paths:graph.paths}
 			let fileData = new Blob([JSON.stringify(graphToSave)], {type: 'text/plain'});
 			    if (textFileUrl !== null) {
 					window.URL.revokeObjectURL(textFileUrl);

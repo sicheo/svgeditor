@@ -65,7 +65,7 @@ let addNode = (ev:any) =>{
 		if(value[i] && value[i].type == type)
 			retitem = value[i]
 	}
-	console.log("***** SELECT CHANGED *****",retitem)
+	console.log("***** SELECT CHANGED *****",retitem,ev.clientX,ev.clientY)
 	if(retitem){
 		switch(type){
 			case "context-menu-operation-node":
@@ -73,7 +73,7 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="NODE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:'level0',type:'TASK',name:retitem.label}
+				nodeoptions.data={level:retitem.level,type:'TASK',name:retitem.label, image:retitem.image}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 50
@@ -86,11 +86,11 @@ let addNode = (ev:any) =>{
 				//nodeoptions.nnametext="CHOICE-"+graph.getNodenum()
 				mbuild=locmenubuild
 				nodeoptions.nnametext=""
-				nodeoptions.data={level:'level0',type:'CHOICE',name:''}
-				nodeoptions.ndescrtext= 'CHOICE'
+				nodeoptions.data={level:retitem.level,type:'CHOICE',name:'',image:"/CHOICE.svg"}
+				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width= choicedim
 				nodeoptions.height = choicedim
-				nodeoptions.imagefile = "/CHOICE.svg"
+				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 15
 				nodeoptions.imgheight = 15
 				break
@@ -99,11 +99,11 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:'level0',type:'MASTER',name:'MASTER'}
-				nodeoptions.ndescrtext= 'MASTER'
+				nodeoptions.data={level:retitem.level,type:'MASTER',name:'MASTER',image:"/MASTER.svg"}
+				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 80
-				nodeoptions.imagefile = "/MASTER.svg"
+				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30
 				break
@@ -112,7 +112,20 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:'level1',type:'PHASE',name:retitem.label}
+				nodeoptions.data={level:retitem.level,type:'PHASE',name:retitem.label,image:retitem.image}
+				nodeoptions.ndescrtext= retitem.label
+				nodeoptions.width = 120
+				nodeoptions.height = 80
+				nodeoptions.imagefile = retitem.image
+				nodeoptions.imgwidth = 30
+				nodeoptions.imgheight = 30
+				break
+			case "context-menu-isa-node":
+				//operation = ev.target.value
+				nodeoptions.shapetype = 'RECT'
+				nodeoptions.nnametext="NODE-"+graph.getNodenum()
+				mbuild= menubuild,
+				nodeoptions.data={level:retitem.level,type:retitem.value,name:retitem.label,image:retitem.image}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 80
@@ -134,12 +147,12 @@ let addNode = (ev:any) =>{
 		}
 		let nd:any
 		nd = new gnode(draw,mbuild,graph,null,nopts)
-		console.log("***** SELECT CHANGED DRAWING NEW NODE *****",nd)
 		nd.draw()
 		graph.addNode(nd.getNodeInfo(),nd,draw)
 	}
 	let contextMenu = document.getElementById(contextname);
 	 contextMenu.style.visibility = "hidden";
+	 
 }
 
 

@@ -1,6 +1,7 @@
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 // https://github.com/eKoopmans/html2pdf.js
+// http://pdfmake.org/#/ use TEMPLATES
 
 
 export default class Document {

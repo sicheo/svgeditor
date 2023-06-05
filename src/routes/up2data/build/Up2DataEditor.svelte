@@ -1,17 +1,13 @@
 <script lang="ts">
   // https://loading.io/css/
   import DiagramEditor from '../../../lib/components/DiagramEditor/DiagramEditor.svelte'
-  import CompanyPanel from '../../../lib/components/MenuPanels/CompanyPanel.svelte'
-  import FactoryPanel from '../../../lib/components/MenuPanels/FactoryPanel.svelte'
-  import DepartmentPanel from '../../../lib/components/MenuPanels/DepartmentPanel.svelte'
-  import LinePanel from '../../../lib/components/MenuPanels/LinePanel.svelte'
-  import EquipmentPanel from '../../../lib/components/MenuPanels/EquipmentPanel.svelte'
-  import ControllerPanel from '../../../lib/components/MenuPanels/ControllerPanel.svelte'
   import gnode from "../../../lib/components/DiagramEditor/classes/gnode"
   import gmenu from "../../../lib/components/DiagramEditor/classes/gmenu"
   import gpath from "../../../lib/components/DiagramEditor/classes/gpath"
   import {_calcDAttr} from "../../../lib/components/DiagramEditor/classes/gutils"
   import graphutils from '../../../lib/script/graphutils'
+  import {up2datapanels,clonesubmenuoptions,datagraphmenuoptions} from "../../../lib/ustore.js"
+  
  
 
    
@@ -40,15 +36,10 @@
   const mainmenusave = menufunctions.menusave
   const mainmenuload = menufunctions.menuload
 
- let datapanels = [
-		{type:'COMPANY',component:CompanyPanel,name:'Company',level:'level1',img:'/image-company.svg'},
-		{type:'FACTORY',component:FactoryPanel,name:'Factory',level:'level2',img:'/image-factory.svg'},
-		{type:'DEPARTMENT',component:DepartmentPanel,name:'Department',level:'level3',img:'/image-department.svg'},
-		{type:'LINE',component:LinePanel,name:'Line',level:'level4',img:'/image-line.svg'},
-		{type:'EQUIPMENT',component:EquipmentPanel,name:'Equipment',level:'level5',img:'/image-equipment.svg'},
-		{type:'CONTROLLER',component:ControllerPanel,name:'Controller',level:'level6',img:'/image-controller.svg'},
-	]
 
+ let datapanels = $up2datapanels
+ let menuoptions = $datagraphmenuoptions
+  let submenuoptions = $clonesubmenuoptions
   let component:any = datapanels.find((item:any) => item.type == 'COMPANY').component;
 
   // GRAPH MANIPULATION
@@ -284,7 +275,7 @@
 					}
 					break;
 				case "show":
-				console.log("****** Up2DataEdotor *******",datapanels,gnode)
+				console.log("****** Up2DataEdotor *******",datapanels,gnode.data.type)
 					currentnode = gnode
 					if(gnode.data && gnode.data.type)
 						component = datapanels.find((item:any) => (item.type == gnode.data.type)).component;
@@ -495,7 +486,7 @@
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 	</div>
 

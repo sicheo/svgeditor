@@ -6,45 +6,54 @@ const masters = [
     { uid: 3, description: "Master record product ZZZZZZ", doc: "DOC123", product: "PROD123", authdate: "2023-05-21", status: "AUTH", version: "1.0" }
 ]
 
-const masteritems = [{ value: 'MASTER', label: 'MASTER', image: '/MASTER.svg' }]
+const masteritems = [{ value: 'MASTER', label: 'MASTER', image: '/MASTER.svg',level:'level0' }]
 
 
 let phaseitems = [
-    { value: 'DISPENSING', label: 'DISPENSING', image: '/DISPENSING.svg' },
-    { value: 'REACTION', label: 'REACTION', image: '/REACTION.svg' },
-    { value: 'WORKUP', label: 'WORKUP', image: '/WORKUP.svg' },
-    { value: 'ISOLATION', label: 'ISOLATION', image: '/ISOLATION.svg' },
-    { value: 'CLEANING', label: 'CLEANING', image: '/CLEANING.svg' },
-    { value: 'DRYING', label: 'DRYING', image: '/DRYING.svg' },
-    { value: 'MILLING', label: 'MILLING', image: '/MILLING.svg' },
+    { value: 'DISPENSING', label: 'DISPENSING', image: '/DISPENSING.svg', level: 'level1' },
+    { value: 'REACTION', label: 'REACTION', image: '/REACTION.svg', level: 'level1' },
+    { value: 'WORKUP', label: 'WORKUP', image: '/WORKUP.svg', level: 'level1' },
+    { value: 'ISOLATION', label: 'ISOLATION', image: '/ISOLATION.svg', level: 'level1' },
+{ value: 'CLEANING', label: 'CLEANING', image: '/CLEANING.svg', level: 'level1' },
+    { value: 'DRYING', label: 'DRYING', image: '/DRYING.svg', level: 'level1' },
+    { value: 'MILLING', label: 'MILLING', image: '/MILLING.svg', level: 'level1' },
 ]
 
 let operationitems = [
-    { value: 'Dispensing', label: 'Dispensing', image: '/TASK.svg' },
-    { value: 'Inertization', label: 'Inertization', image: '/TASK.svg' },
-    { value: 'Solid Reagents Loading', label: 'Solid Reagents Loading', image: '/TASK.svg' },
-    { value: 'Liquids Loading', label: 'Liquids Loading', image: '/TASK.svg' },
-    { value: 'Thermoregulation', label: 'Thermoregulation', image: '/TASK.svg' },
-    { value: 'Distillation (vacuum)', label: 'Distillation (vacuum)', image: '/TASK.svg' },
-    { value: 'Distillation (atmospheric)', label: 'Distillation (atmospheric)', image: '/TASK.svg' },
-    { value: 'Vacuum', label: 'Vacuum', image: '/TASK.svg' },
-    { value: 'Pressuriation', label: 'Pressuriation', image: '/TASK.svg' },
-    { value: 'Flush', label: 'Flush', image: '/TASK.svg' },
-    { value: 'Degasing', label: 'Degasing', image: '/TASK.svg' },
-    { value: 'Stirring (multistep)', label: 'Stirring (multistep)', image: '/TASK.svg' },
-    { value: 'Filtration', label: 'Filtration', image: '/TASK.svg' },
-    { value: 'Discharge', label: 'Discharge', image: '/TASK.svg' },
-    { value: 'Dosing Reagents', label: 'Dosing Reagents', image: '/TASK.svg' },
-    { value: 'Sampling', label: 'Sampling', image: '/TASK.svg' },
-    { value: 'Transfer', label: 'Transfer', image: '/TASK.svg' },
-    { value: 'Recycle', label: 'Recycle', image: '/TASK.svg' },
-    { value: 'Rinse', label: 'Rinse', image: '/TASK.svg' },
-    { value: 'Storage', label: 'Storage', image: '/TASK.svg' },
+    { value: 'Dispensing', label: 'Dispensing', image: '/TASK.svg', level: 'level2' },
+    { value: 'Inertization', label: 'Inertization', image: '/TASK.svg', level: 'level2' },
+    { value: 'Solid Reagents Loading', label: 'Solid Reagents Loading', image: '/TASK.svg', level: 'level2' },
+    { value: 'Liquids Loading', label: 'Liquids Loading', image: '/TASK.svg', level: 'level2' },
+    { value: 'Thermoregulation', label: 'Thermoregulation', image: '/TASK.svg', level: 'level2' },
+    { value: 'Distillation (vacuum)', label: 'Distillation (vacuum)', image: '/TASK.svg', level: 'level2' },
+    { value: 'Distillation (atmospheric)', label: 'Distillation (atmospheric)', image: '/TASK.svg', level: 'level2' },
+    { value: 'Vacuum', label: 'Vacuum', image: '/TASK.svg', level: 'level2' },
+    { value: 'Pressuriation', label: 'Pressuriation', image: '/TASK.svg', level: 'level2' },
+    { value: 'Flush', label: 'Flush', image: '/TASK.svg', level: 'level2' },
+    { value: 'Degasing', label: 'Degasing', image: '/TASK.svg', level: 'level2' },
+    { value: 'Stirring (multistep)', label: 'Stirring (multistep)', image: '/TASK.svg', level: 'level2' },
+    { value: 'Filtration', label: 'Filtration', image: '/TASK.svg', level: 'level2' },
+    { value: 'Discharge', label: 'Discharge', image: '/TASK.svg', level: 'level2' },
+    { value: 'Dosing Reagents', label: 'Dosing Reagents', image: '/TASK.svg', level: 'level2' },
+    { value: 'Sampling', label: 'Sampling', image: '/TASK.svg', level: 'level2' },
+    { value: 'Transfer', label: 'Transfer', image: '/TASK.svg', level: 'level2' },
+    { value: 'Recycle', label: 'Recycle', image: '/TASK.svg', level: 'level2' },
+    { value: 'Rinse', label: 'Rinse', image: '/TASK.svg', level: 'level2' },
+    { value: 'Storage', label: 'Storage', image: '/TASK.svg', level: 'level2' },
 
 ]
 
+let isaitems = [
+    { value: 'COMPANY', label: 'COMPANY', image: '/image-company.svg', level: 'level1' },
+    { value: 'FACTORY', label: 'FACTORY', image: '/image-factory.svg', level: 'level2' },
+    { value: 'DEPARTMENT', label: 'DEPARTMENT', image: '/image-department.svg', level: 'level3' },
+    { value: 'LINE', label: 'LINE', image: '/image-line.svg', level: 'level4' },
+    { value: 'EQUIPMENT', label: 'EQUIPMENT', image: '/image-equipment.svg', level: 'level5' },
+    { value: 'CONTROLLER', label: 'CONTROLLER', image: '/image-controller.svg', level: 'level6' },
+]
 
-const choiceitems = [{ label: 'CHOICE', name: 'CHOICE', image: '/CHOICE.svg' }]
+
+const choiceitems = [{ label: 'CHOICE', name: 'CHOICE', image: '/CHOICE.svg', level: 'level2' }]
 
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
@@ -84,6 +93,9 @@ const getMenuItems = (body) => {
             break
         case 'context-menu-choice-node':
             menuitems = choiceitems
+            break
+        case 'context-menu-isa-node':
+            menuitems = isaitems
             break
     }
     for (let i = 0; i < menuitems.length; i++) {

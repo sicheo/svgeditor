@@ -1,22 +1,15 @@
 <script lang="ts">
   // https://loading.io/css/
   import DiagramEditor from '../../../lib/components/DiagramEditor/DiagramEditor.svelte'
-  import PhasePanel from '../../../lib/components/MenuPanels/PhasePanel.svelte'
-  import MRecordPanel from '../../../lib/components/MenuPanels/MRecordPanel.svelte'
   import Templates from '../../../lib/components/DiagramEditor/pdf/templates.js'
   import Document from '../../../lib/components/DiagramEditor/pdf/Document'
   import PdfViewer from '../../../lib/components/DiagramEditor/pdf/PdfViewer.svelte'
-  import CompanyPanel from '../../../lib/components/MenuPanels/CompanyPanel.svelte'
-  import FactoryPanel from '../../../lib/components/MenuPanels/FactoryPanel.svelte'
-  import DepartmentPanel from '../../../lib/components/MenuPanels/DepartmentPanel.svelte'
-  import LinePanel from '../../../lib/components/MenuPanels/LinePanel.svelte'
-  import EquipmentPanel from '../../../lib/components/MenuPanels/EquipmentPanel.svelte'
-  import ControllerPanel from '../../../lib/components/MenuPanels/ControllerPanel.svelte'
   import gnode from "../../../lib/components/DiagramEditor/classes/gnode"
   import gmenu from "../../../lib/components/DiagramEditor/classes/gmenu"
   import gpath from "../../../lib/components/DiagramEditor/classes/gpath"
   import {_calcDAttr} from "../../../lib/components/DiagramEditor/classes/gutils"
   import graphutils from '../../../lib/script/graphutils'
+  import {up2clonepanels,clonesubmenuoptions,clonegraphmenuoptions} from '../../../lib/ustore.js'
  
 
    
@@ -38,11 +31,10 @@
   const mainmenusave = menufunctions.menusave
   const mainmenuload = menufunctions.menuload
 
-  let panels:any [] = [
-	    {type:'MASTER',component:MRecordPanel,name:'Master Node',level:'level0',img:'/MASTER.svg',fireEvents:true},
-	    {type:'PHASE',component:PhasePanel,name:'Phase Node',level:'level1',img:'/DISPENSING.svg',fireEvents:true},
-	]
 
+  let panels = $up2clonepanels
+  let menuoptions = $clonegraphmenuoptions
+  let submenuoptions = $clonesubmenuoptions
   let component:any = panels.find((item:any) => item.type == 'MASTER').component;
 
   // GRAPH MANIPULATION
@@ -302,7 +294,8 @@
 			let eventSave:any
 			let eventHide:any
 			let eventShow:any
-			const panelOperation = document.getElementById("class-operations")
+			let panelOperation = document.getElementById("class-operations")
+			
 
 			const panel = document.querySelector('#editor-panel')
 			let templatePanel:any
@@ -607,7 +600,7 @@ const  dataURItoBlob = (dataURI)=>
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 	</div>
 
