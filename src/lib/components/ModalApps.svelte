@@ -17,7 +17,6 @@ const exit = (e:any)=>{
 
 const changeApp = (e:any)=>{
 	const target = e.target
-	console.log("CHANGE APP",target.id)
 	navigate(target.id, {replaceState:true}) 
 }
 </script>

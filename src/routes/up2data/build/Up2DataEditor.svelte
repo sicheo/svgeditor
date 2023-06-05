@@ -275,7 +275,6 @@
 					}
 					break;
 				case "show":
-				console.log("****** Up2DataEdotor *******",datapanels,gnode.data.type)
 					currentnode = gnode
 					if(gnode.data && gnode.data.type)
 						component = datapanels.find((item:any) => (item.type == gnode.data.type)).component;
@@ -283,12 +282,38 @@
 						component = datapanels.find((item:any) => (item.type == 'COMPANY')).component; 
 						panel.style.visibility = 'visible'
 					break;
+				case "toggle":
+					panelToggle(panel,gnode)
+					break
 				case "visibility":
 					return(panel.style.visibility)
 					break;
 			}
 			return('OK')
 		}
+
+	const panelToggle = (panel:any,gnode:any)=>{
+		switch(panel.style.visibility){
+			case 'visible':
+				panel.style.visibility = 'hidden'
+					if(gnode){
+						let img = 'image-company.svg'
+						const pnl = datapanels.find((item:any)=>(item.type == gnode.data.type))
+						if(pnl)
+							img = pnl.img
+						gnode.redrawtext(gnode.data.name,img)
+					}
+				break;
+			case 'hidden':
+				currentnode = gnode
+				if(gnode.data && gnode.data.type)
+					component = datapanels.find((item:any) => (item.type == gnode.data.type)).component;
+				else
+					component = datapanels.find((item:any) => (item.type == 'COMPANY')).component; 
+					panel.style.visibility = 'visible'
+				break
+		}
+	}
 
 	// NODE MENU BUILDER
 	const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
@@ -313,14 +338,10 @@
 					ev.stopPropagation()
 					switch (menu.menuitems[i].name) {
 						case 'EDIT':
-						    //console.log("*** STROKE ***",gnode.shape.attr('stroke'))
 							// SET STROKE ALTCOLOR
 							gnode.shape.attr({stroke:'#f06'})
-						    panelcontroller("hide",gnode)
-							panelcontroller("show",gnode)
-							//panelObject = createPanel(ev.clientX,ev.clientY,gnode)
+							panelcontroller('toggle',gnode)
 							gnode.menuForeignObject = panelcontroller
-							//panelObject.draw()
 							break
 						case 'EXIT':
 							gnode.remove()
@@ -332,11 +353,9 @@
 		}
 
 	const  readFile = async function(event:any) {
-		//const element = document.getElementById("file-graph-input")
 		const element = event.target
 		if(element){
 			element.onchange = async () => {
-				//console.log("*** FILE ON CHANGE EVENT FIRED ****")
 				const file = element.files[0];
 				const fileContent = await file.text();
 				let graphtml = JSON.parse(fileContent)

@@ -97,7 +97,6 @@ export default class gnode {
     }
 
     public draw() {
-        console.log("++++++ DRAWING +++++++")
         this.node = this._draw.nested()
         this.node.id(this.nodeid)
         // BUILD SHAPE
@@ -133,7 +132,7 @@ export default class gnode {
                 var nnmamelen = this.nnametext.length * (this.fontsize - 3) / 2
                 this.nname = this.node.text(this.nnametext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).fill(this.background).move(this.x + this.width / 2 - nnmamelen, this.y + this.radius / 2)
                 var ndescrtextlen = this.ndescrtext.length * (this.fontsize - 3) / 2
-                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen, this.y + this.height - this.fontsize - this.radius / 2)
+                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height - this.fontsize - this.radius / 2)
                 this.menu = this.menucallback(this.x, this.y, this.width, this.height, this)
                 break;
         }

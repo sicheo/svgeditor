@@ -6,7 +6,6 @@ import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
-//import {submenuitems} from '../../ustore.js'
 import {getMenuItems} from '../../script/api.js'
 
 
@@ -16,7 +15,7 @@ export let node:any
 export let graphtype = 'DAG'
 export let bgcolor ="#d5e8d4"
 export let color = "#007d35"
-export let contextname = "context-menu"
+export let contextname = "context-subgraph-menu"
 export let submenuoptions:any = []
 
 
@@ -227,32 +226,8 @@ onMount(async ()=>{
 			}
 		})
 
-		/*draw.on("dblclick", async (ev:any) => {
-			const point = draw.point(ev.clientX, ev.clientY)
-			const options = {
-				x:point.x,
-				y:point.y,
-				nodeid:"NODE-"+subgraph.getNodenum(),
-				nodenum:subgraph.getNodenum(),
-				nnametext:"NODE-"+subgraph.getNodenum(),
-				data:{level:'level0',type:'TASK',name:''},
-				imagefile:"/TASK.svg",
-				imgwidth: 15,
-				imgheight: 15,
-				ndescrtext: 'OPERATION'
-			}
-			const nopts = {
-				...nodeoptions,
-				...options,
-			}
-			let nd:any
-			nd = new gnode(draw,menubuild,subgraph,null,nopts)
-			nd.draw()
-			subgraph.addNode(nd.getNodeInfo(),nd,draw)
-		})*/
-
+		
 		draw.on("contextmenu", async (ev:any) => {
-			console.log("**** CONTEXT FIRED BY SUBGRAPH EDITOR *****",contextname,ev.clientX,ev.clientY)
 			ev.preventDefault()
 			let contextMenu = document.getElementById(contextname);
 			let mouseX = ev.clientX;
@@ -262,26 +237,26 @@ onMount(async ()=>{
 			let width = window.innerWidth;
 			let height = window.innerHeight;
 			if (width - mouseX <= 200) {
-            contextMenu.style.borderRadius = "5px 0 5px 5px";
-            contextMenu.style.left = width - menuWidth + "px";
-            contextMenu.style.top = mouseY + "px";
-            //right bottom
-            if (height - mouseY <= 200) {
-              contextMenu.style.top = mouseY - menuHeight + "px";
-              contextMenu.style.borderRadius = "5px 5px 0 5px";
-            }
-          }
+				contextMenu.style.borderRadius = "5px 0 5px 5px";
+				contextMenu.style.left = width - menuWidth + "px";
+				contextMenu.style.top = mouseY + "px";
+				//right bottom
+				if (height - mouseY <= 200) {
+				  contextMenu.style.top = mouseY - menuHeight + "px";
+				  contextMenu.style.borderRadius = "5px 5px 0 5px";
+				}
+			}
           //left
-          else {
-            contextMenu.style.borderRadius = "0 5px 5px 5px";
-            contextMenu.style.left = mouseX + "px";
-            contextMenu.style.top = mouseY + "px";
-            //left bottom
-            if (height - mouseY <= 200) {
-              contextMenu.style.top = mouseY - menuHeight + "px";
-              contextMenu.style.borderRadius = "5px 5px 5px 0";
-            }
-          }
+			else {
+				contextMenu.style.borderRadius = "0 5px 5px 5px";
+				contextMenu.style.left = mouseX + "px";
+				contextMenu.style.top = mouseY + "px";
+				//left bottom
+				if (height - mouseY <= 200) {
+				  contextMenu.style.top = mouseY - menuHeight + "px";
+				  contextMenu.style.borderRadius = "5px 5px 5px 0";
+				}
+			}
           //display the menu
           contextMenu.style.visibility = "visible";
 			
@@ -306,14 +281,13 @@ const saveTasks = (e:any)=>{
 const exitEditor = (event:any) =>{
 	subgraph.clear()
 	// CLOSE CONTEXT MENU
-	contextmenu.style.display = "none"
+	contextmenu.style.visibility = "hidden"
     modal.style.display = "none";
 }
 </script>
 
 	<div class="subgraph-comp-content">
 		<span style="--color:{color};">{node.data.name} PHASE OPERATIONS</span>
-		<!--input type="text"  value="{node.data.name}" disabled/--> 
 		<div class="subgraph-comp-tool">
 			<input type="image" src="../SAVE.svg"  on:click={saveTasks} alt="Submit" width="25" height="25" >
 			<input type="image" src="../EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 

@@ -16,7 +16,6 @@ const handleSubmit=(e)=>{
        // CALL LOGN API
        login(userid,password,true)
        .then((res:any) =>{
-           console.log(res.data)
            $role = res.data.role
            $user = userid
            // CONTROL RESULT

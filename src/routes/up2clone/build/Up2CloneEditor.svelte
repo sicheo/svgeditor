@@ -357,6 +357,9 @@
 					}
 					panel.style.visibility = 'visible'
 					break;
+				case 'toggle':
+					panelToggle(panel,gnode,panelOperation,templatePanel,eventHide,eventShow)
+					break
 				case "visibility":
 					return(panel.style.visibility)
 					break;
@@ -367,6 +370,43 @@
 				operationElement.innerHTML= ''
 			return('OK')
 		}
+
+	const panelToggle = (panel:any,gnode:any, panelOperation:any,templatePanel:any,eventHide:any,eventShow:any)=>{
+		let img
+		switch(panel.style.visibility){
+			case 'visible':
+				img = ''
+					if(gnode){
+						gnode.data = structuredClone(gnode.saved)
+						if(!gnode.data.image || gnode.data.image == ''){
+						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
+						if(pnl)
+							gnode.data.image = pnl.img
+						}
+						img = gnode.data.image
+						
+						gnode.redrawtext(gnode.data.name,img)
+						
+					}
+					if(panelOperation && templatePanel && templatePanel.fireEvents)
+						panelOperation.dispatchEvent(eventHide);
+					panel.style.visibility = 'hidden'
+				break;
+			case 'hidden':
+				currentnode = gnode
+					if(gnode)
+						gnode.data = structuredClone(gnode.saved)
+					if(gnode.data && gnode.data.type)
+						component = panels.find((item:any) => (item.type == gnode.data.type)).component;
+					else
+						component = panels.find((item:any) => (item.type == 'MASTER')).component; 
+					if(panelOperation && templatePanel && templatePanel.fireEvents){
+					    panelOperation.dispatchEvent(eventShow)
+					}
+					panel.style.visibility = 'visible'
+				break
+		}
+	}
 
 	// NODE MENU BUILDER
 	const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
@@ -393,14 +433,10 @@
 					ev.stopPropagation()
 					switch (menu.menuitems[i].name) {
 						case 'EDIT':
-						    //console.log("*** STROKE ***",gnode.shape.attr('stroke'))
 							// SET STROKE ALTCOLOR
 							gnode.shape.attr({stroke:'#f06'})
-						    panelcontroller("hide",gnode)
-							panelcontroller("show",gnode)
-							//panelObject = createPanel(ev.clientX,ev.clientY,gnode)
+							panelcontroller("toggle",gnode)
 							gnode.menuForeignObject = panelcontroller
-							//panelObject.draw()
 							break
 						case 'EXIT':
 							gnode.remove()
@@ -421,11 +457,9 @@
 		}
 
 	const  readFile = async function(event:any) {
-		//const element = document.getElementById("file-graph-input")
 		const element = event.target
 		if(element){
 			element.onchange = async () => {
-				//console.log("*** FILE ON CHANGE EVENT FIRED ****")
 				const file = element.files[0];
 				const fileContent = await file.text();
 				let graphtml = JSON.parse(fileContent)

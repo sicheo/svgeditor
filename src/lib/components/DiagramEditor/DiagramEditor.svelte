@@ -11,7 +11,6 @@ import { fly } from 'svelte/transition';
 import TaskEditor from "../TaskEditor/TaskEditor.svelte"
 import SubGraph from "../DiagramEditor/SubGraph.svelte"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
-//import {clonegraphmenuitems} from '../../ustore.js'
 import {getMenuItems} from '../../script/api.js'
 
 
@@ -159,7 +158,6 @@ onMount(async () => {
 		})
 
 		draw.on("contextmenu", async (ev:any) => {
-			console.log("**** CONTEXT FIRED BY DIAHRAM EDITOR *****",contextname)
 			ev.preventDefault()
 			let contextMenu = document.getElementById(contextname);
 			let mouseX = ev.clientX;
@@ -243,19 +241,11 @@ onMount(async () => {
 
 </script>
 	<div class="class-div-editor-container" id="div-graph-menu" >
-		<div class="class-div-menu-container">
-			{#if menuenabled}
-				{#each mainmenuitems as item}
-					<input   type="button" value="{item.name}" on:click={item.callback}>
-				{/each}
-			{/if}
-		</div>
 		<div class="class-div-graph-container" id="div-graph-container" >
 		</div>
 		<div class="class-div-panel-container" id="editor-panel"  transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
 			<div class="class-panel-header" >
 				<div class="class-last-item">
-					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
 					<input type="image" src="/SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
 					 <input type="image" src="/EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 
 				</div>

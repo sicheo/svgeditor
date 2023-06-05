@@ -35,7 +35,6 @@ const openModal = (e:any)=>{
     const element = e.target
     var rect = element.getBoundingClientRect();
     const modal = document.getElementById(modalId)
-    console.log("OPEN MODAL",rect.bottom, rect.right)
     if(modal)
         modal.style.display = "block";    
 }

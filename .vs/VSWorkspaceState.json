@@ -4,11 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\MenuPanels",
-    "\\src\\lib\\components\\MenuPanels\\lib",
+    "\\src\\lib\\components\\DiagramEditor",
+    "\\src\\lib\\components\\DiagramEditor\\classes",
     "\\src\\routes",
-    "\\src\\routes\\up2clone\\build"
+    "\\src\\routes\\up2data"
   ],
-  "SelectedNode": "\\src\\lib\\components\\MenuPanels\\lib\\ElemLib.ts",
+  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\classes\\gnode.ts",
   "PreviewInSolutionExplorer": false
 }

@@ -65,11 +65,9 @@ let addNode = (ev:any) =>{
 		if(value[i] && value[i].type == type)
 			retitem = value[i]
 	}
-	console.log("***** SELECT CHANGED *****",retitem,ev.clientX,ev.clientY)
 	if(retitem){
 		switch(type){
 			case "context-menu-operation-node":
-				//operation = ev.target.value
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="NODE-"+graph.getNodenum()
 				mbuild= menubuild,
@@ -83,7 +81,6 @@ let addNode = (ev:any) =>{
 				break
 			case "context-menu-choice-node":
 				nodeoptions.shapetype = 'ELLIPSE'
-				//nodeoptions.nnametext="CHOICE-"+graph.getNodenum()
 				mbuild=locmenubuild
 				nodeoptions.nnametext=""
 				nodeoptions.data={level:retitem.level,type:'CHOICE',name:'',image:"/CHOICE.svg"}
@@ -95,7 +92,6 @@ let addNode = (ev:any) =>{
 				nodeoptions.imgheight = 15
 				break
 			case "context-menu-master-node":
-				//operation = ev.target.value
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
@@ -108,7 +104,6 @@ let addNode = (ev:any) =>{
 				nodeoptions.imgheight = 30
 				break
 			case "context-menu-phase-node":
-				//operation = ev.target.value
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
@@ -121,7 +116,6 @@ let addNode = (ev:any) =>{
 				nodeoptions.imgheight = 30
 				break
 			case "context-menu-isa-node":
-				//operation = ev.target.value
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="NODE-"+graph.getNodenum()
 				mbuild= menubuild,
@@ -160,7 +154,7 @@ let addNode = (ev:any) =>{
 
 <div class="context-menu" id="{contextname}">
   {#each menuitems as Menu}
-	  <!--div class="item" id="{Menu.id}" on:click={addNode}>{Menu.name}</!--div-->
+		
 	  <SelectComponent bind:value={value[Menu.uid-1]} name={Menu.name} itemId={Menu.id} handleChange={addNode} items={Menu.items}/>
   {/each}
 </div>
@@ -176,7 +170,7 @@ let addNode = (ev:any) =>{
  font-size: 0.8rem;
  position: fixed;
  visibility: hidden;
- z-index: 999;
+ z-index: 9999;
 }
 
 </style>
