@@ -71,7 +71,17 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="NODE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:retitem.level,type:'TASK',name:retitem.label, image:retitem.image}
+				nodeoptions.data={
+					level:retitem.level,
+					type:'TASK',
+					name:retitem.label,
+					image:retitem.image,
+					shape:'RECT',
+					width:120,
+					height:50,
+					imgwidth:15,
+					imgheight:15
+				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 50
@@ -83,7 +93,17 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'ELLIPSE'
 				mbuild=locmenubuild
 				nodeoptions.nnametext=""
-				nodeoptions.data={level:retitem.level,type:'CHOICE',name:'',image:"/CHOICE.svg"}
+				nodeoptions.data={
+					level:retitem.level,
+					type:'CHOICE',
+					name:'CHOICE',
+					image:"/CHOICE.svg",
+					shape:'ELLIPSE',
+					width:choicedim,
+					height:choicedim,
+					imgwidth:15,
+					imgheight:15
+				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width= choicedim
 				nodeoptions.height = choicedim
@@ -95,7 +115,17 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:retitem.level,type:'MASTER',name:'MASTER',image:"/MASTER.svg"}
+				nodeoptions.data={
+					level:retitem.level,
+					type:'MASTER',
+					name:'MASTER',
+					image:"/MASTER.svg",
+					shape:'RECT',
+					width:120,
+					height:80,
+					imgwidth:30,
+					imgheight:30
+				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 80
@@ -107,7 +137,17 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="PHASE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:retitem.level,type:'PHASE',name:retitem.label,image:retitem.image}
+				nodeoptions.data={
+					level:retitem.level,
+					type:'PHASE',
+					name:retitem.label,
+					image:retitem.image,
+					shape:'RECT',
+					width:120,
+					height:80,
+					imgwidth:30,
+					imgheight:30
+				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 80
@@ -119,7 +159,17 @@ let addNode = (ev:any) =>{
 				nodeoptions.shapetype = 'RECT'
 				nodeoptions.nnametext="NODE-"+graph.getNodenum()
 				mbuild= menubuild,
-				nodeoptions.data={level:retitem.level,type:retitem.value,name:retitem.label,image:retitem.image}
+				nodeoptions.data={
+					level:retitem.level,
+					type:retitem.value,
+					name:retitem.label,
+					image:retitem.image,
+					shape:'RECT',
+					width:120,
+					height:80,
+					imgwidth:30,
+					imgheight:30
+				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
 				nodeoptions.height = 80

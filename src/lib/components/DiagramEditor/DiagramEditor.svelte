@@ -12,6 +12,7 @@ import TaskEditor from "../TaskEditor/TaskEditor.svelte"
 import SubGraph from "../DiagramEditor/SubGraph.svelte"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
 import {getMenuItems} from '../../script/api.js'
+import Panel from '../../components/MenuPanels/Panel.svelte'
 
 
 
@@ -243,7 +244,10 @@ onMount(async () => {
 	<div class="class-div-editor-container" id="div-graph-menu" >
 		<div class="class-div-graph-container" id="div-graph-container" >
 		</div>
-		<div class="class-div-panel-container" id="editor-panel"  transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
+		<div class="class-div-panel-container" id="editor-panel" transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
+			<Panel bind:node={currentnode} panelcontroller={panelcontroller} {component}/>
+		</div>
+		<!--div class="class-div-panel-container" id="editor-panel"  transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
 			<div class="class-panel-header" >
 				<div class="class-last-item">
 					<input type="image" src="/SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
@@ -273,7 +277,7 @@ onMount(async () => {
 			
 				<svelte:component this={component} bind:node={currentnode} />
 			
-		</div>
+		</!--div-->
     </div>	
 	<svelte:window on:keydown={handleKeydown}/>
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid='' data-optype=''>
@@ -283,25 +287,25 @@ onMount(async () => {
 	</div>
 	<div class="modal-subgraph-div" id="modal-subgraph-div-id">
 		<div class="modal-subgraph-content" id="modal-subgraph-content-id">
-			<SubGraph bind:node={currentnode} contextname={contextnamesub} {submenuoptions}/>
+			<SubGraph bind:maingraph={graph} bind:node={currentnode} contextname={contextnamesub} {submenuoptions}/>
 		</div>
 	</div>
 	<ContextMenu {menubuild} graph={graph} {draw} contextname={contextname} menuitems={menuoptions} />
 <style>
 
-.class-div-menu-container {
+/*.class-div-menu-container {
   display: flex;
   grid-area: header;
-}
+}*/
 .class-div-graph-container {
   grid-area: graph;
-  width: 80%;
+  width: 100%;
 }
 .class-div-panel-container {
   display:block;
   grid-area: panel;
   max-width: 240 px;
-  border: 1px solid;
+  border: 0.5px solid;
   padding: 6px;
 }
 
@@ -311,10 +315,9 @@ onMount(async () => {
   grid-template-columns: 25% 25% 25% auto;
   grid-template-rows: auto;
   grid-template-areas: 
-    "header header header header"
     "graph  graph graph panel";
 }
-
+/*
 .class-panel-row {
   display: grid;
   grid-template-columns: auto;
@@ -338,7 +341,7 @@ onMount(async () => {
 	float: right;
 	margin-left:180px;
   }
-
+  */
 label {
   display: block;
   /*flex-direction: row;

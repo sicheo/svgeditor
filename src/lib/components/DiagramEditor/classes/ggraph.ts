@@ -5,7 +5,8 @@ import { _calcDAttr } from "./gutils"
 
 export default class ggraph {
 
-    graph: any = { nodes: [], paths: [], svg: '', gnodes: [], gpaths: [] }
+    //graph: any = { nodes: [], paths: [], svg: '', gnodes: [], gpaths: [] }
+    graph: any = { nodes: [], paths: [], gnodes: [], gpaths: [] }
     type: any = 'DAG'
     draw: any
     /*menuitems: any[] = [
@@ -26,30 +27,30 @@ export default class ggraph {
     addNode(nodinfo: any, node: any){
         this.graph.nodes.push(nodinfo)
         this.graph.gnodes.push(node)
-        this.graph.svg = this.draw.svg()
+        //this.graph.svg = this.draw.svg()
     }
 
     addPath(pathinfo: any, path: any){
         this.graph.paths.push(pathinfo)
         this.graph.gpaths.push(path)
-        this.graph.svg = this.draw.svg()
+        //this.graph.svg = this.draw.svg()
     }
 
     removeNode(nodeid: any){
         this.graph.gnodes = this.graph.gnodes.filter((item: any) => (item.node.id() != nodeid))
         this.graph.nodes = this.graph.nodes.filter((item: any) => (item.id != nodeid))
-        this.graph.svg = this.draw.svg()
+        //this.graph.svg = this.draw.svg()
         // Chech this
-        if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
-            this.graph.svg = ''
+        //if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
+            //this.graph.svg = ''
     }
 
     removePath(pathid: any){
         this.graph.gpaths = this.graph.gpaths.filter((item: any) => (item.path.id() != pathid))
         this.graph.paths = this.graph.paths.filter((item: any) => (item.id != pathid))
-        this.graph.svg = this.draw.svg()
-        if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
-            this.graph.svg = ''
+        //this.graph.svg = this.draw.svg()
+        //if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
+            //this.graph.svg = ''
     }
 
     getNodenum(){

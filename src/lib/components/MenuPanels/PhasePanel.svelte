@@ -212,7 +212,7 @@ const addOperationEvent = (e:any)=>{
 }
 
 .class-panel-row {
-  display: flex;
+  display: block;
   justify-content:right;
   font-family: Arial, Helvetica, sans-serif;
   font-size: small;
@@ -221,7 +221,7 @@ const addOperationEvent = (e:any)=>{
 label {
   display: block;
   text-align: left;
-  width: 160px;
+  width: 200px;
   /*line-height: 22px;*/
   margin-bottom: 10px;
   margin-left: 3px;

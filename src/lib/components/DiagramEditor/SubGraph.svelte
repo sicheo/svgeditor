@@ -4,6 +4,7 @@ import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
 import gpath from "./classes/gpath"
 import gmenu from "./classes/gmenu"
+ import gnode from "./classes/gnode"
 import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
 import {getMenuItems} from '../../script/api.js'
@@ -17,13 +18,14 @@ export let bgcolor ="#d5e8d4"
 export let color = "#007d35"
 export let contextname = "context-subgraph-menu"
 export let submenuoptions:any = []
+export let maingraph:any
 
 
 let modal:any
 let contextmenu:any
 let draw:any
 let rect:any
-let subgraph:any = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
+let subgraph:any = {nodes:[],paths:[],gnodes:[],gpaths:[]}
 let drawcurve = false
 let path:any 
 let  nodeoptions:any = {
@@ -33,36 +35,37 @@ let  nodeoptions:any = {
 				width:120,
 				height:50
 			}
-
+let subgraphdiv:any
+let graphnode:any
 
 
 // MINIMUM NEEDED GRAPH FUNCTIONS
 const graphAddNode = (nodinfo:any,node:any,draw:any) =>{
 		subgraph.nodes.push(nodinfo)
 		subgraph.gnodes.push(node)
-		subgraph.svg = draw.svg()
+		//subgraph.svg = draw.svg()
 	}
 
 const graphRemoveNode = (nodeid:any,draw:any) => {
 		subgraph.gnodes = subgraph.gnodes.filter((item: any) => (item.node.id() != nodeid))
 		subgraph.nodes = subgraph.nodes.filter((item: any) => (item.id != nodeid))
-        subgraph.svg = draw.svg()
-		if(subgraph.gpaths.length == 0 && subgraph.gnodes.length == 0)
-			 subgraph.svg = ''
+        //subgraph.svg = draw.svg()
+		//if(subgraph.gpaths.length == 0 && subgraph.gnodes.length == 0)
+			 //subgraph.svg = ''
 	}
 
 const graphRemovePath = (pathid:any,draw:any) => {
 	subgraph.gpaths = subgraph.gpaths.filter((item: any) => (item.path.id() != pathid))
     subgraph.paths = subgraph.paths.filter((item: any) => (item.id != pathid))
-    subgraph.svg = draw.svg()
-	if(subgraph.gpaths.length == 0 && subgraph.gnodes.length == 0)
-			subgraph.svg = ''
+    //subgraph.svg = draw.svg()
+	//if(subgraph.gpaths.length == 0 && subgraph.gnodes.length == 0)
+			//subgraph.svg = ''
 }
 
 const graphAddPath = (pathinfo:any,path:any,draw:any) =>{
 		subgraph.paths.push(pathinfo)
 		subgraph.gpaths.push(path)
-		subgraph.svg = draw.svg()
+		//subgraph.svg = draw.svg()
 }
 
 const graphGetNodenum = () =>{
@@ -92,15 +95,276 @@ const graphClear = ()=>{
         panel.style.visibility = 'hidden'
 }
 
-subgraph.addNode = graphAddNode
-subgraph.addPath = graphAddPath
-subgraph.removeNode = graphRemoveNode
-subgraph.removePath = graphRemovePath
-subgraph.getNodenum = graphGetNodenum
-subgraph.getPathnum = graphGetPathnum
-subgraph.clear = graphClear
+const graphGetGraph = ()=>{
+		return subgraph
+	}
 
+const graphRebuildGraph = (graphin:any,opts:any) => {
+	    console.log("********************* IN REBUILD GRAPH ********************",graphin)
+		graphFunctions.clearGraph()
+		let  nodeoptions:any = {
+				horizontal:true,
+				vertical:false,
+				shapetype:'RECT',
+				width:120,
+				height:80
+			}
+		if(opts)
+			nodeoptions = opts
+		for(let i=0;i<graphin.nodes.length;i++){
+			let node = graphin.nodes[i]
+			let panelObject
+			let type = node.data.type
+			let img = node.data.image
+			let gdata = JSON.parse(JSON.stringify(node.data))
+			gdata.type = type
+			const options = {
+				x:node.data.x,
+				y:node.data.y,
+				nodeid:"NODE-"+node.data.uid,
+				nodenum:node.data.uid,
+				nnametext:"PHASE-"+node.data.uid,
+				imagefile:img,
+				ndescrtext: node.data.name,
+				data:gdata
+			}
+			nodeoptions.shapetype = node.data.shape
+			nodeoptions.width = node.data.width
+			nodeoptions.height = node.data.height
+			nodeoptions.imgwidth = node.data.imgwidth
+			nodeoptions.imgheight = node.data.imgheight
+			let nopts = {
+				...nodeoptions,
+				...options,
+			}
+			console.log("++++++ REBUILD ++++++++",nopts)
+			let nd:any
+			nd = new gnode(draw,menubuild,graphFunctions,panelObject,nopts)
+			if (panelObject)
+				panelObject.remove()
+			nd.draw()
+			// ADD EVENT LISTENERS
+			setEventListeners(nd)
+			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
+			//console.log("**** REBUILD GRAPH *****", nd)
+		}
+		// DRAW PATHS
+		for(let i=0;i<graphin.paths.length;i++){
+			let path = graphin.paths[i]
+			const fromName = path.from[0]
+			const toName = path.to[0]
+			// GET FROM AND TO NODE
+			const from = subgraph.gnodes.find((item:any)=>(item.nodeid == fromName))
+			const to = subgraph.gnodes.find((item:any)=>(item.nodeid == toName))
+			// GET THE START SOCKET
+			const sockE = from.socketE
+			const sockN = from.socketN
+			// GET THE END SOCKETS
+			const sockW = to.socketW
+			const sockS = to.socketS
+			if(nodeoptions.horizontal){
+				// DRAW PATH SOCKETE to SOCKETW
+				let rbox = sockE.sock.rbox()
+				const point = draw.point(rbox.x + rbox.w/2 ,rbox.y + rbox.h/2)
+				let rbox1 = sockW.sock.rbox()
+				const point1 = draw.point(rbox1.x + rbox1.w/2 ,rbox1.y + rbox1.h/2)
+				const pathopts = {pathid:path.id,uid:path.uid}
+				const npath = new gpath(draw,graphFunctions,pathopts)
+				const d = 'm'+point.x+' '+point.y+''
+				const pathn = npath.draw(d)
+				pathn.path.attr('id',path.id)
+				pathn.path.fill('none').move(point.x, point.y)
+				pathn.path.stroke({ color: '#f06', width: 2, linecap: 'round', linejoin: 'round' })
+				pathn.addFrom(from)
+				const start ={position:{x:point.x,y:point.y},dir:'right'}
+				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
+				const d1 = _calcDAttr(30,start,end)
+				pathn.path.plot(d1)
+				sockE.addPath(pathn)
+				sockW.addPath(pathn)
+				pathn.addTo(to)
+				graphFunctions.addPath(pathn.getPathInfo(),pathn,draw)
+			}
+			if(nodeoptions.vertical){
+				// DRAW PATH SOCKETN to SOCKETS
+				let rbox = sockS.sock.rbox()
+				const point = draw.point(rbox.x + rbox.w/2 ,rbox.y + rbox.h/2)
+				let rbox1 = sockN.sock.rbox()
+				const point1 = draw.point(rbox1.x + rbox1.w/2 ,rbox1.y + rbox1.h/2)
+				const pathopts = {pathid:path.id,uid:path.uid}
+				const npath = new gpath(draw,graphFunctions,pathopts)
+				const d = 'm'+point.x+' '+point.y+''
+				const pathn = npath.draw(d)
+				pathn.path.attr('id',path.id)
+				pathn.path.fill('none').move(point.x, point.y)
+				pathn.path.stroke({ color: '#f06', width: 2, linecap: 'round', linejoin: 'round' })
+				pathn.addFrom(from)
+				const start ={position:{x:point.x,y:point.y},dir:'right'}
+				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
+				//console.log(start,end)
+				const d1 = _calcDAttr(30,start,end)
+				pathn.path.plot(d1)
+				sockS.addPath(pathn)
+				sockN.addPath(pathn)
+				pathn.addTo(to)
+				graphFunctions.addPath(pathn.getPathInfo(),pathn,draw)
 
+			}
+		}
+	}
+
+const graphUpdateNode = (graph:any, nodinfo:any) =>{
+		const nodeindex = graph.nodes.findIndex((item:any) => { return (item.id == nodinfo.id)})
+		if(nodeindex > -1)
+			graph.nodes[nodeindex] = nodinfo
+	}
+
+const graphFunctions = {
+	addNode : graphAddNode,
+	addPath : graphAddPath,
+	removeNode : graphRemoveNode,
+	removePath : graphRemovePath,
+	getNodenum : graphGetNodenum,
+	getPathnum : graphGetPathnum,
+	clearGraph : graphClear,
+	getGraph : graphGetGraph,
+	rebuildGraph: graphRebuildGraph,
+	updateNode: graphUpdateNode,
+}
+
+const setEventListeners = (node:any) =>{
+		 if (node.vertical == true) {
+            node.socketN.sock.on("mouseover", (ev: any) => {
+                node.socketN.sock.fill(node.altcolor)
+                node.socketN.scale(1.5)
+                node._draw.fire("sockmouseover", { x: ev.clientX, y: ev.clientY, node: node, socket: node.socketN })
+            })
+            node.socketN.sock.on("mouseout", (ev: any) => {
+                if(node.socketN.paths.lemgth == 0)
+                    node.socketN.sock.fill(node.background)
+                node.socketN.scale(1)
+            })
+            node.socketS.sock.on("mouseover", (ev: any) => {
+                node.socketS.sock.fill(node.altcolor)
+                node.socketS.scale(1.5)
+            })
+            node.socketS.sock.on("mouseout", (ev: any) => {
+                if (node.socketS.paths.lemgth == 0)
+                    node.socketS.sock.fill(node.background)
+                node.socketS.scale(1)
+            })
+            node.socketS.sock.on("click", (ev: any) => {
+                ev.stopPropagation()
+                node.socketS.sock.fill(node.altcolor)
+                node._draw.fire("startcurve", { x: ev.clientX, y: ev.clientY, node: node, socket: node.socketS })
+            })
+        }
+        if (node.horizontal == true) {
+            node.socketW.sock.on("mouseover", (ev: any) => {
+                node.socketW.sock.fill(node.altcolor)
+                node.socketW.scale(1.5)
+                node._draw.fire("sockmouseover", { x: ev.clientX, y: ev.clientY, node: node, socket: node.socketW })
+            })
+            node.socketW.sock.on("mouseout", (ev: any) => {
+                if (node.socketW.paths.lemgth == 0)
+                    node.socketW.sock.fill(node.background)
+                node.socketW.scale(1)
+            })
+            node.socketE.sock.on("mouseover", (ev: any) => {
+                node.socketE.sock.fill(node.altcolor)
+                node.socketE.scale(1.5)
+            })
+            node.socketE.sock.on("mouseout", (ev: any) => {
+                if (node.socketE.paths.length == 0)
+                    node.socketE.sock.fill(node.background)
+                node.socketE.scale(1)
+            })
+            node.socketE.sock.on("click", (ev: any) => {
+                ev.stopPropagation()
+                node.socketE.sock.fill(node.altcolor)
+                node._draw.fire("startcurve", { x: ev.clientX, y: ev.clientY, node: node, socket: node.socketE })
+            })
+        }
+
+        if (node.image) {
+            node.image.on("click", (ev: any) => {
+                ev.stopPropagation()
+            })
+        }
+        node.shape.on("click", (ev: any) => {
+            ev.stopPropagation()
+        })
+        if (node.nname) {
+            node.nname.on("click", (ev: any) => {
+                ev.stopPropagation()
+            })
+        }
+        if (node.ndescr) {
+            node.ndescr.on("click", (ev: any) => {
+                ev.stopPropagation()
+            })
+        }
+
+        node.node.on('dragstart', (event: any) => {
+            //console.log("DRAGSTART")
+        })
+
+        node.node.on('dragmove', (event: any) => {
+            // mousemove
+            if (node.horizontal == true) {
+                let rbox = node.socketE.sock.rbox()
+                for (let i = 0; i < node.socketE.paths.length; i++) {
+                    const endp = node.socketE.paths[i].path.pointAt(node.socketE.paths[i].path.length())
+                    const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
+                    const start = { position: { x: point.x, y: point.y }, dir: 'right' }
+                    const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
+                    const d = _calcDAttr(30, start, end)
+                    node.socketE.paths[i].path.plot(d)
+                }
+
+                rbox = node.socketW.sock.rbox()
+                for (let i = 0; i < node.socketW.paths.length; i++) {
+                    const startp = node.socketW.paths[i].path.pointAt(0)
+                    const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
+                    const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
+                    const end = { position: { x: point.x, y: point.y }, dir: 'left' }
+
+                    const d = _calcDAttr(30, start, end)
+                    node.socketW.paths[i].path.plot(d)
+                }
+            }
+            if (node.vertical == true) {
+                let rbox = node.socketS.sock.rbox()
+                for (let i = 0; i < node.socketS.paths.length; i++) {
+                    const endp = node.socketS.paths[i].path.pointAt(node.socketS.paths[i].path.length())
+                    const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
+                    const start = { position: { x: point.x, y: point.y }, dir: 'right' }
+                    const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
+                    const d = _calcDAttr(30, start, end)
+                    node.socketS.paths[i].path.plot(d)
+                }
+
+                rbox = node.socketN.sock.rbox()
+                for (let i = 0; i < node.socketN.paths.length; i++) {
+                    const startp = node.socketN.paths[i].path.pointAt(0)
+                    const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
+                    const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
+                    const end = { position: { x: point.x, y: point.y }, dir: 'left' }
+
+                    const d = _calcDAttr(30, start, end)
+                    node.socketN.paths[i].path.plot(d)
+                }
+            }
+
+        })
+
+        node.node.on('dragend', (event: any) => {
+        })
+        
+        node.node.on('dblclick', (event: any) => {
+            event.stopPropagation()
+        })
+	}
 
 
 
@@ -137,6 +401,13 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 		return(menu)
 	}
 
+const rebuildSubgraph = (ev:any) =>{
+	console.log("***** EVENT TO REBUILD *******",ev.detail)
+	graphnode = ev.detail
+	if(graphnode.node.data.subgraph)
+		graphRebuildGraph(graphnode.node.data.subgraph,null)
+}
+
 onMount(async ()=>{
 	// LOAD MENUITEMS
 		for(let i=0;i<submenuoptions.length;i++){
@@ -167,8 +438,8 @@ onMount(async ()=>{
 			startsock = ev.detail.socket
 			let rbox = startsock.sock.rbox()
 			const point = draw.point(rbox.x + rbox.w/2 ,rbox.y + rbox.h/2)
-			const pathopts = {pathid:"PATH-"+subgraph.getPathnum(),uid:subgraph.getPathnum()}
-			const npath = new gpath(draw,subgraph,pathopts)
+			const pathopts = {pathid:"PATH-"+graphFunctions.getPathnum(),uid:graphFunctions.getPathnum()}
+			const npath = new gpath(draw,graphFunctions,pathopts)
 			const d = 'm'+point.x+' '+point.y+''
 			path = npath.draw(d)
 			path.path.attr('id',pathopts.pathid)
@@ -199,7 +470,7 @@ onMount(async ()=>{
 							startsock.addPath(path)
 							endsock.addPath(path)
 							path.addTo(endnode)
-							subgraph.addPath(path.getPathInfo(),path,draw)
+							graphFunctions.addPath(path.getPathInfo(),path,draw)
 						}
 						break;
 					case 'DAG':
@@ -210,7 +481,7 @@ onMount(async ()=>{
 							startsock.addPath(path)
 							endsock.addPath(path)
 							path.addTo(endnode)
-							subgraph.addPath(path.getPathInfo(),path,draw)
+							graphFunctions.addPath(path.getPathInfo(),path,draw)
 						}
 						break;
 					case "FEEDBACK":
@@ -219,7 +490,7 @@ onMount(async ()=>{
 						startsock.addPath(path)
 						endsock.addPath(path)
 						path.addTo(endnode)
-						subgraph.addPath(path.getPathInfo(),path,draw)
+						graphFunctions.addPath(path.getPathInfo(),path,draw)
 						break;
 
 				}
@@ -271,22 +542,37 @@ onMount(async ()=>{
 			}
 		})
 
+		// ADD EVENT LISTENER
+		 subgraphdiv = document.getElementById("subgraph-comp-content")
+		 if(subgraphdiv){
+            subgraphdiv.addEventListener(
+                "subgraphopen",
+                rebuildSubgraph,
+                false
+             );
+		 }
+
  });
 
 const saveTasks = (e:any)=>{
-	console.log("***** SAVE *****",subgraph)
-	
-	
+	//node.data.subgraph = JSON.parse(JSON.stringify(subgraph))
+	const mg = maingraph.getGraph()
+	console.log("***** TO SAVE *****",mg)
+	graphnode.node.data.subgraph = {nodes:[],paths:[]}
+	graphnode.node.data.subgraph.nodes = JSON.parse(JSON.stringify(subgraph.nodes))
+	graphnode.node.data.subgraph.paths = JSON.parse(JSON.stringify(subgraph.paths))
+	console.log("***** SAVED *****",mg)
 }
+
 const exitEditor = (event:any) =>{
-	subgraph.clear()
+	graphFunctions.clearGraph()
 	// CLOSE CONTEXT MENU
 	contextmenu.style.visibility = "hidden"
     modal.style.display = "none";
 }
 </script>
 
-	<div class="subgraph-comp-content">
+	<div class="subgraph-comp-content" id="subgraph-comp-content">
 		<span style="--color:{color};">{node.data.name} PHASE OPERATIONS</span>
 		<div class="subgraph-comp-tool">
 			<input type="image" src="../SAVE.svg"  on:click={saveTasks} alt="Submit" width="25" height="25" >
@@ -294,7 +580,7 @@ const exitEditor = (event:any) =>{
 		</div>
 	</div>
 
-	<ContextMenu {menubuild} graph={subgraph} {draw} {contextname} menuitems={submenuoptions} />
+	<ContextMenu {menubuild} graph={graphFunctions} {draw} {contextname} menuitems={submenuoptions} />
 
 <style>
 .subgraph-comp-content span{

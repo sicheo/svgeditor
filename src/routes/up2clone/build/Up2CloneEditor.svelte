@@ -42,7 +42,7 @@
 	const graphAddNode = (nodinfo:any,node:any,draw:any) =>{
 		graph.nodes.push(nodinfo)
 		graph.gnodes.push(node)
-		graph.svg = draw.svg()
+		//graph.svg = draw.svg()
 	}
 
 	const graphUpdateNode = (nodinfo:any,node:any,draw:any) =>{
@@ -52,29 +52,29 @@
 		const gnodeindex = graph.gnodes.findIndex((item:any) => { return (item.id == node.id)})
 		if(gnodeindex > -1)
 			graph.gnodes[gnodeindex] = node
-		graph.svg = draw.svg()
+		//graph.svg = draw.svg()
 	}
 
 	const graphAddPath = (pathinfo:any,path:any,draw:any) =>{
 		graph.paths.push(pathinfo)
 		graph.gpaths.push(path)
-		graph.svg = draw.svg()
+		//graph.svg = draw.svg()
 	}
 
 	const graphRemoveNode = (nodeid:any,draw:any) => {
 		graph.gnodes = graph.gnodes.filter((item: any) => (item.node.id() != nodeid))
 		graph.nodes = graph.nodes.filter((item: any) => (item.id != nodeid))
-        graph.svg = draw.svg()
-		if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
-			 graph.svg = ''
+        //graph.svg = draw.svg()
+		//if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
+			 //graph.svg = ''
 	}
 
 	const graphRemovePath = (pathid:any,draw:any) => {
 		graph.gpaths = graph.gpaths.filter((item: any) => (item.path.id() != pathid))
         graph.paths = graph.paths.filter((item: any) => (item.id != pathid))
-        graph.svg = draw.svg()
-		if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
-			 graph.svg = ''
+        //graph.svg = draw.svg()
+		//if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
+			 //graph.svg = ''
 	}
 
 	const graphGetNodenum = () =>{
@@ -358,6 +358,7 @@
 					panel.style.visibility = 'visible'
 					break;
 				case 'toggle':
+					console.log("****** PANEL TOGGLE *******", panel)
 					panelToggle(panel,gnode,panelOperation,templatePanel,eventHide,eventShow)
 					break
 				case "visibility":
@@ -449,6 +450,10 @@
 							currentnode=gnode
 							if(subgraphdiv)
 								subgraphdiv.style.display = 'block'
+							const subdiv = document.getElementById("subgraph-comp-content")
+							const eventSubgraph = new CustomEvent("subgraphopen",{detail: {node: gnode}});
+							if(subdiv)
+								 subdiv.dispatchEvent(eventSubgraph)
 							break
 					}
 				})

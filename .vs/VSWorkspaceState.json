@@ -5,10 +5,10 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\classes",
     "\\src\\routes",
-    "\\src\\routes\\up2data"
+    "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\build"
   ],
-  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\classes\\gnode.ts",
+  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\DiagramEditor.svelte",
   "PreviewInSolutionExplorer": false
 }
