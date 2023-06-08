@@ -93,11 +93,11 @@ onMount(async () => {
 		// PAN ZOOM EVENTS
 
 		draw.on("zoom",(event:any)=>{
-			console.log("**** ZOOM ****",event.detail)
+			//console.log("**** ZOOM ****",event.detail)
 		})
 
 		draw.on("panEnd",(event:any)=>{
-			console.log("**** PAN ****",event.detail)
+			//console.log("**** PAN ****",event.detail)
 		})
 		
 
@@ -121,7 +121,7 @@ onMount(async () => {
 				const point1 = draw.point(ev.clientX,ev.clientY)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				const d = _calcDAttr(30,start,end)
+				const d = _calcDAttr(path.coef,start,end)
 				path.path.plot(d)
 			})
 		})

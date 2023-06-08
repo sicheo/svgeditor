@@ -9,7 +9,7 @@ export let node:any ={
 export let color = "Teal"
        
 onMount(async ()=>{
-      console.log("***** MASTER PANEL ****",node)
+      //console.log("***** MASTER PANEL ****",node)
 
   });
 

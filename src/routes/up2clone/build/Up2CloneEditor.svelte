@@ -189,7 +189,7 @@
 				pathn.addFrom(from)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				const d1 = _calcDAttr(30,start,end)
+				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockE.addPath(pathn)
 				sockW.addPath(pathn)
@@ -213,7 +213,7 @@
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
 				//console.log(start,end)
-				const d1 = _calcDAttr(30,start,end)
+				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
 				sockN.addPath(pathn)
@@ -558,7 +558,7 @@
                     const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketE.paths[i].path.plot(d)
                 }
 
@@ -569,7 +569,7 @@
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketW.paths[i].path.plot(d)
                 }
             }
@@ -580,7 +580,7 @@
                     const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketS.paths[i].path.plot(d)
                 }
 
@@ -591,7 +591,7 @@
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketN.paths[i].path.plot(d)
                 }
             }

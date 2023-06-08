@@ -50,9 +50,8 @@ const upload = async ()=>{
 		}
    }
 
-const menusave = ()=>{ console.log("** MENUSAVE **")}
-const menuload = ()=>{
-}
+const menusave = ()=>{ }
+const menuload = ()=>{ }
 const menuimport = ()=>{
     const element = document.getElementById("file-graph-input")
     if(element)

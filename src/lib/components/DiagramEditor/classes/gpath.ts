@@ -7,6 +7,7 @@ export default class gpath {
     id: any = 'PRANDOM'
     graph: any
     uid = 0
+    coef=30
 
 
     constructor(draw: any, graph:any,options: any = {}) {
@@ -18,6 +19,8 @@ export default class gpath {
             this.id = options.pathid
         if (options.uid)
             this.uid = options.uid
+        if (options.coef)
+            this.coef = options.coef
     }
 
     public draw(d:any) {

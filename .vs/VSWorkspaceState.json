@@ -5,12 +5,11 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\pdf",
     "\\src\\lib\\components\\TaskEditor",
     "\\src\\routes",
     "\\src\\routes\\up2clone",
     "\\src\\routes\\up2clone\\build"
   ],
-  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\DiagramEditor.svelte",
+  "SelectedNode": "\\src\\lib\\components\\DiagramEditor\\SubGraph.svelte",
   "PreviewInSolutionExplorer": false
 }

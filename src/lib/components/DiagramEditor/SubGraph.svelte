@@ -103,7 +103,6 @@ const graphGetGraph = ()=>{
 	}
 
 const graphRebuildGraph = (graphin:any,opts:any) => {
-	    console.log("********************* IN REBUILD GRAPH ********************",graphin)
 		graphFunctions.clearGraph()
 		let  nodeoptions:any = {
 				horizontal:true,
@@ -140,7 +139,6 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 				...nodeoptions,
 				...options,
 			}
-			console.log("++++++ REBUILD ++++++++",nopts)
 			let nd:any
 			nd = new gnode(draw,menubuild,graphFunctions,panelObject,nopts)
 			if (panelObject)
@@ -181,7 +179,7 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 				pathn.addFrom(from)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				const d1 = _calcDAttr(30,start,end)
+				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockE.addPath(pathn)
 				sockW.addPath(pathn)
@@ -205,7 +203,7 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
 				//console.log(start,end)
-				const d1 = _calcDAttr(30,start,end)
+				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
 				sockN.addPath(pathn)
@@ -321,7 +319,7 @@ const setEventListeners = (node:any) =>{
                     const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketE.paths[i].path.plot(d)
                 }
 
@@ -332,7 +330,7 @@ const setEventListeners = (node:any) =>{
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketW.paths[i].path.plot(d)
                 }
             }
@@ -343,7 +341,7 @@ const setEventListeners = (node:any) =>{
                     const point = node._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketS.paths[i].path.plot(d)
                 }
 
@@ -354,7 +352,7 @@ const setEventListeners = (node:any) =>{
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketN.paths[i].path.plot(d)
                 }
             }
@@ -411,7 +409,6 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 	}
 
 const rebuildSubgraph = (ev:any) =>{
-	console.log("***** EVENT TO REBUILD *******",ev.detail)
 	graphnode = ev.detail
 	if(graphnode.node.data.operations)
 		graphRebuildGraph(graphnode.node.data.operations,null)
@@ -462,7 +459,7 @@ onMount(async ()=>{
 				const point1 = draw.point(ev.clientX,ev.clientY)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				const d = _calcDAttr(30,start,end)
+				const d = _calcDAttr(path.coef,start,end)
 				path.path.plot(d)
 			})
 		})
@@ -566,11 +563,9 @@ onMount(async ()=>{
 
 const saveTasks = (e:any)=>{
 	const mg = maingraph.getGraph()
-	console.log("***** TO SAVE *****",mg)
 	graphnode.node.data.operations = {nodes:[],paths:[]}
 	graphnode.node.data.operations.nodes = JSON.parse(JSON.stringify(subgraph.nodes))
 	graphnode.node.data.operations.paths = JSON.parse(JSON.stringify(subgraph.paths))
-	console.log("***** SAVED *****",mg)
 }
 
 const exitEditor = (event:any) =>{

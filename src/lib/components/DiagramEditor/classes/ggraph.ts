@@ -5,15 +5,10 @@ import { _calcDAttr } from "./gutils"
 
 export default class ggraph {
 
-    //graph: any = { nodes: [], paths: [], svg: '', gnodes: [], gpaths: [] }
     graph: any = { nodes: [], paths: [], gnodes: [], gpaths: [] }
     type: any = 'DAG'
     draw: any
-    /*menuitems: any[] = [
-        { name: 'EDIT', image: './edit.svg', item: null },
-        { name: 'SGRAPH', image: './path.svg', item: null },
-        { name: 'EXIT', image: './close.svg', item: null }
-    ]*/
+    
 
     panelcontroller:any = null
 
@@ -21,36 +16,28 @@ export default class ggraph {
         if (graph)
             this.graph = graph
         this.draw = draw
-        //console.log(this.menuitems)
     }
 
     addNode(nodinfo: any, node: any){
         this.graph.nodes.push(nodinfo)
         this.graph.gnodes.push(node)
-        //this.graph.svg = this.draw.svg()
     }
 
     addPath(pathinfo: any, path: any){
         this.graph.paths.push(pathinfo)
         this.graph.gpaths.push(path)
-        //this.graph.svg = this.draw.svg()
     }
 
     removeNode(nodeid: any){
         this.graph.gnodes = this.graph.gnodes.filter((item: any) => (item.node.id() != nodeid))
         this.graph.nodes = this.graph.nodes.filter((item: any) => (item.id != nodeid))
-        //this.graph.svg = this.draw.svg()
-        // Chech this
-        //if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
-            //this.graph.svg = ''
+        
     }
 
     removePath(pathid: any){
         this.graph.gpaths = this.graph.gpaths.filter((item: any) => (item.path.id() != pathid))
         this.graph.paths = this.graph.paths.filter((item: any) => (item.id != pathid))
-        //this.graph.svg = this.draw.svg()
-        //if (this.graph.gpaths.length == 0 && this.graph.gnodes.length == 0)
-            //this.graph.svg = ''
+        
     }
 
     getNodenum(){
@@ -90,10 +77,6 @@ export default class ggraph {
             this.panelcontroller("hide", null)
         }
     }
-
-    /*setMenuitems(menuitems: any[]) {
-        this.menuitems = menuitems
-    }*/
 
     setPanelcontroller(panelcontroller: any) {
         this.panelcontroller = panelcontroller
@@ -190,7 +173,7 @@ export default class ggraph {
                     const point = node._draw.point(rbox.x + rbox.w / 2, rbox.y + rbox.h / 2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketE.paths[i].path.plot(d)
                 }
 
@@ -201,7 +184,7 @@ export default class ggraph {
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketW.paths[i].path.plot(d)
                 }
             }
@@ -212,7 +195,7 @@ export default class ggraph {
                     const point = node._draw.point(rbox.x + rbox.w / 2, rbox.y + rbox.h / 2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketS.paths[i].path.plot(d)
                 }
 
@@ -223,7 +206,7 @@ export default class ggraph {
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(node.coef, start, end)
                     node.socketN.paths[i].path.plot(d)
                 }
             }
@@ -318,7 +301,7 @@ export default class ggraph {
 				pathn.addFrom(from)
 				const start = { position: { x: point.x, y: point.y }, dir: 'right' }
 				const end = { position: { x: point1.x, y: point1.y }, dir: 'left' }
-				const d1 = _calcDAttr(30, start, end)
+                const d1 = _calcDAttr(path.coef, start, end)
 				pathn.path.plot(d1)
 				sockE.addPath(pathn)
 				sockW.addPath(pathn)
@@ -342,7 +325,7 @@ export default class ggraph {
 				const start = { position: { x: point.x, y: point.y }, dir: 'right' }
 				const end = { position: { x: point1.x, y: point1.y }, dir: 'left' }
 				console.log(start, end)
-				const d1 = _calcDAttr(30, start, end)
+				const d1 = _calcDAttr(path.coef, start, end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
 				sockN.addPath(pathn)

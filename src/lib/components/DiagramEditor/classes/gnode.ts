@@ -23,6 +23,7 @@ export default class gnode {
     nodeid = "RANDOM"
     nodenum = 0
     shapetype = "RECT"
+    coef = 30
     // Build Variables
     _draw: any
     shape: any
@@ -36,7 +37,6 @@ export default class gnode {
     ndescr: any
     menu: any
     graph: any
-    //foreignObject: any
     menucallback: any
     menuForeignObject:any
     // DATA
@@ -92,6 +92,8 @@ export default class gnode {
             this.vertical = options.vertical
         if (options.horizontal != undefined)
             this.horizontal = options.horizontal
+        if (options.coef)
+            this.coef = options.coef
         
 
     }
@@ -252,7 +254,7 @@ export default class gnode {
                     const point = this._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(this.coef, start, end)
                     this.socketE.paths[i].path.plot(d)
                 }
 
@@ -263,7 +265,7 @@ export default class gnode {
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(this.coef, start, end)
                     this.socketW.paths[i].path.plot(d)
                 }
             }
@@ -274,7 +276,7 @@ export default class gnode {
                     const point = this._draw.point(rbox.x + rbox.w/2, rbox.y + rbox.h/2)
                     const start = { position: { x: point.x, y: point.y }, dir: 'right' }
                     const end = { position: { x: endp.x, y: endp.y }, dir: 'left' }
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(this.coef, start, end)
                     this.socketS.paths[i].path.plot(d)
                 }
 
@@ -285,7 +287,7 @@ export default class gnode {
                     const start = { position: { x: startp.x, y: startp.y }, dir: 'rigth' }
                     const end = { position: { x: point.x, y: point.y }, dir: 'left' }
 
-                    const d = _calcDAttr(30, start, end)
+                    const d = _calcDAttr(this.coef, start, end)
                     this.socketN.paths[i].path.plot(d)
                 }
             }

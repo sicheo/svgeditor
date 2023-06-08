@@ -20,12 +20,34 @@ let optype:any
 let element:any;
 let operation:any
 let operationname:any
+let operationtype:any
 let phasename:any
 
 
 let rows:any = []
 let component = "SVELTETABLE"
-let optionInputs:any = []
+let optionInputs:any = [
+    {uid:1,name:"PIPPO"},
+    {uid:2,name:"PLUTO"},
+]
+
+const getSourceDestination = (id:any,paths:any,nodes:any)=>{
+    const response = {source:[],destination:[]}
+    for(let i=0;i<paths.length;i++){
+        const path = paths[i]
+        if(path.to == id){
+            const found = nodes.find((item:any) =>{ return (item.id == path.from)})
+            if(found)
+                response.source.push(found)
+        }
+        if(path.from == id){
+            const found = nodes.find((item:any) =>{ return (item.id == path.to)})
+            if(found)
+                response.destination.push(found)
+        }
+    }
+    return response
+}
 
 const mutationCallback = (mutationList:any) =>{
     mutationList.forEach((mutation:any) => {
@@ -39,46 +61,21 @@ const mutationCallback = (mutationList:any) =>{
             switch(optype){
                 case "operations":
                     if(index > -1){
-                        console.log(" ADDING ......",index)
 	                    phasename = node.data.name
 		                operationname = graph.nodes[index].data.name
-                        //if(node.data.operations.nodes[index].data.tasks)
-                             //rows = JSON.parse(JSON.stringify(node.data.operations.nodes[index].data.tasks))
+                        operationtype = graph.nodes[index].data.type
                         if( !graph.nodes[index].data.tasks || graph.nodes[index].data.tasks.length == 0){
                             graph.nodes[index].data.tasks = JSON.parse(JSON.stringify(rows))
                         }
                         else{
                             rows = JSON.parse(JSON.stringify(graph.nodes[index].data.tasks))
                         }
+                        // IF operationname == CHOICE change accordingly
+                        if(operationtype=="CHOICE"){
+                            console.log("*** Operation CHOICE *******",getSourceDestination(graph.nodes[index].id,graph.paths,graph.nodes))
+                        }
                     }
-                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))*/
                     break;
-                /*case "machines":
-                    phasename = node.data.name
-                    if(index > -1){
-		                operationname = node.data.machines[index].name
-                        if( !node.data.machines[index].tasks || node.data.machines[index].tasks.length == 0){
-                            node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
-                        }
-                        else{
-                            rows = JSON.parse(JSON.stringify(node.data.machines[index].tasks))
-                        }
-                    }
-                    optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
-                    break;
-                case "inputs":
-                    phasename = node.data.name
-                    if(index > -1){
-		                operationname = node.data.inputs[index].name
-                        if( !node.data.inputs[index].tasks || node.data.inputs[index].tasks.length == 0){
-                            node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
-                        }
-                        else{
-                            rows = JSON.parse(JSON.stringify(node.data.inputs[index].tasks))
-                        }
-                    }
-                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
-                    break;*/
             }
             break;
         }
@@ -113,10 +110,21 @@ let checkModeOptions = [
     {id:3,name:"MANUAL"}
 ]
 
+let expOps = [
+    {id: 1,name:"EQ"},
+    {id: 2,name:"NEQ"},
+    {id: 3,name:"GT"},
+    {id: 4,name:"GTE"},
+    {id: 5,name:"LT"},
+    {id: 6,name:"LTE"},
+    {id: 7,name:"RANGE"},
+]
+
 let optionsArray = [
     {name: "type", options: typeOptions},
     {name: "checkType", options: checkTypeOptions},
-    {name: "checkMode", options: checkModeOptions}
+    {name: "checkMode", options: checkModeOptions},
+    {name: "expOps", options: expOps}
 ]
 
 
@@ -144,6 +152,9 @@ const onEditButtonClick = (row:any) =>{
     const inputTag = document.getElementById("tag-op-input-"+row.id)
     if(inputTag)
         inputTag.disabled = !inputTag.disabled
+    const selectExpOps = document.getElementById("expOps-op-select-"+row.id)
+    if(selectExpOps)
+        selectExpOps.disabled = !selectExpOps.disabled
     const inputExpected = document.getElementById("expected-op-input-"+row.id)
     if(inputExpected)
         inputExpected.disabled = !inputExpected.disabled
@@ -198,96 +209,45 @@ const exitEditor = (event:any) =>{
      modal.style.display = "none";
 }
 
-const addOption = (event:any) =>{
-		const newoption = { id: rows.length+1, type: "Task", name: "", tag:"", checkType: "BOOLEAN", expected: "",description:"",checkMode:"MANUAL", system:"NA" }
-        rows.push(newoption)
+const addTask = (event:any) =>{
+		const newtask = { id: rows.length+1, type: "Task", name: "", tag:"", checkType: "BOOLEAN", expOps:"EQ",expected: "",description:"",checkMode:"MANUAL", system:"NA" }
+        rows.push(newtask)
         rows = rows
 }
 
-const cloneOption = (event:any) =>{
-	switch(optype){ 
-        case "operations":
-	        optionInputs = JSON.parse(JSON.stringify(node.data.operations))
-            break
-        /*case "machines":
-            optionInputs = JSON.parse(JSON.stringify(node.data.machines))
-            break
-        case "inputs":
-	        optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
-            break*/
-    }
-    component = "SELECTINPUT"
-}
+
 
 const onChangeSelectInput = (e:any)=>{
     const value = e.target.value
-    let found: any
-    switch(optype){ 
-        case "operations":
-	        found= graph.nodes.find((item:any)=>{ return (item.data.uid == value)})
-            break
-        /*case "machines":
-            found= node.data.machines.find((item:any)=>{ return (item.uid == value)})
-            break
-        case "inputs":
-	        found= node.data.inputs.find((item:any)=>{ return (item.uid == value)})
-            break*/
-    }
-    if(found)
-        rows = JSON.parse(JSON.stringify(found.data.tasks))
-    component = "SVELTETABLE"
+    console.log("VALUE",value)
 }
 
-const saveOption = (event:any) =>{
+const saveTask = (event:any) =>{
     let index = -1
     switch(optype){ 
         case "operations":
-            console.log("***** TASKEDITOR NODE SAVE *****",node)
             index = findOperation(node)
             graph.nodes[index].data.tasks = JSON.parse(JSON.stringify(rows))
             break
-        /*case "machines":
-	        index = node.data.machines.findIndex((item:any) => { return (item.uid == opuid)})
-            node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
-            break
-        case "inputs":
-	        index = node.data.inputs.findIndex((item:any) => { return (item.uid == opuid)})
-            node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
-            break*/
     }
     rows = []
     modal.style.display = "none";
 }
 
 // define column configs
-const columns = [
+const opColumns = [
   {
     key: "id",
     title: "ID",
     value: (v:any) => v.id,
     sortable: true,
     selectOnClick:true,
-    /*filterOptions: (rows:any) => {
-      // generate groupings of 0-10, 10-20 etc...
-      let nums:any = {}
-      rows.forEach((row:any) => {
-        let num:any = Math.floor(row.id / 10)
-        if (nums[num] === undefined)
-          nums[num] = { name: `${num * 10} to ${(num + 1) * 10}`, value: num }
-      })
-      // fix order
-      nums = Object.entries(nums)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(nums)
-    },
-    filterValue: (v:any) => Math.floor(v.id / 10),*/
     headerClass: "table-header-class",
   },
   {
     key: "type",
     title: "TYPE",
-    //value: (v:any) => v.type,
+    value: (v:any) => v.type,
     sortable: true,
     //renderValue: (v:any) => v.type.toUpperCase(),
     filterOptions: ["Task","Control"],
@@ -362,6 +322,18 @@ const columns = [
     renderComponent: {
         component: SelectComponent,
         props: { typeTag:"checkType",optionsArray, onSelectComponent },
+      },
+  },
+  {
+    key: "expOps",
+    title: "OP",
+    value: (v:any) => v.expOps,
+    sortable: true,
+    //renderValue: (v:any) => v.checkMode.toUpperCase(),
+    filterOptions: ["EQ","NEQ","GT","GTE","LT","LTE","RANGE"],
+     renderComponent: {
+        component: SelectComponent,
+        props: { typeTag:"expOps",optionsArray, onSelectComponent },
       },
   },
   {
@@ -459,7 +431,6 @@ const columns = [
      let index = -1
      switch(optype){
          case "operations":
-             console.log("***** TASKEDITOR NODE *****",node)
 	         if(currnode.data.operations && currnode.data.operations.nodes)
 		        index = currnode.data.operations.nodes.findIndex((item:any) =>{ return  (item.data.uid == opuid ) })
                 break
@@ -467,6 +438,7 @@ const columns = [
      return index
  }
 
+ let columns = opColumns
 
 </script>
      
@@ -484,17 +456,15 @@ const columns = [
 	            <input type="text" value={operationname} disabled style="color:red;">
             </label>
 				<div class="class-last-item">
-					<!--button on:click={panelcontroller('hide',currentnode)} style = '--color:white;--background-color:{color}; --width:23px; border:0'>&#9932;</button-->
-                    <input type="image" src="../add.svg"  on:click={addOption} alt="Submit" width="25" height="25" > 
-                    <input type="image" src="../CLONE.svg"  on:click={cloneOption} alt="Submit" width="25" height="25" >
-					<input type="image" src="../SAVE.svg"  on:click={saveOption} alt="Submit" width="25" height="25" > 
+					<input type="image" src="../add.svg"  on:click={addTask} alt="Submit" width="25" height="25" > 
+					<input type="image" src="../SAVE.svg"  on:click={saveTask} alt="Submit" width="25" height="25" > 
 					<input type="image" src="../EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
 		
 		<div class= "class-panel-row">
             TASK/CONTROL LIST
-            {#if component == 'SVELTETABLE'}
+            {#if operationname != 'CHOICE'}
                 <SvelteTable columns="{columns}" bind:rows="{rows}"/>
             {:else}
                 <SelectInput bind:optionInputs={optionInputs} onChangeSelectInput={onChangeSelectInput}/>
