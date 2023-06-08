@@ -8,6 +8,8 @@ import gmenu from "./classes/gmenu"
 import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
 import {getMenuItems} from '../../script/api.js'
+import TaskEditor from "../TaskEditor/TaskEditor.svelte"
+
 
 
 
@@ -22,6 +24,7 @@ export let maingraph:any
 
 
 let modal:any
+let taskmodal:any
 let contextmenu:any
 let draw:any
 let rect:any
@@ -389,8 +392,14 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 			})
 			menu.menuitems[i].item.on("click", async (ev: any) => {
 				ev.stopPropagation()
+				const operation = {name:'',uid: null,tasks:null}
 				switch (menu.menuitems[i].name) {
 					case 'EDIT':
+						if (taskmodal) {
+							taskmodal.setAttribute("data-optype", "operations")
+							taskmodal.setAttribute("data-opuid", gnode.data.uid)
+							taskmodal.style.display = "block";
+						}
 						break
 					case 'EXIT':
 						gnode.remove()
@@ -404,8 +413,8 @@ const	menubuild = async (x:any,y:any,width:any,height:any,gnode:any) =>{
 const rebuildSubgraph = (ev:any) =>{
 	console.log("***** EVENT TO REBUILD *******",ev.detail)
 	graphnode = ev.detail
-	if(graphnode.node.data.subgraph)
-		graphRebuildGraph(graphnode.node.data.subgraph,null)
+	if(graphnode.node.data.operations)
+		graphRebuildGraph(graphnode.node.data.operations,null)
 }
 
 onMount(async ()=>{
@@ -417,6 +426,7 @@ onMount(async ()=>{
 
 
 	modal = document.getElementById("modal-subgraph-div-id")
+	taskmodal = document.getElementById("modal-subeditor-div-id")
 	contextmenu = document.getElementById(contextname)
 	let draggable = (await import("@svgdotjs/svg.draggable.js")); 
 	let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
@@ -555,12 +565,11 @@ onMount(async ()=>{
  });
 
 const saveTasks = (e:any)=>{
-	//node.data.subgraph = JSON.parse(JSON.stringify(subgraph))
 	const mg = maingraph.getGraph()
 	console.log("***** TO SAVE *****",mg)
-	graphnode.node.data.subgraph = {nodes:[],paths:[]}
-	graphnode.node.data.subgraph.nodes = JSON.parse(JSON.stringify(subgraph.nodes))
-	graphnode.node.data.subgraph.paths = JSON.parse(JSON.stringify(subgraph.paths))
+	graphnode.node.data.operations = {nodes:[],paths:[]}
+	graphnode.node.data.operations.nodes = JSON.parse(JSON.stringify(subgraph.nodes))
+	graphnode.node.data.operations.paths = JSON.parse(JSON.stringify(subgraph.paths))
 	console.log("***** SAVED *****",mg)
 }
 
@@ -570,13 +579,38 @@ const exitEditor = (event:any) =>{
 	contextmenu.style.visibility = "hidden"
     modal.style.display = "none";
 }
+
+// ***********************
+	// END DRAW GRAPH FUNCTIONS
+	// ***********************
+
+	const handleKeydown = (evt:any) =>{
+		switch(evt.key){
+			case 'Escape':
+				if(drawcurve){
+					drawcurve=false
+					draw.off('mousemove')
+					path.path.remove()
+				}
+				break;
+			default:
+				break
+		}
+	}
 </script>
 
 	<div class="subgraph-comp-content" id="subgraph-comp-content">
-		<span style="--color:{color};">{node.data.name} PHASE OPERATIONS</span>
+		<span style="--color:{color};">{node.data.name} PHASE OPERATIONS EDITOR</span>
 		<div class="subgraph-comp-tool">
 			<input type="image" src="../SAVE.svg"  on:click={saveTasks} alt="Submit" width="25" height="25" >
 			<input type="image" src="../EXIT.svg" on:click={exitEditor} alt="Submit" width="25" height="25"> 
+		</div>
+	</div>
+
+	<svelte:window on:keydown={handleKeydown}/>
+	<div class="modal-editor-div" id="modal-subeditor-div-id" data-opuid='' data-optype=''>
+		<div class="modal-editor-content">
+			<TaskEditor bind:node = {node} bind:graph={subgraph} modalname="modal-subeditor-div-id"/>
 		</div>
 	</div>
 
@@ -590,4 +624,44 @@ const exitEditor = (event:any) =>{
 	display:flex;
 	justify-content: right;
 }
+/* TASK MODAL */
+
+.modal-editor-div {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-editor-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.modal-close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 </style>

@@ -14,9 +14,11 @@ let phaseitems = [
     { value: 'REACTION', label: 'REACTION', image: '/REACTION.svg', level: 'level1' },
     { value: 'WORKUP', label: 'WORKUP', image: '/WORKUP.svg', level: 'level1' },
     { value: 'ISOLATION', label: 'ISOLATION', image: '/ISOLATION.svg', level: 'level1' },
-{ value: 'CLEANING', label: 'CLEANING', image: '/CLEANING.svg', level: 'level1' },
+    { value: 'CLEANING', label: 'CLEANING', image: '/CLEANING.svg', level: 'level1' },
     { value: 'DRYING', label: 'DRYING', image: '/DRYING.svg', level: 'level1' },
     { value: 'MILLING', label: 'MILLING', image: '/MILLING.svg', level: 'level1' },
+    { value: 'DISTILLATION', label: 'DISTILLATION', image: '/DISTILLER.svg', level: 'level1' },
+    { value: 'PACKAGING', label: 'PACKAGING', image: '/PACKAGING.svg', level: 'level1' },
 ]
 
 let operationitems = [

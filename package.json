@@ -25,6 +25,7 @@
     "@svgdotjs/svg.panzoom.js": "^2.1.2",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.29",
+    "pdfmake": "^0.2.7",
     "svelte-select": "^5.6.1",
     "svelte-table": "^0.5.11",
     "uuid": "^9.0.0"

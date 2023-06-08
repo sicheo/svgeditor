@@ -2,6 +2,7 @@
 // https://dev.to/alexboyko/javascript-svg-diagram-editor-39-kb-open-source-library-2eh
 // https://www.sarasoueidan.com/blog/svg-coordinate-systems/
 // https://icons8.com/icons/material-outlined
+// 3D Graphics https://zzz.dog/getting-started
 
 import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
@@ -23,11 +24,10 @@ export let currentnode:any ={data:{type:'MASTER',level:'level1'}}
 export let draw:any
 export let mainmenusave: any = (param:any)=>{}
 export let mainmenuload: any = (param:any)=>{}
-export let  mainmenuimport: any = (param:any)=>{}
-export let  mainmenuexport: any = (param:any)=>{}
-export let  mainmenuclear: any = (param:any)=>{}
+export let mainmenuimport: any = (param:any)=>{}
+export let mainmenuexport: any = (param:any)=>{}
+export let mainmenuclear: any = (param:any)=>{}
 export let menubuild:any = (param:any)=>{}
-export let menuenabled:boolean = false
 export let panelcontroller:any
 export let width = 1200
 export let height = 600
@@ -63,8 +63,6 @@ const mainmenuitems: any[] = [
 				{ name: 'CLEAR', image: './close.svg', callback: mainmenuclear },
 			]
 
-//let menubuild:any
-let panelObject:any
 
 onMount(async () => {  
 		
@@ -86,11 +84,21 @@ onMount(async () => {
 		
 		
 
-		draw = await SVG().addTo('#div-graph-container').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 10, zoomFactor: 0.1 })
+		draw = await SVG().addTo('#div-graph-container').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 20, zoomFactor: 0.1 })
 		draw.id("svg-graph-container")
 		draw.viewbox(0,0,1400,600)
 		
 		let style = draw.style('#svg-graph-container', {border: '1px solid rgba(0, 0, 0, .2)'})
+
+		// PAN ZOOM EVENTS
+
+		draw.on("zoom",(event:any)=>{
+			console.log("**** ZOOM ****",event.detail)
+		})
+
+		draw.on("panEnd",(event:any)=>{
+			console.log("**** PAN ****",event.detail)
+		})
 		
 
 		draw.on("startcurve", (ev:any) => {
@@ -224,60 +232,15 @@ onMount(async () => {
 	}
 
 
-	const setComponent = (event:any) =>{
-		component = panels.find((item:any) => item.type == currentnode.data.type).component;
-	}
-
 	
-
-	const panelSave = (event:any) =>{
-		currentnode.shape.attr({stroke:'#008080'})
-		panelcontroller('save',currentnode,saved)
-	}
-
-	const panelHide = (event:any) =>{
-		currentnode.shape.attr({stroke:'#008080'})
-		panelcontroller('hide',currentnode,saved)
-	}
 
 </script>
 	<div class="class-div-editor-container" id="div-graph-menu" >
 		<div class="class-div-graph-container" id="div-graph-container" >
 		</div>
 		<div class="class-div-panel-container" id="editor-panel" transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
-			<Panel bind:node={currentnode} panelcontroller={panelcontroller} {component}/>
+			<Panel bind:node={currentnode} panelcontroller={panelcontroller} {component} title={currentnode.data.name}/>
 		</div>
-		<!--div class="class-div-panel-container" id="editor-panel"  transition:fly={{x: 250, opacity: 1}} style="visibility:hidden; background-color: {bgcolor};">
-			<div class="class-panel-header" >
-				<div class="class-last-item">
-					<input type="image" src="/SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
-					 <input type="image" src="/EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 
-				</div>
-			</div>
-			<div class= "class-panel-row">
-				<label class= "class-panel-cell">
-					ID
-					<input type="text" name="name"  bind:value={currentnode.nnametext} class="panel-input panel-input-text" disabled>
-				</label>
-			</div>
-			<div class= "class-panel-row" style="border-bottom: 1px solid;">
-				<label class= "class-panel-cell">
-					TYPE
-					<select type="text" name="plant" class="panel-input" bind:value={currentnode.data.type} on:change={setComponent}>
-						{#each panels as Panel}
-							{#if currentnode.data.type == Panel.type}
-								<option value="{Panel.type}" selected>{Panel.name}</option>
-							{:else}
-								<option value="{Panel.type}">{Panel.name}</option>
-							{/if}
-						{/each}
-					</select>
-				</label>
-			</div>	
-			
-				<svelte:component this={component} bind:node={currentnode} />
-			
-		</!--div-->
     </div>	
 	<svelte:window on:keydown={handleKeydown}/>
 	<div class="modal-editor-div" id="modal-editor-div-id" data-opuid='' data-optype=''>
@@ -293,10 +256,7 @@ onMount(async () => {
 	<ContextMenu {menubuild} graph={graph} {draw} contextname={contextname} menuitems={menuoptions} />
 <style>
 
-/*.class-div-menu-container {
-  display: flex;
-  grid-area: header;
-}*/
+
 .class-div-graph-container {
   grid-area: graph;
   width: 100%;
@@ -317,31 +277,7 @@ onMount(async () => {
   grid-template-areas: 
     "graph  graph graph panel";
 }
-/*
-.class-panel-row {
-  display: grid;
-  grid-template-columns: auto;
-  grid-auto-rows: minmax(30px, auto);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: smaller;
-  margin: 5px;
-}
 
-.class-panel-header {
-  display: flex;
-  float: right;
-  grid-template-columns: auto;
-  grid-auto-rows: minmax(30px, auto);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: smaller;
-  margin: 5px;
-}
-
-.class-last-item{
-	float: right;
-	margin-left:180px;
-  }
-  */
 label {
   display: block;
   /*flex-direction: row;

@@ -18,7 +18,7 @@
 
   // ** NEW **//
   let graphtype = "TREE"
-  let currentnode:any ={data:{type:'MASTER',level:'level0',name:''}}
+  let currentnode:any ={data:{type:'MASTER',level:'level0',name:'',params:{},tasks:[]}}
   let draw:any
   let width = 900
   let height = 500
@@ -358,7 +358,6 @@
 					panel.style.visibility = 'visible'
 					break;
 				case 'toggle':
-					console.log("****** PANEL TOGGLE *******", panel)
 					panelToggle(panel,gnode,panelOperation,templatePanel,eventHide,eventShow)
 					break
 				case "visibility":
@@ -639,7 +638,7 @@ const  dataURItoBlob = (dataURI)=>
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component} menuenabled={false} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component}  {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 	</div>
 

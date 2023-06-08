@@ -11,6 +11,8 @@ import SelectInput from "./SelectInput.svelte";
 
 
 export let node:any ={data:{}}
+export let modalname = "modal-editor-div-id"
+export let graph:any
 
 let modal:any
 let opuid:any
@@ -20,17 +22,10 @@ let operation:any
 let operationname:any
 let phasename:any
 
-/*let rows:any = [
-  { id: 1, type: "Task", name: "CLOSE VALVE", tag:"VLV-002-UDC", checkType: "BOOLEAN", expected: "YES",checkMode:"MANUAL", system:"NA" },
-  { id: 2, type: "Control", name : "START T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
-  { id: 3, type: "Control", name : "END T", tag:"T-007-DF",checkType: "ANALOG",expected: "< 35 DEGC",checkMode:"AUTOMATIC", system:"IFIX-001" },
-];*/
 
 let rows:any = []
-let isEntered:boolean = false
 let component = "SVELTETABLE"
 let optionInputs:any = []
-let inputUid: any
 
 const mutationCallback = (mutationList:any) =>{
     mutationList.forEach((mutation:any) => {
@@ -44,18 +39,21 @@ const mutationCallback = (mutationList:any) =>{
             switch(optype){
                 case "operations":
                     if(index > -1){
+                        console.log(" ADDING ......",index)
 	                    phasename = node.data.name
-		                operationname = node.data.operations[index].name
-                        if( !node.data.operations[index].tasks || node.data.operations[index].tasks.length == 0){
-                            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+		                operationname = graph.nodes[index].data.name
+                        //if(node.data.operations.nodes[index].data.tasks)
+                             //rows = JSON.parse(JSON.stringify(node.data.operations.nodes[index].data.tasks))
+                        if( !graph.nodes[index].data.tasks || graph.nodes[index].data.tasks.length == 0){
+                            graph.nodes[index].data.tasks = JSON.parse(JSON.stringify(rows))
                         }
                         else{
-                            rows = JSON.parse(JSON.stringify(node.data.operations[index].tasks))
+                            rows = JSON.parse(JSON.stringify(graph.nodes[index].data.tasks))
                         }
                     }
-                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
+                    //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))*/
                     break;
-                case "machines":
+                /*case "machines":
                     phasename = node.data.name
                     if(index > -1){
 		                operationname = node.data.machines[index].name
@@ -80,7 +78,7 @@ const mutationCallback = (mutationList:any) =>{
                         }
                     }
                     //optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
-                    break;
+                    break;*/
             }
             break;
         }
@@ -89,7 +87,7 @@ const mutationCallback = (mutationList:any) =>{
   });
 }
 onMount(async ()=>{
-   modal = document.getElementById("modal-editor-div-id")
+   modal = document.getElementById(modalname)
 
    const observer = new MutationObserver(mutationCallback);
 
@@ -211,12 +209,12 @@ const cloneOption = (event:any) =>{
         case "operations":
 	        optionInputs = JSON.parse(JSON.stringify(node.data.operations))
             break
-        case "machines":
+        /*case "machines":
             optionInputs = JSON.parse(JSON.stringify(node.data.machines))
             break
         case "inputs":
 	        optionInputs = JSON.parse(JSON.stringify(node.data.inputs))
-            break
+            break*/
     }
     component = "SELECTINPUT"
 }
@@ -226,17 +224,17 @@ const onChangeSelectInput = (e:any)=>{
     let found: any
     switch(optype){ 
         case "operations":
-	        found= node.data.operations.find((item:anu)=>{ return (item.uid == value)})
+	        found= graph.nodes.find((item:any)=>{ return (item.data.uid == value)})
             break
-        case "machines":
-            found= node.data.machines.find((item:anu)=>{ return (item.uid == value)})
+        /*case "machines":
+            found= node.data.machines.find((item:any)=>{ return (item.uid == value)})
             break
         case "inputs":
-	        found= node.data.inputs.find((item:anu)=>{ return (item.uid == value)})
-            break
+	        found= node.data.inputs.find((item:any)=>{ return (item.uid == value)})
+            break*/
     }
     if(found)
-        rows = JSON.parse(JSON.stringify(found.tasks))
+        rows = JSON.parse(JSON.stringify(found.data.tasks))
     component = "SVELTETABLE"
 }
 
@@ -244,17 +242,18 @@ const saveOption = (event:any) =>{
     let index = -1
     switch(optype){ 
         case "operations":
-	        index = node.data.operations.findIndex((item:any) => { return (item.uid == opuid)})
-            node.data.operations[index].tasks = JSON.parse(JSON.stringify(rows))
+            console.log("***** TASKEDITOR NODE SAVE *****",node)
+            index = findOperation(node)
+            graph.nodes[index].data.tasks = JSON.parse(JSON.stringify(rows))
             break
-        case "machines":
+        /*case "machines":
 	        index = node.data.machines.findIndex((item:any) => { return (item.uid == opuid)})
             node.data.machines[index].tasks = JSON.parse(JSON.stringify(rows))
             break
         case "inputs":
 	        index = node.data.inputs.findIndex((item:any) => { return (item.uid == opuid)})
             node.data.inputs[index].tasks = JSON.parse(JSON.stringify(rows))
-            break
+            break*/
     }
     rows = []
     modal.style.display = "none";
@@ -460,16 +459,9 @@ const columns = [
      let index = -1
      switch(optype){
          case "operations":
-	         if(currnode.data.operations)
-		        index = currnode.data.operations.findIndex((item:any) =>{ return  (item.uid == opuid ) })
-                break
-         case "machines":
-            if(currnode.data.machines)
-		        index = currnode.data.machines.findIndex((item:any) =>{ return  (item.uid == opuid ) })
-                break
-        case "inputs":
-            if(currnode.data.inputs)
-		        index = currnode.data.inputs.findIndex((item:any) =>{ return  (item.uid == opuid ) })
+             console.log("***** TASKEDITOR NODE *****",node)
+	         if(currnode.data.operations && currnode.data.operations.nodes)
+		        index = currnode.data.operations.nodes.findIndex((item:any) =>{ return  (item.data.uid == opuid ) })
                 break
      }
      return index

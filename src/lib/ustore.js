@@ -7,6 +7,7 @@ import EquipmentPanel from './components/MenuPanels/EquipmentPanel.svelte'
 import ControllerPanel from './components/MenuPanels/ControllerPanel.svelte'
 import PhasePanel from './components/MenuPanels/PhasePanel.svelte'
 import MRecordPanel from './components/MenuPanels/MRecordPanel.svelte'
+import MasterPanel from './components/MenuPanels/MasterPanel.svelte'
 
 export const role = writable("")
 export const user = writable("")
@@ -49,6 +50,6 @@ export const up2datapanels = writable([
 
 // Panel menu for CLONE
 export const  up2clonepanels = writable([
-    { type: 'MASTER', component: MRecordPanel, name: 'Master Node', level: 'level0', img: '/MASTER.svg', fireEvents: true },
+    { type: 'MASTER', component: MasterPanel, name: 'Master Node', level: 'level0', img: '/MASTER.svg', fireEvents: true },
     { type: 'PHASE', component: PhasePanel, name: 'Phase Node', level: 'level1', img: '/DISPENSING.svg', fireEvents: true },
 ])

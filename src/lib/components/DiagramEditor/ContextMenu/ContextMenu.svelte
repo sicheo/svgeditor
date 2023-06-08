@@ -80,7 +80,9 @@ let addNode = (ev:any) =>{
 					width:120,
 					height:50,
 					imgwidth:15,
-					imgheight:15
+					imgheight:15,
+					params:{},
+					tasks:[]
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
@@ -102,7 +104,8 @@ let addNode = (ev:any) =>{
 					width:choicedim,
 					height:choicedim,
 					imgwidth:15,
-					imgheight:15
+					imgheight:15,
+					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width= choicedim
@@ -124,7 +127,8 @@ let addNode = (ev:any) =>{
 					width:120,
 					height:80,
 					imgwidth:30,
-					imgheight:30
+					imgheight:30,
+					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
@@ -146,7 +150,8 @@ let addNode = (ev:any) =>{
 					width:120,
 					height:80,
 					imgwidth:30,
-					imgheight:30
+					imgheight:30,
+					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120
@@ -168,7 +173,8 @@ let addNode = (ev:any) =>{
 					width:120,
 					height:80,
 					imgwidth:30,
-					imgheight:30
+					imgheight:30,
+					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 120

@@ -293,6 +293,10 @@ export default class gnode {
         })
 
         this.node.on('dragend', (event: any) => {
+            // ADJUST x/y coords
+            this.data.x = event.detail.event.clientX
+            this.data.y = event.detail.event.clientY
+            //console.log("***** DRAGEND ******",this.data.x, this.data.y)
         })
         
         this.node.on('dblclick', (event: any) => {
