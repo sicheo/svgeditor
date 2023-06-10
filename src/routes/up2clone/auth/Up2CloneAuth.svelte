@@ -6,6 +6,7 @@
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneAuthMP from './Up2CloneAuthMP.svelte'
   import {cloneNavigation} from '../../../lib/ustore.js'
+ import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  
 
   let component = 'MainTabTools'
@@ -14,19 +15,13 @@
   
 
   let pages = $cloneNavigation
-  let page = "MONITOR"
+  let page = "AUTHORIZATION"
 
-  let onBuddyClick = (e:any)=>{
-    
-}
+  let onBuddyClick = BuddyClick
 
-let  onSysConfClick = (e:any)=>{
-    
-}
+let  onSysConfClick = SysConfClick
 
-let  onLogoutClick = (e:any)=>{
-    navigate("/UP2CLONE", {replaceState:true})
-}
+let  onLogoutClick = LogoutClick
 
 </script>
 

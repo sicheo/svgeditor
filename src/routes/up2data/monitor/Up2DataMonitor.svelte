@@ -6,6 +6,7 @@
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import NullPage from '../../../lib/components/NullPage.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
+  import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  
  
 
@@ -17,17 +18,11 @@
 
   let page = "MONITOR"
 
-  let onBuddyClick = (e:any)=>{
-    
-}
+  let onBuddyClick = BuddyClick
 
-let  onSysConfClick = (e:any)=>{
-    
-}
+let  onSysConfClick = SysConfClick
 
-let  onLogoutClick = (e:any)=>{
-    navigate("/UP2DATA", {replaceState:true})
-}
+let  onLogoutClick = LogoutClick
 
 </script>
 

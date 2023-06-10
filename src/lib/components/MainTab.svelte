@@ -27,7 +27,15 @@ let items = [
     {image:"ICO_UP2_LEARN.png",tag:"UP2LEARN",height: 20,link:"UP2LEARN"},
 ]
 
+let toolitems = [
+    {image:"/BUDDY.png", tag:"Users",height: 20,link:"UP2CLONE"},
+    {image:"/LOG.svg",tag:"Logs",height: 20,link:"/UP2ADMIN/LOG"},
+    {image:"/SYSCONF.png",tag:"System",height: 20,link:"UP2AI"},
+]
+
 let modalId = "u2t-main-tab-modal-id"
+let toolModalId = "u2t-tool-modal-id"
+
 
 let locit:any
 
@@ -43,17 +51,11 @@ const goToHome = (e:any)=>{
     navigate('/', {replaceState:true}) 
 }
 
-export let onBuddyClick = (e:any)=>{
-    
-}
+export let onBuddyClick:any
 
-export let  onSysConfClick = (e:any)=>{
-    
-}
+export let  onSysConfClick:any
 
-export let  onLogoutClick = (e:any)=>{
-    
-}
+export let  onLogoutClick:any
 </script>
 
 
@@ -69,6 +71,9 @@ export let  onLogoutClick = (e:any)=>{
 
 <div>
      <ModalApps  items={items} modalId="{modalId}"></ModalApps>
+</div>
+<div>
+     <ModalApps  items={toolitems} modalId="{toolModalId}"></ModalApps>
 </div>
 
 <style>

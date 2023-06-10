@@ -1,23 +1,24 @@
 <script lang="ts">
   import { navigate } from "svelte-routing";
-  import MainTab from '../../../lib/components/MainTab.svelte'
-  import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import NullComponent from '../../../lib/components/NullComponent.svelte'
-  import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../../lib/components/NullPage.svelte'
-  import {cloneNavigation} from '../../../lib/ustore.js'
-  import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
+  import MainTab from '../../lib/components/MainTab.svelte'
+  import InnerTab from '../../lib/components/InnerTab.svelte'
+  import NullComponent from '../../lib/components/NullComponent.svelte'
+  import NavigationBar from '../../lib/components/NavigationBar.svelte'
+  import NullPage from '../../lib/components/NullPage.svelte'
+  import {currentnavigation,extcolor, extbgcolor} from '../../lib/ustore.js'
+  import { BuddyClick, LogoutClick, SysConfClick } from "../../lib/script/menufuncs.js"
+ 
  
  
 
   let component = 'MainTabTools'
-  let bgcolor ="#d5e8d4"
-  let color = "#007d35"
+  let bgcolor = $extbgcolor
+  let color = $extcolor
   
 
-  let pages = $cloneNavigation
+  let pages = $currentnavigation
 
-  let page = "MONITOR"
+  let page = "ADMIN"
 
   let onBuddyClick = BuddyClick
 
@@ -33,10 +34,10 @@
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">
-            <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
+            <NavigationBar {page} color={color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={NullComponent} {color} {bgcolor}/>
+            <InnerTab component={NullComponent} color={color} bgcolor={bgcolor}/>
             <NullPage bgcolor="#FFFFFF"/>
         </div>
     </div>

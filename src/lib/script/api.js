@@ -169,6 +169,66 @@ export const getMenuItems = async function (menu, mock = false) {
     })
 }
 
+/**
+ * Return application logs
+ * @param {any} mock
+ */
+export const getLogs = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMenuItems",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getLogs(body))
+        }
+    })
+}
+
+/**
+ * Set applicatiion log
+ * @param {any} log
+ * @param {any} mock
+ */
+export const setLog = async function (log, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMenuItems",
+            options: {
+                log: log
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.setLog(body))
+        }
+    })
+}
+
 
 
 

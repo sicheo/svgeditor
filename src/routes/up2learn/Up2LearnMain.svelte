@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainTab from '../../lib/components/MainTab.svelte'
   import Login from '../../lib/components/Login.svelte'
-  import {base} from '../../lib/ustore.js'
+  import {base,extcolor,extbgcolor} from '../../lib/ustore.js'
   import { onMount} from "svelte";
 
 
@@ -11,6 +11,8 @@
 
   onMount(async () => {  
       $base = '/UP2LEARN'
+      $extcolor = color
+      $extbgcolor = bgcolor
   })
 </script>
 

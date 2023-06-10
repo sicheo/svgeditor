@@ -13,6 +13,7 @@ import UP2CLONEBUILD from "./routes/up2clone/build/Up2CloneBuild.svelte"
 import UP2CLONEAUTH from "./routes/up2clone/auth/Up2CloneAuth.svelte" 
 import UP2DATAMONITOR from "./routes/up2data/monitor/Up2DataMonitor.svelte" 
 import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte" 
+import UP2ADMINLOG from "./routes/up2admin/Up2AdminLog.svelte"
 
 export let url = "/";
 
@@ -24,6 +25,7 @@ export let url = "/";
     <Route path="/UP2DATA" component={UP2DATA} />
     <Route path="/UP2AI" component={UP2AI} />
     <Route path="/UP2LEARN" component={UP2LEARN} />
+    <Route path="/UP2ADMIN/LOG" component={UP2ADMINLOG} />
     <Route path="/UP2CLONE/MONITOR" component={UP2CLONEMONITOR} />
     <Route path="/UP2CLONE/BUILD" component={UP2CLONEBUILD} />
     <Route path="/UP2CLONE/AUTH" component={UP2CLONEAUTH} />

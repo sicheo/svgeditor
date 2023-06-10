@@ -8,9 +8,9 @@
     "\\src\\routes",
     "\\src\\routes\\up2clone",
     "\\src\\routes\\up2data",
-    "\\src\\routes\\up2data\\build",
+    "\\src\\routes\\up2data\\monitor",
     "\\src\\routes\\up2learn"
   ],
-  "SelectedNode": "\\src\\App.svelte",
+  "SelectedNode": "\\src\\routes\\up2data\\monitor\\Up2DataMonitor.svelte",
   "PreviewInSolutionExplorer": false
 }

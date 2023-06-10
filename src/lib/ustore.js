@@ -14,6 +14,9 @@ export const user = writable("")
 export const token = writable("")
 export const base = writable("")
 export const brtout = writable(1)
+export const extcolor = writable("")
+export const extbgcolor = writable("")
+export const currentnavigation = writable([])
 
 // Navigation table for CLONE
 export const cloneNavigation = writable([

@@ -25,7 +25,7 @@ const changeApp = (e:any)=>{
 <div class="class-u2t-modal" id={modalId}>
 	<div class= "modal-content" on:mouseleave={exit}>
 		<div class= "class-u2t-modal-tool">
-			<img src="EXIT.svg" alt="X" width="20" on:click={exit}>
+			<img src="/EXIT.svg" alt="X" width="20" on:click={exit}>
 		</div>
 		{#each items as Item}
 			<div>

@@ -5,7 +5,8 @@
   import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from './Up2CloneEditor.svelte'
-   import {cloneNavigation} from '../../../lib/ustore.js'
+  import {cloneNavigation} from '../../../lib/ustore.js'
+  import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  
  
 
@@ -18,17 +19,11 @@
 
   let page = "BUILD"
 
-  let onBuddyClick = (e:any)=>{
-    
-}
+  let onBuddyClick = BuddyClick
 
-let  onSysConfClick = (e:any)=>{
-    
-}
+  let  onSysConfClick = SysConfClick
 
-let  onLogoutClick = (e:any)=>{
-    navigate("/UP2CLONE", {replaceState:true})
-}
+  let  onLogoutClick = LogoutClick
 
 // MENU MANAGEMENT
 let graph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}

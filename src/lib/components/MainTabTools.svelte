@@ -1,26 +1,19 @@
 <script lang="ts">
 import {role,user,token} from '../ustore.js'
 
-export let onBuddyClick = (e:any)=>{
+export let onBuddyClick:any
 
-}
+export let  onSysConfClick :any
 
-export let  onSysConfClick = (e:any)=>{
-
-}
-
-export let  onLogoutClick = (e:any)=>{
-    $role = ""
-    $token = ""
-}
+export let  onLogoutClick:any
 
 </script>
 
  <div class="main-tab-tool-class">
     <input type="text" class= "image-tool-component" value="{$user+' '+$role}"disabled/>
-    <input type="image" class= "image-tool-component" src="/BUDDY.png" on:click={onBuddyClick} alt="ALT IMAGE" height="30" />
-    <input type="image" class= "image-tool-component" src="/COG.svg" on:click={onSysConfClick} alt="ALT IMAGE" height="30" />
-    <input type="image" class= "image-tool-component" src="/LOGOUT.png" on:click={onLogoutClick} alt="ALT IMAGE" height="25" />
+    <input type="image" class= "image-tool-component" src="/BUDDY.png" on:click={onBuddyClick} alt="ALT IMAGE" height="25" />
+    <input type="image" class= "image-tool-component" src="/COG.svg" on:click={onSysConfClick} alt="ALT IMAGE" height="25" />
+    <input type="image" class= "image-tool-component" style="opacity:1;" src="/LOGOUT.svg" on:click={onLogoutClick} alt="ALT IMAGE" height="25" />
  </div>
 
 <style>
@@ -30,8 +23,14 @@ export let  onLogoutClick = (e:any)=>{
       margin-top: 10px;
       margin-right: 5px;
   }
-  .image-tool-component{
+  .main-tab-tool-class input[type="image"]{
       opacity: 0.3;
+      padding-left: 2px;
+      cursor: pointer;
+  }
+
+  .main-tab-tool-class input[type="image"]:hover{
+      background-color: rgba(44, 141, 247, 0.2);
   }
 
   input[type="text"] {

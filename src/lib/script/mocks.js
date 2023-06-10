@@ -1,4 +1,6 @@
 let attempts = 0
+let logs = []
+
 /** MASTERS */
 const masters = [
     { uid: 1, description: "Master record product XXXXXX", doc: "DOC123", product: "PROD123", authdate: "2022-05-14", status: "AUTH", version:"1.1" },
@@ -108,12 +110,24 @@ const getMenuItems = (body) => {
     return (body)
 }
 
+const getLogs = async function (body) {
+    body.data = logs
+    return (body)
+}
+
+const setLog = function (body) {
+    const llog = { log: body.options.log }
+    logs.push(llog)
+    return (body)
+}
 
 
 const mocks = {
     login,
     getMasters,
-    getMenuItems
+    getMenuItems,
+    getLogs,
+    setLog
 }
 
 export default mocks

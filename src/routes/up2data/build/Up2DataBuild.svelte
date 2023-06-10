@@ -7,6 +7,7 @@
   import Up2DataEditor from './Up2DataEditor.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
   import {role,user,token} from '../../../lib/ustore.js'
+  import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  
 
   let component = 'MainTabTools'
@@ -17,20 +18,12 @@
 
   let page = "BUILD"
 
-  let onBuddyClick = (e:any)=>{
-    
-}
+  let onBuddyClick = BuddyClick
 
-let  onSysConfClick = (e:any)=>{
-    
-}
+let  onSysConfClick = SysConfClick
 
-let  onLogoutClick = (e:any)=>{
-    $user = ""
-    $role = ""
-    $token = ""
-    navigate("/UP2DATA", {replaceState:true})
-}
+let  onLogoutClick = LogoutClick
+
 
 // MENU MANAGEMENT
 let graph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}

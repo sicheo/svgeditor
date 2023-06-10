@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainTab from '../../lib/components/MainTab.svelte'
   import Login from '../../lib/components/Login.svelte'
-  import {base} from '../../lib/ustore.js'
+  import {base,extcolor,extbgcolor,currentnavigation,dataNavigation} from '../../lib/ustore.js'
   import { onMount} from "svelte";
 
   let component = 'NineDots'
@@ -10,6 +10,9 @@
 
   onMount(async () => {  
       $base = '/UP2DATA'
+      $extcolor = color
+      $extbgcolor = bgcolor
+      $currentnavigation = $dataNavigation
   })
 </script>
 
