@@ -1,13 +1,13 @@
 let attempts = 0
-
+/** MASTERS */
 const masters = [
     { uid: 1, description: "Master record product XXXXXX", doc: "DOC123", product: "PROD123", authdate: "2022-05-14", status: "AUTH", version:"1.1" },
     { uid: 2, description: "Master record product YYYYYY", doc: "DOC123", product: "PROD123", authdate: "", status: "NOAUTH", version: "0.2" },
     { uid: 3, description: "Master record product ZZZZZZ", doc: "DOC123", product: "PROD123", authdate: "2023-05-21", status: "AUTH", version: "1.0" }
 ]
 
+/** ITEMS */
 const masteritems = [{ value: 'MASTER', label: 'MASTER', image: '/MASTER.svg',level:'level0' }]
-
 
 let phaseitems = [
     { value: 'DISPENSING', label: 'DISPENSING', image: '/DISPENSING.svg', level: 'level1' },
@@ -56,6 +56,7 @@ let isaitems = [
 
 
 const choiceitems = [{ label: 'CHOICE', name: 'CHOICE', image: '/CHOICE.svg', level: 'level2' }]
+
 
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
@@ -106,6 +107,8 @@ const getMenuItems = (body) => {
     body.data = menuitems
     return (body)
 }
+
+
 
 const mocks = {
     login,

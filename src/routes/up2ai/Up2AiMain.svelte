@@ -1,17 +1,23 @@
 <script lang="ts">
   import MainTab from '../../lib/components/MainTab.svelte'
   import Login from '../../lib/components/Login.svelte'
+  import {base} from '../../lib/ustore.js'
+  import { onMount} from "svelte";
 
   let component = 'NineDots'
   let bgcolor ="#edf5f7"
   let color = "#639db0"
+
+  onMount(async () => {  
+      $base = '/UP2AI'
+  })
 </script>
 
 <main>
   <div class="main-content">
     <MainTab image="ICO_UP2_AI.png" title="UP2AI CONFIGURATION AND MONITORING" component="{component}" color="{color}" bgcolor={bgcolor}/>
     <div class="login-container">
-        <Login color={color} bgcolor={bgcolor}></Login>
+        <Login color={color} bgcolor={bgcolor} > </Login>
     </div>
   </div>
 </main>

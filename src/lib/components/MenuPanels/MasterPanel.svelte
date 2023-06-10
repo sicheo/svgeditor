@@ -7,15 +7,21 @@ export let node:any ={
     }
 }
 export let color = "Teal"
+
+let changecolor = "#ffe6e6"
        
 onMount(async ()=>{
-      //console.log("***** MASTER PANEL ****",node)
+      const inputs = document.getElementsByClassName("panel-input-text")
+      const changeListener = (ev:any)=>{
+          const title = document.getElementById("property-panel-title-id")
+          if(title)
+            title.style.background = changecolor
+      }
+      for(let i=0;i<inputs.length;i++){
+          inputs[i].addEventListener("change",changeListener)
+      }
 
   });
-
-
-
-
 
 </script>
 
@@ -24,25 +30,46 @@ onMount(async ()=>{
 	    <div class= "class-panel-row">
                 <label class= "class-panel-cell">
                     Doc Code
-	                <input type="text" name="name"  bind:value="{node.data.params.doccode}" class="panel-input panel-input-text">
+	                <input  type="text" name="name"  bind:value="{node.data.params.doccode}" class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
                     Product Code
-	                <input type="text" name="name"  bind:value="{node.data.params.prodcode}"  class="panel-input panel-input-text">
+	                <input  type="text" name="name"  bind:value="{node.data.params.prodcode}"  class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
                     Project Code
-	                <input type="text" name="name"  bind:value="{node.data.params.projcode}"  class="panel-input panel-input-text">
+	                <input  type="text" name="name"  bind:value="{node.data.params.projcode}"  class="panel-input panel-input-text">
                 </label>
         </div>
          <div class= "class-panel-row">
                 <label class= "class-panel-cell">
                     SAP Code
-	                <input type="text" name="name"  bind:value="{node.data.params.sapcode}"  class="panel-input panel-input-text">
+	                <input  type="text" name="name"  bind:value="{node.data.params.sapcode}"  class="panel-input panel-input-text">
+                </label>
+        </div>
+         <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    SAP Descr.
+	                <input  type="text" name="name"  bind:value="{node.data.params.sapdesc}"  class="panel-input panel-input-text">
+                </label>
+        </div>
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+	                <input  type="button" name="name"  value="MATERIALS"  class="panel-input panel-input-text">
+                </label>
+        </div>
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+	                <input  type="button" name="name"  value="MACHINES"  class="panel-input panel-input-text">
+                </label>
+        </div>
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+	                <input  type="button" name="name"  value="PERSONNEL"  class="panel-input panel-input-text">
                 </label>
         </div>
     </div>

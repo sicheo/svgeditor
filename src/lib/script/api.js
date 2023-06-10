@@ -78,7 +78,12 @@ const callFetchGet = async function (url, cheaders = null) {
 // TEST API CALLS
 // ********************************************************************************************
 
-// API CALLS
+/**
+ * Logs in
+ * @param {any} userid
+ * @param {any} password
+ * @param {any} mock
+ */
 export const login = async function (userid, password, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
@@ -105,7 +110,11 @@ export const login = async function (userid, password, mock = false) {
         }
     })
 }
-
+/**
+ * Get master records from db
+ * @param {any} options
+ * @param {any} mock
+ */
 export const getMasters = async function (options, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
@@ -129,7 +138,11 @@ export const getMasters = async function (options, mock = false) {
         }
     })
 }
-
+/**
+ * Return option items for graph nodes
+ * @param {any} menu
+ * @param {any} mock
+ */
 export const getMenuItems = async function (menu, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
@@ -155,4 +168,7 @@ export const getMenuItems = async function (menu, mock = false) {
         }
     })
 }
+
+
+
 

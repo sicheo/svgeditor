@@ -2,13 +2,15 @@
 
 import {login} from '../script/api.js'
 import {navigate} from 'svelte-routing'
-import {role,user} from '../ustore.js'
+import {role,user,token,brtout} from '../ustore.js'
+import actwatcher from "../script/actwatcher.js"
 
 export let userid = ''
 export let password = ''
-export let target = 'UP2DATA'
+export let target = '/UP2DATA'
 export let color = "#007d35"
 export let bgcolor = "#d5e8d4"
+
 
 
 const handleSubmit=(e)=>{
@@ -18,8 +20,10 @@ const handleSubmit=(e)=>{
        .then((res:any) =>{
            $role = res.data.role
            $user = userid
+           $token = res.data.token
            // CONTROL RESULT
            if(res.error == null){
+                actwatcher($brtout)
                 navigate(target, {replaceState:true}) 
            }
            else

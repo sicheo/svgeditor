@@ -1,5 +1,5 @@
 <script lang="ts">
-import {role,user} from '../ustore.js'
+import {role,user,token} from '../ustore.js'
 
 export let onBuddyClick = (e:any)=>{
 
@@ -11,6 +11,7 @@ export let  onSysConfClick = (e:any)=>{
 
 export let  onLogoutClick = (e:any)=>{
     $role = ""
+    $token = ""
 }
 
 </script>

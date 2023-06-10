@@ -124,15 +124,15 @@ let addNode = (ev:any) =>{
 					name:'MASTER',
 					image:"/MASTER.svg",
 					shape:'RECT',
-					width:120,
-					height:80,
+					width:140,
+					height:90,
 					imgwidth:30,
 					imgheight:30,
 					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
-				nodeoptions.width = 120
-				nodeoptions.height = 80
+				nodeoptions.width = 140
+				nodeoptions.height = 90
 				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30
@@ -147,15 +147,15 @@ let addNode = (ev:any) =>{
 					name:retitem.label,
 					image:retitem.image,
 					shape:'RECT',
-					width:120,
-					height:80,
+					width:140,
+					height:90,
 					imgwidth:30,
 					imgheight:30,
 					params:{}
 				}
 				nodeoptions.ndescrtext= retitem.label
-				nodeoptions.width = 120
-				nodeoptions.height = 80
+				nodeoptions.width = 140
+				nodeoptions.height = 90
 				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30

@@ -21,6 +21,8 @@ export let color = "#007d35"
 export let contextname = "context-subgraph-menu"
 export let submenuoptions:any = []
 export let maingraph:any
+export let width = 800
+export let height = 400
 
 
 let modal:any
@@ -428,7 +430,7 @@ onMount(async ()=>{
 	let draggable = (await import("@svgdotjs/svg.draggable.js")); 
 	let panzoom = (await import('@svgdotjs/svg.panzoom.js'))
 	// ADDNG LOCAL SVG 
-	draw = await SVG().addTo('#modal-subgraph-content-id').size(800, 400).panZoom({ zoomMin: 0.2, zoomMax: 10, zoomFactor: 0.1 })
+	draw = await SVG().addTo('#modal-subgraph-content-id').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 1.5, zoomFactor: 0.1 })
 	draw.id("svg-subgraph-container")
 	draw.viewbox(0,0,800,400)
 

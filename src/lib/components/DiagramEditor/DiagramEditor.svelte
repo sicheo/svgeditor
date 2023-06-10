@@ -84,7 +84,7 @@ onMount(async () => {
 		
 		
 
-		draw = await SVG().addTo('#div-graph-container').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 20, zoomFactor: 0.1 })
+		draw = await SVG().addTo('#div-graph-container').size(width, height).panZoom({ zoomMin: 0.2, zoomMax: 1.0, zoomFactor: 0.1 })
 		draw.id("svg-graph-container")
 		draw.viewbox(0,0,1400,600)
 		
@@ -96,8 +96,11 @@ onMount(async () => {
 			//console.log("**** ZOOM ****",event.detail)
 		})
 
+		draw.on("panning",(event:any)=>{
+			//console.log("**** PANNING ****",event.detail)
+		})
 		draw.on("panEnd",(event:any)=>{
-			//console.log("**** PAN ****",event.detail)
+			//console.log("**** PAN END ****",event.detail)
 		})
 		
 

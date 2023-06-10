@@ -6,6 +6,7 @@
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2DataEditor from './Up2DataEditor.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
+  import {role,user,token} from '../../../lib/ustore.js'
  
 
   let component = 'MainTabTools'
@@ -25,6 +26,9 @@ let  onSysConfClick = (e:any)=>{
 }
 
 let  onLogoutClick = (e:any)=>{
+    $user = ""
+    $role = ""
+    $token = ""
     navigate("/UP2DATA", {replaceState:true})
 }
 

@@ -23,9 +23,8 @@
     "@svgdotjs/svg.draggable.js": "^3.0.3",
     "@svgdotjs/svg.js": "^3.1.2",
     "@svgdotjs/svg.panzoom.js": "^2.1.2",
-    "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.5.29",
     "pdfmake": "^0.2.7",
+    "pdfmake-unicode": "^0.0.1",
     "svelte-select": "^5.6.1",
     "svelte-table": "^0.5.11",
     "uuid": "^9.0.0"

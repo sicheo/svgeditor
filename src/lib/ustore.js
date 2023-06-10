@@ -11,6 +11,9 @@ import MasterPanel from './components/MenuPanels/MasterPanel.svelte'
 
 export const role = writable("")
 export const user = writable("")
+export const token = writable("")
+export const base = writable("")
+export const brtout = writable(1)
 
 // Navigation table for CLONE
 export const cloneNavigation = writable([

@@ -132,9 +132,11 @@ export default class gnode {
                 this.image = this.node.image(this.imagefile).attr({ width: this.imgwidth, height: this.imgheight }).move(this.x + this.width / 2 - this.imgwidth / 2, this.y + this.height / 2 - this.imgheight / 2)
                 // ADD TEXT
                 var nnmamelen = this.nnametext.length * (this.fontsize - 3) / 2
-                this.nname = this.node.text(this.nnametext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).fill(this.background).move(this.x + this.width / 2 - nnmamelen, this.y + this.radius / 2)
+                this.nname = this.node.text(this.nnametext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).fill(this.background).move(this.x + this.width / 3 - nnmamelen, this.y + this.radius / 2)
                 var ndescrtextlen = this.ndescrtext.length * (this.fontsize - 3) / 2
-                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height - this.fontsize - this.radius / 2)
+                //this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height - this.fontsize - this.radius / 2)
+                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen, this.y + this.height / 2 - this.fontsize + this.radius * 3)
+
                 this.menu = this.menucallback(this.x, this.y, this.width, this.height, this)
                 break;
         }

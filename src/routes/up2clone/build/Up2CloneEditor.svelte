@@ -1,8 +1,8 @@
 <script lang="ts">
   // https://loading.io/css/
   import DiagramEditor from '../../../lib/components/DiagramEditor/DiagramEditor.svelte'
-  import Templates from '../../../lib/components/DiagramEditor/pdf/templates.js'
-  import Document from '../../../lib/components/DiagramEditor/pdf/Document'
+  import DocMake from '../../../lib/components/DiagramEditor/pdf/DocMake'
+  import docDefinition from '../../../lib/components/DiagramEditor/pdf/docdefinition.js'
   import PdfViewer from '../../../lib/components/DiagramEditor/pdf/PdfViewer.svelte'
   import gnode from "../../../lib/components/DiagramEditor/classes/gnode"
   import gmenu from "../../../lib/components/DiagramEditor/classes/gmenu"
@@ -20,8 +20,8 @@
   let graphtype = "TREE"
   let currentnode:any ={data:{type:'MASTER',level:'level0',name:'',params:{},tasks:[]}}
   let draw:any
-  let width = 900
-  let height = 500
+  let width = 950
+  let height = 600
  
   let pdfUrl:any =''
 
@@ -64,17 +64,11 @@
 	const graphRemoveNode = (nodeid:any,draw:any) => {
 		graph.gnodes = graph.gnodes.filter((item: any) => (item.node.id() != nodeid))
 		graph.nodes = graph.nodes.filter((item: any) => (item.id != nodeid))
-        //graph.svg = draw.svg()
-		//if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
-			 //graph.svg = ''
 	}
 
 	const graphRemovePath = (pathid:any,draw:any) => {
 		graph.gpaths = graph.gpaths.filter((item: any) => (item.path.id() != pathid))
         graph.paths = graph.paths.filter((item: any) => (item.id != pathid))
-        //graph.svg = draw.svg()
-		//if(graph.gpaths.length == 0 && graph.gnodes.length == 0)
-			 //graph.svg = ''
 	}
 
 	const graphGetNodenum = () =>{
@@ -157,7 +151,6 @@
 			// ADD EVENT LISTENERS
 			setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
-			//console.log("**** REBUILD GRAPH *****", nd)
 		}
 		// DRAW PATHS
 		for(let i=0;i<graphin.paths.length;i++){
@@ -212,7 +205,6 @@
 				pathn.addFrom(from)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				//console.log(start,end)
 				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
@@ -237,37 +229,23 @@
 		mainmenuimport()
 	}
 
+	
+
 	const nodePrintPdf = async (gnode:any) =>{
-		let template:any = {pages:[]}
-		let replacement:any
+		const iframe = document.getElementById("pdf-div-id")
 		let doc:any
+	    doc = new DocMake()
+		const docDef = docDefinition[gnode.data.name](gnode)
 		switch(gnode.data.type){
 			case "MASTER":
-			    doc = new Document(gnode.data)
-			    replacement = [
-					{in:"$DOCCODE",out:gnode.data.doccode},
-					{in:"$PRODCODE",out:gnode.data.prodcode},
-					{in:"$PROJCODE",out:gnode.data.projcode},
-					{in:"$SAPCODE",out:gnode.data.sapcode},
-				]
-				template = JSON.parse(JSON.stringify(Templates.MRecordTemplate))
-				// FILL TEMPLATE WITH ACTUAL VALUES
-				doc.replaceTags(template,replacement)
-				// BUILD PDF WITH FILLED TEMPLATE
-				const iframe = document.getElementById("pdf-div-id")
-				doc.buildDocument(template)
-				doc.saveDoc(template)
-				.then((res:any) =>{
-					var blob = dataURItoBlob(res);
-					pdfUrl = URL.createObjectURL(blob);
-
-					iframe.style.display = 'flex'
-				})
-				.catch((error:any) =>{
-					console.log(error)
-				})
-				break
 			case "PHASE":
+				if(docDef){
+					doc.buildDocument(docDef)
+					.then((dataUrl:any)=>{
+						pdfUrl = dataUrl
+						iframe.style.display = 'flex'
+					})
+				}
 				break
 		}
 	}
@@ -383,8 +361,7 @@
 						if(pnl)
 							gnode.data.image = pnl.img
 						}
-						img = gnode.data.image
-						
+						img = gnode.data.image	
 						gnode.redrawtext(gnode.data.name,img)
 						
 					}
@@ -612,28 +589,7 @@ const onHidePdf = (e:any)=>{
 	iframe.style.display = 'none'
 }
 
-const  dataURItoBlob = (dataURI)=>
-{
-    // convert base64/URLEncoded data component to raw binary data held in a string
-    let byteString:any
 
-    if(dataURI.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(dataURI.split(',')[1]);
-    else
-        byteString = unescape(dataURI.split(',')[1]);
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-    // write the bytes of the string to a typed array
-    var ia = new Uint8Array(byteString.length);
-    for(var i = 0; i < byteString.length; i++)
-    {
-        ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ia], {type: mimeString});
-}
 
 </script>
 
