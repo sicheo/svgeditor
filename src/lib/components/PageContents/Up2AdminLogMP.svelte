@@ -1,20 +1,17 @@
 <script lang="ts">
 import { onMount} from "svelte";
 import SvelteTable from "svelte-table";
-import EditComponent from "../../../lib/components/TaskEditor/EditComponent.svelte";
-import SelectComponent from "../../../lib/components/TaskEditor/SelectComponent.svelte";
-import InputComponent from "../../../lib/components/TaskEditor/InputComponent.svelte";
-import TextAreaComponent from "../../../lib/components/TaskEditor/TextAreaComponent.svelte";
-import {getMasters} from '../../../lib/script/api.js'
+import InputComponent from "../TaskEditor/InputComponent.svelte";
+import {getLogs} from '../../script/api.js'
 
 
 
 let rows = []
 
 onMount(async ()=>{
-   const response = await getMasters(null,true)
+   const response = await getLogs(true)
    rows = response.data
-   console.log("****** Up2CloneAuthMP ******",rows)
+   console.log("****** Up2CloneLogMP ******",rows)
 
  });
 
@@ -25,56 +22,18 @@ onMount(async ()=>{
         rows[index][tag] = value
 }
 
-const onTextAreaComponent = (row:any,tag:any,value:any) =>{
-    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-     if(index > -1)
-        rows[index][tag] = value
-}
-
-const onSelectComponent = (row:any,tag:any,value:any) =>{
-    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-     if(index > -1)
-        rows[index][tag] = value
-}
-
-let statusOptions = [
-    {id: 1,name:"AUTH"},
-    {id:2,name:"NOAUTH"}
-]
-
-let optionsArray = [
-    {name: "status", options: statusOptions}
-]
 
  const  columns = [
   {
-    key: "id",
-    title: "ID",
-    value: (v:any) => v.uid,
-    sortable: true,
-    selectOnClick:true,
-    headerClass: "table-header-class",
-  },
-  {
-    key: "description",
-    title: "DESCRIPTION",
-    value: (v:any) => v.description,
-    sortable: false,
-     renderComponent: {
-        component: TextAreaComponent,
-        props: { typeTag:"description",onTextAreaComponent },
-      },
-  },
-  {
-    key: "doc",
-    title: "DOCUMENT",
-    value: (v:any) => v.doc,
+    key: "user",
+    title: "USER",
+    value: (v:any) => v.user,
     sortable: true,
     filterOptions: (rows:any) => {
       // use first letter of last_name to generate filter
       let letrs:any = {}
       rows.forEach((row:any) => {
-        let letr = row.doc.charAt(0)
+        let letr = row.user.charAt(0)
         if (letrs[letr] === undefined)
           letrs[letr] = {
             name: `${letr.toUpperCase()}`,
@@ -87,34 +46,50 @@ let optionsArray = [
         .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
       return Object.values(letrs)
     },
-    filterValue: (v:any) => v.doc.charAt(0).toLowerCase(),
+    filterValue: (v:any) => v.user.charAt(0).toLowerCase(),
     renderComponent: {
         component: InputComponent,
-        props: { typeTag:"doc",onInputComponent },
+        props: { typeTag:"user",onInputComponent },
       },
   },
   {
-    key: "status",
-    title: "STATUS",
-    value: (v:any) => v.status,
+    key: "action",
+    title: "ACTION",
+    value: (v:any) => v.action,
     sortable: true,
-    //renderValue: (v:any) => v.checkType.toUpperCase(),
-    filterOptions: ["AUTH","NOAUTH"],
+    filterOptions: (rows:any) => {
+      // use first letter of last_name to generate filter
+      let letrs:any = {}
+      rows.forEach((row:any) => {
+        let letr = row.action.charAt(0)
+        if (letrs[letr] === undefined)
+          letrs[letr] = {
+            name: `${letr.toUpperCase()}`,
+            value: letr.toLowerCase(),
+          }
+      })
+      // fix order
+      letrs = Object.entries(letrs)
+        .sort()
+        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
+      return Object.values(letrs)
+    },
+    filterValue: (v:any) => v.action.charAt(0).toLowerCase(),
     renderComponent: {
-        component: SelectComponent,
-        props: { typeTag:"status",optionsArray, onSelectComponent },
+        component: InputComponent,
+        props: { typeTag:"action",onInputComponent },
       },
   },
   {
-    key: "authdate",
+    key: "date",
     title: "DATE",
-    value: (v:any) => v.authdate,
+    value: (v:any) => v.date,
     sortable: true,
     filterOptions: (rows:any) => {
       // use first letter of last_name to generate filter
       let letrs:any = {}
       rows.forEach((row:any) => {
-        let letr = row.authdate.charAt(0)
+        let letr = row.date.charAt(0)
         if (letrs[letr] === undefined)
           letrs[letr] = {
             name: `${letr.toUpperCase()}`,
@@ -127,40 +102,13 @@ let optionsArray = [
         .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
       return Object.values(letrs)
     },
-    filterValue: (v:any) => v.authdate.charAt(0).toLowerCase(),
+    filterValue: (v:any) => v.date.charAt(0).toLowerCase(),
     renderComponent: {
         component: InputComponent,
-        props: { typeTag:"authdate",onInputComponent },
+        props: { typeTag:"date",onInputComponent },
       },
   },
-  {
-    key: "product",
-    title: "PRODUCT",
-    value: (v:any) => v.product,
-    sortable: true,
-    filterOptions: (rows:any) => {
-      // use first letter of last_name to generate filter
-      let letrs:any = {}
-      rows.forEach((row:any) => {
-        let letr = row.product.charAt(0)
-        if (letrs[letr] === undefined)
-          letrs[letr] = {
-            name: `${letr.toUpperCase()}`,
-            value: letr.toLowerCase(),
-          }
-      })
-      // fix order
-      letrs = Object.entries(letrs)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(letrs)
-    },
-    filterValue: (v:any) => v.product.charAt(0).toLowerCase(),
-    renderComponent: {
-        component: InputComponent,
-        props: { typeTag:"product",onInputComponent },
-      },
-  },
+  
   
 ]
 

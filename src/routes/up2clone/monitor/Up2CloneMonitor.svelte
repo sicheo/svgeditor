@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { navigate } from "svelte-routing";
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'

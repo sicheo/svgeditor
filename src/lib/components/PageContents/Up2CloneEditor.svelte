@@ -1,15 +1,15 @@
 <script lang="ts">
   // https://loading.io/css/
-  import DiagramEditor from '../../../lib/components/DiagramEditor/DiagramEditor.svelte'
-  import DocMake from '../../../lib/components/DiagramEditor/pdf/DocMake'
-  import docDefinition from '../../../lib/components/DiagramEditor/pdf/docdefinition.js'
-  import PdfViewer from '../../../lib/components/DiagramEditor/pdf/PdfViewer.svelte'
-  import gnode from "../../../lib/components/DiagramEditor/classes/gnode"
-  import gmenu from "../../../lib/components/DiagramEditor/classes/gmenu"
-  import gpath from "../../../lib/components/DiagramEditor/classes/gpath"
-  import {_calcDAttr} from "../../../lib/components/DiagramEditor/classes/gutils"
-  import graphutils from '../../../lib/script/graphutils'
-  import {up2clonepanels,clonesubmenuoptions,clonegraphmenuoptions} from '../../../lib/ustore.js'
+  import DiagramEditor from '../DiagramEditor/DiagramEditor.svelte'
+  import DocMake from '../DiagramEditor/pdf/DocMake'
+  import docDefinition from '../DiagramEditor/pdf/docdefinition.js'
+  import PdfViewer from '../DiagramEditor/pdf/PdfViewer.svelte'
+  import gnode from "../DiagramEditor/classes/gnode"
+  import gmenu from "../DiagramEditor/classes/gmenu"
+  import gpath from "../DiagramEditor/classes/gpath"
+  import {_calcDAttr} from "../DiagramEditor/classes/gutils"
+  import graphutils from '../../script/graphutils'
+  import {up2clonepanels,clonesubmenuoptions,clonegraphmenuoptions} from '../../ustore.js'
  
 
    

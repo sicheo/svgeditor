@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { navigate } from "svelte-routing";
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
+  import BuildCloneTools from '../../../lib/components/InnerTabs/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import Up2CloneEditor from './Up2CloneEditor.svelte'
-  import {cloneNavigation} from '../../../lib/ustore.js'
+  import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
+  import {cloneNavigation, analytics} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
- 
+
  
 
   let component = 'MainTabTools'
@@ -49,7 +48,14 @@ const upload = async ()=>{
 		}
    }
 
-const menusave = ()=>{ console.log("** MENUSAVE **")}
+
+
+const menusave = ()=>{ 
+    console.log("** MENUSAVE **")
+    $analytics.track('graphSave', {
+            graph: 'SOME GRAPH'
+    })
+}
 const menuload = ()=>{
 }
 const menuimport = ()=>{

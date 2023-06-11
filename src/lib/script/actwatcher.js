@@ -1,6 +1,7 @@
 // https://thisinterestsme.com/javascript-detect-user-activity/
 import { navigate } from "svelte-routing"
-import {base } from "../ustore.js"
+import { base } from "../ustore.js"
+
 
 const activityWatcher = function (minutes) {
     let localbase

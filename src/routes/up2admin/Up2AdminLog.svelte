@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { navigate } from "svelte-routing";
   import MainTab from '../../lib/components/MainTab.svelte'
   import InnerTab from '../../lib/components/InnerTab.svelte'
   import NullComponent from '../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../lib/components/NullPage.svelte'
+  import Up2AdminLogMP from '../../lib/components/PageContents/Up2AdminLogMP.svelte'
   import {currentnavigation,extcolor, extbgcolor} from '../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../lib/script/menufuncs.js"
  
@@ -38,7 +37,7 @@
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} color={color} bgcolor={bgcolor}/>
-            <NullPage bgcolor="#FFFFFF"/>
+            <Up2AdminLogMP />
         </div>
     </div>
     </div>

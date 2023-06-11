@@ -4,7 +4,7 @@
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import Up2CloneAuthMP from './Up2CloneAuthMP.svelte'
+  import Up2CloneAuthMP from '../../../lib/components/PageContents/Up2CloneAuthMP.svelte'
   import {cloneNavigation} from '../../../lib/ustore.js'
  import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  

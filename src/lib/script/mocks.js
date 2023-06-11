@@ -116,7 +116,7 @@ const getLogs = async function (body) {
 }
 
 const setLog = function (body) {
-    const llog = { log: body.options.log }
+    const llog = body.options.log
     logs.push(llog)
     return (body)
 }

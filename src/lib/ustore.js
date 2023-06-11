@@ -8,15 +8,26 @@ import ControllerPanel from './components/MenuPanels/ControllerPanel.svelte'
 import PhasePanel from './components/MenuPanels/PhasePanel.svelte'
 import MRecordPanel from './components/MenuPanels/MRecordPanel.svelte'
 import MasterPanel from './components/MenuPanels/MasterPanel.svelte'
+import analyticPlugin from "./script/analiticsPlugin.js"
+import Analytics from 'analytics'
+
+const an = Analytics({
+    app: 'my-app-name',
+    version: 100,
+    plugins: [
+        analyticPlugin()
+    ]
+})
 
 export const role = writable("")
 export const user = writable("")
 export const token = writable("")
 export const base = writable("")
-export const brtout = writable(1)
+export const brtout = writable(5)
 export const extcolor = writable("")
 export const extbgcolor = writable("")
 export const currentnavigation = writable([])
+export const analytics = writable(an)
 
 // Navigation table for CLONE
 export const cloneNavigation = writable([

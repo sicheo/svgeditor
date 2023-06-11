@@ -2,7 +2,7 @@
 
 import {login} from '../script/api.js'
 import {navigate} from 'svelte-routing'
-import {role,user,token,brtout} from '../ustore.js'
+import {role,user,token,brtout,analytics} from '../ustore.js'
 import actwatcher from "../script/actwatcher.js"
 
 export let userid = ''
@@ -24,6 +24,10 @@ const handleSubmit=(e)=>{
            // CONTROL RESULT
            if(res.error == null){
                 actwatcher($brtout)
+                $analytics.track('login', {
+                    role: res.data.role,
+                    target: target
+                })
                 navigate(target, {replaceState:true}) 
            }
            else

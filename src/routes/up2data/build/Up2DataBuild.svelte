@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { navigate } from "svelte-routing";
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import BuildCloneTools from '../../../lib/components/BuildCloneTools.svelte'
+  import BuildCloneTools from '../../../lib/components/InnerTabs/BuildCloneTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import Up2DataEditor from './Up2DataEditor.svelte'
+  import Up2DataEditor from '../../../lib/components/PageContents/Up2DataEditor.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
-  import {role,user,token} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
  
 

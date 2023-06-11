@@ -179,7 +179,7 @@ export const getLogs = async function (mock = false) {
         const body = {
             type: "api",
             version: 1.0,
-            command: "getMenuItems",
+            command: "getLogs",
             options: {
             }
         }
@@ -209,7 +209,7 @@ export const setLog = async function (log, mock = false) {
         const body = {
             type: "api",
             version: 1.0,
-            command: "getMenuItems",
+            command: "setLog",
             options: {
                 log: log
             }
