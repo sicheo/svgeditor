@@ -6,22 +6,22 @@ import { navigate } from 'svelte-routing';
 
  const goToUp2Data:any = function(){
 	 
-	 navigate(`UP2DATA`, {replaceState:true}) 
+	 navigate(`/UP2DATA`, {replaceState:true}) 
  }
 
  const goToUp2Clone:any = function(){
 	
-	 navigate(`UP2CLONE`, {replaceState:true}) 
+	 navigate(`/UP2CLONE`, {replaceState:true}) 
  }
 
  const goToUp2Ai:any = function(){
-	 navigate(`UP2AI`, {replaceState:true}) 
+	 navigate(`/UP2AI`, {replaceState:true}) 
 	 
  }
 
  const goToUp2Learn:any = function(){
 	
-	 navigate(`UP2LEARN`, {replaceState:true}) 
+	 navigate(`/UP2LEARN`, {replaceState:true}) 
  }
 
 

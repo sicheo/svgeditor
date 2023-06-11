@@ -1,6 +1,6 @@
 <script lang="ts">
 import { navigate } from "svelte-routing";
-import {role} from '../ustore.js'
+import {role,token,base} from '../ustore.js'
 
 export let color = "#007d35"
 export let bgcolor = "#d5e8d4"
@@ -8,6 +8,9 @@ export let pages = []
 export let page:any
 
 const goToPage = (e:any)=>{
+	// DISABLE BACKNAVIGATION
+	if(!$token || $token == "")
+		navigate($base, {replaceState:true})
 	navigate(e.target.name, {replaceState:true})
 }
 </script>

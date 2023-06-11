@@ -1,5 +1,12 @@
 import { navigate } from "svelte-routing";
-import { base } from "../ustore.js"
+import { base, user, token, role } from "../ustore.js"
+
+const clearStore = function () {
+    
+    user.update(v => "")
+    token.update(v => "")
+    role.update(v => "")
+}
 
 export const  BuddyClick = (e) => {
     const element = e.target
@@ -15,6 +22,7 @@ export const  SysConfClick = (e) => {
 export const LogoutClick = (e) => {
     let localbase
 
+    clearStore()
     base.subscribe(value => {
         localbase = value;
     });
