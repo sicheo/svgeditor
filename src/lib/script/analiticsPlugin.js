@@ -3,9 +3,10 @@ import { setLog,getLogs } from "../script/api.js"
 async function getUser() {
     let { user } = await import("../ustore.js")
     let luser = ""
-    await user.subscribe(value => {
+    const unsubscribe = await user.subscribe(value => {
         luser = value;
     });
+    unsubscribe()
     return luser
 }
 
@@ -40,7 +41,20 @@ export default function analyticPlugin(userConfig) {
         },
         /* track event */
         track: async ({ payload, config }) => {
-            const log = { user: await getUser(), date: dateToISOLikeButLocal(new Date(payload.meta.ts)), action: payload.event, details: payload.properties }
+            let details = ""
+            let user = await getUser()
+            switch (payload.event) {
+                case 'graphSave':
+                    details = "saved master " + payload.properties.masterdoc
+                    break
+                case 'login':
+                    details = "target page " + payload.properties.target
+                    break
+                case 'logout':
+                    details = "target page " + payload.properties.target
+                    break
+            }
+            const log = { user: user, date: dateToISOLikeButLocal(new Date(payload.meta.ts)), action: payload.event, details: details }
             await setLog(log, true)
             const logs = await getLogs(true)
             console.log(logs)

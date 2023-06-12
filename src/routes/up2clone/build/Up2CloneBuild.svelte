@@ -6,6 +6,7 @@
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
   import {cloneNavigation, analytics} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
+  import { graphVerify } from "../../../lib/script/varification/graphverify"
 
  
 
@@ -51,9 +52,14 @@ const upload = async ()=>{
 
 
 const menusave = ()=>{ 
-    console.log("** MENUSAVE **")
+    // CHECK GRAPH CONSISTENCY
+    const verification = graphVerify(graph)
+    if(verification != "OK"){
+        alert(verification)
+        return
+    }
     $analytics.track('graphSave', {
-            graph: 'SOME GRAPH'
+            masterdoc: graph.nodes[0].data.params.doccode
     })
 }
 const menuload = ()=>{

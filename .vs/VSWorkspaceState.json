@@ -4,11 +4,10 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
+    "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2data",
-    "\\src\\routes\\up2data\\build",
-    "\\src\\routes\\up2data\\monitor"
+    "\\src\\routes\\up2clone"
   ],
-  "SelectedNode": "\\src\\lib\\components\\InnerTab.svelte",
+  "SelectedNode": "\\src\\lib\\ustore.js",
   "PreviewInSolutionExplorer": false
 }

@@ -1,8 +1,17 @@
 import { navigate } from "svelte-routing";
 import { base, user, token, role } from "../ustore.js"
+import analyticPlugin from "./analiticsPlugin.js"
+import Analytics from 'analytics'
+
+const an = Analytics({
+    app: 'my-app-name',
+    version: 100,
+    plugins: [
+        analyticPlugin()
+    ]
+})
 
 const clearStore = function () {
-    
     user.update(v => "")
     token.update(v => "")
     role.update(v => "")
@@ -19,12 +28,23 @@ export const  SysConfClick = (e) => {
 
 }
 
-export const LogoutClick = (e) => {
+export const LogoutClick = async (e) => {
     let localbase
 
-    clearStore()
-    base.subscribe(value => {
+    const unsubscribe = base.subscribe(value => {
         localbase = value;
     });
+
+    // STORE ANALYTICS
+    await an.track('logout', {
+        target: localbase
+    })
+
+    // CLEAR STATE
+    clearStore() 
+
+    // NAVIGATE TO BASE LOGIN
     navigate(localbase, { replaceState: true })
+
+    unsubscribe()
 }

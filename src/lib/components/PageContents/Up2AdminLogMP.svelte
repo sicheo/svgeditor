@@ -108,6 +108,34 @@ onMount(async ()=>{
         props: { typeTag:"date",onInputComponent },
       },
   },
+  {
+    key: "details",
+    title: "DETAILS",
+    value: (v:any) => v.details,
+    sortable: true,
+    filterOptions: (rows:any) => {
+      // use first letter of last_name to generate filter
+      let letrs:any = {}
+      rows.forEach((row:any) => {
+        let letr = row.details.charAt(0)
+        if (letrs[letr] === undefined)
+          letrs[letr] = {
+            name: `${letr.toUpperCase()}`,
+            value: letr.toLowerCase(),
+          }
+      })
+      // fix order
+      letrs = Object.entries(letrs)
+        .sort()
+        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
+      return Object.values(letrs)
+    },
+    filterValue: (v:any) => v.details.charAt(0).toLowerCase(),
+    renderComponent: {
+        component: InputComponent,
+        props: { typeTag:"details",onInputComponent },
+      },
+  },
   
   
 ]
