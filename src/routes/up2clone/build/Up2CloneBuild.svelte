@@ -7,6 +7,7 @@
   import {cloneNavigation, analytics} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { graphVerify } from "../../../lib/script/varification/graphverify"
+  import { _ } from 'svelte-i18n'
 
  
 
@@ -95,7 +96,7 @@ const menufunctions = {
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_CLONE.png" title="UP2CLONE CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_CLONE.png" title="{$_('up2clone_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">

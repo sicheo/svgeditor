@@ -7,7 +7,7 @@
   import NullPage from '../../../lib/components/NullPage.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
- 
+  import { _ } from 'svelte-i18n'
  
 
   let component = 'MainTabTools'
@@ -28,7 +28,7 @@ let  onLogoutClick = LogoutClick
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_DATA.png" title="UP2DATA CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_DATA.png" title="{$_('up2data_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">

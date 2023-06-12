@@ -2,6 +2,7 @@
 // VPN FOR DEPLOYNG
 // https://www.softether.org/
 
+
 import { Router, Route, navigate } from "svelte-routing";
 import UP2CLONE from "./routes/up2clone/Up2CloneMain.svelte"
 import UP2DATA from "./routes/up2data/Up2DataMain.svelte"
@@ -15,7 +16,57 @@ import UP2DATAMONITOR from "./routes/up2data/monitor/Up2DataMonitor.svelte"
 import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte" 
 import UP2ADMINLOG from "./routes/up2admin/Up2AdminLog.svelte"
 
+import { register,init, getLocaleFromNavigator, _  } from 'svelte-i18n';
+import {dataNavigation, cloneNavigation} from '../src/lib/ustore.js'
+import { onMount} from "svelte";
+
+register('en', () => import('../src/lib/i18n/en.json'));
+register('it', () => import('../src/lib/i18n/it.json'));
+
 export let url = "/";
+
+const localizeNavigation = ()=>{
+    // Localize Clone Navigation
+    for(let i=0; i< $cloneNavigation.length; i++){
+        switch($cloneNavigation[i].name){
+            case 'MONITOR':
+                $cloneNavigation[i].name = $_('up2clone_nav_monitor')
+                break;
+            case 'BUILD':
+                $cloneNavigation[i].name = $_('up2clone_nav_build')
+                break;
+            case 'AUTHORIZATION':
+                $cloneNavigation[i].name = $_('up2clone_nav_auth')
+                break
+        }
+    }
+    // Localize Data Navigation
+    for(let i=0; i< $dataNavigation.length; i++){
+        switch($dataNavigation[i].name){
+            case 'MONITOR':
+                $dataNavigation[i].name = $_('up2data_nav_monitor')
+                break;
+            case 'BUILD':
+                $dataNavigation[i].name = $_('up2data_nav_build')
+                break;
+        }
+    }
+}
+
+/*init({
+  fallbackLocale: 'en',
+  //initialLocale: "it",
+  initialLocale:getLocaleFromNavigator()
+})*/
+
+ onMount(async () => {  
+     await init({
+        fallbackLocale: 'en',
+        //initialLocale: "it",
+        initialLocale:getLocaleFromNavigator()
+        })
+    localizeNavigation()
+ })
 
 </script>
 

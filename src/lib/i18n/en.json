@@ -1,0 +1,11 @@
+{
+  "up2clone_page_title": "UP2CLONE CONFIGURATION AND MONITORING",
+  "up2data_page_title": "UP2DATA CONFIGURATION AND MONITORING",
+  "up2ai_page_title": "UP2AI CONFIGURATION AND MONITORING",
+  "up2learn_page_title": "UP2LEARN CONFIGURATION AND MONITORING",
+  "up2clone_nav_monitor": "MONITOR",
+  "up2clone_nav_build": "BUILD",
+  "up2clone_nav_auth": "AUTHORIZATION",
+  "up2data_nav_monitor": "MONITOR",
+  "up2data_nav_build": "BUILD"
+}

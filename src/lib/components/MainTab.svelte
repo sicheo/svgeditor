@@ -51,11 +51,11 @@ const goToHome = (e:any)=>{
     navigate('/', {replaceState:true}) 
 }
 
-export let onBuddyClick:any
+export let onBuddyClick:any = ()=>{}
 
-export let  onSysConfClick:any
+export let  onSysConfClick:any = ()=>{}
 
-export let  onLogoutClick:any
+export let  onLogoutClick:any = ()=>{}
 </script>
 
 

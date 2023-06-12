@@ -3,6 +3,7 @@
   import Login from '../../lib/components/Login.svelte'
   import {base,extcolor,extbgcolor,currentnavigation,dataNavigation} from '../../lib/ustore.js'
   import { onMount} from "svelte";
+  import { _ } from 'svelte-i18n'
 
   let component = 'NineDots'
   let bgcolor ="#f4e2d2"
@@ -18,7 +19,7 @@
 
 <main>
   <div class="main-content">
-   <MainTab image="ICO_UP2_DATA.png" title="UP2DATA CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor}/>
+   <MainTab image="ICO_UP2_DATA.png" title="{$_('up2data_page_title')}" component="{component}" color={color} bgcolor={bgcolor}/>
     <div class="login-container">
         <Login target="/UP2DATA/MONITOR" color={color} bgcolor={bgcolor} ></Login>
     </div>

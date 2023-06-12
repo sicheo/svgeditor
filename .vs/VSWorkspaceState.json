@@ -4,10 +4,8 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\script",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone"
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\ustore.js",
+  "SelectedNode": "\\src\\lib\\components\\MainTab.svelte",
   "PreviewInSolutionExplorer": false
 }

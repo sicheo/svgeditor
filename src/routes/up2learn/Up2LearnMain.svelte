@@ -3,6 +3,7 @@
   import Login from '../../lib/components/Login.svelte'
   import {base,extcolor,extbgcolor} from '../../lib/ustore.js'
   import { onMount} from "svelte";
+  import { _ } from 'svelte-i18n'
 
 
   let component = 'NineDots'
@@ -18,7 +19,7 @@
 
 <main>
   <div class="main-content">
-    <MainTab image="ICO_UP2_LEARN.png" title="UP2LEARN CONFIGURATION AND MONITORING" component="{component}" color={color} bgcolor={bgcolor}/>
+    <MainTab image="ICO_UP2_LEARN.png" title="{$_('up2learn_page_title')}" component="{component}" color={color} bgcolor={bgcolor}/>
     <div class="login-container">
         <Login color={color} bgcolor={bgcolor} ></Login>
     </div>

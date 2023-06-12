@@ -26,6 +26,7 @@
     "analytics": "^0.8.7",
     "pdfmake": "^0.2.7",
     "pdfmake-unicode": "^0.0.1",
+    "svelte-i18n": "^3.6.0",
     "svelte-select": "^5.6.1",
     "svelte-table": "^0.5.11",
     "uuid": "^9.0.0"
