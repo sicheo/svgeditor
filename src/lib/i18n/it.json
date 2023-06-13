@@ -7,5 +7,15 @@
   "up2clone_nav_build": "COSTRUZIONE",
   "up2clone_nav_auth": "AUTORIZZAZIONE",
   "up2data_nav_monitor": "MONITORAGGIO",
-  "up2data_nav_build": "COSTRUZIONE"
+  "up2data_nav_build": "COSTRUZIONE",
+  "up2_build_tool_save": "SALVA",
+  "up2_build_tool_load": "CARICA",
+  "up2_build_tool_import": "IMPORTA",
+  "up2_build_tool_export": "ESPORTA",
+  "up2_build_tool_clear": "CANCELLA",
+  "up2clone_build_context_monitor": "Aggiungi Master",
+  "up2clone_build_context_phase": "Aggiungi Fase",
+  "up2clone_build_context_op": "Aggiungi Operazione",
+  "up2clone_build_context_choice": "Aggiungi Scelta",
+  "up2data_build_context_node": "Aggiungi Nodo"
 }

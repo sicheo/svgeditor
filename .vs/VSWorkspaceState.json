@@ -4,8 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\routes"
+    "\\src\\lib\\i18n",
+    "\\src\\routes",
+    "\\src\\routes\\up2data",
+    "\\src\\routes\\up2data\\monitor"
   ],
-  "SelectedNode": "\\src\\lib\\components\\MainTab.svelte",
+  "SelectedNode": "\\src\\routes\\up2data\\monitor\\Up2DataMonitor.svelte",
   "PreviewInSolutionExplorer": false
 }

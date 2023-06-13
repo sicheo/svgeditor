@@ -7,5 +7,15 @@
   "up2clone_nav_build": "BUILD",
   "up2clone_nav_auth": "AUTHORIZATION",
   "up2data_nav_monitor": "MONITOR",
-  "up2data_nav_build": "BUILD"
+  "up2data_nav_build": "BUILD",
+  "up2_build_tool_save": "SAVE",
+  "up2_build_tool_load": "LOAD",
+  "up2_build_tool_import": "IMPORT",
+  "up2_build_tool_export": "EXPORT",
+  "up2_build_tool_clear": "CLEAR",
+  "up2clone_build_context_monitor": "Add Master",
+  "up2clone_build_context_phase": "Add Phase",
+  "up2clone_build_context_op": "Add Operation",
+  "up2clone_build_context_choice": "Add Choice",
+  "up2data_build_context_node": "Add Node"
 }

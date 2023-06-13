@@ -16,7 +16,7 @@
   
 
   let pages = $cloneNavigation
-  let page = "AUTHORIZATION"
+  let page = $_('up2clone_nav_auth')
 
   let onBuddyClick = BuddyClick
 

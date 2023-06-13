@@ -17,7 +17,7 @@ import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte"
 import UP2ADMINLOG from "./routes/up2admin/Up2AdminLog.svelte"
 
 import { register,init, getLocaleFromNavigator, _  } from 'svelte-i18n';
-import {dataNavigation, cloneNavigation} from '../src/lib/ustore.js'
+import {dataNavigation, cloneNavigation, clonegraphmenuoptions, clonesubmenuoptions, datagraphmenuoptions} from '../src/lib/ustore.js'
 import { onMount} from "svelte";
 
 register('en', () => import('../src/lib/i18n/en.json'));
@@ -53,19 +53,44 @@ const localizeNavigation = ()=>{
     }
 }
 
-/*init({
-  fallbackLocale: 'en',
-  //initialLocale: "it",
-  initialLocale:getLocaleFromNavigator()
-})*/
+const localizeGraphContext = ()=>{
+    for(let i=0; i< $clonegraphmenuoptions.length; i++){
+        switch($clonegraphmenuoptions[i].id){
+            case 'context-menu-master-node':
+                $clonegraphmenuoptions[i].name = $_('up2clone_build_context_monitor')
+                break;
+            case 'context-menu-phase-node':
+                $clonegraphmenuoptions[i].name = $_('up2clone_build_context_phase')
+                break;
+        }
+    }
+    for(let i=0; i< $clonesubmenuoptions.length; i++){
+        switch($clonesubmenuoptions[i].id){
+            case 'context-menu-operation-node':
+                $clonesubmenuoptions[i].name = $_('up2clone_build_context_op')
+                break;
+            case 'context-menu-choice-node':
+                $clonesubmenuoptions[i].name = $_('up2clone_build_context_choice')
+                break;
+        }
+    }
+    for(let i=0; i< $datagraphmenuoptions.length; i++){
+        switch($datagraphmenuoptions[i].id){
+            case 'context-menu-isa-node':
+                $datagraphmenuoptions[i].name = $_('up2data_build_context_node')
+                break;
+        }
+    }
+}
 
  onMount(async () => {  
      await init({
         fallbackLocale: 'en',
-        //initialLocale: "it",
-        initialLocale:getLocaleFromNavigator()
+        initialLocale: "it",
+        //initialLocale:getLocaleFromNavigator()
         })
     localizeNavigation()
+    localizeGraphContext()
  })
 
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import BuildCloneTools from '../../../lib/components/InnerTabs/BuildCloneTools.svelte'
+  import BuildTools from '../../../lib/components/InnerTabs/BuildTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2DataEditor from '../../../lib/components/PageContents/Up2DataEditor.svelte'
   import {dataNavigation} from '../../../lib/ustore.js'
@@ -14,7 +14,7 @@
 
   let pages = $dataNavigation
 
-  let page = "BUILD"
+  let page = $_('up2data_nav_build')
 
   let onBuddyClick = BuddyClick
 
@@ -85,7 +85,7 @@ const menufunctions = {
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={BuildCloneTools} options={menufunctions} {color} {bgcolor}/>
+            <InnerTab component={BuildTools} options={menufunctions} {color} {bgcolor}/>
             <Up2DataEditor bind:graph={graph} menufunctions={menufunctions}/>
         </div>
     </div>

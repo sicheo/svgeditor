@@ -16,7 +16,7 @@
   
   let pages = $dataNavigation
 
-  let page = "MONITOR"
+  let page = $_('up2data_nav_monitor')
 
   let onBuddyClick = BuddyClick
 

@@ -16,7 +16,7 @@
 
   let pages = $cloneNavigation
 
-  let page = "MONITOR"
+  let page = $_('up2clone_nav_monitor')
 
   let onBuddyClick = BuddyClick
 
