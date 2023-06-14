@@ -6,7 +6,7 @@
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
   import {cloneNavigation, analytics} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
-  import { graphVerify } from "../../../lib/script/varification/graphverify"
+  import { graphVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
 
  
@@ -52,9 +52,9 @@ const upload = async ()=>{
 
 
 
-const menusave = ()=>{ 
+const menusave = async ()=>{ 
     // CHECK GRAPH CONSISTENCY
-    const verification = graphVerify(graph)
+    const verification = await graphVerify(graph)
     if(verification != "OK"){
         alert(verification)
         return

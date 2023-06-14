@@ -17,5 +17,8 @@
   "up2clone_build_context_phase": "Add Phase",
   "up2clone_build_context_op": "Add Operation",
   "up2clone_build_context_choice": "Add Choice",
-  "up2data_build_context_node": "Add Node"
+  "up2data_build_context_node": "Add Node",
+  "err_graph_empty": "GRAPH IS EMPTY",
+  "err_first_node": "FIRST NODE MUST BE MASTER",
+  "err_miss_doccode": "MASTER MUST HAVE DOCCODE"
 }

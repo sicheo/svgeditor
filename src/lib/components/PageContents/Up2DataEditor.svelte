@@ -37,8 +37,8 @@
   const mainmenuload = menufunctions.menuload
 
 
- let datapanels = $up2datapanels
- let menuoptions = $datagraphmenuoptions
+  let datapanels = $up2datapanels
+  let menuoptions = $datagraphmenuoptions
   let submenuoptions = $clonesubmenuoptions
   let component:any = datapanels.find((item:any) => item.type == 'COMPANY').component;
 

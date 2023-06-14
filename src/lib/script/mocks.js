@@ -4,7 +4,7 @@ let logs = []
 /** MASTERS */
 const masters = [
     { uid: 1, description: "Master record product XXXXXX", doc: "DOC123", product: "PROD123", authdate: "2022-05-14", status: "AUTH", version:"1.1" },
-    { uid: 2, description: "Master record product YYYYYY", doc: "DOC123", product: "PROD123", authdate: "", status: "NOAUTH", version: "0.2" },
+    { uid: 2, description: "Master record product YYYYYY", doc: "DOC111", product: "PROD123", authdate: "", status: "NOAUTH", version: "0.2" },
     { uid: 3, description: "Master record product ZZZZZZ", doc: "DOC123", product: "PROD123", authdate: "2023-05-21", status: "AUTH", version: "1.0" }
 ]
 

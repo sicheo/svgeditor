@@ -17,5 +17,8 @@
   "up2clone_build_context_phase": "Aggiungi Fase",
   "up2clone_build_context_op": "Aggiungi Operazione",
   "up2clone_build_context_choice": "Aggiungi Scelta",
-  "up2data_build_context_node": "Aggiungi Nodo"
+  "up2data_build_context_node": "Aggiungi Nodo",
+  "err_graph_empty": "IL GRAFO E' VUOTO'",
+  "err_first_node": "IL RODO RADICE DEVE ESSERE DI TIPO MASTER",
+  "err_miss_doccode": "DOCCODE MANCANTE NEL NODO MASTER"
 }

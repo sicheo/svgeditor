@@ -3,12 +3,14 @@
     "",
     "\\src",
     "\\src\\lib",
-    "\\src\\lib\\components",
-    "\\src\\lib\\i18n",
+    "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2data",
+    "\\src\\routes\\up2clone\\auth",
+    "\\src\\routes\\up2clone\\build",
+    "\\src\\routes\\up2clone\\monitor",
+    "\\src\\routes\\up2data\\build",
     "\\src\\routes\\up2data\\monitor"
   ],
-  "SelectedNode": "\\src\\routes\\up2data\\monitor\\Up2DataMonitor.svelte",
+  "SelectedNode": "\\src\\lib\\script\\mocks.js",
   "PreviewInSolutionExplorer": false
 }
