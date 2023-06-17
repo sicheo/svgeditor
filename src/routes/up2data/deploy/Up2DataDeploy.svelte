@@ -5,6 +5,7 @@
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import NullPage from '../../../lib/components/NullPage.svelte'
+  import Up2DataDeployMp from "../../../lib/components/PageContents/Up2DataDeployMP.svelte";
   import {dataNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { _ } from 'svelte-i18n'
@@ -16,7 +17,7 @@
   
   let pages = $dataNavigation
 
-  let page = $_('up2data_nav_monitor')
+  let page = $_('up2data_nav_deploy')
 
   let onBuddyClick = BuddyClick
 
@@ -32,11 +33,11 @@ let  onLogoutClick = LogoutClick
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">
-            <NavigationBar {page} color={color} bgcolor="#FFFFFF" {pages}/>
+            <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <NullPage bgcolor="#FFFFFF"/>
+            <Up2DataDeployMp />
         </div>
     </div>
     </div>

@@ -1,3 +1,4 @@
+// Please check https://svelvet.mintlify.app/introduction
 import { _calcDAttr } from "./gutils"
 import sock from "./gsocket"
 
@@ -100,7 +101,9 @@ export default class gnode {
 
     public draw() {
         this.node = this._draw.nested()
+        console.log("***** NESTED ******", this.node)
         this.node.id(this.nodeid)
+
         // BUILD SHAPE
         switch (this.shapetype) {
             case 'ELLIPSE':
@@ -134,12 +137,21 @@ export default class gnode {
                 var nnmamelen = this.nnametext.length * (this.fontsize - 3) / 2
                 this.nname = this.node.text(this.nnametext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).fill(this.background).move(this.x + this.width / 3 - nnmamelen, this.y + this.radius / 2)
                 var ndescrtextlen = this.ndescrtext.length * (this.fontsize - 3) / 2
-                //this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height - this.fontsize - this.radius / 2)
-                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height / 2 - this.fontsize + this.radius * 3)
-
+                this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen/2, this.y + this.height - this.fontsize*1.5)
                 this.menu = this.menucallback(this.x, this.y, this.width, this.height, this)
                 break;
         }
+
+        /*
+         // FOREIGN OBJECT
+        foreign.node.setAttribute("x", this.x)
+        foreign.node.setAttribute("y", this.y)
+        foreign.node.setAttribute("width", this.width)
+        foreign.node.setAttribute("height", this.height)
+        foreign.node.setAttribute("style", "z-index:10;")
+        foreign.node.innerHTML = '<div xmlns="http://www.w3.org/1999/xhtml" >pippo</div>'
+        console.log(this._draw.svg(), foreign.node)*/
+
         // ADD SOCKETS
         const options = { x: this.x + this.width / 2 - this.radius / 2, y: this.y - this.radius / 2 }
 
@@ -298,9 +310,10 @@ export default class gnode {
 
         this.node.on('dragend', (event: any) => {
             // ADJUST x/y coords
+            const point = this.node.point(event.detail.event.clientX, event.detail.event.clientY)
             this.data.x = event.detail.event.clientX
             this.data.y = event.detail.event.clientY
-            //console.log("***** DRAGEND ******",this.data.x, this.data.y)
+            console.log("***** DRAGEND ******",this.data.x, this.data.y)
         })
         
         this.node.on('dblclick', (event: any) => {
@@ -361,7 +374,7 @@ export default class gnode {
         // Draw new text
         this.ndescrtext = text
         var ndescrtextlen = this.ndescrtext.length * (this.fontsize - 3) / 2
-        this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width/2 - ndescrtextlen/2, this.y + this.height/2 - this.fontsize + this.radius * 3)
+        this.ndescr = this.node.text(this.ndescrtext).font({ family: 'Helvetica', size: this.fontsize, anchor: 'middle' }).stroke({ width: 0.5, color: this.color }).move(this.x + this.width / 2 - ndescrtextlen / 2, this.y + this.height - this.fontsize * 1.5)
         if (this.image) {
             // Remove old image
             this.image.remove()

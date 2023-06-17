@@ -16,7 +16,7 @@
   
   let pages = $dataNavigation
 
-  let page = $_('up2data_nav_monitor')
+  let page = $_('up2data_nav_conf')
 
   let onBuddyClick = BuddyClick
 
@@ -32,7 +32,7 @@ let  onLogoutClick = LogoutClick
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">
-            <NavigationBar {page} color={color} bgcolor="#FFFFFF" {pages}/>
+            <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>

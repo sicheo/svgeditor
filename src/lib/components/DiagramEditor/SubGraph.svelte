@@ -147,7 +147,7 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 				panelObject.remove()
 			nd.draw()
 			// ADD EVENT LISTENERS
-			setEventListeners(nd)
+			//setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
 			//console.log("**** REBUILD GRAPH *****", nd)
 		}

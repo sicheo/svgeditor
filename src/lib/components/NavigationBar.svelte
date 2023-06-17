@@ -18,14 +18,19 @@ const goToPage = (e:any)=>{
  <div class="site-navigation-bar" style="--color:{color}; --background-color:{bgcolor}">
 	<div class="site-navigation-span" style="--color:{color}; --background-color:{bgcolor}">{page}</div>
 	{#each pages as Item}
-		{#if Item.roles.includes($role)}
-			<input type="button" value="{Item.name}" name="{Item.link}" on:click={goToPage}/>
+		{#if Item.roles.includes($role) && Item.type == 'link'}
+			<input class="nav" type="button" value="{Item.name}" name="{Item.link}" on:click={goToPage}/>
+		{:else if Item.type == 'holder'}
+			<input class="placeholder" type="button" value="{Item.name}"/>
+			{#each Item.subnav as SubNav}
+				<input class="subnav" type="button" value="{SubNav.name}" name="{SubNav.link}" on:click={goToPage}/>
+			{/each}
 		{/if}
 	{/each}
 </div> 
 
 <style>
-  .site-navigation-bar input[type='button']{
+  .nav{
 	background-color: var(--background-color);
 	color: var(--color);
 	display: block;
@@ -36,11 +41,13 @@ const goToPage = (e:any)=>{
 	min-width: 100%;
 	text-align: left;
  }
-.site-navigation-bar input:hover {
+.nav:hover {
   background-color: #ccc;
 }
 .site-navigation-span {
 	background-color: var(--background-color);
+	color: var(--color);
+	font-weight: bold ;
 	min-width: 100%;
 	padding-top: 4px;
 	padding-bottom: 3.5px;
@@ -48,5 +55,31 @@ const goToPage = (e:any)=>{
 	border-top: 1px solid;
 	border-bottom: 1px solid;
 }
+.subnav{
+	background-color: var(--background-color);
+	color: var(--color);
+	display: block;
+	padding: 12px;
+	border: none;
+    outline: none;
+	cursor: pointer;
+	min-width: 100%;
+	text-align: left;
+	margin-left: 20px;
+ }
+.subnav:hover {
+  background-color: #ccc;
+}
+
+ .placeholder{
+	background-color: var(--background-color);
+	color: var(--color);
+	display: block;
+	padding: 12px;
+	border: none;
+    outline: none;
+	min-width: 100%;
+	text-align: left;
+ }
 
 </style>

@@ -149,7 +149,7 @@
 				panelObject.remove()
 			nd.draw()
 			// ADD EVENT LISTENERS
-			setEventListeners(nd)
+			//setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
 		}
 		// DRAW PATHS

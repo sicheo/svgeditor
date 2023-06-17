@@ -14,6 +14,8 @@ import UP2CLONEBUILD from "./routes/up2clone/build/Up2CloneBuild.svelte"
 import UP2CLONEAUTH from "./routes/up2clone/auth/Up2CloneAuth.svelte" 
 import UP2DATAMONITOR from "./routes/up2data/monitor/Up2DataMonitor.svelte" 
 import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte" 
+import UP2DATACONF from "./routes/up2data/configuration/Up2DataConfiguration.svelte" 
+import UP2DATADEPLOY from "./routes/up2data/deploy/Up2DataDeploy.svelte" 
 import UP2ADMINLOG from "./routes/up2admin/Up2AdminLog.svelte"
 
 import { register,init, getLocaleFromNavigator, _  } from 'svelte-i18n';
@@ -48,6 +50,22 @@ const localizeNavigation = ()=>{
                 break;
             case 'BUILD':
                 $dataNavigation[i].name = $_('up2data_nav_build')
+                break;
+            case "CONFIGURATION":
+                for(let j=0;j<$dataNavigation[i].subnav.length;j++){
+                    switch($dataNavigation[i].subnav[j].name){
+                        case "DEVICE":
+                            $dataNavigation[i].subnav[j].name =  $_('up2data_nav_conf_device')
+                            break;
+                        case "AGENT":
+                            $dataNavigation[i].subnav[j].name =  $_('up2data_nav_conf_agent')
+                            break;
+                    }
+                }
+                $dataNavigation[i].name = $_('up2data_nav_conf')
+                break;
+             case 'DEPLOY':
+                $dataNavigation[i].name = $_('up2data_nav_deploy')
                 break;
         }
     }
@@ -107,6 +125,8 @@ const localizeGraphContext = ()=>{
     <Route path="/UP2CLONE/AUTH" component={UP2CLONEAUTH} />
     <Route path="/UP2DATA/MONITOR" component={UP2DATAMONITOR} />
     <Route path="/UP2DATA/BUILD" component={UP2DATABUILD} />
+    <Route path="/UP2DATA/CONFIGURATION" component={UP2DATACONF} />
+    <Route path="/UP2DATA/DEPLOY" component={UP2DATADEPLOY} />
     <Route path="/" component={HOME}/>
   </div>
 </Router>

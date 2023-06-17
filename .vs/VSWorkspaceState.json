@@ -3,14 +3,11 @@
     "",
     "\\src",
     "\\src\\lib",
-    "\\src\\lib\\script",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone\\auth",
-    "\\src\\routes\\up2clone\\build",
-    "\\src\\routes\\up2clone\\monitor",
-    "\\src\\routes\\up2data\\build",
-    "\\src\\routes\\up2data\\monitor"
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\i18n",
+    "\\src\\routes\\up2data\\deploy"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
   "PreviewInSolutionExplorer": false
 }

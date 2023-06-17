@@ -23,7 +23,7 @@ export const role = writable("")
 export const user = writable("")
 export const token = writable("")
 export const base = writable("")
-export const brtout = writable(1)
+export const brtout = writable(10)
 export const extcolor = writable("")
 export const extbgcolor = writable("")
 export const currentnavigation = writable([])
@@ -31,14 +31,22 @@ export const analytics = writable(an)
 
 // Navigation table for CLONE
 export const cloneNavigation = writable([
-    { name: "MONITOR", link: "/UP2CLONE/MONITOR",roles:['SADMIN','ADMIN','USER'] },
-    { name: "BUILD", link: "/UP2CLONE/BUILD", roles: ['ADMIN'] },
-    { name: "AUTHORIZATION", link: "/UP2CLONE/AUTH", roles: ['SADMIN'] },
+    { name: "MONITOR", link: "/UP2CLONE/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav: [] },
+    { name: "BUILD", link: "/UP2CLONE/BUILD", roles: ['ADMIN'], type: 'link', subnav: [] },
+    { name: "AUTHORIZATION", link: "/UP2CLONE/AUTH", roles: ['SADMIN'], type: 'link', subnav: [] },
 ])
 // Navigation table for DATA
 export const dataNavigation = writable( [
-    { name: "MONITOR", link: "/UP2DATA/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'] },
-    { name: "BUILD", link: "/UP2DATA/BUILD", roles: ['SADMIN', 'ADMIN', 'USER'] },
+    { name: "MONITOR", link: "/UP2DATA/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav:[] },
+    { name: "BUILD", link: "/UP2DATA/BUILD", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
+    {
+        name: "CONFIGURATION", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'holder',
+        subnav: [
+            { name: "DEVICE", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
+            { name: "AGENT", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
+        ]
+    },
+    { name: "DEPLOY", link: "/UP2DATA/DEPLOY", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav: [] },
 ])
 // Menu Options for CLONE graph Context
 export const clonegraphmenuoptions = writable([

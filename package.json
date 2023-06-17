@@ -23,6 +23,7 @@
     "@svgdotjs/svg.draggable.js": "^3.0.3",
     "@svgdotjs/svg.js": "^3.1.2",
     "@svgdotjs/svg.panzoom.js": "^2.1.2",
+    "@tanstack/svelte-table": "^8.9.2",
     "analytics": "^0.8.7",
     "pdfmake": "^0.2.7",
     "pdfmake-unicode": "^0.0.1",
