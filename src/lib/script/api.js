@@ -229,6 +229,130 @@ export const setLog = async function (log, mock = false) {
     })
 }
 
+/**
+ * Get devices
+ * @param {any} filters
+ * @param {any} mock
+ */
+export const getDevices = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getDevices",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getDevices(body))
+        }
+    })
+}
+
+/**
+ * Set Device
+ * @param {any} device
+ * @param {any} mock
+ */
+export const setDevice = async function (device, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "setDevices",
+            options: {
+                device: device
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.setDevices(body))
+        }
+    })
+}
+
+/**
+ * Get Agents
+ * @param {any} filters
+ * @param {any} mock
+ */
+export const getAgents = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getDevices",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getDevices(body))
+        }
+    })
+}
+
+/**
+ * Set Agent
+ * @param {any} agent
+ * @param {any} mock
+ */
+export const setAgent = async function (agent, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "setDevices",
+            options: {
+                agent: agent
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.setDevices(body))
+        }
+    })
+}
+
 
 
 

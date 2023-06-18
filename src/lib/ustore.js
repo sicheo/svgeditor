@@ -40,11 +40,11 @@ export const dataNavigation = writable( [
     { name: "MONITOR", link: "/UP2DATA/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav:[] },
     { name: "BUILD", link: "/UP2DATA/BUILD", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
     {
-        name: "CONFIGURATION", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'holder',
-        subnav: [
+        name: "CONFIGURATION", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav:[]
+        /*subnav: [
             { name: "DEVICE", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
             { name: "AGENT", link: "/UP2DATA/CONFIGURATION", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link' },
-        ]
+        ]*/
     },
     { name: "DEPLOY", link: "/UP2DATA/DEPLOY", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav: [] },
 ])

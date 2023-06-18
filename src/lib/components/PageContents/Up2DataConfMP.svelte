@@ -12,22 +12,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    const columnHelper  = createColumnHelper()
 
-   const onConnection = (ev:any) =>{
-      const target = ev.target
-      const docker = document.getElementById("docker-img-tool")
-      const install = document.getElementById("install-img-tool")
-      const deploy = document.getElementById("deploy-img-tool")
-      if(target){
-        target.style.backgroundColor = 'lightgreen'
-        if(docker)
-            docker.setAttribute("style","opacity:1.0;cursor:dafult;pointer-events:auto;")
-        if(install)
-            install.setAttribute("style","opacity:1.0;cursor:dafult;pointer-events:auto;")
-        if(deploy)
-            deploy.setAttribute("style","opacity:1.0;cursor:dafult;pointer-events:auto;")
-      }
-  }
-
    const columns = [
        {
            id : 'type',
@@ -77,24 +61,28 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
           ]
        },
        {
-           id : 'connection',
-           cell:  flexRender(TableImage,{image:'/CONNECTION.svg',style:"background-color: lightgrey;", onClick:onConnection}),
+           id : 'location',
+           cell:  flexRender(TableImage,{image:'/LOCATION.svg'}),
        },
        {
-           id : 'install',
-           cell:  flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'install-img-tool'}),
+           id : 'agent',
+           cell:  flexRender(TableImage,{image:'/AGENT.svg'}),
        },
        {
-           id : 'docker',
-           cell:  flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'docker-img-tool'}),   
+           id : 'save',
+           cell:  flexRender(TableImage,{image:'/SAVE.svg'}),   
        },
        {
-          id : 'deploy',
-           cell:  flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool'}),   
+          id : 'edit',
+           cell:  flexRender(TableImage,{image:'/edit.svg'}),   
+       },
+       {
+          id : 'delete',
+           cell:  flexRender(TableImage,{image:'/DELETE.svg'}),
        }
    ]
 
- 
+  
 
   const data = [
     {
@@ -112,7 +100,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
      
     },
     {
-       name: 'Device3',
+      name: 'Device3',
       host: 'CLOUD03',
       port: 3001,
       description: 'Some Description 3 a bit longer',

@@ -52,7 +52,7 @@ const localizeNavigation = ()=>{
                 $dataNavigation[i].name = $_('up2data_nav_build')
                 break;
             case "CONFIGURATION":
-                for(let j=0;j<$dataNavigation[i].subnav.length;j++){
+                /*for(let j=0;j<$dataNavigation[i].subnav.length;j++){
                     switch($dataNavigation[i].subnav[j].name){
                         case "DEVICE":
                             $dataNavigation[i].subnav[j].name =  $_('up2data_nav_conf_device')
@@ -61,7 +61,7 @@ const localizeNavigation = ()=>{
                             $dataNavigation[i].subnav[j].name =  $_('up2data_nav_conf_agent')
                             break;
                     }
-                }
+                }*/
                 $dataNavigation[i].name = $_('up2data_nav_conf')
                 break;
              case 'DEPLOY':

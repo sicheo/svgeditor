@@ -12,6 +12,7 @@
 
   export let data:any
   export let columns:any
+  export let color:any
 
      let sorting = []
   const setSorting = updater => {
@@ -64,19 +65,14 @@
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           {#each headerGroup.headers as header}
-            <th colSpan={header.colSpan}>
+            <th style="--color:{color};">
               {#if !header.isPlaceholder}
-                <div
-                  class:cursor-pointer={header.column.getCanSort()}
-                  class:select-none={header.column.getCanSort()}
-                  on:click={header.column.getToggleSortingHandler()}
-                >
-                  <svelte:component this={flexRender(header.column.columnDef.header, header.getContext())} />
-                  {{
-                    asc: ' 🔼',
-                    desc: ' 🔽',
-                  }[header.column.getIsSorted().toString()] ?? ''}
-                </div>
+                <svelte:component
+                  this={flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                />
               {/if}
             </th>
           {/each}
@@ -118,6 +114,7 @@ th {
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
   padding: 2px 4px;
+  color: var(--color) ;
 }
 
 tfoot {
