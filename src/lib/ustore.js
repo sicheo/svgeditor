@@ -48,6 +48,10 @@ export const dataNavigation = writable( [
     },
     { name: "DEPLOY", link: "/UP2DATA/DEPLOY", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav: [] },
 ])
+// Navigation table for AI
+export const aiNavigation = writable([
+    { name: "MONITOR", link: "/UP2AI/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav: [] },
+])
 // Menu Options for CLONE graph Context
 export const clonegraphmenuoptions = writable([
     { uid: 1, id: 'context-menu-master-node', name: 'Add Master', value: '', items: [] },

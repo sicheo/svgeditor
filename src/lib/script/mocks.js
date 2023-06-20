@@ -335,6 +335,33 @@ const agents = [
     
 ]
 
+// processes
+const processes = [
+    {
+        name: "PROCESS_NAME",
+        uid: "1234-opr-78",
+        description: "Process description",
+        phases: [
+            {
+                name: "PHASE1",
+                uid:"xyz-235",
+                description: "Phase description",
+                parent: null,
+                parameters: [],
+                operations: [
+                    {
+                        name: "OPERATION1",
+                        uid: "vwu-091",
+                        description: "Operation description",
+                        parent: null,
+                        tasks:[]
+                    }
+                ]
+            }
+        ]
+    }
+]
+
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
         body.data = { token: 'ABCDEFGH', role:'ADMIN'}

@@ -20,7 +20,7 @@
   <div class="main-content">
     <MainTab image="ICO_UP2_AI.png" title="{$_('up2ai_page_title')}" component="{component}" color="{color}" bgcolor={bgcolor}/>
     <div class="login-container">
-        <Login color={color} bgcolor={bgcolor} > </Login>
+        <Login color={color} bgcolor={bgcolor} target="/UP2AI/MONITOR"> </Login>
     </div>
   </div>
 </main>

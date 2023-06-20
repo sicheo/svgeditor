@@ -3,9 +3,11 @@
     "",
     "\\src",
     "\\src\\lib",
-    "\\src\\lib\\script",
+    "\\src\\lib\\components",
+    "\\src\\routes",
+    "\\src\\routes\\up2data",
     "\\src\\routes\\up2data\\configuration"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\routes\\up2data\\configuration\\Up2DataConfiguration.svelte",
   "PreviewInSolutionExplorer": false
 }
