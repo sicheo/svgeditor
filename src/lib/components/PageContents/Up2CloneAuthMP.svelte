@@ -5,13 +5,14 @@ import SelectComponent from "../TaskEditor/SelectComponent.svelte";
 import InputComponent from "../TaskEditor/InputComponent.svelte";
 import TextAreaComponent from "../TaskEditor/TextAreaComponent.svelte";
 import {getMasters} from '../../script/api.js'
+import {mock} from '../../ustore.js'
 
 
 
 let rows = []
 
 onMount(async ()=>{
-   const response = await getMasters(null,true)
+   const response = await getMasters(null,$mock)
    rows = response.data
    console.log("****** Up2CloneAuthMP ******",rows)
 

@@ -353,6 +353,67 @@ export const setAgent = async function (agent, mock = false) {
     })
 }
 
+/**
+ * Get Processes
+ * @param {any} filters
+ * @param {any} mock
+ */
+export const getProcesses = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getProcesses",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getProcesses(body))
+        }
+    })
+}
+
+/**
+ * Set Process
+ * @param {any} agent
+ * @param {any} mock
+ */
+export const setProcess = async function (process, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "setDevices",
+            options: {
+                process: process
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.setProcess(body))
+        }
+    })
+}
 
 
 

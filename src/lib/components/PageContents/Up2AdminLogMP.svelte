@@ -3,13 +3,13 @@ import { onMount} from "svelte";
 import SvelteTable from "svelte-table";
 import InputComponent from "../TaskEditor/InputComponent.svelte";
 import {getLogs} from '../../script/api.js'
-
+import {mock} from '../../ustore.js'
 
 
 let rows = []
 
 onMount(async ()=>{
-   const response = await getLogs(true)
+   const response = await getLogs($mock)
    rows = response.data
    console.log("****** Up2CloneLogMP ******",rows)
 

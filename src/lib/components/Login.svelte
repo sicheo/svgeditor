@@ -2,7 +2,7 @@
 
 import {login} from '../script/api.js'
 import {navigate} from 'svelte-routing'
-import {role,user,token,brtout,analytics} from '../ustore.js'
+import {role,user,token,brtout,analytics, mock} from '../ustore.js'
 import actwatcher from "../script/actwatcher.js"
 
 export let userid = ''
@@ -16,7 +16,7 @@ export let bgcolor = "#d5e8d4"
 const handleSubmit=(e)=>{
        let loginFields={userid,password};
        // CALL LOGN API
-       login(userid,password,true)
+       login(userid,password,$mock)
        .then((res:any) =>{
            $role = res.data.role
            $user = userid

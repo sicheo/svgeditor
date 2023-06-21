@@ -9,6 +9,7 @@ import {_calcDAttr} from "./classes/gutils"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
 import {getMenuItems} from '../../script/api.js'
 import TaskEditor from "../TaskEditor/TaskEditor.svelte"
+import {mock} from '../../ustore.js'
 
 
 
@@ -419,7 +420,7 @@ const rebuildSubgraph = (ev:any) =>{
 onMount(async ()=>{
 	// LOAD MENUITEMS
 		for(let i=0;i<submenuoptions.length;i++){
-			const body = await getMenuItems(submenuoptions[i].id,true)
+			const body = await getMenuItems(submenuoptions[i].id,$mock)
 			submenuoptions[i].items = body.data
 		}
 

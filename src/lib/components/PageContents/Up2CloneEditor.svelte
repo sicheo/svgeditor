@@ -449,6 +449,15 @@
 		}
 	}
 
+	const  redrawGraph = async function(event:any) {
+		const element = event.target
+		if(element){
+			const graph = JSON.parse(element.getAttribute("data-graph"))
+			console.log("REDRAWING GRAPH",graph)
+			graphRebuildGraph(graph)
+		}
+	}
+
 	const setEventListeners = (node:any) =>{
 		 if (node.vertical == true) {
             node.socketN.sock.on("mouseover", (ev: any) => {
@@ -596,6 +605,7 @@ const onHidePdf = (e:any)=>{
 	<div class= "editor-container" id= "editor-container-id">
 			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component}  {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
+			<input id="load-graph-redraw"name="load-graph-redraw" type='button' accept=".json" style="visibility:hidden;" on:click={redrawGraph}>
 	</div>
 
 	<div class="pdf-div" id="pdf-div-id">

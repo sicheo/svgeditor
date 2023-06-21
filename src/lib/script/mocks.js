@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 let attempts = 0
 let logs = []
 
@@ -338,23 +340,110 @@ const agents = [
 // processes
 const processes = [
     {
-        name: "PROCESS_NAME",
-        uid: "1234-opr-78",
+        uuid: uuidv4(),
+        name: "MASTER",
+        uid: 0,
         description: "Process description",
+        data: {},
+        graph: {
+            id: 'NODE-0',
+            level: "level0",
+            type: 'MASTER',
+            image: "/MASTER.svg",
+            shape: "RECT",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            uid: 0,
+            x: 454,
+            y: 253
+        },
         phases: [
             {
-                name: "PHASE1",
-                uid:"xyz-235",
+                name: "DISPENSING",
+                uid:1,
                 description: "Phase description",
-                parent: null,
-                parameters: [],
+                parent: "NODE-0",
+                data: {},
+                graph: {
+                    id: 'NODE-1',
+                    level: "level1",
+                    type: 'PHASE',
+                    image: "/DISPENSING.svg",
+                    shape: "RECT",
+                    width: 140,
+                    height: 90,
+                    imgwidth: 30,
+                    imgheight: 30,
+                    uid: 0,
+                    x: 572,
+                    y: 230
+                },
                 operations: [
                     {
-                        name: "OPERATION1",
-                        uid: "vwu-091",
+                        name: "Inertization",
+                        uid: 0,
                         description: "Operation description",
                         parent: null,
-                        tasks:[]
+                        data: {},
+                        graph: {
+                            id: "NODE-0",
+                            level: "level1",
+                            type: 'TASK',
+                            image: "/TASK.svg",
+                            shape: "RECT",
+                            width: 120,
+                            height: 50,
+                            imgwidth: 15,
+                            imgheight: 15,
+                            uid: 0,
+                            x: 490,
+                            y: 263
+                        },
+                        tasks: [
+                            {
+                                uid: 0,
+                                tye: "Task",
+                                name: "Task Name",
+                                tag: "VAR-TAG",
+                                checktype: "ANALOG",
+                                op: "EQ",
+                                expected: "30",
+                                description: "task description",
+                                checkmode: "automatic",
+                                system: "IFIX",
+                                result: {
+                                    value: "",
+                                    note:"",
+                                    timestamp: null,
+                                    signature: null,
+                                    checksignature: null
+                                },
+                            }
+                        ]
+                    },
+                    {
+                        name: "Thermoregulation",
+                        uid: 1,
+                        description: "Operation description",
+                        parent: "NODE-0",
+                        data: {},
+                        graph: {
+                            id: "NODE-1",
+                            level: "level1",
+                            type: 'TASK',
+                            image: "/TASK.svg",
+                            shape: "RECT",
+                            width: 120,
+                            height: 50,
+                            imgwidth: 15,
+                            imgheight: 15,
+                            uid: 0,
+                            x: 490,
+                            y: 263
+                        },
+                        tasks: []
                     }
                 ]
             }
@@ -424,7 +513,7 @@ const setLog = function (body) {
 }
 
 const filterArray = (array, filters) => {
-    if (filters.length) {
+    if (filters && filters.length) {
         for (let i = 0; i < filters.length; i++) {
             const filter = filters[i]
             switch (filter.op) {
@@ -475,11 +564,23 @@ const getAgents = async function (body) {
     return (body)
 }
 
+const getProcesses = async function (body) {
+    let retProcesses = JSON.parse(JSON.stringify(processes))
+    const filters = body.options.filters
+
+    retProcesses = filterArray(retProcesses, filters)
+
+    body.data = retProcesses
+    return (body)
+}
+
+
+
 const setDevice = async function (body) {
     const device = body.options.device
     let old = null
     if (device) {
-        const existing = devices.findIndex((item) => { return item.id == device.id })
+        const existing = devices.findIndex((item) => { return item.uid == device.uid })
         if (existing > -1) {
             old = devices[existing]
             devices[existing] = device
@@ -495,12 +596,28 @@ const setAgent = async function (body) {
     const agent = body.options.agent
     let old = null
     if (agent) {
-        const existing = agents.findIndex((item) => { return item.id == agent.id })
+        const existing = agents.findIndex((item) => { return item.uid == agent.uid })
         if (existing > -1) {
             old = agents[existing]
             agents[existing] = agent
         } else {
             agents.push(agent)
+        }
+    }
+
+    return old
+}
+
+const setProcess = async function (body) {
+    const process = body.options.process
+    let old = null
+    if (process) {
+        const existing = processes.findIndex((item) => { return item.id == process.id })
+        if (existing > -1) {
+            old = processes[existing]
+            processes[existing] = process
+        } else {
+            agents.push(process)
         }
     }
 
@@ -517,7 +634,9 @@ const mocks = {
     getDevices,
     setDevice,
     getAgents,
-    setAgent
+    setAgent,
+    getProcesses,
+    setProcess
 }
 
 export default mocks

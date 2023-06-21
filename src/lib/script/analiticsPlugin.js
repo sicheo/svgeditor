@@ -1,4 +1,6 @@
-import { setLog,getLogs } from "../script/api.js"
+import { setLog, getLogs } from "../script/api.js"
+
+
 
 async function getUser() {
     let { user } = await import("../ustore.js")
@@ -8,6 +10,16 @@ async function getUser() {
     });
     unsubscribe()
     return luser
+}
+
+async function getMock() {
+    let { mock } = await import("../ustore.js")
+    let lmock = false
+    const unsubscribe = await mock.subscribe(value => {
+        lmock = value;
+    });
+    unsubscribe()
+    return lmock
 }
 
 const config = {
@@ -55,8 +67,8 @@ export default function analyticPlugin(userConfig) {
                     break
             }
             const log = { user: user, date: dateToISOLikeButLocal(new Date(payload.meta.ts)), action: payload.event, details: details }
-            await setLog(log, true)
-            const logs = await getLogs(true)
+            await setLog(log, getMock())
+            const logs = await getLogs(getMock())
             console.log(logs)
         },
         /* identify user */

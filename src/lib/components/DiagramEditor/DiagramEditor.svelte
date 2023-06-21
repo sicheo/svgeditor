@@ -14,6 +14,7 @@ import SubGraph from "../DiagramEditor/SubGraph.svelte"
 import ContextMenu from './ContextMenu/ContextMenu.svelte'
 import {getMenuItems} from '../../script/api.js'
 import Panel from '../../components/MenuPanels/Panel.svelte'
+import {mock} from '../../ustore.js'
 
 
 
@@ -71,7 +72,7 @@ onMount(async () => {
 		
 		// LOAD MENUITEMS
 		for(let i=0;i<menuoptions.length;i++){
-			const body = await getMenuItems(menuoptions[i].id,true)
+			const body = await getMenuItems(menuoptions[i].id,$mock)
 			menuoptions[i].items = body.data
 		}
 		

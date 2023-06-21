@@ -4,10 +4,12 @@
   import BuildTools from '../../../lib/components/InnerTabs/BuildTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
-  import {cloneNavigation, analytics} from '../../../lib/ustore.js'
+  import {cloneNavigation, analytics, mock} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { graphVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
+  import {getProcesses} from '../../../lib/script/api.js'
+  import gutils from '../../../lib/script/graphutils'
 
  
 
@@ -63,7 +65,21 @@ const menusave = async ()=>{
             masterdoc: graph.nodes[0].data.params.doccode
     })
 }
-const menuload = ()=>{
+const menuload = async ()=>{
+    // POP UP LOAD PAGE
+    // LOAD PROCESS
+    const response = await getProcesses(null,$mock)
+    const processes = response.data
+    //console.log("** UP2CLONEBUILD **",processes)
+    // CONVERT TO GRAPH
+    const graph = gutils.getGraphFromProcess(processes[0])
+    //console.log("** UP2CLONEBUILD **",graph)
+    // REDRAW GRAPH
+    const element = document.getElementById("load-graph-redraw")
+    element.setAttribute("data-graph",JSON.stringify(graph))
+    if(element)
+	    element.click()
+
 }
 const menuimport = ()=>{
     const element = document.getElementById("file-graph-input")
