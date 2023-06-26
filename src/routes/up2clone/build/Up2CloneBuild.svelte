@@ -10,6 +10,8 @@
   import { _ } from 'svelte-i18n'
   import {getProcesses} from '../../../lib/script/api.js'
   import gutils from '../../../lib/script/graphutils'
+  import graphutils from '../../../lib/script/graphutils';
+  import {setProcess} from '../../../lib/script/api.js'
 
  
 
@@ -61,6 +63,10 @@ const menusave = async ()=>{
         alert(verification)
         return
     }
+    const process = await graphutils.getProcessFromGraph(graph)
+    console.log("***** SAVE GRAPH *******", process)
+    const old = await setProcess(process,true)
+    console.log("****  OLD VALUE *******", old)
     $analytics.track('graphSave', {
             masterdoc: graph.nodes[0].data.params.doccode
     })
@@ -68,6 +74,10 @@ const menusave = async ()=>{
 const menuload = async ()=>{
     // POP UP LOAD PAGE
     // LOAD PROCESS
+    const dialog = document.getElementById("build-tool-dialog")
+    if(dialog){
+        dialog.style.display = 'block'
+    }
     const response = await getProcesses(null,$mock)
     const processes = response.data
     //console.log("** UP2CLONEBUILD **",processes)

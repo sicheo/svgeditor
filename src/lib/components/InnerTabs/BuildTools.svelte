@@ -8,6 +8,12 @@ const load = () =>{
     console.log("**** BUILD TOOLS LOAD ****")
     options.menuload()
 }
+
+const exitDialog = (event:any)=>{
+    const dialog = document.getElementById("build-tool-dialog")
+    if(dialog)
+        dialog.style.display = 'none'
+}
 </script>
 
  <div class="main-tab-tool-class">
@@ -16,6 +22,10 @@ const load = () =>{
     <input type="button" class= "image-tool-component"  on:click={options.menuimport} value="{$_('up2_build_tool_import')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuexport} value="{$_('up2_build_tool_export')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuclear} value="{$_('up2_build_tool_clear')}" />
+ </div>
+
+ <div id="build-tool-dialog">
+     <input type="image" class= "image-tool-component" src="/close.svg" on:click={exitDialog} alt="ALT IMAGE" height="25" />
  </div>
 
 <style>
@@ -29,5 +39,19 @@ const load = () =>{
       opacity: 0.8;
       color: var(--color);
       cursor: pointer;
+  }
+
+  #build-tool-dialog{
+      display: none;
+      position: absolute; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      width: 50%; /* Full width */
+      min-width: 200px; /* Full width */
+      height: auto; /* Full height */
+      top: 100px;
+      left: 200px;
+      background-color: white ;
+      border: 1px solid;
   }
 </style>

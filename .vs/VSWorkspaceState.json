@@ -4,10 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\script",
-    "\\src\\routes\\up2ai\\monitor",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2data\\monitor"
+    "\\src\\routes",
+    "\\src\\routes\\up2clone"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\lib\\script\\analiticsPlugin.js",
   "PreviewInSolutionExplorer": false
 }

@@ -355,7 +355,6 @@ const processes = [
             height: 90,
             imgwidth: 30,
             imgheight: 30,
-            uid: 0,
             x: 454,
             y: 253
         },
@@ -376,7 +375,6 @@ const processes = [
                     height: 90,
                     imgwidth: 30,
                     imgheight: 30,
-                    uid: 0,
                     x: 572,
                     y: 230
                 },
@@ -397,7 +395,6 @@ const processes = [
                             height: 50,
                             imgwidth: 15,
                             imgheight: 15,
-                            uid: 0,
                             x: 490,
                             y: 263
                         },
@@ -439,7 +436,6 @@ const processes = [
                             height: 50,
                             imgwidth: 15,
                             imgheight: 15,
-                            uid: 0,
                             x: 490,
                             y: 263
                         },

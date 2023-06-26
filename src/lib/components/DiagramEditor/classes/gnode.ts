@@ -101,7 +101,6 @@ export default class gnode {
 
     public draw() {
         this.node = this._draw.nested()
-        console.log("***** NESTED ******", this.node)
         this.node.id(this.nodeid)
 
         // BUILD SHAPE
@@ -313,7 +312,6 @@ export default class gnode {
             const point = this.node.point(event.detail.event.clientX, event.detail.event.clientY)
             this.data.x = event.detail.event.clientX
             this.data.y = event.detail.event.clientY
-            console.log("***** DRAGEND ******",this.data.x, this.data.y)
         })
         
         this.node.on('dblclick', (event: any) => {

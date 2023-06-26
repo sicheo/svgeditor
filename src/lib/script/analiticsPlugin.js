@@ -69,7 +69,7 @@ export default function analyticPlugin(userConfig) {
             const log = { user: user, date: dateToISOLikeButLocal(new Date(payload.meta.ts)), action: payload.event, details: details }
             await setLog(log, getMock())
             const logs = await getLogs(getMock())
-            console.log(logs)
+            //console.log(logs)
         },
         /* identify user */
         identify: ({ payload }) => {

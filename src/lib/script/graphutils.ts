@@ -1,4 +1,6 @@
-const getChildrens = (graph:any,id:any) => {
+import { v4 as uuidv4 } from 'uuid';
+
+const getChildrens = (graph: any, id: any) => {
     let childrens: any[] = []
     const pts = graph.paths.filter((item: any) => (item.from.includes(id)))
     childrens = graph.nodes.filter((node:any) => (pts.some((item:any)=>(item.to.includes(node.id)))))
@@ -137,15 +139,153 @@ const getGraphFromProcess = (process: any) => {
 }
 
 const getProcessFromGraph = (graph:any) => {
-    const process = {}
-    if (graph) {
-        // EXTRACT ROOT
-        // EXTRACT PHASE
-        // EXTRACT OPERATION
-        // EXTRACT TASK
+    const process = {
+        uuid: null,
+        name: '',
+        uid: 0,
+        description: '',
+        data: {},
+        graph: {
+            id: '',
+            level: "",
+            type: '',
+            image: "",
+            shape: "",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            x: 454,
+            y: 253
+        },
+        phases:[]
     }
+    if (graph && graph.nodes) {
+        for (let i = 0; i < graph.nodes.length; i++) {
+            const node = graph.nodes[i]
+            if (i == 0) {
+                // EXTRACT ROOT
+                if (node.data.uuid)
+                    process.uuid = node.uuid
+                else
+                    process.uuid = uuidv4()
+                process.name = node.data.name
+                process.uid = node.data.uid
+                process.data = node.data.params
+                process.graph.id = node.id
+                process.graph.level = node.data.level
+                process.graph.type = node.data.type
+                process.graph.image = node.data.image
+                process.graph.shape = node.data.shape
+                process.graph.width = node.data.width
+                process.graph.height = node.data.height
+                process.graph.imgwidth = node.data.imgwidth
+                process.graph.imgheight = node.data.imgheight
+                process.graph.x = node.data.x
+                process.graph.y = node.data.y
+            } else {
+                // EXTRACT PHASE
+                const phase = {
+                    name: '',
+                    uid: 0,
+                    description: '',
+                    parent:null,
+                    data: {},
+                    graph: {
+                        id: '',
+                        level: "",
+                        type: '',
+                        image: "",
+                        shape: "",
+                        width: 140,
+                        height: 90,
+                        imgwidth: 30,
+                        imgheight: 30,
+                        x: 454,
+                        y: 253
+                    },
+                    operations: []
+                }
+                phase.name = node.data.name
+                phase.uid = node.data.uid
+                phase.data = node.data.params
+                phase.graph.id = node.id
+                phase.graph.level = node.data.level
+                phase.graph.type = node.data.type
+                phase.graph.image = node.data.image
+                phase.graph.shape = node.data.shape
+                phase.graph.width = node.data.width
+                phase.graph.height = node.data.height
+                phase.graph.imgwidth = node.data.imgwidth
+                phase.graph.imgheight = node.data.imgheight
+                phase.graph.x = node.data.x
+                phase.graph.y = node.data.y
+                // TDB ADD PARENT
+                const found = graph.paths.find((item: any) => item.to.includes(phase.graph.id))
+                if (found)
+                    phase.parent = found.from[0]
+                if (node.data.operations && node.data.operations.nodes) {
+                    for (let j = 0; j < node.data.operations.nodes.length; j++) {
+                        const operation = {
+                            name: '',
+                            uid: 0,
+                            description: '',
+                            parent: null,
+                            data: {},
+                            graph: {
+                                id: '',
+                                level: "",
+                                type: '',
+                                image: "",
+                                shape: "",
+                                width: 140,
+                                height: 90,
+                                imgwidth: 30,
+                                imgheight: 30,
+                                x: 454,
+                                y: 253
+                            },
+                            tasks: []
+                        }
+                        const nodeoper = node.data.operations.nodes[j]
+                        // EXTRACT OPERATION
+                        operation.name = nodeoper.data.name
+                        operation.uid = nodeoper.data.uid
+                        operation.data = nodeoper.data.params
+                        operation.graph.id = nodeoper.id
+                        operation.graph.level = nodeoper.data.level
+                        operation.graph.type = nodeoper.data.type
+                        operation.graph.image = nodeoper.data.image
+                        operation.graph.shape = nodeoper.data.shape
+                        operation.graph.width = nodeoper.data.width
+                        operation.graph.height = nodeoper.data.height
+                        operation.graph.imgwidth = nodeoper.data.imgwidth
+                        operation.graph.imgheight = nodeoper.data.imgheight
+                        operation.graph.x = nodeoper.data.x
+                        operation.graph.y = nodeoper.data.y
+                        // TDB ADD PARENT
+                        const found = node.data.operations.paths.find((item: any) => item.to.includes(operation.graph.id))
+                        if (found)
+                            operation.parent = found.from[0]
+                        if (nodeoper.data.tasks) {
+                            for (let k = 0; k < nodeoper.data.tasks.length; k++) {
+                                const nodetask = nodeoper.data.tasks[k]
+                                operation.tasks.push(nodetask)
+
+                                // EXTRACT TASK
+                            }
+                        }
+
+                        phase.operations.push(operation)
+                    }
+                }
+                process.phases.push(phase)
+            }
+        }
+    }
+    return process
 }
 
-const graphutils = { getChildrens, getTreeFromGraph, getGraphFromTree, getGraphFromProcess }
+const graphutils = { getChildrens, getTreeFromGraph, getGraphFromTree, getGraphFromProcess, getProcessFromGraph }
 
 export default graphutils
