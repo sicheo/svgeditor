@@ -25,5 +25,9 @@
   "up2data_build_context_node": "Add Node",
   "err_graph_empty": "GRAPH IS EMPTY",
   "err_first_node": "FIRST NODE MUST BE MASTER",
-  "err_miss_doccode": "MASTER MUST HAVE DOCCODE"
+  "err_miss_doccode": "MASTER MUST HAVE DOCCODE",
+  "dialog_load_process": "CHOOSE PROCESS",
+  "dialog_load_button": "LOAD",
+  "dialog_search": "Search...",
+  "dialog_drop_placheholder": "Select your option"
 }

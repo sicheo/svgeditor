@@ -6,6 +6,10 @@ const customHeaders = {
     "Content-Type": "application/json",
 }
 
+export const  sleep = function(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const callFetchPost = async function (url, data, cheaders = null) {
     let headers = {}
     if (cheaders == null)

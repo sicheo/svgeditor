@@ -4,7 +4,7 @@
 import {onMount} from "svelte"
 import { navigate } from 'svelte-routing';
 
-import ModalApps from "./ModalApps.svelte";
+import ModalApps from "../components/Dialogs/ModalApps.svelte";
 import NineDots from "./NineDots.svelte"
 import MainTabTools from "./MainTabTools.svelte"
 

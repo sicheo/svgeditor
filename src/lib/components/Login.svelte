@@ -18,6 +18,7 @@ const handleSubmit=(e)=>{
        // CALL LOGN API
        login(userid,password,$mock)
        .then((res:any) =>{
+           if(res.data){
            $role = res.data.role
            $user = userid
            $token = res.data.token
@@ -31,6 +32,8 @@ const handleSubmit=(e)=>{
                 navigate(target, {replaceState:true}) 
            }
            else
+                console.log(res.error)
+           }else
                 console.log(res.error)
        }).catch((err:any) =>{
            // ELSE MANAGE ERROR

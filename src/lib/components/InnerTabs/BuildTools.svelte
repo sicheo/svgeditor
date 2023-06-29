@@ -3,9 +3,10 @@ import { _ } from 'svelte-i18n'
 
 export let color="#0e0e0e"
 export let options
+export let dialog
+export let dialogOptions = {data:[],selected:""}
 
 const load = () =>{
-    console.log("**** BUILD TOOLS LOAD ****")
     options.menuload()
 }
 
@@ -25,7 +26,7 @@ const exitDialog = (event:any)=>{
  </div>
 
  <div id="build-tool-dialog">
-     <input type="image" class= "image-tool-component" src="/close.svg" on:click={exitDialog} alt="ALT IMAGE" height="25" />
+     <svelte:component this={dialog} bind:dialogOptions={dialogOptions} {color}/>
  </div>
 
 <style>
@@ -42,16 +43,16 @@ const exitDialog = (event:any)=>{
   }
 
   #build-tool-dialog{
-      display: none;
-      position: absolute; /* Stay in place */
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
       z-index: 1; /* Sit on top */
       padding-top: 100px; /* Location of the box */
-      width: 50%; /* Full width */
-      min-width: 200px; /* Full width */
-      height: auto; /* Full height */
-      top: 100px;
-      left: 200px;
-      background-color: white ;
-      border: 1px solid;
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
 </style>

@@ -30,6 +30,7 @@ export const extcolor = writable("")
 export const extbgcolor = writable("")
 export const currentnavigation = writable([])
 export const analytics = writable(an)
+export const navigating = writable(null)
 
 // Navigation table for CLONE
 export const cloneNavigation = writable([

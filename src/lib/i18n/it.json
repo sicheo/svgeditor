@@ -25,5 +25,9 @@
   "up2data_build_context_node": "Aggiungi Nodo",
   "err_graph_empty": "IL GRAFO E' VUOTO'",
   "err_first_node": "IL RODO RADICE DEVE ESSERE DI TIPO MASTER",
-  "err_miss_doccode": "DOCCODE MANCANTE NEL NODO MASTER"
+  "err_miss_doccode": "DOCCODE MANCANTE NEL NODO MASTER",
+  "dialog_load_process": "SELEZIONA PROCESSO",
+  "dialog_load_button": "CARICA",
+  "dialog_search": "Cerca...",
+  "dialog_drop_placheholder": "Seleziona opzione"
 }

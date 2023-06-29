@@ -8,13 +8,13 @@
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
 
-  import type { ColumnDef, TableOptions } from '@tanstack/table-core/src/types'
 
   export let data:any
   export let columns:any
   export let color:any
 
-     let sorting = []
+  let sorting = []
+
   const setSorting = updater => {
     if (updater instanceof Function) {
       sorting = updater(sorting)
@@ -29,7 +29,11 @@
       },
     }))
   }
-  const options = writable<TableOptions<Person>>(
+
+  const setRowSelection = ()=>{
+      console.log("SET ROW SELECTION")
+  }
+  const options = writable(
     {
       data,
       columns,
@@ -40,6 +44,9 @@
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       debugTable: true,
+      debugRows: true,
+      enableRowSelection: true,
+      onRowSelectionChange: setRowSelection,
     }
   )
   const refreshData = () => {

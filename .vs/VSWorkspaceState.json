@@ -3,10 +3,12 @@
     "",
     "\\src",
     "\\src\\lib",
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\InnerTabs",
+    "\\src\\lib\\components\\Tables",
     "\\src\\lib\\script",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone"
+    "\\src\\routes\\up2clone\\monitor"
   ],
-  "SelectedNode": "\\src\\lib\\script\\analiticsPlugin.js",
+  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
   "PreviewInSolutionExplorer": false
 }

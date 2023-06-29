@@ -565,7 +565,6 @@ const getProcesses = async function (body) {
     const filters = body.options.filters
 
     retProcesses = filterArray(retProcesses, filters)
-
     body.data = retProcesses
     return (body)
 }

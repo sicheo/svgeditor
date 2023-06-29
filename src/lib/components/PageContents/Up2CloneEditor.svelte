@@ -453,7 +453,6 @@
 		const element = event.target
 		if(element){
 			const graph = JSON.parse(element.getAttribute("data-graph"))
-			console.log("REDRAWING GRAPH",graph)
 			graphRebuildGraph(graph)
 		}
 	}

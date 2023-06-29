@@ -4,20 +4,23 @@
   import BuildTools from '../../../lib/components/InnerTabs/BuildTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
-  import {cloneNavigation, analytics, mock} from '../../../lib/ustore.js'
+  import {cloneNavigation, analytics, mock, navigating } from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { graphVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
-  import {getProcesses} from '../../../lib/script/api.js'
   import gutils from '../../../lib/script/graphutils'
   import graphutils from '../../../lib/script/graphutils';
-  import {setProcess} from '../../../lib/script/api.js'
+  import {setProcess, getProcesses, sleep } from '../../../lib/script/api.js'
+  import LoadDialog from '../../../lib/components/Dialogs/LoadDialog.svelte'
 
  
 
   let component = 'MainTabTools'
   let bgcolor ="#d5e8d4"
   let color = "#007d35"
+  let dialogComponent = null
+  let dialogOptions = {data:[],selected:''}
+  let processes = []
  
 
   let pages = $cloneNavigation
@@ -71,26 +74,41 @@ const menusave = async ()=>{
             masterdoc: graph.nodes[0].data.params.doccode
     })
 }
+
+const listener = (e:any)=>{
+    //console.log("**** EVENT ******",e.detail.processUid)
+    if(e.detail.processUid && e.detail.processUid != ''){
+        const found = processes.find((item:any) => item.uuid == e.detail.processUid)
+        if(found){
+            const element = document.getElementById("load-graph-redraw")
+            const graph = gutils.getGraphFromProcess(found)
+            element.setAttribute("data-graph",JSON.stringify(graph))
+            element.click()
+        }
+    }
+    removeEventListener("processLoaded", listener)
+}
+
 const menuload = async ()=>{
+    // REDRAW GRAPH
+    const element = document.getElementById("load-graph-redraw")
+    element.addEventListener("processLoaded",listener)
     // POP UP LOAD PAGE
     // LOAD PROCESS
+    const response = await getProcesses(null,$mock)
+    processes = response.data
+    dialogOptions = {data:processes,selected:''}
+    $navigating = {}
+    dialogComponent = LoadDialog
     const dialog = document.getElementById("build-tool-dialog")
     if(dialog){
         dialog.style.display = 'block'
     }
-    const response = await getProcesses(null,$mock)
-    const processes = response.data
-    //console.log("** UP2CLONEBUILD **",processes)
-    // CONVERT TO GRAPH
-    const graph = gutils.getGraphFromProcess(processes[0])
-    //console.log("** UP2CLONEBUILD **",graph)
-    // REDRAW GRAPH
-    const element = document.getElementById("load-graph-redraw")
-    element.setAttribute("data-graph",JSON.stringify(graph))
-    if(element)
-	    element.click()
-
+     await sleep(1000)
+    $navigating = null
+    
 }
+
 const menuimport = ()=>{
     const element = document.getElementById("file-graph-input")
     if(element)
@@ -129,7 +147,7 @@ const menufunctions = {
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={BuildTools} options={menufunctions} {color} {bgcolor}/>
+            <InnerTab component={BuildTools} bind:dialog={dialogComponent} bind:dialogOptions={dialogOptions} options={menufunctions} {color} {bgcolor}/>
             <Up2CloneEditor bind:graph={graph} menufunctions={menufunctions}/>
         </div>
     </div>
