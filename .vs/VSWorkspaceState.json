@@ -3,12 +3,9 @@
     "",
     "\\src",
     "\\src\\lib",
-    "\\src\\lib\\components",
     "\\src\\lib\\components\\InnerTabs",
-    "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\script",
-    "\\src\\routes\\up2clone\\monitor"
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
+  "SelectedNode": "\\src\\lib\\script\\graphutils.ts",
   "PreviewInSolutionExplorer": false
 }

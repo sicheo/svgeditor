@@ -338,7 +338,7 @@ const agents = [
 ]
 
 // processes
-const processes = [
+let processes = [
     {
         uuid: uuidv4(),
         name: "MASTER",
@@ -508,31 +508,52 @@ const setLog = function (body) {
     return (body)
 }
 
-const filterArray = (array, filters) => {
+const filterArray = (array, filters, neg=false) => {
     if (filters && filters.length) {
         for (let i = 0; i < filters.length; i++) {
             const filter = filters[i]
             switch (filter.op) {
                 case "eq":
-                    array = array.filter((item) => { return item[filter.name] == filter.value })
+                    if(!neg)
+                        array = array.filter((item) => { return item[filter.name] == filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] != filter.value })
                     break;
                 case "neq":
-                    array = array.filter((item) => { return item[filter.name] != filter.value })
+                    if (!neg)
+                        array = array.filter((item) => { return item[filter.name] != filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] == filter.value })
                     break;
                 case "leq":
-                    array = array.filter((item) => { return item[filter.name] <= filter.value })
+                    if(!neg)
+                        array = array.filter((item) => { return item[filter.name] <= filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] > filter.value })
                     break;
                 case "le":
-                    array = array.filter((item) => { return item[filter.name] < filter.value })
+                    if (!neg)
+                        array = array.filter((item) => { return item[filter.name] < filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] >= filter.value })
                     break;
                 case "geq":
-                    array = array.filter((item) => { return item[filter.name] >= filter.value })
+                    if (!neg)
+                        array = array.filter((item) => { return item[filter.name] >= filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] < filter.value })
                     break;
                 case "gr":
-                    array = array.filter((item) => { return item[filter.name] > filter.value })
+                    if(!neg)
+                        array = array.filter((item) => { return item[filter.name] > filter.value })
+                    else
+                        array = array.filter((item) => { return item[filter.name] <= filter.value })
                     break;
                 case "in":
-                    array = array.filter((item) => { return item[filter.name].includes(filter.value) })
+                    if (!neg)
+                        array = array.filter((item) => { return item[filter.name].includes(filter.value) })
+                    else
+                        array = array.filter((item) => { return !item[filter.name].includes(filter.value) })
                     break;
             }
         }
@@ -607,16 +628,24 @@ const setProcess = async function (body) {
     const process = body.options.process
     let old = null
     if (process) {
-        const existing = processes.findIndex((item) => { return item.id == process.id })
+        const existing = processes.findIndex((item) => { return item.uuid == process.uuid })
         if (existing > -1) {
             old = processes[existing]
             processes[existing] = process
         } else {
-            agents.push(process)
+            processes.push(process)
         }
     }
 
     return old
+}
+
+const deleteProcess = async function (body) {
+    const filters = body.options.filters
+
+    processes = filterArray(processes, filters, true)
+    body.data = processes
+    return (body)
 }
 
 
@@ -631,7 +660,8 @@ const mocks = {
     getAgents,
     setAgent,
     getProcesses,
-    setProcess
+    setProcess,
+    deleteProcess
 }
 
 export default mocks

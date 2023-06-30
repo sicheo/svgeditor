@@ -22,6 +22,7 @@ export default class gnode {
     vertical = false
     horizontal = true
     nodeid = "RANDOM"
+    nodeuid = null
     nodenum = 0
     shapetype = "RECT"
     coef = 30
@@ -75,6 +76,8 @@ export default class gnode {
             this.nnametext = options.nnametext
         if (options.nodeid)
             this.nodeid = options.nodeid
+        if (options.nodeuid)
+            this.nodeuid = options.nodeuid
         if (options.nodenum)
             this.nodenum = options.nodenum
         if (options.ndescrtext)
@@ -357,6 +360,7 @@ export default class gnode {
     public getNodeInfo():any {
         let nodeinfo: any = {}
         nodeinfo.id = this.nodeid
+        nodeinfo.uuid = this.nodeuid
         nodeinfo.data = this.data
         //nodeinfo.saved = this.saved
         // THIS SHOULD BE UNIQUE

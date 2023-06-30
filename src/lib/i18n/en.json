@@ -18,6 +18,7 @@
   "up2_build_tool_import": "IMPORT",
   "up2_build_tool_export": "EXPORT",
   "up2_build_tool_clear": "CLEAR",
+  "up2_build_tool_delete": "DELETE",
   "up2clone_build_context_monitor": "Add Master",
   "up2clone_build_context_phase": "Add Phase",
   "up2clone_build_context_op": "Add Operation",

@@ -10,7 +10,7 @@
   import { _ } from 'svelte-i18n'
   import gutils from '../../../lib/script/graphutils'
   import graphutils from '../../../lib/script/graphutils';
-  import {setProcess, getProcesses, sleep } from '../../../lib/script/api.js'
+  import {setProcess, getProcesses, sleep, deleteProcess } from '../../../lib/script/api.js'
   import LoadDialog from '../../../lib/components/Dialogs/LoadDialog.svelte'
 
  
@@ -82,6 +82,7 @@ const listener = (e:any)=>{
         if(found){
             const element = document.getElementById("load-graph-redraw")
             const graph = gutils.getGraphFromProcess(found)
+            console.log("****  GRAPH *******", graph)
             element.setAttribute("data-graph",JSON.stringify(graph))
             element.click()
         }
@@ -117,15 +118,30 @@ const menuimport = ()=>{
 const menuexport = ()=>{
     upload()
 }
-const menuclear = ()=>{
-    if(graph.gnodes && graph.gnodes.length >0){
-		if( graph.gnodes[0]){
-			graph.gnodes[0].remove()
-		}
-	}
-    const panel = document.getElementById("editor-panel")
-    if(panel)
-        panel.style.visibility = 'hidden'
+const menuclear = async ()=>{
+        if(graph.gnodes && graph.gnodes.length >0){
+		    if( graph.gnodes[0]){
+			    graph.gnodes[0].remove()
+		    }
+	    }
+        const panel = document.getElementById("editor-panel")
+        if(panel)
+            panel.style.visibility = 'hidden'
+}
+
+const menudelete = async ()=>{
+    console.log("****** MENU DELETE 1 *******")
+    const process = await graphutils.getProcessFromGraph(graph)
+    if(process){
+        console.log("****** MENU DELETE 2 *******")
+        const filters = [{op:'eq',name:'uuid',value:process.uuid}]
+        const response = await deleteProcess(filters,$mock)
+        processes = response.data
+        if(graph.nodes && graph.nodes.length >0)
+        $analytics.track('graphClear', {
+                masterdoc: graph.nodes[0].data.params.doccode
+        })
+    }
 }
 
 const menufunctions = {
@@ -133,7 +149,8 @@ const menufunctions = {
     menuload: menuload,
     menuimport: menuimport,
     menuexport: menuexport,
-    menuclear: menuclear
+    menuclear: menuclear,
+    menudelete: menudelete
 }
 
 </script>

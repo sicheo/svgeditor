@@ -103,7 +103,7 @@
 		return graph
 	}
 
-	const graphRebuildGraph = (graphin:any,opts:any) => {
+	const graphRebuildGraph = (graphin:any,opts:any=null) => {
 		graphFunctions.clearGraph()
 		let  nodeoptions:any = {
 				horizontal:true,
@@ -133,6 +133,7 @@
 				x:node.data.x,
 				y:node.data.y,
 				nodeid:"NODE-"+node.data.uid,
+				nodeuid: node.uuid,
 				nodenum:node.data.uid,
 				nnametext:"PHASE-"+node.data.uid,
 				imagefile:img,

@@ -399,7 +399,7 @@ export const setProcess = async function (process, mock = false) {
         const body = {
             type: "api",
             version: 1.0,
-            command: "setDevices",
+            command: "setProcess",
             options: {
                 process: process
             }
@@ -415,6 +415,32 @@ export const setProcess = async function (process, mock = false) {
                 })
         } else {
             resolve(mocks.setProcess(body))
+        }
+    })
+}
+
+export const deleteProcess = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "deleteProcess",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.deleteProcess(body))
         }
     })
 }

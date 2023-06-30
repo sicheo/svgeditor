@@ -134,7 +134,6 @@ const getGraphFromProcess = (process: any) => {
             }
         }
     }
-
     return graph
 }
 
@@ -165,7 +164,7 @@ const getProcessFromGraph = (graph:any) => {
             const node = graph.nodes[i]
             if (i == 0) {
                 // EXTRACT ROOT
-                if (node.data.uuid)
+                if (node.uuid)
                     process.uuid = node.uuid
                 else
                     process.uuid = uuidv4()

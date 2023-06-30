@@ -15,6 +15,12 @@ const exitDialog = (event:any)=>{
     if(dialog)
         dialog.style.display = 'none'
 }
+
+const menuDelete = async ()=>{
+    console.log("**** DELETE PROCESS *****")
+    await options.menudelete()
+    await options.menuclear()
+}
 </script>
 
  <div class="main-tab-tool-class">
@@ -23,6 +29,7 @@ const exitDialog = (event:any)=>{
     <input type="button" class= "image-tool-component"  on:click={options.menuimport} value="{$_('up2_build_tool_import')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuexport} value="{$_('up2_build_tool_export')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuclear} value="{$_('up2_build_tool_clear')}" />
+    <input type="button" class= "image-tool-component"  on:click={menuDelete} value="{$_('up2_build_tool_delete')}" />
  </div>
 
  <div id="build-tool-dialog">
