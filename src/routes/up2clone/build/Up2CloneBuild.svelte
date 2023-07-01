@@ -67,6 +67,7 @@ const menusave = async ()=>{
         return
     }
     const process = await graphutils.getProcessFromGraph(graph)
+    console.log("*** SAVE PROCESS *****",process)
     const old = await setProcess(process,true)
     $analytics.track('graphSave', {
             masterdoc: graph.nodes[0].data.params.doccode

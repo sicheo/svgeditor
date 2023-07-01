@@ -1,5 +1,7 @@
 <script lang="ts">
 import { onMount} from 'svelte';
+import { _ } from 'svelte-i18n'
+
 
 /*export let node:any ={
     data:{
@@ -32,38 +34,38 @@ onMount(async ()=>{
     <div class = "class-parameter-list">
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    Description
+                    {$_('up2clone_master_panel_description')}
 	                <!--input  type="text" name="name"  bind:value="{node.data.params.description}" class="panel-input panel-input-text"-->
                     <textarea type="text" name="name"  rows="5" bind:value="{node.data.params.description}" class="panel-input panel-input-textarea"/>
                 </label>
         </div>
 	    <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    Doc Code
+                    {$_('up2clone_master_panel_doccode')}
 	                <input  type="text" name="name"  bind:value="{node.data.params.doccode}" class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    Product Code
+                   {$_('up2clone_master_panel_prodcode')}
 	                <input  type="text" name="name"  bind:value="{node.data.params.prodcode}"  class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    Project Code
+                    {$_('up2clone_master_panel_projcode')}
 	                <input  type="text" name="name"  bind:value="{node.data.params.projcode}"  class="panel-input panel-input-text">
                 </label>
         </div>
          <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    SAP Code
+                    {$_('up2clone_master_panel_sapcode')}
 	                <input  type="text" name="name"  bind:value="{node.data.params.sapcode}"  class="panel-input panel-input-text">
                 </label>
         </div>
          <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-                    SAP Descr.
+                    {$_('up2clone_master_panel_sapdescr')}
 	                <input  type="text" name="name"  bind:value="{node.data.params.sapdesc}"  class="panel-input panel-input-text">
                 </label>
         </div>
@@ -95,7 +97,7 @@ onMount(async ()=>{
 }
 
 .panel-input{
-	 max-width: 100px;
+	 max-width: 150px;
      font-size: smaller;
      color: teal;
 }
@@ -127,7 +129,7 @@ label {
   flex-direction: row;
   justify-content: flex-end;
   text-align: right;
-  width: 200px;
+  width: 250px;
   line-height: 22px;
   margin-bottom: 10px;
 }

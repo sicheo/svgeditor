@@ -36,7 +36,7 @@ let  onLogoutClick = LogoutClick
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <Up2CloneAuthMP />
+            <Up2CloneAuthMP {color}/>
         </div>
     </div>
     </div>

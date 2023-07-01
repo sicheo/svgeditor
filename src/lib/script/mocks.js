@@ -347,7 +347,13 @@ let processes = [
         description: "Process description",
         data: {
             doccode: "DOC1234",
-            description: "Process description"
+            description: "Process description",
+            authorization: {
+                authorized: false,
+                authdate: '',
+                version: 'v1.0',
+                signature: null
+            },
         },
         graph: {
             id: 'NODE-0',

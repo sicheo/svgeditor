@@ -1,6 +1,6 @@
 <script lang="ts">
 
-export let text = "TEXT"
+export let text = ""
 </script>
 
 	<!--input type="text" class= "text-tool-component" value="{text}"  height="25" disabled/-->

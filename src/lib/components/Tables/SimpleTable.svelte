@@ -1,5 +1,8 @@
 ﻿<script lang="ts">
 // https://jsgrids.statico.io/
+
+ import { onMount} from "svelte";
+
  import {
     createSvelteTable,
     getCoreRowModel,
@@ -8,6 +11,7 @@
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
 
+  
 
   export let data:any
   export let columns:any
@@ -33,6 +37,7 @@
   const setRowSelection = ()=>{
       console.log("SET ROW SELECTION")
   }
+
   const options = writable(
     {
       data,
@@ -57,17 +62,18 @@
     }))
   }
   const rerender = () => {
+    console.info('rerender')
     options.update(options => ({
       ...options,
       data,
     }))
   }
-  const table = createSvelteTable(options)
+  let table = createSvelteTable(options)
 </script>
 
 <div class="p-2">
   <div class="h-2" />
-  <table>
+  <table id="tanstack-table-id">
     <thead>
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>

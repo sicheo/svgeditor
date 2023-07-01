@@ -128,7 +128,14 @@ let addNode = (ev:any) =>{
 					height:90,
 					imgwidth:30,
 					imgheight:30,
-					params:{}
+					params:{
+						authorization: {
+							authorized: false,
+							authdate: '',
+							version: '',
+							signature: null
+							}
+						}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 140

@@ -1,173 +1,118 @@
 <script lang="ts">
 import { onMount} from "svelte";
-import SvelteTable from "svelte-table";
-import SelectComponent from "../TaskEditor/SelectComponent.svelte";
-import InputComponent from "../TaskEditor/InputComponent.svelte";
-import TextAreaComponent from "../TaskEditor/TextAreaComponent.svelte";
-import {getMasters} from '../../script/api.js'
+//import SvelteTable from "svelte-table";
+//import SelectComponent from "../TaskEditor/SelectComponent.svelte";
+//import InputComponent from "../TaskEditor/InputComponent.svelte";
+//import TextAreaComponent from "../TaskEditor/TextAreaComponent.svelte";
+import {getProcesses} from '../../script/api.js'
 import {mock} from '../../ustore.js'
+import { _ } from 'svelte-i18n'
+
+import SimpleTable from '../Tables/SimpleTable.svelte'
+import TableImage from  '../Tables/TableImage.svelte'
+import TableText from  '../Tables/TableText.svelte'
+import TableSwitch from  '../Tables/TableSwitch.svelte'
 
 
+import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
-let rows = []
+
+export let color:any
+
+const columnHelper  = createColumnHelper()
+let data = []
 
 onMount(async ()=>{
-   const response = await getMasters(null,$mock)
-   rows = response.data
-   console.log("****** Up2CloneAuthMP ******",rows)
-
+   //const response = await getProcesses(null,$mock)
+   //data = response.data
+   console.log("****** Up2CloneAuthMP ******",data)
+   
  });
 
- const onInputComponent = (row:any,tag:any,value:any) =>{
-    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-    //console.log("*** ON INPUT COMPONENT ****", index,tag,value)
-     if(index > -1)
-        rows[index][tag] = value
-}
+ let promise = getProcesses(null,$mock)
 
-const onTextAreaComponent = (row:any,tag:any,value:any) =>{
-    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-     if(index > -1)
-        rows[index][tag] = value
-}
-
-const onSelectComponent = (row:any,tag:any,value:any) =>{
-    const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-     if(index > -1)
-        rows[index][tag] = value
-}
-
-let statusOptions = [
-    {id: 1,name:"AUTH"},
-    {id:2,name:"NOAUTH"}
-]
-
-let optionsArray = [
-    {name: "status", options: statusOptions}
-]
-
- const  columns = [
-  {
-    key: "id",
-    title: "ID",
-    value: (v:any) => v.uid,
-    sortable: true,
-    selectOnClick:true,
-    headerClass: "table-header-class",
-  },
-  {
-    key: "description",
-    title: "DESCRIPTION",
-    value: (v:any) => v.description,
-    sortable: false,
-     renderComponent: {
-        component: TextAreaComponent,
-        props: { typeTag:"description",onTextAreaComponent },
-      },
-  },
-  {
-    key: "doc",
-    title: "DOCUMENT",
-    value: (v:any) => v.doc,
-    sortable: true,
-    filterOptions: (rows:any) => {
-      // use first letter of last_name to generate filter
-      let letrs:any = {}
-      rows.forEach((row:any) => {
-        let letr = row.doc.charAt(0)
-        if (letrs[letr] === undefined)
-          letrs[letr] = {
-            name: `${letr.toUpperCase()}`,
-            value: letr.toLowerCase(),
-          }
-      })
-      // fix order
-      letrs = Object.entries(letrs)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(letrs)
+ const columns = [
+    {
+        id : 'name',
+        columns: [
+                
+            columnHelper.accessor('name', {
+            header: () => $_('up2clone_auth_table_name'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            })
+        ]
     },
-    filterValue: (v:any) => v.doc.charAt(0).toLowerCase(),
-    renderComponent: {
-        component: InputComponent,
-        props: { typeTag:"doc",onInputComponent },
-      },
-  },
-  {
-    key: "status",
-    title: "STATUS",
-    value: (v:any) => v.status,
-    sortable: true,
-    //renderValue: (v:any) => v.checkType.toUpperCase(),
-    filterOptions: ["AUTH","NOAUTH"],
-    renderComponent: {
-        component: SelectComponent,
-        props: { typeTag:"status",optionsArray, onSelectComponent },
-      },
-  },
-  {
-    key: "authdate",
-    title: "DATE",
-    value: (v:any) => v.authdate,
-    sortable: true,
-    filterOptions: (rows:any) => {
-      // use first letter of last_name to generate filter
-      let letrs:any = {}
-      rows.forEach((row:any) => {
-        let letr = row.authdate.charAt(0)
-        if (letrs[letr] === undefined)
-          letrs[letr] = {
-            name: `${letr.toUpperCase()}`,
-            value: letr.toLowerCase(),
-          }
-      })
-      // fix order
-      letrs = Object.entries(letrs)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(letrs)
+    {
+        id : 'description',
+        columns: [
+                
+            columnHelper.accessor('description', {
+            header: () => $_('up2clone_auth_table_description'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            })
+        ]
     },
-    filterValue: (v:any) => v.authdate.charAt(0).toLowerCase(),
-    renderComponent: {
-        component: InputComponent,
-        props: { typeTag:"authdate",onInputComponent },
-      },
-  },
-  {
-    key: "product",
-    title: "PRODUCT",
-    value: (v:any) => v.product,
-    sortable: true,
-    filterOptions: (rows:any) => {
-      // use first letter of last_name to generate filter
-      let letrs:any = {}
-      rows.forEach((row:any) => {
-        let letr = row.product.charAt(0)
-        if (letrs[letr] === undefined)
-          letrs[letr] = {
-            name: `${letr.toUpperCase()}`,
-            value: letr.toLowerCase(),
-          }
-      })
-      // fix order
-      letrs = Object.entries(letrs)
-        .sort()
-        .reduce((o:any, [k, v]) => ((o[k] = v), o), {})
-      return Object.values(letrs)
+    {
+        id : 'doccode',
+        columns: [
+                
+            columnHelper.accessor('doccode', {
+            header: () => $_('up2clone_auth_table_document'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            })
+        ]
     },
-    filterValue: (v:any) => v.product.charAt(0).toLowerCase(),
-    renderComponent: {
-        component: InputComponent,
-        props: { typeTag:"product",onInputComponent },
-      },
-  },
-  
-]
+    {
+        id : 'version',
+        columns: [
+                
+           columnHelper.accessor('data', {
+            header: () => $_('up2clone_auth_table_version'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.version}),
+            })
+        ]
+    },
+    {
+        id : 'authorized',
+        columns: [
+                
+           columnHelper.accessor('data', {
+            header: () => $_('up2clone_auth_table_authorized'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.authorized}),
+            })
+        ]
+    },
+    {
+        id : 'date',
+        columns: [
+                
+           columnHelper.accessor('data', {
+            header: () => $_('up2clone_auth_table_date'),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.date}),
+            })
+        ]
+    },
+    {
+        id : 'switch',
+        columns: [
+           columnHelper.accessor('data', {
+            header: () => "",
+            cell: (props) =>  flexRender(TableSwitch,{text:props.getValue()}),
+            })
+        ]
+    },
+ ]
 
 </script>
 	
 	<div class= "class-panel-row">
-		<SvelteTable columns="{columns}" bind:rows="{rows}"/>
+        {#await promise}
+	        <p>...waiting</p>
+        {:then response}
+		    <SimpleTable data={response.data} columns={columns} color={color}></SimpleTable>
+        {:catch error}
+	            <p style="color: red">{error.message}</p>
+        {/await}
 	</div>
 
 

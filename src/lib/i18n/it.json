@@ -30,5 +30,17 @@
   "dialog_load_process": "SELEZIONA PROCESSO",
   "dialog_load_button": "CARICA",
   "dialog_search": "Cerca...",
-  "dialog_drop_placheholder": "Seleziona opzione"
+  "dialog_drop_placheholder": "Seleziona opzione",
+  "up2clone_master_panel_description": "Descrizione",
+  "up2clone_master_panel_doccode": "Codice Documento",
+  "up2clone_master_panel_prodcode": "Codice Prodotto",
+  "up2clone_master_panel_projcode": "Codice Progetto",
+  "up2clone_master_panel_sapcode": "Codice SAP",
+  "up2clone_master_panel_sapdescr": "Descr. SAP",
+  "up2clone_auth_table_name": "NOME",
+  "up2clone_auth_table_description": "DESCRIZIONE",
+  "up2clone_auth_table_document": "DOCUMENTO",
+  "up2clone_auth_table_version": "VERSIONE",
+  "up2clone_auth_table_authorized": "AUTORIZZATO",
+  "up2clone_auth_table_date": "DATA"
 }
