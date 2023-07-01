@@ -13,6 +13,12 @@ let titlelem:any
 onMount(async ()=>{
 	saved = node.data
 	titlelem = document.getElementById("property-panel-title-id")
+	// ADD SHOW EVENT LISTENER
+	/*const panel = document.getElementById("property-panel-main-id")
+    const showListener = (ev:any)=>{
+		  console.log("**** PANEL NODE SHOW *****",node)
+      }
+	panel.addEventListener("panelshow",showListener)*/
  });
 
 const panelSave = (event:any) =>{
@@ -31,7 +37,7 @@ const panelHide = (event:any) =>{
 
 </script>
 
-	<div class="property-panel-main" >
+	<div class="property-panel-main" id="property-panel-main-id">
 		<div class="property-panel-header">
 			<input type="image" src="/SAVE.svg" on:click={panelSave} alt="Submit" width="25" height="25"> 
 			<input type="image" src="/EXIT.svg" on:click={panelHide} alt="Submit" width="25" height="25"> 

@@ -273,7 +273,8 @@
 			let eventSave:any
 			let eventHide:any
 			let eventShow:any
-			let panelOperation = document.getElementById("class-operations")
+			//let panelOperation = document.getElementById("class-operations")
+			let panelOperation = document.getElementById("property-panel-main-id")
 			
 
 			const panel = document.querySelector('#editor-panel')
@@ -324,9 +325,9 @@
 					panel.style.visibility = 'hidden'
 					break;
 				case "show":
-					currentnode = gnode
 					if(gnode)
 						gnode.data = structuredClone(gnode.saved)
+					currentnode = gnode
 					if(gnode.data && gnode.data.type)
 						component = panels.find((item:any) => (item.type == gnode.data.type)).component;
 					else
@@ -371,9 +372,9 @@
 					panel.style.visibility = 'hidden'
 				break;
 			case 'hidden':
-				currentnode = gnode
 					if(gnode)
 						gnode.data = structuredClone(gnode.saved)
+					currentnode = gnode
 					if(gnode.data && gnode.data.type)
 						component = panels.find((item:any) => (item.type == gnode.data.type)).component;
 					else

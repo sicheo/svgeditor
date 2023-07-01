@@ -342,9 +342,13 @@ let processes = [
     {
         uuid: uuidv4(),
         name: "MASTER",
+        docname: "DOC1234",
         uid: 0,
         description: "Process description",
-        data: {},
+        data: {
+            doccode: "DOC1234",
+            description: "Process description"
+        },
         graph: {
             id: 'NODE-0',
             level: "level0",

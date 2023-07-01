@@ -67,9 +67,7 @@ const menusave = async ()=>{
         return
     }
     const process = await graphutils.getProcessFromGraph(graph)
-    console.log("***** SAVE GRAPH *******", process)
     const old = await setProcess(process,true)
-    console.log("****  OLD VALUE *******", old)
     $analytics.track('graphSave', {
             masterdoc: graph.nodes[0].data.params.doccode
     })
@@ -82,7 +80,6 @@ const listener = (e:any)=>{
         if(found){
             const element = document.getElementById("load-graph-redraw")
             const graph = gutils.getGraphFromProcess(found)
-            console.log("****  GRAPH *******", graph)
             element.setAttribute("data-graph",JSON.stringify(graph))
             element.click()
         }

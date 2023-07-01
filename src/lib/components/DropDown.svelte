@@ -5,6 +5,8 @@ import { _ } from 'svelte-i18n'
 export let data = []
 export let selected = ''
 export let placeholder = "Select your option"
+export let description1 = 'description'
+export let description2 = 'docname'
 
 let optionMenu, selectBtn ,options ,sBtn_text
 
@@ -58,6 +60,8 @@ const filterFunction = (event:any) =>{
     {#each data as Item, index(Item['uuid'])}
     <li class="option">
       <span class="option-text" data-uid="{Item['uuid']}">{Item['name']}</span>
+      <span class="option-text1">{Item[description1]}</span>
+      <span class="option-text2">{Item[description2]}</span>
     </li>
     {/each}
   </ul>
@@ -119,6 +123,18 @@ const filterFunction = (event:any) =>{
 .select-menu .options .option .option-text {
   font-size: 15px;
   color: #333;
+}
+
+.select-menu .options .option .option-text1 {
+  font-size: 15px;
+  color: #333;
+  padding-left: 10px;
+}
+
+.select-menu .options .option .option-text2 {
+  font-size: 15px;
+  color: #333;
+  padding-left: 10px;
 }
 
 .select-btn i {

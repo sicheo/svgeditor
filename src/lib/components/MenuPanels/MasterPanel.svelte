@@ -1,11 +1,14 @@
 <script lang="ts">
 import { onMount} from 'svelte';
 
-export let node:any ={
+/*export let node:any ={
     data:{
         params:{}
     }
-}
+}*/
+
+export let node
+
 export let color = "Teal"
 
 let changecolor = "#ffe6e6"
@@ -27,6 +30,13 @@ onMount(async ()=>{
 
 <div class="class-panel-content">
     <div class = "class-parameter-list">
+        <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+                    Description
+	                <!--input  type="text" name="name"  bind:value="{node.data.params.description}" class="panel-input panel-input-text"-->
+                    <textarea type="text" name="name"  rows="5" bind:value="{node.data.params.description}" class="panel-input panel-input-textarea"/>
+                </label>
+        </div>
 	    <div class= "class-panel-row">
                 <label class= "class-panel-cell">
                     Doc Code
@@ -78,6 +88,10 @@ onMount(async ()=>{
 <style>
 .panel-input-text{
 	 width: auto;
+}
+
+.class-panel-cell textarea{
+	 font-size:medium;
 }
 
 .panel-input{
