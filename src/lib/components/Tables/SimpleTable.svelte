@@ -16,6 +16,7 @@
   export let data:any
   export let columns:any
   export let color:any
+  export let tableOptions = {pagination:true}
 
   let sorting = []
 
@@ -69,6 +70,14 @@
     }))
   }
   let table = createSvelteTable(options)
+
+  const onGoToPage = (e:any) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              $table.setPageIndex(page)
+            }
+  const onSelect = (e:any) => {
+              $table.setPageSize(Number(e.target.value))
+            }
 </script>
 
 <div class="p-2">
@@ -78,7 +87,7 @@
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           {#each headerGroup.headers as header}
-            <th style="--color:{color};">
+            <th style="--background-color:{color}">
               {#if !header.isPlaceholder}
                 <svelte:component
                   this={flexRender(
@@ -104,8 +113,32 @@
       {/each}
     </tbody>
     <tfoot>
-      
     </tfoot>
+    </table>
+    {#if tableOptions.pagination}
+    <div class="pagination-tool-class">
+        <input type="button" class="" value="<<" on:click={() => $table.setPageIndex(0)}>
+        <input type="button" class="" value="<" on:click={() => $table.previousPage()}>
+        <input type="button" class="" value=">" on:click={() => $table.nextPage()}>
+        <input type="button" class="" value=">>" on:click={() => $table.setPageIndex($table.getPageCount() - 1)}>
+        <span class="flex items-center gap-1">
+          Page
+          <strong>
+            {$table.getState().pagination.pageIndex + 1} of {$table.getPageCount()}
+          </strong>
+        </span>
+        <span>
+            | Go to Page:
+            <input type="number" class="" value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
+        </span>
+        <select value={$table.getState().pagination.pageSize} on:change={onSelect}>
+            <option value=10>Show 10</option>
+            <option value=20>Show 20</option>
+            <option value=30>Show 30</option>
+            <option value=40>Show 40</option>
+        </select>
+    </div>
+    {/if}
   
 </div>
 
@@ -127,7 +160,10 @@ th {
   border-bottom: 1px solid lightgray;
   border-right: 1px solid lightgray;
   padding: 2px 4px;
-  color: var(--color) ;
+  color: white ;
+  background-color: var(--background-color) ;
+  opacity: 0.5 ;
+  font-size: 15px;
 }
 
 tfoot {
@@ -136,5 +172,8 @@ tfoot {
 
 tfoot th {
   font-weight: normal;
+}
+.pagination-tool-class{
+    margin-top: 15px;
 }
 </style>
