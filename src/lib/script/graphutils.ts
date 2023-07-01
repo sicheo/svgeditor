@@ -143,6 +143,7 @@ const getProcessFromGraph = (graph:any) => {
         name: '',
         uid: 0,
         description: '',
+        doccode:'',
         data: {},
         graph: {
             id: '',
@@ -168,8 +169,10 @@ const getProcessFromGraph = (graph:any) => {
                     process.uuid = node.uuid
                 else
                     process.uuid = uuidv4()
-                if (node.data && node.data.params)
-                process.description = node.data.params.description
+                if (node.data && node.data.params) {
+                    process.description = node.data.params.description
+                    process.doccode = node.data.params.doccode
+                }
                 process.name = node.data.name
                 process.uid = node.data.uid
                 process.data = node.data.params

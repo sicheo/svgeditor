@@ -6,7 +6,7 @@ export let data = []
 export let selected = ''
 export let placeholder = "Select your option"
 export let description1 = 'description'
-export let description2 = 'docname'
+export let description2 = 'doccode'
 
 let optionMenu, selectBtn ,options ,sBtn_text
 

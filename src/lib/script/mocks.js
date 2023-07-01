@@ -342,7 +342,7 @@ let processes = [
     {
         uuid: uuidv4(),
         name: "MASTER",
-        docname: "DOC1234",
+        doccode: "DOC1234",
         uid: 0,
         description: "Process description",
         data: {
