@@ -10,6 +10,11 @@ const load = () =>{
     options.menuload()
 }
 
+const save = () =>{
+    dialog=dialog
+    options.menusave()
+}
+
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
     if(dialog)
@@ -24,7 +29,7 @@ const menuDelete = async ()=>{
 </script>
 
  <div class="main-tab-tool-class">
-    <input type="button" class= "image-tool-component" on:click={options.menusave} value="{$_('up2_build_tool_save')}"/>
+    <input type="button" class= "image-tool-component" on:click={save} value="{$_('up2_build_tool_save')}"/>
     <input type="button" class= "image-tool-component"  on:click={load} value="{$_('up2_build_tool_load')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuimport} value="{$_('up2_build_tool_import')}" />
     <input type="button" class= "image-tool-component"  on:click={options.menuexport} value="{$_('up2_build_tool_export')}" />

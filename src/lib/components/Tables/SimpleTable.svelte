@@ -1,5 +1,6 @@
 ﻿<script lang="ts">
 // https://jsgrids.statico.io/
+// https://www.npmjs.com/package/gridjs
 
  import { onMount} from "svelte";
 

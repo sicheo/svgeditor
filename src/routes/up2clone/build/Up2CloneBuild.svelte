@@ -10,8 +10,10 @@
   import { _ } from 'svelte-i18n'
   import gutils from '../../../lib/script/graphutils'
   import graphutils from '../../../lib/script/graphutils';
-  import {setProcess, getProcesses, sleep, deleteProcess } from '../../../lib/script/api.js'
+  import {getProcesses, sleep, deleteProcess } from '../../../lib/script/api.js'
   import LoadDialog from '../../../lib/components/Dialogs/LoadDialog.svelte'
+  import SaveDialog from '../../../lib/components/Dialogs/SaveDialog.svelte'
+  import DeleteDialog from '../../../lib/components/Dialogs/DeleteDialog.svelte'
 
  
 
@@ -19,7 +21,7 @@
   let bgcolor ="#d5e8d4"
   let color = "#007d35"
   let dialogComponent = null
-  let dialogOptions = {data:[],selected:''}
+  let dialogOptions = {data:null,selected:''}
   let processes = []
  
 
@@ -60,6 +62,7 @@ const upload = async ()=>{
 
 
 const menusave = async ()=>{ 
+
     // CHECK GRAPH CONSISTENCY
     const verification = await graphVerify(graph)
     if(verification != "OK"){
@@ -67,11 +70,17 @@ const menusave = async ()=>{
         return
     }
     const process = await graphutils.getProcessFromGraph(graph)
-    console.log("*** SAVE PROCESS *****",process)
+    dialogOptions = {data:process,selected:''}
+    dialogComponent = SaveDialog
+    const dialog = document.getElementById("build-tool-dialog")
+    if(dialog){
+        dialog.style.display = 'block'
+    }
+    /*console.log("*** SAVE PROCESS *****",process)
     const old = await setProcess(process,true)
     $analytics.track('graphSave', {
             masterdoc: graph.nodes[0].data.params.doccode
-    })
+    })*/
 }
 
 const listener = (e:any)=>{
@@ -128,17 +137,14 @@ const menuclear = async ()=>{
 }
 
 const menudelete = async ()=>{
-    console.log("****** MENU DELETE 1 *******")
     const process = await graphutils.getProcessFromGraph(graph)
     if(process){
-        console.log("****** MENU DELETE 2 *******")
-        const filters = [{op:'eq',name:'uuid',value:process.uuid}]
-        const response = await deleteProcess(filters,$mock)
-        processes = response.data
-        if(graph.nodes && graph.nodes.length >0)
-        $analytics.track('graphClear', {
-                masterdoc: graph.nodes[0].data.params.doccode
-        })
+        dialogOptions = {data:process,selected:''}
+        dialogComponent = DeleteDialog
+        const dialog = document.getElementById("build-tool-dialog")
+        if(dialog){
+            dialog.style.display = 'block'
+        }
     }
 }
 
