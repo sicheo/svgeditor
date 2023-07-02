@@ -236,14 +236,14 @@ const saveTask = (event:any) =>{
 
 // define column configs
 const opColumns = [
-  {
+  /*{
     key: "id",
     title: "ID",
     value: (v:any) => v.id,
     sortable: true,
     selectOnClick:true,
     headerClass: "table-header-class",
-  },
+  },*/
   {
     key: "type",
     title: "TYPE",

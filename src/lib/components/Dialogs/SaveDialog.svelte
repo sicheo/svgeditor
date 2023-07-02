@@ -3,10 +3,14 @@
 import { _ } from 'svelte-i18n'
 import {setProcess } from '../../../lib/script/api.js'
 import {mock,analytics} from '../../../lib/ustore.js'
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 export let dialogOptions : any
 export let color
+
+let newversion = dialogOptions.data.data.authorization.version
 
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
@@ -14,7 +18,13 @@ const exitDialog = (event:any)=>{
         dialog.style.display = 'none'
 }
 
+
+
 const saveProcess = async(event:any) =>{
+	if(newversion != dialogOptions.data.data.authorization.version){
+		dialogOptions.data.data.authorization.version = newversion
+		dialogOptions.data.uuid = uuidv4()
+	}
 	const old = await setProcess(dialogOptions.data,$mock)
     $analytics.track('graphSave', {
             masterdoc: dialogOptions.data.doccode
@@ -24,7 +34,25 @@ const saveProcess = async(event:any) =>{
         dialog.style.display = 'none'
 }
 
+const onRadioChange = (ev:any)=>{
+	const target = ev.target
+	const input = document.getElementById("save-dialog-version-input")
+	switch(target.id){
+		case 'rd1':
+			input.disabled = true
+			newversion = dialogOptions.data.data.authorization.version
+			break;
+		case 'rd2':
+			input.disabled = false
+			newversion = input.value
+			break
+	}
+}
 
+const onTextChange = (ev:any)=>{
+	const target = ev.target
+	newversion = target.value
+}
 
 </script>
 
@@ -36,6 +64,19 @@ const saveProcess = async(event:any) =>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 				{$_('dialog_save_process')}
+				<p>{dialogOptions.data.name} {dialogOptions.data.description} v{dialogOptions.data.data.authorization.version}</p>
+				<label class="container">{$_('dialog_save_keepversion')}
+					<input type="radio" id="rd1" checked={true} name="radio" on:change={onRadioChange}>
+					<span class="checkmark"></span>
+				</label>
+				<label class="container">{$_('dialog_save_changeversion')}
+					<input type="radio" id="rd2"  name="radio" on:change={onRadioChange}>
+					<span class="checkmark"></span>
+				</label>
+				<p>
+				<label class="container">{$_('dialog_save_newversion')}
+					<input type="text" on:change={onTextChange} id="save-dialog-version-input" value="{dialogOptions.data.data.authorization.version}" disabled>
+				</label></p>
 		</div>
 		<div class="class-panel-footer">
 				<input type="button" on:click={saveProcess} value="{$_('dialog_save_button')}" width="25" height="25"> 
@@ -48,8 +89,8 @@ const saveProcess = async(event:any) =>{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
-	width: 20%;
-	height: 30%;
+	width: 30%;
+	height: 40%;
 	margin: auto;
 }
 
@@ -70,6 +111,9 @@ const saveProcess = async(event:any) =>{
 
 .class-panel-body {
   height: 60%;
+}
+.class-panel-body p{
+  font-weight:normal ;
 }
 .class-panel-footer {
   display: block;

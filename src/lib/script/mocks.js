@@ -344,14 +344,15 @@ let processes = [
         name: "MASTER",
         doccode: "DOC1234",
         uid: 0,
-        description: "Process description",
+        description: "Master Record PROD1234",
         data: {
             doccode: "DOC1234",
-            description: "Process description",
+            description: "Master Record PROD1234",
+            lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
                 authorized: false,
                 authdate: '',
-                version: 'v1.0',
+                version: '1.0',
                 signature: null
             },
         },
@@ -454,6 +455,102 @@ let processes = [
                 ]
             }
         ]
+    },
+    {
+        uuid: uuidv4(),
+        name: "MASTER",
+        doccode: "DOC5678",
+        uid: 0,
+        description: "Master Record PROD5678",
+        data: {
+            doccode: "DOC5678",
+            description: "Master Record PROD5678",
+            lastmodified: new Date(Date.now()).toISOString(),
+            authorization: {
+                authorized: false,
+                authdate: '',
+                version: '1.0',
+                signature: null
+            },
+        },
+        graph: {
+            id: 'NODE-0',
+            level: "level0",
+            type: 'MASTER',
+            image: "/MASTER.svg",
+            shape: "RECT",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            x: 454,
+            y: 253
+        },
+        phases: []
+    },
+    {
+        uuid: uuidv4(),
+        name: "MASTER",
+        doccode: "DOC7777",
+        uid: 0,
+        description: "Master Record PROD7777",
+        data: {
+            doccode: "DOC5678",
+            description: "Master Record PROD7777",
+            lastmodified: new Date(Date.now()).toISOString(),
+            authorization: {
+                authorized: false,
+                authdate: '',
+                version: '1.0',
+                signature: null
+            },
+        },
+        graph: {
+            id: 'NODE-0',
+            level: "level0",
+            type: 'MASTER',
+            image: "/MASTER.svg",
+            shape: "RECT",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            x: 454,
+            y: 253
+        },
+        phases: []
+    },
+    {
+        uuid: uuidv4(),
+        name: "MASTER",
+        doccode: "DOC0909",
+        uid: 0,
+        description: "Master Record PROD0909",
+        data: {
+            doccode: "DOC5678",
+            description: "Master Record PROD0909",
+            lastmodified: new Date(Date.now()).toISOString(),
+            authorization: {
+                authorized: false,
+                authdate: '',
+                version: '1.0',
+                signature: null
+            },
+        },
+        graph: {
+            id: 'NODE-0',
+            level: "level0",
+            type: 'MASTER',
+            image: "/MASTER.svg",
+            shape: "RECT",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            x: 454,
+            y: 253
+        },
+        phases: []
     }
 ]
 
@@ -637,6 +734,7 @@ const setAgent = async function (body) {
 const setProcess = async function (body) {
     const process = body.options.process
     let old = null
+    process.data.kastmodified = new Date(Date.now()).toISOString()
     if (process) {
         const existing = processes.findIndex((item) => { return item.uuid == process.uuid })
         if (existing > -1) {

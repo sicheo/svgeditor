@@ -38,6 +38,8 @@ const delProcess = async(event:any) =>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 				{$_('dialog_delete_process')}
+				<p>{dialogOptions.data.name}</p>
+				<p>{dialogOptions.data.description} v{dialogOptions.data.data.authorization.version}</p>
 		</div>
 		<div class="class-panel-footer">
 				<input type="button" on:click={delProcess} value="{$_('dialog_delete_button')}" width="25" height="25"> 
@@ -65,6 +67,10 @@ const delProcess = async(event:any) =>{
   margin-top: 20px;
   color: var(--color);
   font-weight:bold ;
+}
+
+.class-panel-body p{
+  font-weight:normal ;
 }
 .class-last-item {
   margin-left: auto;

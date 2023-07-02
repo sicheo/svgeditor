@@ -54,14 +54,15 @@ const filterFunction = (event:any) =>{
     <span class="sBtn-text">{placeholder}</span>
     <i class="bx bx-chevron-down"></i>
   </div>
-
+  <input type="text"  placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}">
   <ul class="options" id="myDropdown">
-     <input type="text" placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}">
+     <!--input type="text" placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}"-->
     {#each data as Item, index(Item['uuid'])}
     <li class="option">
-      <span class="option-text" data-uid="{Item['uuid']}">{Item['name']}</span>
-      <span class="option-text1">{Item[description1]}</span>
+      <span class="option-text" data-uid="{Item['uuid']}">{Item['name']} {Item[description1]} {Item[description2]} v{Item.data['authorization'].version} {Item.data['lastmodified']}</span>
+      <!--span class="option-text1">{Item[description1]}</!--span>
       <span class="option-text2">{Item[description2]}</span>
+      <span class="option-text2">v{Item.data['authorization'].version} {Item.data['lastmodified']}</span-->
     </li>
     {/each}
   </ul>
@@ -70,28 +71,32 @@ const filterFunction = (event:any) =>{
 <style>
 
 .select-menu {
-  max-width: 330px;
+  max-width: 600px;
   /*margin: 50px auto;*/
   background: #e3f2fd;
 }
 .select-menu .select-btn {
   display: flex;
-  /*height: 55px;*/
   background: #fff;
   padding: 5px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
   border-radius: 8px;
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
+
+.select-menu .select-btn span{
+    width:600;
+}
+
 .select-menu .options {
   position: absolute;
-  width: 330px;
+  width: 600px;
   overflow-y: auto;
-  max-height: 295px;
+  max-height: 150px;
   padding: 5px;
   margin-top: 10px;
   border-radius: 8px;
@@ -187,6 +192,7 @@ const filterFunction = (event:any) =>{
   padding: 12px 72px 10px 105px;
   border: none;
   border-bottom: 1px solid #ddd;
+  width:600px;
 }
 
 #myInput:focus {outline: 3px solid #ddd;}

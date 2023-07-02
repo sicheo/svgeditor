@@ -71,17 +71,17 @@ onMount(async ()=>{
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="MATERIALS"  class="panel-input panel-input-text">
+	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_materials')}"  class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="MACHINES"  class="panel-input panel-input-text">
+	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_machines')}"  class="panel-input panel-input-text">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="PERSONNEL"  class="panel-input panel-input-text">
+	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_personnel')}"  class="panel-input panel-input-text">
                 </label>
         </div>
     </div>

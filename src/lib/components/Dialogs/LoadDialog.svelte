@@ -53,7 +53,7 @@ const loadProcess = (event:any) =>{
 		</div>
 			{#if !$navigating}
 			<div class="class-panel-body" >
-				{$_('dialog_load_process')}
+				<span >{$_('dialog_load_process')}</span>
 				 <DropDown bind:data={dialogOptions.data} bind:selected={dialogOptions.selected} placeholder={$_('dialog_drop_placheholder')}></DropDown>
 			</div>
 			<div class="class-panel-footer">
@@ -73,7 +73,7 @@ const loadProcess = (event:any) =>{
 	color: #777777;
 	background-color: white ;
 	width: 50%;
-	height: 50%;
+	height: 60%;
 	margin: auto;
 }
 
@@ -85,7 +85,12 @@ const loadProcess = (event:any) =>{
   margin-left: auto;
 }
 .class-panel-body {
-  height: 80%;
+  height: 75%;
+}
+.class-panel-body span{
+  display:block;
+  text-align: center;
+  font-weight: bold ;
 }
 .spinner-class {
 	display: flex;
@@ -95,6 +100,7 @@ const loadProcess = (event:any) =>{
 .class-panel-footer {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 </style>

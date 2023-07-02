@@ -31,6 +31,12 @@ onMount(async ()=>{
 
  let promise = getProcesses(null,$mock)
 
+ const onSign= (ev:any) =>{
+     const target = ev.target
+     console.log("***** SIGNATURE *****",target.id)
+
+ }
+
  const columns = [
     {
         id : 'name',
@@ -88,16 +94,16 @@ onMount(async ()=>{
                 
            columnHelper.accessor('data', {
             header: () => $_('up2clone_auth_table_date'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.date}),
+            cell: (props) =>  flexRender(TableText,{text:props.getValue().lastmodified}),
             })
         ]
     },
     {
-        id : 'switch',
+        id : 'signature',
         columns: [
-           columnHelper.accessor('data', {
-            header: () => "",
-            cell: (props) =>  flexRender(TableSwitch,{text:props.getValue()}),
+           columnHelper.accessor('uuid', {
+            header: () => $_('up2clone_auth_table_signature'),
+            cell: (props) =>  flexRender(TableImage,{image:'/SIGNATURE.svg',onClick:onSign,name:props.getValue(),text:props.getValue()}),
             })
         ]
     },
