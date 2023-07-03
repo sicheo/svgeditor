@@ -554,6 +554,35 @@ let processes = [
     }
 ]
 
+const materialCols = [
+    { name: 'DESCRIPTION', type: 'string', header: 'Descrizione' },
+    { name: 'SUPPLIER', type: 'string', header: 'Fornitore' },
+    { name: 'SAPCODE', type: 'string', header: 'Codice SAP' },
+    { name: 'FORMULA', type: 'string', header: 'Formula' },
+    { name: 'PM', type: 'number', header: 'P.M.' },
+    { name: 'BP', type: 'number', header: 'P. Eb. (DEGC)' },
+    { name: 'DENSITY', type: 'number', header: 'd 20 DEGC (gr/ml)' },
+]
+
+const personnelCols = [
+    { name: 'NAME', type: 'string', header: 'Nominativo' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+    { name: 'SIGNATURE', type: 'string', header: 'Firma operatore' },
+    { name: 'ABBREVIATION', type: 'string', header: 'Sigla' },
+]
+
+const machineCols = [
+    { name: 'DESCRIPTION', type: 'string', header: 'Descrizione' },
+    { name: 'CODE', type: 'string', header: 'Codice' },
+    { name: 'ONLINECHK', type: 'boolean', header: 'Verifica stato on-line' },
+    { name: 'CLEANCHK', type: 'boolean', header: 'Verifica presenza cartellino verde' },
+    { name: 'DATE', type: 'date', header: 'Data check iniziale' },
+    { name: 'SIGNATURE', type: 'boolean', header: 'Firma check iniziale' },
+    { name: 'USEDCHK', type: 'boolean', header: 'Utilizzata (Si/No)' },
+    { name: 'DATE', type: 'date', header: 'Data check finale' },
+    { name: 'SIGNATURE', type: 'boolean', header: 'Firma check finale' },
+]
+
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
         body.data = { token: 'ABCDEFGH', role:'ADMIN'}
@@ -756,6 +785,21 @@ const deleteProcess = async function (body) {
     return (body)
 }
 
+const getMaterialCols = async function (body) {
+    body.data = materialCols
+    return(body)
+}
+
+const getPersonnelCols = async function (body) {
+    body.data = personnelCols
+    return (body)
+}
+
+const getMachineCols = async function (body) {
+    body.data = machineCols
+    return (body)
+}
+
 
 const mocks = {
     login,
@@ -769,7 +813,10 @@ const mocks = {
     setAgent,
     getProcesses,
     setProcess,
-    deleteProcess
+    deleteProcess,
+    getMaterialCols,
+    getPersonnelCols,
+    getMachineCols
 }
 
 export default mocks

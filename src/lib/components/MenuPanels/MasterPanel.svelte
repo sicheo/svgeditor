@@ -1,6 +1,8 @@
 <script lang="ts">
 import { onMount} from 'svelte';
 import { _ } from 'svelte-i18n'
+import {mock} from '../../ustore.js'
+import {getMaterialCols,getPersonnelCols,getMachineCols} from '../../script/api.js'
 
 
 /*export let node:any ={
@@ -14,6 +16,10 @@ export let node
 export let color = "Teal"
 
 let changecolor = "#ffe6e6"
+
+let machineCols = []
+let personnelCols = []
+let materialCols = []
        
 onMount(async ()=>{
       const inputs = document.getElementsByClassName("panel-input-text")
@@ -27,6 +33,24 @@ onMount(async ()=>{
       }
 
   });
+
+  const onClickMaterials = async (ev:any) =>{
+      const body = await getMaterialCols($mock)
+      materialCols = body.data
+      console.log("*** MATERIAL CLICKED ***", materialCols)
+  }
+
+  const onClickMachines = async (ev:any) =>{
+      const body = await getMachineCols($mock)
+      machineCols = body.data
+      console.log("*** MACHINES CLICKED ***",machineCols)
+  }
+
+  const onClickPersonnel = async (ev:any) =>{
+      const body =  await getPersonnelCols($mock)
+      personnelCols = body.data
+      console.log("*** PERSONNEL CLICKED ***",personnelCols)
+  }
 
 </script>
 
@@ -71,17 +95,17 @@ onMount(async ()=>{
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_materials')}"  class="panel-input panel-input-text">
+	                <input  type="button" name="name" on:click={onClickMaterials} value="{$_('up2clone_master_panel_materials')}"  class="panel-input panel-input-button">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_machines')}"  class="panel-input panel-input-text">
+	                <input  type="button" name="name" on:click={onClickMachines} value="{$_('up2clone_master_panel_machines')}"  class="panel-input panel-input-button">
                 </label>
         </div>
         <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name"  value="{$_('up2clone_master_panel_personnel')}"  class="panel-input panel-input-text">
+	                <input  type="button" name="name" on:click={onClickPersonnel} value="{$_('up2clone_master_panel_personnel')}"  class="panel-input panel-input-button">
                 </label>
         </div>
     </div>
@@ -90,6 +114,11 @@ onMount(async ()=>{
 <style>
 .panel-input-text{
 	 width: auto;
+}
+
+.panel-input-button{
+	 font-weight: bold;
+     font-size:larger;
 }
 
 .class-panel-cell textarea{
@@ -139,5 +168,7 @@ input {
   flex: 0 0 80px;
   margin-left: 5px;
 }
+
+
 
 </style>

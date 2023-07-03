@@ -419,6 +419,11 @@ export const setProcess = async function (process, mock = false) {
     })
 }
 
+/**
+ * Delete Process
+ * @param {any} filters
+ * @param {any} mock
+ */
 export const deleteProcess = async function (filters, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
@@ -441,6 +446,93 @@ export const deleteProcess = async function (filters, mock = false) {
                 })
         } else {
             resolve(mocks.deleteProcess(body))
+        }
+    })
+}
+
+/**
+ * Get Material Columns
+ * @param {any} mock
+ */
+export const getMaterialCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMaterialCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getMaterialCols(body))
+        }
+    })
+}
+
+/**
+ * Get Personnel Columns
+ * @param {any} mock
+ */
+export const getPersonnelCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getPersonnelCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getPersonnelCols(body))
+        }
+    })
+}
+
+/**
+ * Get Machine Columns
+ * @param {any} mock
+ */
+export const getMachineCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMachineCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getMachineCols(body))
         }
     })
 }

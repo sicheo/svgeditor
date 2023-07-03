@@ -20,7 +20,7 @@ const exitPage = (ev:any)=>{
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
-		<TreeView bind:tree={tree} {color}/>
+		<TreeView bind:tree={tree} {color} />
 	</div>
 
 <style>

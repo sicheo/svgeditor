@@ -63,6 +63,7 @@ onMount(async ()=>{
 	return tree
 }
 
+
  const onSign= async (ev:any) =>{
      const target = ev.target
     
@@ -161,7 +162,7 @@ onMount(async ()=>{
 	</div>
     <div class="modal-auth-sign-div" id="modal-auth-sign-div-id" data-process=''>
 		<div class="modal-editor-auth-sign-content">
-			<Up2CloneAuthSign bind:tree={tree} bind:process={process} {color}/>
+			<Up2CloneAuthSign bind:tree={tree} bind:process={process} {color} />
 		</div>
 	</div>
 

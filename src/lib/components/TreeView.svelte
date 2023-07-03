@@ -8,6 +8,11 @@
 //	import { slide } from 'svelte/transition'
 	export let tree
 	export let color 
+	
+	let manageNode = (ev:any)=>{
+		
+		console.log("MANAGE NODE",ev.target.getAttribute("name"))
+	}
 
 	let expanded = _expansionState[tree.label] || false
 	const toggleExpansion = () => {
@@ -16,10 +21,7 @@
 	}
 	$: arrowDown = expanded
 	
-	const manageNode = (ev:any)=>{
-		
-		console.log("MANAGE NODE",ev.target)
-	}
+	
 </script>
 
 <ul><!-- transition:slide -->
@@ -27,7 +29,7 @@
 		{#if tree.children}
 			<span>
 				<span class="arrow" class:arrowDown on:click={toggleExpansion}>&#x25b6</span>
-				<span class="item" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
+				<span class="item" name="{tree.label}" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
 			</span>
 			{#if expanded}
 				{#each tree.children as child}
@@ -37,7 +39,7 @@
 		{:else}
 			<span>
 				<span class="no-arrow"/>
-				<span class="item" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
+				<span class="item" name="{tree.label}" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
 			</span>
 		{/if}
 	</li>

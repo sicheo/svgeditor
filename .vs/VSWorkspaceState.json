@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\PageContents",
-    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\components\\Dialogs",
     "\\src\\lib\\i18n",
     "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2data\\build"
+    "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\auth"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Tables\\TableImage.svelte",
+  "SelectedNode": "\\src\\routes\\up2clone\\auth\\Up2CloneAuth.svelte",
   "PreviewInSolutionExplorer": false
 }
