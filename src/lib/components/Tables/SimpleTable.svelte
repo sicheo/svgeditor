@@ -77,8 +77,26 @@
               $table.setPageIndex(page)
             }
   const onSelect = (e:any) => {
+      console.log("**** SELECT *****",e.target.value)
               $table.setPageSize(Number(e.target.value))
+              refreshData()
             }
+  const onFirstPage = (e:any) =>{
+      $table.setPageIndex(0)
+      refreshData()
+  }
+  const onPrevPage = (e:any) =>{
+      $table.previousPage()
+      refreshData()
+  }
+  const onNextPage = (e:any) =>{
+      $table.nextPage()
+      refreshData()
+  }
+  const onLastPage = (e:any) =>{
+      $table.setPageIndex($table.getPageCount() - 1)
+      refreshData()
+  }
 </script>
 
 <div class="p-2">
@@ -118,10 +136,10 @@
     </table>
     {#if tableOptions.pagination}
     <div class="pagination-tool-class">
-        <input type="button" class="" value="<<" on:click={() => $table.setPageIndex(0)}>
-        <input type="button" class="" value="<" on:click={() => $table.previousPage()}>
-        <input type="button" class="" value=">" on:click={() => $table.nextPage()}>
-        <input type="button" class="" value=">>" on:click={() => $table.setPageIndex($table.getPageCount() - 1)}>
+        <input type="button" class="" value="<<" on:click={onFirstPage}>
+        <input type="button" class="" value="<" on:click={onPrevPage}>
+        <input type="button" class="" value=">" on:click={onNextPage}>
+        <input type="button" class="" value=">>" on:click={onLastPage}>
         <span class="flex items-center gap-1">
           Page
           <strong>
@@ -132,11 +150,11 @@
             | Go to Page:
             <input type="number" class="" value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
         </span>
-        <select value={$table.getState().pagination.pageSize} on:change={onSelect}>
-            <option value=10>Show 10</option>
-            <option value=20>Show 20</option>
-            <option value=30>Show 30</option>
-            <option value=40>Show 40</option>
+        <select  on:change={onSelect}>
+            <option value=2>Show 10</option>
+            <option value=3>Show 20</option>
+            <option value=4>Show 30</option>
+            <option value=5>Show 40</option>
         </select>
     </div>
     {/if}

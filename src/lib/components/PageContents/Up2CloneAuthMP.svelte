@@ -11,7 +11,7 @@ import { _ } from 'svelte-i18n'
 import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
-import TableSwitch from  '../Tables/TableSwitch.svelte'
+import Up2CloneAuthSign from './Up2CloneAuthSign.svelte'
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
@@ -21,19 +21,58 @@ export let color:any
 
 const columnHelper  = createColumnHelper()
 let data = []
+let process = ''
+let tree: any = {}
+
 
 onMount(async ()=>{
-   //const response = await getProcesses(null,$mock)
-   //data = response.data
-   console.log("****** Up2CloneAuthMP ******",data)
+   const response = await getProcesses(null,$mock)
+   data = response.data
    
  });
 
  let promise = getProcesses(null,$mock)
 
- const onSign= (ev:any) =>{
+ const getTreeFromProcess =(process:any)=>{
+	tree['label'] = process.name
+	tree['children'] = []
+	if(process.phases){
+		for(let i=0;i<process.phases.length;i++){
+			const phase = process.phases[i]
+			const node ={label:'',children:[]}
+			node.label = phase.name
+			if(phase.operations){
+				for(let j=0;j<phase.operations.length;j++){
+					const operation = phase.operations[j]
+					const op= {label:'',children:[]}
+					op.label = operation.name
+					if(operation.tasks){
+						for(let k=0;k<operation.tasks.length;k++){
+							const task = operation.tasks[k]
+							const ts ={label:''}
+							ts.label = task.name
+							op.children.push(ts)
+						}
+					}
+					node.children.push(op)
+				}
+			}
+			tree['children'].push(node)
+		}
+	}
+	return tree
+}
+
+ const onSign= async (ev:any) =>{
      const target = ev.target
-     console.log("***** SIGNATURE *****",target.id)
+    
+     const divSign = document.getElementById("modal-auth-sign-div-id")
+     if(divSign){
+        process = data.find((item:any) => {return (item.uuid == target.id)} )
+        tree = await getTreeFromProcess(process)
+        divSign.style.display = 'block'
+        
+     }
 
  }
 
@@ -120,6 +159,11 @@ onMount(async ()=>{
 	            <p style="color: red">{error.message}</p>
         {/await}
 	</div>
+    <div class="modal-auth-sign-div" id="modal-auth-sign-div-id" data-process=''>
+		<div class="modal-editor-auth-sign-content">
+			<Up2CloneAuthSign bind:tree={tree} bind:process={process} {color}/>
+		</div>
+	</div>
 
 
 <style>
@@ -131,8 +175,27 @@ onMount(async ()=>{
   font-weight: bold;
 }
 
-.table-header-class{
-     text-align: left;
-     color: red;
+/* The Modal (background) */
+.modal-auth-sign-div {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-editor-auth-sign-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 </style>
