@@ -14,12 +14,59 @@ const exitPage = (ev:any)=>{
     if(div)
         div.style.display = 'none'
 }
+
+const Save = (ev:any)=>{
+	// Back from paramsRows to node.data
+	node.data.params[paramType] = []
+	for(let i=0; i< paramRows.length; i++){
+		let row = {}
+		for(let j=0;j<paramsCols.length;j++){
+			row[paramsCols[j].header] = paramRows[i][j]
+		}
+		node.data.params[paramType].push(row)
+	}
+}
+
+const Add = (ev:any)=>{
+	const row = []
+	for(let i=0; i<paramsCols.length;i++ ){
+		row.push("")
+	}
+	paramRows.push(row)
+	paramRows = paramRows
+}
+
+const deleteRow = (ev:any)=>{
+	const target = ev.target
+	const index = target.parentElement.parentElement.rowIndex
+	paramRows.splice(index, 1)
+	paramRows = paramRows
+}
+
+const editRow = (ev:any)=>{
+	const target = ev.target
+	const row = target.parentElement.parentElement
+	for (var i = 0; i < row.childNodes.length; i++) {
+		if (row.childNodes[i].className && row.childNodes[i].className.includes("input-cell")) {
+		  const inputs = row.childNodes[i].childNodes
+		  for(let j=0; j< inputs.length;j++){
+			  if(inputs[j].disabled)
+				inputs[j].disabled = false
+			  else
+				inputs[j].disabled = true
+		  }
+		}        
+	}
+}
+
 </script>
 
     <div class="sign-dialog-class">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				{paramName.toLocaleUpperCase()}
 				<div class="class-last-item">
+					<input type="image" src="/add.svg" on:click={Add} alt="Submit" width="25" height="25"> 
+					<input type="image" src="/SAVE.svg" on:click={Save} alt="Submit" width="25" height="25"> 
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
@@ -36,10 +83,16 @@ const exitPage = (ev:any)=>{
 					{#each paramRows as row}
 					   <tr>
 						{#each row as field}
-							<td>
+							<td class="input-cell">
 								<input size=14 type="text" value={field} disabled/>
 							</td>
 						{/each}
+							<td>
+								<input  type="image" alt="image" width=20 height=20 src="/edit.svg"  on:click={editRow}/>
+							</td>
+							<td>
+								<input  type="image" alt="image" width=20 height=20 src="/DELETE.svg"  on:click={deleteRow}/>
+							</td>
 					    </tr>
 					{/each}
 				</tbody>

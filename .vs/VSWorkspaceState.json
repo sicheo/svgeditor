@@ -4,11 +4,13 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\MenuPanels",
-    "\\src\\lib\\script",
+    "\\src\\lib\\components\\MenuPanels\\lib",
+    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\i18n",
     "\\src\\routes",
-    "\\src\\routes\\up2clone\\auth"
+    "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\build"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
   "PreviewInSolutionExplorer": false
 }

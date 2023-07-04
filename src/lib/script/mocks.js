@@ -370,7 +370,20 @@ let processes = [
                     CAUTION:"",
                 }
             ],
-            personnel: []
+            personnel: [
+                {
+                    NAME: "PAOLO PULICANI",
+                    DATE: "2023-07-04T19:15:00",
+                    SIGNATURE: "",
+                    ABBREVIATION: "PPUL",
+                },
+                {
+                    NAME: "",
+                    DATE: "",
+                    SIGNATURE: "",
+                    ABBREVIATION: "",
+                }
+            ]
         },
         graph: {
             id: 'NODE-0',
