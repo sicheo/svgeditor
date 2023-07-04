@@ -4,13 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
-    "\\src\\lib\\i18n",
+    "\\src\\lib\\components\\MenuPanels",
     "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2clone",
     "\\src\\routes\\up2clone\\auth"
   ],
-  "SelectedNode": "\\src\\routes\\up2clone\\auth\\Up2CloneAuth.svelte",
+  "SelectedNode": "\\src\\lib\\script\\mocks.js",
   "PreviewInSolutionExplorer": false
 }

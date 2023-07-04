@@ -3,6 +3,7 @@ import { onMount} from 'svelte';
 import { _ } from 'svelte-i18n'
 import {mock} from '../../ustore.js'
 import {getMaterialCols,getPersonnelCols,getMachineCols} from '../../script/api.js'
+import Up2CloneBuildParams from '../PageContents/Up2CloneBuildParams.svelte'
 
 
 /*export let node:any ={
@@ -20,6 +21,11 @@ let changecolor = "#ffe6e6"
 let machineCols = []
 let personnelCols = []
 let materialCols = []
+let divParams
+let paramsCols=[]
+let paramName = ""
+let paramType = ""
+let paramRows=[]
        
 onMount(async ()=>{
       const inputs = document.getElementsByClassName("panel-input-text")
@@ -31,25 +37,79 @@ onMount(async ()=>{
       for(let i=0;i<inputs.length;i++){
           inputs[i].addEventListener("change",changeListener)
       }
+      divParams = document.getElementById("modal-master-params-div-id")
 
   });
 
   const onClickMaterials = async (ev:any) =>{
       const body = await getMaterialCols($mock)
       materialCols = body.data
-      console.log("*** MATERIAL CLICKED ***", materialCols)
+      console.log("*** MATERIAL CLICKED ***", node)
+      paramType= 'materials'
+      paramName = $_('up2clone_master_panel_materials')
+      paramsCols = materialCols
+      const parameters = node.data.params[paramType]
+      paramRows=[]
+      for(let i=0;i< parameters.length;i++){
+          const keys = Object.keys(parameters[i])
+          const row = []
+          for(let j=0;j<keys.length;j++){
+              row.push(parameters[i][keys[j]])
+          }
+          paramRows.push(row)
+      }
+      console.log("****** PARAM ROWS *******", paramRows)
+      if(divParams){
+        console.log("*** MATERIAL CLICKED  DIV DISPLAYED***")
+        divParams.style.display = 'block'
+        
+     }
   }
 
   const onClickMachines = async (ev:any) =>{
       const body = await getMachineCols($mock)
       machineCols = body.data
       console.log("*** MACHINES CLICKED ***",machineCols)
+      paramType= 'machines'
+      paramName = $_('up2clone_master_panel_machines')
+      paramsCols = machineCols
+      const parameters = node.data.params[paramType]
+      paramRows=[]
+      for(let i=0;i< parameters.length;i++){
+          const keys = Object.keys(parameters[i])
+          const row = []
+          for(let j=0;j<keys.length;j++){
+              row.push(parameters[i][keys[j]])
+          }
+          paramRows.push(row)
+      }
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
   }
 
   const onClickPersonnel = async (ev:any) =>{
       const body =  await getPersonnelCols($mock)
       personnelCols = body.data
       console.log("*** PERSONNEL CLICKED ***",personnelCols)
+      paramType= 'personnel'
+      paramName = $_('up2clone_master_panel_personnel')
+      paramsCols = personnelCols
+      const parameters = node.data.params[paramType]
+      paramRows=[]
+      for(let i=0;i< parameters.length;i++){
+          const keys = Object.keys(parameters[i])
+          const row = []
+          for(let j=0;j<keys.length;j++){
+              row.push(parameters[i][keys[j]])
+          }
+          paramRows.push(row)
+      }
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
   }
 
 </script>
@@ -111,6 +171,12 @@ onMount(async ()=>{
     </div>
 </div>
 
+<div class="modal-master-params-div" id="modal-master-params-div-id" data-process=''>
+		<div class="modal-editor-master-params-content">
+			<Up2CloneBuildParams bind:node={node} {color} bind:paramsCols={paramsCols} bind:paramName={paramName}  bind:paramType={paramType} bind:paramRows={paramRows}/>
+		</div>
+</div>
+
 <style>
 .panel-input-text{
 	 width: auto;
@@ -169,6 +235,29 @@ input {
   margin-left: 5px;
 }
 
+/* The Modal (background) */
+.modal-master-params-div {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-editor-master-params-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
 
 
 </style>

@@ -6,6 +6,7 @@
   "up2clone_nav_monitor": "MONITOR",
   "up2clone_nav_build": "BUILD",
   "up2clone_nav_auth": "AUTHORIZATION",
+  "up2clone_nav_auth_build": "AUTHPROCESS",
   "up2data_nav_monitor": "MONITOR",
   "up2data_nav_conf": "CONFIGURATION",
   "up2data_nav_conf_device": "Device",

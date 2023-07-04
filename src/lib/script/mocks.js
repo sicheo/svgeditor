@@ -355,6 +355,22 @@ let processes = [
                 version: '1.0',
                 signature: null
             },
+            machines: [],
+            materials: [
+                {
+                    DESCRIPTION: "Prendisolone",
+                    SUPPLIER: "ACME inc.",
+                    SAPCODE: "C2344GTM09",
+                    FORMULA: "C21H28O5",
+                    PM: 360.4,
+                    BP: 235,
+                    DENSITY: 15,
+                    APPEARENCE: "",
+                    RISK: "",
+                    CAUTION:"",
+                }
+            ],
+            personnel: []
         },
         graph: {
             id: 'NODE-0',
@@ -472,6 +488,9 @@ let processes = [
                 version: '1.0',
                 signature: null
             },
+            machines: [],
+            materials: [],
+            personnel: []
         },
         graph: {
             id: 'NODE-0',
@@ -504,6 +523,9 @@ let processes = [
                 version: '1.0',
                 signature: null
             },
+            machines: [],
+            materials: [],
+            personnel: []
         },
         graph: {
             id: 'NODE-0',
@@ -536,6 +558,9 @@ let processes = [
                 version: '1.0',
                 signature: null
             },
+            machines: [],
+            materials: [],
+            personnel: []
         },
         graph: {
             id: 'NODE-0',
@@ -562,13 +587,16 @@ const materialCols = [
     { name: 'PM', type: 'number', header: 'P.M.' },
     { name: 'BP', type: 'number', header: 'P. Eb. (DEGC)' },
     { name: 'DENSITY', type: 'number', header: 'd 20 DEGC (gr/ml)' },
+    { name: 'APPEARENCE', type: 'string', header: 'Apparenza' },
+    { name: 'RISK', type: 'string', header: 'Rischi' },
+    { name: 'CAUTIONS', type: 'string', header: 'Precauzioni' },
 ]
 
 const personnelCols = [
     { name: 'NAME', type: 'string', header: 'Nominativo' },
     { name: 'DATE', type: 'date', header: 'Data' },
     { name: 'SIGNATURE', type: 'string', header: 'Firma operatore' },
-    { name: 'ABBREVIATION', type: 'string', header: 'Sigla' },
+    { name: 'ABBREVIATION', type: 'string', header: 'Sigla operatore' },
 ]
 
 const machineCols = [

@@ -12,6 +12,7 @@ import HOME from "./routes/Home.svelte"
 import UP2CLONEMONITOR from "./routes/up2clone/monitor/Up2CloneMonitor.svelte" 
 import UP2CLONEBUILD from "./routes/up2clone/build/Up2CloneBuild.svelte" 
 import UP2CLONEAUTH from "./routes/up2clone/auth/Up2CloneAuth.svelte" 
+import UP2CLONEAUTHBUILD from "./routes/up2clone/auth/Up2CloneAuthBuild.svelte" 
 import UP2DATAMONITOR from "./routes/up2data/monitor/Up2DataMonitor.svelte" 
 import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte" 
 import UP2DATACONF from "./routes/up2data/configuration/Up2DataConfiguration.svelte" 
@@ -40,6 +41,9 @@ const localizeNavigation = ()=>{
                 break;
             case 'AUTHORIZATION':
                 $cloneNavigation[i].name = $_('up2clone_nav_auth')
+                break;
+            case 'AUTHBUILD':
+                $cloneNavigation[i].name = $_('up2clone_nav_auth_build')
                 break
         }
     }
@@ -132,6 +136,7 @@ const localizeGraphContext = ()=>{
     <Route path="/UP2CLONE/MONITOR" component={UP2CLONEMONITOR} />
     <Route path="/UP2CLONE/BUILD" component={UP2CLONEBUILD} />
     <Route path="/UP2CLONE/AUTH" component={UP2CLONEAUTH} />
+    <Route path="/UP2CLONE/AUTHBUILD" component={UP2CLONEAUTHBUILD} />
     <Route path="/UP2DATA/MONITOR" component={UP2DATAMONITOR} />
     <Route path="/UP2DATA/BUILD" component={UP2DATABUILD} />
     <Route path="/UP2DATA/CONFIGURATION" component={UP2DATACONF} />

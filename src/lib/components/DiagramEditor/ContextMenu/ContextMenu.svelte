@@ -135,7 +135,10 @@ let addNode = (ev:any) =>{
 							version: '',
 							signature: null
 							}
-						}
+						},
+						machines:[],
+						materials:[],
+						personnel:[]
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 140
