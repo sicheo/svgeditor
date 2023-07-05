@@ -6,7 +6,7 @@ import LinePanel from './components/MenuPanels/LinePanel.svelte'
 import EquipmentPanel from './components/MenuPanels/EquipmentPanel.svelte'
 import ControllerPanel from './components/MenuPanels/ControllerPanel.svelte'
 import PhasePanel from './components/MenuPanels/PhasePanel.svelte'
-import MRecordPanel from './components/MenuPanels/MRecordPanel.svelte'
+import FinalPanel from './components/MenuPanels/FinalPanel.svelte'
 import MasterPanel from './components/MenuPanels/MasterPanel.svelte'
 import analyticPlugin from "./script/analiticsPlugin.js"
 import Analytics from 'analytics'
@@ -84,5 +84,6 @@ export const up2datapanels = writable([
 // Panel menu for CLONE
 export const  up2clonepanels = writable([
     { type: 'MASTER', component: MasterPanel, name: 'Master Node', level: 'level0', img: '/MASTER.svg', fireEvents: true },
+    { type: 'FINAL', component: FinalPanel, name: 'Final Node', level: 'level0', img: '/FINAL.svg', fireEvents: true },
     { type: 'PHASE', component: PhasePanel, name: 'Phase Node', level: 'level1', img: '/DISPENSING.svg', fireEvents: true },
 ])

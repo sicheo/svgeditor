@@ -36,20 +36,46 @@ onMount(async ()=>{
  const getTreeFromProcess =(process:any)=>{
 	tree['label'] = process.name
 	tree['children'] = []
+    tree['color'] = '#f1c232'
+    tree['type'] ='MASTER'
+    const init = {label:$_('up2clone_master_panel_init'),children:[],type:"INIT",color:'#ffd966'}
+    if(process.data.materials){
+        const node = {label:$_('up2clone_master_panel_materials'),children:[],color:'#ffe599',type:'MATERIALS'}
+        for(let i=0;i< process.data.materials.length;i++){
+            node.children.push({label:process.data.materials[i].DESCRIPTION,type:"TASK"})
+        }
+        init['children'].push(node)
+    }
+    if(process.data.machines){
+        const node = {label:$_('up2clone_master_panel_machines'),children:[],color:'#ffe599',type:'MACHINES'}
+        for(let i=0;i< process.data.machines.length;i++){
+            node.children.push({label:process.data.machines[i].DESCRIPTION,type:"TASK"})
+        }
+        init['children'].push(node)
+    }
+    if(process.data.personnel){
+        const node = {label:$_('up2clone_master_panel_personnel'),children:[],color:'#ffe599',type:'PERSONNEL'}
+        for(let i=0;i< process.data.personnel.length;i++){
+            node.children.push({label:process.data.personnel[i].NAME,type:"TASK"})
+        }
+        init['children'].push(node)
+    }
+    tree['children'].push(init)
 	if(process.phases){
+        const phases = {label:$_('up2clone_master_panel_phases'),children:[],color:'#ffd966',type:'PHASES'}
 		for(let i=0;i<process.phases.length;i++){
 			const phase = process.phases[i]
-			const node ={label:'',children:[]}
+			const node ={label:'',children:[], color:'#ffe599',type:'PHASE'}
 			node.label = phase.name
 			if(phase.operations){
 				for(let j=0;j<phase.operations.length;j++){
 					const operation = phase.operations[j]
-					const op= {label:'',children:[]}
+					const op= {label:'',children:[],color:"#fff2cc",type:'OPERATION'}
 					op.label = operation.name
 					if(operation.tasks){
 						for(let k=0;k<operation.tasks.length;k++){
 							const task = operation.tasks[k]
-							const ts ={label:''}
+							const ts ={label:'',type:"TASK"}
 							ts.label = task.name
 							op.children.push(ts)
 						}
@@ -57,9 +83,12 @@ onMount(async ()=>{
 					node.children.push(op)
 				}
 			}
-			tree['children'].push(node)
+			phases['children'].push(node)
 		}
+        tree['children'].push(phases)
 	}
+    const final = {label:$_('up2clone_master_panel_final'),children:[],type:"FINAL",color:'#ffd966'}
+    tree['children'].push(final)
 	return tree
 }
 

@@ -12,6 +12,30 @@ const exitPage = (ev:any)=>{
     if(div)
         div.style.display = 'none'
 }
+
+let callback = (params:any)=>{
+	const div = document.getElementById("sign-page-right-id")
+	const children = div.childNodes
+	console.log("** CHILDREN NIDE **", children)
+		switch(params.type){
+			case "MASTER":
+				break
+			case "MATERIALS":
+				break
+			case "MACHINES":
+				break
+			case "PERSONNEL":
+				break
+			case "PHASES":
+				break
+			case "PHASE":
+				break
+			case "OPERATION":
+				break
+			case "TASK":
+				break
+		}
+	}
 </script>
     <div class="sign-dialog-class">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
@@ -20,7 +44,15 @@ const exitPage = (ev:any)=>{
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
-		<TreeView bind:tree={tree} {color} />
+		<div class="sign-page-body">
+			<div class="tree-div">
+				<TreeView bind:tree={tree} {color} callback={callback}/>
+			</div>
+			<div class="sign-page-right" id="sign-page-right-id">
+				<div class="sign-page-rigth-title">
+				</div>
+			</div>
+		</div>
 	</div>
 
 <style>
@@ -29,8 +61,7 @@ const exitPage = (ev:any)=>{
 	color: #777777;
 	background-color: white ;
 	width: 100%;
-	min-height: 300px;
-	height: 100%;
+	height: 350px;
 	margin: auto;
 }
 
@@ -41,5 +72,13 @@ const exitPage = (ev:any)=>{
   font-weight: bold ;
 }
 
+.tree-div{
+	height: 300px;
+	width: 300px;
+	overflow-y: auto;
+}
+.sign-page-body{
+	display: flex;
+}
 
 </style>

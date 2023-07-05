@@ -120,9 +120,9 @@ let addNode = (ev:any) =>{
 				mbuild= menubuild,
 				nodeoptions.data={
 					level:retitem.level,
-					type:'MASTER',
-					name:'MASTER',
-					image:"/MASTER.svg",
+					type:retitem.value,
+					name:retitem.label,
+					image:retitem.image,
 					shape:'RECT',
 					width:140,
 					height:90,
@@ -146,6 +146,9 @@ let addNode = (ev:any) =>{
 				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30
+				if(retitem.value == 'FINAL'){
+					nodeoptions.data.params = {final:[]}
+				}
 				break
 			case "context-menu-phase-node":
 				nodeoptions.shapetype = 'RECT'

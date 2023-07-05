@@ -8,10 +8,13 @@
 //	import { slide } from 'svelte/transition'
 	export let tree
 	export let color 
+	export let callback = (param:any=null)=>{}
 	
 	let manageNode = (ev:any)=>{
-		
+		const name = ev.target.getAttribute("name")
+		const type = ev.target.getAttribute("data-type")
 		console.log("MANAGE NODE",ev.target.getAttribute("name"))
+		callback({name:name,type:type})
 	}
 
 	let expanded = _expansionState[tree.label] || false
@@ -29,17 +32,17 @@
 		{#if tree.children}
 			<span>
 				<span class="arrow" class:arrowDown on:click={toggleExpansion}>&#x25b6</span>
-				<span class="item" name="{tree.label}" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
+				<span class="item" name="{tree.label}" data-type="{tree.type}" style="--color:{color};--background-color:{tree.color};" on:click={manageNode}>{tree.label}</span>
 			</span>
 			{#if expanded}
 				{#each tree.children as child}
-					<svelte:self bind:tree={child} {color}/>
+					<svelte:self bind:tree={child} {color} callback={callback}/>
 				{/each}
 			{/if}
 		{:else}
 			<span>
 				<span class="no-arrow"/>
-				<span class="item" name="{tree.label}" style="--color:{color};" on:click={manageNode}>{tree.label}</span>
+				<span class="item" name="{tree.label}" data-type="{tree.type}" style="--color:{color};--background-color:{tree.color};" on:click={manageNode}>{tree.label}</span>
 			</span>
 		{/if}
 	</li>
@@ -69,6 +72,7 @@
 		font-weight: bold ;
 		font-size:small;
 		color: var(--color);
+		background-color: var(--background-color);
 		/*background-color:var(--background-color);*/
 	}
 </style>

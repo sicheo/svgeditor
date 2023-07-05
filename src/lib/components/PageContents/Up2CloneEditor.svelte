@@ -119,7 +119,8 @@
 			let panelObject
 			let img = panels[0].img
 			let type = panels[0].type
-			const pnl = panels.find((item:any)=>(item.level == node.data.level))
+			//const pnl = panels.find((item:any)=>(item.level == node.data.level))
+			const pnl = panels.find((item:any)=>(item.type == node.data.type))
 			if(pnl){
 				if(node.data.image)
 					img=node.data.image

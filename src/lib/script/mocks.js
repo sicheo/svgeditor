@@ -11,7 +11,10 @@ const masters = [
 ]
 
 /** ITEMS */
-const masteritems = [{ value: 'MASTER', label: 'MASTER', image: '/MASTER.svg',level:'level0' }]
+const masteritems = [
+    { value: 'MASTER', label: 'MASTER', image: '/MASTER.svg', level: 'level0' },
+    { value: 'FINAL', label: 'FINAL', image: '/FINAL.svg', level: 'level0' }
+]
 
 let phaseitems = [
     { value: 'DISPENSING', label: 'DISPENSING', image: '/DISPENSING.svg', level: 'level1' },
@@ -441,7 +444,7 @@ let processes = [
                         tasks: [
                             {
                                 uid: 0,
-                                tye: "Task",
+                                type: "Task",
                                 name: "Task Name",
                                 tag: "VAR-TAG",
                                 checktype: "ANALOG",
@@ -590,6 +593,9 @@ let processes = [
         },
         phases: []
     }
+]
+
+const signedprocesses = [
 ]
 
 const materialCols = [
@@ -764,6 +770,15 @@ const getProcesses = async function (body) {
 
     retProcesses = filterArray(retProcesses, filters)
     body.data = retProcesses
+    return (body)
+}
+
+const getSignedProcesses = async function (body) {
+    /*let retProcesses = JSON.parse(JSON.stringify(signedprocesses))
+    const filters = body.options.filters
+
+    retProcesses = filterArray(retProcesses, filters)
+    body.data = retProcesses*/
     return (body)
 }
 
