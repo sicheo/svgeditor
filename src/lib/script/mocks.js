@@ -386,7 +386,11 @@ let processes = [
                     SIGNATURE: "",
                     ABBREVIATION: "",
                 }
-            ]
+            ],
+            final: {
+                tasks: [],
+                parent:"NODE-1"
+            }
         },
         graph: {
             id: 'NODE-0',
@@ -506,7 +510,11 @@ let processes = [
             },
             machines: [],
             materials: [],
-            personnel: []
+            personnel: [],
+            final: {
+                tasks: [],
+                parent: "NODE-0"
+            }
         },
         graph: {
             id: 'NODE-0',
@@ -541,7 +549,11 @@ let processes = [
             },
             machines: [],
             materials: [],
-            personnel: []
+            personnel: [],
+            final: {
+                tasks: [],
+                parent: "NODE-0"
+            }
         },
         graph: {
             id: 'NODE-0',
@@ -576,7 +588,11 @@ let processes = [
             },
             machines: [],
             materials: [],
-            personnel: []
+            personnel: [],
+            final: {
+                tasks: [],
+                parent: "NODE-0"
+            }
         },
         graph: {
             id: 'NODE-0',

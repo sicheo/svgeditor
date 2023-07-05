@@ -45,7 +45,7 @@ const getGraphFromProcess = (process: any) => {
                 image: process.graph.image,
                 shape: process.graph.shape,
                 width: process.graph.width,
-                height: process.graph.heigth,
+                height: process.graph.height,
                 imgwidth: process.graph.imgwidth,
                 imgheight: process.graph.imgheight,
                 params: process.data,
@@ -133,6 +133,34 @@ const getGraphFromProcess = (process: any) => {
                 graph.paths.push(path)
             }
         }
+        const finalIndex = process.phases.length+1
+        const final = {
+            id: "NODE-" + finalIndex,
+            data: {
+                level: process.graph.level,
+                type: "FINAL",
+                name: "FINAL",
+                image: "/FINAL.svg",
+                shape: process.graph.shape,
+                width: process.graph.width,
+                height: process.graph.height,
+                imgwidth: process.graph.imgwidth,
+                imgheight: process.graph.imgheight,
+                params: process.data.final,
+                uid: finalIndex,
+                x: process.graph.x + 2 * process.graph.width,
+                y: process.graph.y
+            }
+        }
+        const path = {
+            name: 'PATH' + process.phases.length,
+            uid: finalIndex,
+            from: [process.data.final.parent],
+            to: [final.id]
+        }
+        graph.nodes.push(final)
+        graph.paths.push(path)
+        console.log("**** ADD FINAL ***", graph)
     }
     return graph
 }
@@ -187,13 +215,13 @@ const getProcessFromGraph = (graph:any) => {
                 process.graph.imgheight = node.data.imgheight
                 process.graph.x = node.data.x
                 process.graph.y = node.data.y
-            } else {
+            } else if (node.data.type != 'FINAL') {
                 // EXTRACT PHASE
                 const phase = {
                     name: '',
                     uid: 0,
                     description: '',
-                    parent:null,
+                    parent: null,
                     data: {},
                     graph: {
                         id: '',
@@ -284,6 +312,13 @@ const getProcessFromGraph = (graph:any) => {
                     }
                 }
                 process.phases.push(phase)
+            } else {
+                console.log("**** FROM GRAPH TO PROCESS ****", node)
+                const found = graph.paths.find((item: any) => item.to.includes(node.id))
+                if (found)
+                    node.data.params.final.parent =  found.from[0]
+                process.data['final'] = node.data.params.final
+                console.log("**** FROM GRAPH TO PROCESS ****", process)
             }
         }
     }

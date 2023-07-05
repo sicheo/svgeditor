@@ -147,7 +147,7 @@ let addNode = (ev:any) =>{
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30
 				if(retitem.value == 'FINAL'){
-					nodeoptions.data.params = {final:[]}
+					nodeoptions.data.params = {final:{tasks:[],parent:null}}
 				}
 				break
 			case "context-menu-phase-node":

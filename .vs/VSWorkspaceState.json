@@ -2,13 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\i18n",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\build"
+    "\\src\\lib\\components\\MenuPanels",
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\public",
+  "SelectedNode": "\\src\\lib",
   "PreviewInSolutionExplorer": false
 }
