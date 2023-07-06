@@ -47,6 +47,12 @@ const filterFunction = (event:any) =>{
       }
 }
 
+const getClass = (blocked:boolean)=>{
+    let className = ""
+    if(blocked)
+        className = 'blocked'
+    return(className)
+}
 </script>
 
 <div class="select-menu active" id="select-menu-id">
@@ -59,7 +65,7 @@ const filterFunction = (event:any) =>{
      <!--input type="text" placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}"-->
     {#each data as Item, index(Item['uuid'])}
     <li class="option">
-      <span class="option-text" data-uid="{Item['uuid']}">{Item['name']} {Item[description1]} {Item[description2]} v{Item.data['authorization'].version} {Item.data['lastmodified']}</span>
+      <span class="option-text {getClass(Item.data['authorization'].blocked)}" data-uid="{Item['uuid']}">{Item['name']} {Item[description1]} {Item[description2]} v{Item.data['authorization'].version} {Item.data['lastmodified']}</span>
       <!--span class="option-text1">{Item[description1]}</!--span>
       <span class="option-text2">{Item[description2]}</span>
       <span class="option-text2">v{Item.data['authorization'].version} {Item.data['lastmodified']}</span-->
@@ -128,6 +134,10 @@ const filterFunction = (event:any) =>{
 .select-menu .options .option .option-text {
   font-size: 15px;
   color: #333;
+}
+
+.select-menu .options .option .option-text.blocked{
+  color: red;
 }
 
 .select-menu .options .option .option-text1 {

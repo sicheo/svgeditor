@@ -313,12 +313,10 @@ const getProcessFromGraph = (graph:any) => {
                 }
                 process.phases.push(phase)
             } else {
-                console.log("**** FROM GRAPH TO PROCESS ****", node)
                 const found = graph.paths.find((item: any) => item.to.includes(node.id))
-                if (found)
+                if (found && node.data.params.final)
                     node.data.params.final.parent =  found.from[0]
                 process.data['final'] = node.data.params.final
-                console.log("**** FROM GRAPH TO PROCESS ****", process)
             }
         }
     }

@@ -2,11 +2,13 @@
 
 
 export let onChange = ()=>{console.log("TST CHANGE")}
+export let uuid = ""
+export let checked
 
 </script>
 	
 	<label class="switch">
-		<input type="checkbox" on:change={onChange}>
+		<input type="checkbox" on:change={onChange} data-uuid={uuid} checked={checked}>
 		<span class="slider round"></span>
 	</label>	
 

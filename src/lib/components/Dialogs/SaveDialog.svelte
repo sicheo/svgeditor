@@ -25,13 +25,30 @@ const saveProcess = async(event:any) =>{
 		dialogOptions.data.data.authorization.version = newversion
 		dialogOptions.data.uuid = uuidv4()
 	}
-	const old = await setProcess(dialogOptions.data,$mock)
-    $analytics.track('graphSave', {
-            masterdoc: dialogOptions.data.doccode
-    })
-	const dialog = document.getElementById("build-tool-dialog")
-    if(dialog)
-        dialog.style.display = 'none'
+	// CHECK PROCESS BEFORE SAVE
+	const check = isProcessValid(dialogOptions.data)
+	if(check != "OK"){
+		alert(check)
+	}else{
+		// SET MODIFICATION DATE
+		dialogOptions.data.lastmodified = new Date(Date.now()).toISOString()
+		const old = await setProcess(dialogOptions.data,$mock)
+		$analytics.track('graphSave', {
+				masterdoc: dialogOptions.data.doccode
+		})
+		const dialog = document.getElementById("build-tool-dialog")
+		if(dialog)
+			dialog.style.display = 'none'
+	}
+}
+
+const isProcessValid =(process:any) =>{
+	// 1. Process must have valid version
+	if(!process.data.authorization)
+		return($_('err_process_miss-auth'))
+	if(!process.data.authorization.version || process.data.authorization.version == "")
+		return($_('err_process_miss-ver'))
+	return("OK")
 }
 
 const onRadioChange = (ev:any)=>{

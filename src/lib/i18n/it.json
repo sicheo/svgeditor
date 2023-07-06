@@ -28,6 +28,9 @@
   "err_graph_empty": "IL GRAFO E' VUOTO'",
   "err_first_node": "IL RODO RADICE DEVE ESSERE DI TIPO MASTER",
   "err_miss_doccode": "DOCCODE MANCANTE NEL NODO MASTER",
+  "err_miss_final": "L'ULTIMO NODO DEVE ESSERE DI TIPO FINAL",
+  "err_process_miss-auth": "AUTH DATA MANCANTI",
+  "err_process_miss-ver": "VERSIONE PROCESSO MANCANTE",
   "dialog_load_process": "SELEZIONE DOCUMENTO",
   "dialog_load_button": "CARICA",
   "dialog_save_process": "SALVA GRAFO SU DB",
@@ -57,5 +60,6 @@
   "up2clone_auth_table_version": "VERSIONE",
   "up2clone_auth_table_authorized": "AUTORIZZATO",
   "up2clone_auth_table_date": "ULTIMA MODIFICA",
-  "up2clone_auth_table_signature": "FIRMA"
+  "up2clone_auth_table_signature": "FIRMA",
+  "up2clone_auth_table_block": "BLOCCO"
 }

@@ -354,6 +354,7 @@ let processes = [
             lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
                 authorized: false,
+                blocked:false,
                 authdate: '',
                 version: '1.0',
                 signature: null
@@ -504,6 +505,7 @@ let processes = [
             lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
                 authorized: false,
+                blocked: true,
                 authdate: '',
                 version: '1.0',
                 signature: null
@@ -543,6 +545,7 @@ let processes = [
             lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
                 authorized: false,
+                blocked: false,
                 authdate: '',
                 version: '1.0',
                 signature: null
@@ -582,6 +585,7 @@ let processes = [
             lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
                 authorized: false,
+                blocked: false,
                 authdate: '',
                 version: '1.0',
                 signature: null

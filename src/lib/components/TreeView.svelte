@@ -13,7 +13,9 @@
 	let manageNode = (ev:any)=>{
 		const name = ev.target.getAttribute("name")
 		const type = ev.target.getAttribute("data-type")
-		console.log("MANAGE NODE",ev.target.getAttribute("name"))
+		// TOGGLE CHECKED
+		ev.target.classList.add('checked')
+		console.log("MANAGE NODE",ev.target.getAttribute("name"),ev.target.className)
 		callback({name:name,type:type})
 	}
 
@@ -74,5 +76,9 @@
 		color: var(--color);
 		background-color: var(--background-color);
 		/*background-color:var(--background-color);*/
+	}
+
+	.item [class^="s"] .checked{
+		background-color: red;
 	}
 </style>

@@ -16,7 +16,7 @@ const exitPage = (ev:any)=>{
 let callback = (params:any)=>{
 	const div = document.getElementById("sign-page-right-id")
 	const children = div.childNodes
-	console.log("** CHILDREN NIDE **", children)
+	console.log("** CHILDREN NODE **", children)
 		switch(params.type){
 			case "MASTER":
 				break

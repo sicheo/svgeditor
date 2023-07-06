@@ -131,14 +131,12 @@ let addNode = (ev:any) =>{
 					params:{
 						authorization: {
 							authorized: false,
+							blocked:false,
 							authdate: '',
 							version: '',
 							signature: null
 							}
-						},
-						machines:[],
-						materials:[],
-						personnel:[]
+						}
 				}
 				nodeoptions.ndescrtext= retitem.label
 				nodeoptions.width = 140
@@ -146,6 +144,9 @@ let addNode = (ev:any) =>{
 				nodeoptions.imagefile = retitem.image
 				nodeoptions.imgwidth = 30
 				nodeoptions.imgheight = 30
+				nodeoptions.data.params['machines'] =[]
+				nodeoptions.data.params['materials'] =[]
+				nodeoptions.data.params['personnel'] =[]
 				if(retitem.value == 'FINAL'){
 					nodeoptions.data.params = {final:{tasks:[],parent:null}}
 				}

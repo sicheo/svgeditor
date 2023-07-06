@@ -11,6 +11,7 @@ import { _ } from 'svelte-i18n'
 import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
+import TableSwitch from  '../Tables/TableSwitch.svelte'
 import Up2CloneAuthSign from './Up2CloneAuthSign.svelte'
 
 
@@ -34,6 +35,7 @@ onMount(async ()=>{
  let promise = getProcesses(null,$mock)
 
  const getTreeFromProcess =(process:any)=>{
+    let tree = {}
 	tree['label'] = process.name
 	tree['children'] = []
     tree['color'] = '#f1c232'
@@ -96,6 +98,7 @@ onMount(async ()=>{
  const onSign= async (ev:any) =>{
      const target = ev.target
     
+    
      const divSign = document.getElementById("modal-auth-sign-div-id")
      if(divSign){
         process = data.find((item:any) => {return (item.uuid == target.id)} )
@@ -104,6 +107,11 @@ onMount(async ()=>{
         
      }
 
+ }
+
+ const onBlock = async (ev:any) =>{
+     const target = ev.target
+     console.log("*** BLOCK *****",ev.target.checked)
  }
 
  const columns = [
@@ -173,6 +181,15 @@ onMount(async ()=>{
            columnHelper.accessor('uuid', {
             header: () => $_('up2clone_auth_table_signature'),
             cell: (props) =>  flexRender(TableImage,{image:'/SIGNATURE.svg',onClick:onSign,name:props.getValue(),text:props.getValue()}),
+            })
+        ]
+    },
+    {
+        id : 'block',
+        columns: [
+           columnHelper.accessor('data', {
+            header: () => $_('up2clone_auth_table_block'),
+            cell: (props) =>  flexRender(TableSwitch,{onChange:onBlock,uuid:props.getValue().uuid,checked:props.getValue().authorization.blocked}),
             })
         ]
     },

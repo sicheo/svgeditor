@@ -2,7 +2,7 @@ import { _ } from 'svelte-i18n'
 
 
 
-export const graphVerify = async (graph) => {
+export const graphCloneVerify = async (graph) => {
     let err
     let errval
    
@@ -25,6 +25,11 @@ export const graphVerify = async (graph) => {
    
     if (!graph.nodes[0].data.params.doccode) {
         errval = await err('err_miss_doccode')
+        return (errval)
+    }
+
+    if (graph.nodes[graph.nodes.length-1].data.type != 'FINAL') {
+        errval = await err('err_miss_final')
         return (errval)
     }
 

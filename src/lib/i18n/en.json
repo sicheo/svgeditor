@@ -28,6 +28,9 @@
   "err_graph_empty": "GRAPH IS EMPTY",
   "err_first_node": "FIRST NODE MUST BE MASTER",
   "err_miss_doccode": "MASTER MUST HAVE DOCCODE",
+  "err_miss_final": "LAST NODE MUST BE FINAL",
+  "err_process_miss-auth": "PROCESS DATA AUTH MISSED",
+  "err_process_miss-ver": "PROCESS VERSION MISSED",
   "dialog_load_process": "DOCUMENT SELECTION",
   "dialog_load_button": "LOAD",
   "dialog_save_process": "SAVE GRAPH ON DB",
@@ -57,5 +60,6 @@
   "up2clone_auth_table_version": "VERSION",
   "up2clone_auth_table_authorized": "AUTHORIZED",
   "up2clone_auth_table_date": "LAST MODIFIED",
-  "up2clone_auth_table_signature": "SIGNATURE"
+  "up2clone_auth_table_signature": "SIGNATURE",
+  "up2clone_auth_table_block": "BLOCK"
 }

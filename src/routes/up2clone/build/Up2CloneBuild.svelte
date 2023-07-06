@@ -6,7 +6,7 @@
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
   import {cloneNavigation, analytics, mock, navigating } from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
-  import { graphVerify } from "../../../lib/script/verification/graphverify"
+  import { graphCloneVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
   import gutils from '../../../lib/script/graphutils'
   import graphutils from '../../../lib/script/graphutils';
@@ -64,23 +64,20 @@ const upload = async ()=>{
 const menusave = async ()=>{ 
 
     // CHECK GRAPH CONSISTENCY
-    const verification = await graphVerify(graph)
+    const verification = await graphCloneVerify(graph)
     if(verification != "OK"){
         alert(verification)
         return
     }
     const process = await graphutils.getProcessFromGraph(graph)
+    // CHECK SAVE
     dialogOptions = {data:process,selected:''}
     dialogComponent = SaveDialog
     const dialog = document.getElementById("build-tool-dialog")
     if(dialog){
         dialog.style.display = 'block'
     }
-    /*console.log("*** SAVE PROCESS *****",process)
-    const old = await setProcess(process,true)
-    $analytics.track('graphSave', {
-            masterdoc: graph.nodes[0].data.params.doccode
-    })*/
+   
 }
 
 const listener = (e:any)=>{
