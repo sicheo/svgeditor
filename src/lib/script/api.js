@@ -1,4 +1,5 @@
 import mocks from '../script/mocks.js'
+import { token } from "../ustore.js"
 
 const baseUrl = 'https://' + window.location.hostname + ':9001'
 
@@ -8,6 +9,19 @@ const customHeaders = {
 
 export const  sleep = function(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const getCHeader = () => {
+    let tkn
+    const unsubscribe = token.subscribe(value => {
+        tkn = value;
+    });
+    const cHeaders = {
+        "Content-Type": "application/json",
+        "Authorization": "bearer "+tkn,
+    }
+    unsubscribe()
+    return cHeaders
 }
 
 const callFetchPost = async function (url, data, cheaders = null) {
@@ -129,7 +143,7 @@ export const getMasters = async function (options, mock = false) {
             options: options
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -159,7 +173,7 @@ export const getMenuItems = async function (menu, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -188,7 +202,7 @@ export const getLogs = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -219,7 +233,7 @@ export const setLog = async function (log, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -250,7 +264,7 @@ export const getDevices = async function (filters, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -281,7 +295,7 @@ export const setDevice = async function (device, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -312,7 +326,7 @@ export const getAgents = async function (filters, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -343,7 +357,7 @@ export const setAgent = async function (agent, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -374,7 +388,7 @@ export const getProcesses = async function (filters, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -405,7 +419,7 @@ export const setProcess = async function (process, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -436,7 +450,7 @@ export const deleteProcess = async function (filters, mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -465,7 +479,7 @@ export const getMaterialCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -494,7 +508,7 @@ export const getPersonnelCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -523,7 +537,7 @@ export const getMachineCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -552,7 +566,7 @@ export const getFinalAnalysisCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -581,7 +595,7 @@ export const getFinalYeldsCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })
@@ -610,7 +624,7 @@ export const getFinalInfoprodCols = async function (mock = false) {
             }
         }
         if (!mock) {
-            callFetchPost(url, body)
+            callFetchPost(url, body, getCHeader())
                 .then((response) => {
                     resolve(response)
                 })

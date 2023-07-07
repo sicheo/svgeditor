@@ -1,6 +1,10 @@
 import * as pdfMake from "pdfmake/build/pdfmake";
-import pdfMakeUnicode from 'pdfmake-unicode';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+//import pdfMakeUnicode from 'pdfmake-unicode';
 //pdfMake.vfs = pdfMakeUnicode.pdfMake.vfs;
+
+(pdfMake as any).vfs =
+    pdfFonts && pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : globalThis.pdfMake.vfs;
 
 export default class DocMake {
 
@@ -8,6 +12,22 @@ export default class DocMake {
 
     constructor() {
         this.pdfMake = pdfMake
+        this.pdfMake.fonts = {
+            'Roboto': {
+                normal: 'Roboto-Regular.ttf',
+                bold: 'Roboto-Medium.ttf',
+                italics: 'Roboto-Italic.ttf',
+                bolditalics: 'Roboto-Italic.ttf'
+            },
+
+            'OpenSans': {
+                normal: 'OpenSans-Regular.ttf',
+                bold: 'OpenSans-Medium.ttf',
+                italics: 'OpenSans-Italic.ttf',
+                bolditalics: 'OpenSans-Italic.ttf'
+            }
+
+        }
         /*this.pdfMake.fonts = {
            
 
@@ -19,7 +39,7 @@ export default class DocMake {
             bolditalics: 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/fonts/Roboto/Roboto-MediumItalic.ttf'
             }
         }*/
-        this.pdfMake.vfs = pdfMakeUnicode.pdfMake.vfs;
+        //this.pdfMake.vfs = pdfMakeUnicode.pdfMake.vfs;
 
     }
 

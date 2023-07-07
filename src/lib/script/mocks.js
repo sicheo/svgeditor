@@ -347,6 +347,10 @@ let processes = [
         description: "Master Record PROD1234",
         data: {
             doccode: "DOC1234",
+            prodcode: "PRODXYX",
+            projcode: "PRJ-234-XD",
+            sapcode: "SAP456XX21",
+            sapdesc: "Z567LP789",
             description: "Master Record PROD1234",
             lastmodified: new Date(Date.now()).toISOString(),
             authorization: {
@@ -357,6 +361,30 @@ let processes = [
                 signature: null
             },
             machines: [
+                {
+
+                    DESCRIPTION: 'Autoclave Fedegari AUT304',
+                    CODE: 'AUT-304-001',
+                    ONLINECHK: false,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: false,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                },
+                {
+
+                    DESCRIPTION: 'Riempitrice IMA RTGA-2',
+                    CODE: 'RMP-RTGA-001',
+                    ONLINECHK: false,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: false,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                },
                 {
 
                     DESCRIPTION: 'Liofilizzatore IMA LYOFAST25',
@@ -372,7 +400,7 @@ let processes = [
             ],
             materials: [
                 {
-                    DESCRIPTION: "Prendisolone",
+                    DESCRIPTION: "Prednisolone",
                     SUPPLIER: "ACME inc.",
                     SAPCODE: "C2344GTM09",
                     FORMULA: "C21H28O5",
@@ -382,6 +410,18 @@ let processes = [
                     APPEARENCE: "",
                     RISK: "",
                     CAUTION:"",
+                },
+                {
+                    DESCRIPTION: "Acqua Iniettabili",
+                    SUPPLIER: "SALF spa.",
+                    SAPCODE: "C2344GTM09",
+                    FORMULA: "H2O",
+                    PM: 18.016,
+                    BP: 100,
+                    DENSITY: 0.998,
+                    APPEARENCE: "",
+                    RISK: "",
+                    CAUTION: "",
                 }
             ],
             personnel: [
@@ -714,7 +754,206 @@ const finalInfoprodCols = [
     { name: 'DATE', type: 'date', header: 'Data' },
 ]
 
+// ebrs
+let ebrs = [
+    {
+        uuid: "BATCH-1234-0945",
+        name: "MASTER",
+        doccode: "DOC1234",
+        prodcode: "PRODXYX",
+        uid: 0,
+        description: "Lotto BATCH-1234-0945 ",
+        data: {
+            doccode: "DOC1234",
+            prodcode: "PRODXYX",
+            projcode: "PRJ-234-XD",
+            sapcode: "SAP456XX21",
+            sapdesc: "Z567LP789",
+            description: "Electronic Batch Record BATCH-1234-0945",
+            lastmodified: new Date(Date.now()).toISOString(),
+            authorization: {
+                authorized: true,
+                blocked: true,
+                authdate: '',
+                version: '1.0',
+                signature: ""
+            },
+            machines: [
+                {
 
+                    DESCRIPTION: 'Autoclave Fedegari AUT304',
+                    CODE: 'AUT-304-001',
+                    ONLINECHK: true,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: true,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                },
+                {
+
+                    DESCRIPTION: 'Riempitrice IMA RTGA-2',
+                    CODE: 'RMP-RTGA-001',
+                    ONLINECHK: true,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: true,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                },
+                {
+                    DESCRIPTION: 'Liofilizzatore IMA LYOFAST25',
+                    CODE: 'LYO-L25-001',
+                    ONLINECHK: true,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: true,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                }
+            ],
+            materials: [
+                {
+                    DESCRIPTION: "Prendisolone",
+                    SUPPLIER: "ACME inc.",
+                    SAPCODE: "C2344GTM09",
+                    FORMULA: "C21H28O5",
+                    PM: 360.4,
+                    BP: 235,
+                    DENSITY: 15,
+                    APPEARENCE: "",
+                    RISK: "",
+                    CAUTION: "",
+                }
+            ],
+            personnel: [
+                {
+                    NAME: "PAOLO PULICANI",
+                    DATE: "2023-07-04T19:15:00",
+                    SIGNATURE: "",
+                    ABBREVIATION: "PPUL",
+                },
+                {
+                    NAME: "",
+                    DATE: "",
+                    SIGNATURE: "",
+                    ABBREVIATION: "",
+                }
+            ],
+            final: {
+                analysisList: [],
+                batchYelds: {},
+                productInfo: {},
+                labelingAndStore: {},
+                cleaningVerification: {},
+                notes: [],
+                parent: "NODE-1"
+            }
+        },
+        graph: {
+            id: 'NODE-0',
+            level: "level0",
+            type: 'MASTER',
+            image: "/MASTER.svg",
+            shape: "RECT",
+            width: 140,
+            height: 90,
+            imgwidth: 30,
+            imgheight: 30,
+            x: 454,
+            y: 253
+        },
+        phases: [
+            {
+                name: "DISPENSING",
+                uid: 1,
+                description: "Phase description",
+                parent: "NODE-0",
+                data: {},
+                graph: {
+                    id: 'NODE-1',
+                    level: "level1",
+                    type: 'PHASE',
+                    image: "/DISPENSING.svg",
+                    shape: "RECT",
+                    width: 140,
+                    height: 90,
+                    imgwidth: 30,
+                    imgheight: 30,
+                    x: 572,
+                    y: 230
+                },
+                operations: [
+                    {
+                        name: "Inertization",
+                        uid: 0,
+                        description: "Operation description",
+                        parent: null,
+                        data: {},
+                        graph: {
+                            id: "NODE-0",
+                            level: "level1",
+                            type: 'TASK',
+                            image: "/TASK.svg",
+                            shape: "RECT",
+                            width: 120,
+                            height: 50,
+                            imgwidth: 15,
+                            imgheight: 15,
+                            x: 490,
+                            y: 263
+                        },
+                        tasks: [
+                            {
+                                uid: 0,
+                                type: "Task",
+                                name: "Task Name",
+                                tag: "VAR-TAG",
+                                checktype: "ANALOG",
+                                op: "EQ",
+                                expected: "30",
+                                description: "task description",
+                                checkmode: "automatic",
+                                system: "IFIX",
+                                result: {
+                                    value: "",
+                                    note: "",
+                                    timestamp: null,
+                                    signature: null,
+                                    checksignature: null
+                                },
+                            }
+                        ]
+                    },
+                    {
+                        name: "Thermoregulation",
+                        uid: 1,
+                        description: "Operation description",
+                        parent: "NODE-0",
+                        data: {},
+                        graph: {
+                            id: "NODE-1",
+                            level: "level1",
+                            type: 'TASK',
+                            image: "/TASK.svg",
+                            shape: "RECT",
+                            width: 120,
+                            height: 50,
+                            imgwidth: 15,
+                            imgheight: 15,
+                            x: 490,
+                            y: 263
+                        },
+                        tasks: []
+                    }
+                ]
+            }
+        ]
+    }
+]
 
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
