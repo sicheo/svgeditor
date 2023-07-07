@@ -89,7 +89,32 @@ onMount(async ()=>{
 		}
         tree['children'].push(phases)
 	}
-    const final = {label:$_('up2clone_master_panel_final'),children:[],type:"FINAL",color:'#ffd966'}
+    const final = {label:$_('up2clone_master_panel_final'),children:[],type:"FINALTASK",color:'#ffd966'}
+    if(process.data.final && process.data.final.analysisList){
+        const analysisList = {label:$_('up2clone_final_panel_anlist'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(analysisList)
+    }
+    if(process.data.final && process.data.final.batchYelds){
+        const batchYelds = {label:$_('up2clone_final_panel_yelds'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(batchYelds)
+    }
+    if(process.data.final && process.data.final.productInfo){
+        const productInfo = {label:$_('up2clone_final_panel_prodinfo'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(productInfo)
+    }
+    if(process.data.final && process.data.final.labelingAndStore){
+        const labelingAndStore = {label:$_('up2clone_final_panel_labstore'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(labelingAndStore)
+    }
+    if(process.data.final && process.data.final.cleaningVerification){
+        const cleaningVerification = {label:$_('up2clone_final_panel_cleanver'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(cleaningVerification)
+    }
+    if(process.data.final && process.data.final.notes){
+        const notes = {label:$_('up2clone_final_panel_notes'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(notes)
+    }
+        
     tree['children'].push(final)
 	return tree
 }

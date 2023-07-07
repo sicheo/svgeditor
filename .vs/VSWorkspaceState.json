@@ -4,15 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\components\\TaskEditor",
-    "\\src\\lib\\i18n",
     "\\src\\lib\\script",
-    "\\src\\lib\\script\\verification",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\auth"
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\TreeView.svelte",
+  "SelectedNode": "\\src\\lib\\script\\api.js",
   "PreviewInSolutionExplorer": false
 }

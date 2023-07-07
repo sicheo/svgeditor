@@ -34,6 +34,10 @@ let callback = (params:any)=>{
 				break
 			case "TASK":
 				break
+			case "FINAL":
+				break
+			case "FINALTASK":
+				break
 		}
 	}
 </script>

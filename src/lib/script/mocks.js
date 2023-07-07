@@ -252,7 +252,6 @@ const agents = [
             password: "aiqadmin",
         },
         dbs: [{ uid: 0, name: "modbus.csv" }],
-        uid: 'bca-2',
         status: "INACTIVE",
     },
     {
@@ -307,7 +306,6 @@ const agents = [
             password: "aiqadmin",
         },
         dbs: [{ uid: 0, name: "modbus1.csv" }],
-        uid: 'abc-2-2',
         status: "ACTIVE",
     },
     {
@@ -334,7 +332,6 @@ const agents = [
             username: "aiqadmin",
             password: "aiqadmin",
         },
-        uid: 'abc-2-2',
         status: "ACTIVE",
     },
     
@@ -359,7 +356,20 @@ let processes = [
                 version: '1.0',
                 signature: null
             },
-            machines: [],
+            machines: [
+                {
+
+                    DESCRIPTION: 'Liofilizzatore IMA LYOFAST25',
+                    CODE: 'LYO-L25-001',
+                    ONLINECHK: false,
+                    CLEANCHK: true,
+                    PREDATE: new Date(Date.now()).toISOString(),
+                    PRESIGNATURE: "",
+                    USEDCHK: false,
+                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTSIGNATURE: ""
+                }
+            ],
             materials: [
                 {
                     DESCRIPTION: "Prendisolone",
@@ -389,7 +399,12 @@ let processes = [
                 }
             ],
             final: {
-                tasks: [],
+                analysisList: [],
+                batchYelds: {},
+                productInfo: {},
+                labelingAndStore: {},
+                cleaningVerification: {},
+                notes:[],
                 parent:"NODE-1"
             }
         },
@@ -514,7 +529,12 @@ let processes = [
             materials: [],
             personnel: [],
             final: {
-                tasks: [],
+                analysisList: [],
+                batchYelds: {},
+                productInfo: {},
+                labelingAndStore: {},
+                cleaningVerification: {},
+                notes: [],
                 parent: "NODE-0"
             }
         },
@@ -554,7 +574,12 @@ let processes = [
             materials: [],
             personnel: [],
             final: {
-                tasks: [],
+                analysisList: [],
+                batchYelds: {},
+                productInfo: {},
+                labelingAndStore: {},
+                cleaningVerification: {},
+                notes: [],
                 parent: "NODE-0"
             }
         },
@@ -594,7 +619,12 @@ let processes = [
             materials: [],
             personnel: [],
             final: {
-                tasks: [],
+                analysisList: [],
+                batchYelds: {},
+                productInfo: {},
+                labelingAndStore: {},
+                cleaningVerification: {},
+                notes: [],
                 parent: "NODE-0"
             }
         },
@@ -634,7 +664,7 @@ const materialCols = [
 const personnelCols = [
     { name: 'NAME', type: 'string', header: 'Nominativo' },
     { name: 'DATE', type: 'date', header: 'Data' },
-    { name: 'SIGNATURE', type: 'string', header: 'Firma operatore' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma operatore' },
     { name: 'ABBREVIATION', type: 'string', header: 'Sigla operatore' },
 ]
 
@@ -643,12 +673,48 @@ const machineCols = [
     { name: 'CODE', type: 'string', header: 'Codice' },
     { name: 'ONLINECHK', type: 'boolean', header: 'Verifica stato on-line' },
     { name: 'CLEANCHK', type: 'boolean', header: 'Verifica presenza cartellino verde' },
-    { name: 'DATE', type: 'date', header: 'Data check iniziale' },
-    { name: 'SIGNATURE', type: 'boolean', header: 'Firma check iniziale' },
+    { name: 'PREDATE', type: 'date', header: 'Data check iniziale' },
+    { name: 'PRESIGNATURE', type: 'password', header: 'Firma check iniziale' },
     { name: 'USEDCHK', type: 'boolean', header: 'Utilizzata (Si/No)' },
-    { name: 'DATE', type: 'date', header: 'Data check finale' },
-    { name: 'SIGNATURE', type: 'boolean', header: 'Firma check finale' },
+    { name: 'POSTDATE', type: 'date', header: 'Data check finale' },
+    { name: 'POSTSIGNATURE', type: 'password', header: 'Firma check finale' },
 ]
+
+const finalAnalysisCols = [
+    { name: 'CODE', type: 'string', header: 'Codice Campione' },
+    { name: 'BATCHCODE', type: 'string', header: 'Codice batch' },
+    { name: 'POINT', type: 'string', header: 'Punto Batch Record' },
+    { name: 'ANALYSIS', type: 'string', header: 'Analisi richiesta' },
+    { name: 'DATE', type: 'date', header: 'Data richiesta' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+]
+
+const finalYeldsCols = [
+    { name: 'INITWEIGTH', type: 'number', header: 'Peso iniziale (g)' },
+    { name: 'INITMOLE', type: 'number', header: 'Moli iniziali (nmol)' },
+    { name: 'FINALWEIGTH', type: 'number', header: 'Peso finale (g)' },
+    { name: 'FINALMOLE', type: 'number', header: 'Moli finali (nmol)' },
+    { name: 'MOLARYIELD', type: 'number', header: 'Resa Molare' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+    { name: 'CHECKSIGNATURE', type: 'password', header: 'Firma controllo' },
+    { name: 'CHECKDATE', type: 'date', header: 'Data controllo' },
+]
+
+const finalInfoprodCols = [
+    { name: 'NAME', type: 'string', header: 'Nome Prodotto' },
+    { name: 'CASNUM', type: 'string', header: 'CAS Number' },
+    { name: 'MW', type: 'number', header: 'Peso Molecolare' },
+    { name: 'FORMULA', type: 'string', header: 'Formula Bruta' },
+    { name: 'FINALQUANTITY', type: 'number', header: "Quantita' ottenuta (kg)" },
+    { name: 'MOLARYELD', type: 'number', header: 'Resa Molare (%)' },
+    { name: 'NCONTAINERS', type: 'number', header: 'Numero contenitori' },
+    { name: 'STORAGETEMP', type: 'number', header: 'Temperatura storage (DEGC)' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+]
+
+
 
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
@@ -871,8 +937,23 @@ const getPersonnelCols = async function (body) {
     return (body)
 }
 
+const getFinalAnalysisCols = async function (body) {
+    body.data = finalAnalysisCols
+    return (body)
+}
+
 const getMachineCols = async function (body) {
     body.data = machineCols
+    return (body)
+}
+
+const getFinalYeldsCols = async function (body) {
+    body.data = finalYeldsCols
+    return (body)
+}
+
+const getFinalInfoprodCols = async function (body) {
+    body.data = finalInfoprodCols
     return (body)
 }
 
@@ -892,7 +973,10 @@ const mocks = {
     deleteProcess,
     getMaterialCols,
     getPersonnelCols,
-    getMachineCols
+    getMachineCols,
+    getFinalAnalysisCols,
+    getFinalYeldsCols,
+    getFinalInfoprodCols
 }
 
 export default mocks

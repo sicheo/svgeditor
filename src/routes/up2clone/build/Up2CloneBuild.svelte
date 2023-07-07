@@ -4,7 +4,7 @@
   import BuildTools from '../../../lib/components/InnerTabs/BuildTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
-  import {cloneNavigation, analytics, mock, navigating } from '../../../lib/ustore.js'
+  import {cloneNavigation, currentprocess, mock, navigating } from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { graphCloneVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'

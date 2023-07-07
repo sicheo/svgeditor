@@ -148,7 +148,15 @@ let addNode = (ev:any) =>{
 				nodeoptions.data.params['materials'] =[]
 				nodeoptions.data.params['personnel'] =[]
 				if(retitem.value == 'FINAL'){
-					nodeoptions.data.params = {final:{tasks:[],parent:null}}
+					nodeoptions.data.params = {
+						final:{analysisList:[],
+						batchYelds:{},
+						productInfo:{},
+						labelingAndStore: {},
+						cleaningVerification: {},
+						notes:[],
+						parent:null}
+					}
 				}
 				break
 			case "context-menu-phase-node":

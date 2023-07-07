@@ -74,17 +74,27 @@ const editRow = (ev:any)=>{
 			<table id="params-table-id">
 				<thead>
 					{#each paramsCols as param}
-					 <th style="--background-color:{color}">
-						 {param.header}
-					</th>
+						<th style="--background-color:{color}">
+							 {param.header}
+						</th>
 					 {/each}
 				</thead>
 				<tbody>
 					{#each paramRows as row}
 					   <tr>
-						{#each row as field}
+						{#each row as field,i}
 							<td class="input-cell">
-								<input size=14 type="text" value={field} disabled/>
+								{#if paramsCols[i].type == "string"}
+									<input size=14 type="text" value={field} disabled/>
+								{:else if paramsCols[i].type == "boolean"}
+								    <input size=14 type="checkbox" checked={field} disabled/>
+								{:else if paramsCols[i].type == "date"}
+									<input size=14 type="datetime-local" value={field} disabled/>
+								{:else if paramsCols[i].type == "password"}
+									<input size=14 type="password" value={field} disabled/>
+								{:else if paramsCols[i].type == "number"}
+									<input size=14 type="number" value={field} disabled/>
+								{/if}
 							</td>
 						{/each}
 							<td>

@@ -537,5 +537,92 @@ export const getMachineCols = async function (mock = false) {
     })
 }
 
+/**
+ * Get Final Sample Analysis Columns
+ * @param {any} mock
+ */
+export const getFinalAnalysisCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalAnalysisCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalAnalysisCols(body))
+        }
+    })
+}
+
+/**
+ * Get Final Yelds Columns
+ * @param {any} mock
+ */
+export const getFinalYeldsCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalYeldsCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalYeldsCols(body))
+        }
+    })
+}
+
+/**
+ * Get Final Product Info Columns
+ * @param {any} mock
+ */
+export const getFinalInfoprodCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalInfoprodCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalInfoprodCols(body))
+        }
+    })
+}
+
 
 

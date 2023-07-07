@@ -39,7 +39,9 @@ export const cloneNavigation = writable([
     { name: "BUILD", link: "/UP2CLONE/BUILD", roles: ['ADMIN'], type: 'link', subnav: [] },
     { name: "AUTHORIZATION", link: "/UP2CLONE/AUTH", roles: ['SADMIN'], type: 'link', subnav: [] },
     { name: "AUTHBUILD", link: "/UP2CLONE/AUTHBUILD", roles: ['SADMIN'], type: 'link', subnav: [] },
+    { name: "CONFIGURATION", link: "/UP2CLONE/CONFIGURATION", roles: ['ADMIN'], type: 'link', subnav: [] },
 ])
+
 // Navigation table for DATA
 export const dataNavigation = writable( [
     { name: "MONITOR", link: "/UP2DATA/MONITOR", roles: ['SADMIN', 'ADMIN', 'USER'], type: 'link', subnav:[] },
