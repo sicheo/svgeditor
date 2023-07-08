@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount} from 'svelte';
 import { _ } from 'svelte-i18n'
-import {getFinalAnalysisCols,getFinalYeldsCols,getFinalInfoprodCols} from '../../script/api.js'
+import {getFinalAnalysisCols,getFinalYeldsCols,getFinalInfoprodCols,getFinalLabelingCols,getFinalStorageCols } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 import Up2CloneBuildParams from '../PageContents/Up2CloneBuildParams.svelte'
 
@@ -15,6 +15,8 @@ let changecolor = "#ffe6e6"
 let finalAnalysisCols = []
 let finalYieldsCols = []
 let finalInfoprodCols = []
+let finalLabelingCols = []
+let finalStorageCols = []
 let divParams
 let paramsCols=[]
 let paramName = ""
@@ -100,8 +102,48 @@ onMount(async ()=>{
      }
   }
 
-  const onClickLabstore = (ev:any)=>{
+  const onClickLabeling = async (ev:any)=>{
+      const body = await getFinalLabelingCols($mock)
+      finalLabelingCols = body.data
+      paramType= 'labeling'
+      paramName = $_('up2clone_final_panel_labeling')
+      paramsCols = finalLabelingCols
+      const parameters = node.data.params[paramType]
+      paramRows=[]
+      for(let i=0;i< parameters.length;i++){
+          const keys = Object.keys(parameters[i])
+          const row = []
+          for(let j=0;j<keys.length;j++){
+              row.push(parameters[i][keys[j]])
+          }
+          paramRows.push(row)
+      }
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
+  }
 
+   const onClickStore = async(ev:any)=>{
+      const body = await getFinalStorageCols($mock)
+      finalStorageCols = body.data
+      paramType= 'store'
+      paramName = $_('up2clone_final_panel_store')
+      paramsCols = finalStorageCols
+      const parameters = node.data.params[paramType]
+      paramRows=[]
+      for(let i=0;i< parameters.length;i++){
+          const keys = Object.keys(parameters[i])
+          const row = []
+          for(let j=0;j<keys.length;j++){
+              row.push(parameters[i][keys[j]])
+          }
+          paramRows.push(row)
+      }
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
   }
 
   const onClickCleanver = (ev:any)=>{
@@ -139,7 +181,12 @@ onMount(async ()=>{
         </div>
          <div class= "class-panel-row">
                 <label class= "class-panel-cell">
-	                <input  type="button" name="name" on:click={onClickLabstore} value="{$_('up2clone_final_panel_labstore')}"  class="panel-input panel-input-button">
+	                <input  type="button" name="name" on:click={onClickLabeling} value="{$_('up2clone_final_panel_labeling')}"  class="panel-input panel-input-button">
+                </label>
+        </div>
+         <div class= "class-panel-row">
+                <label class= "class-panel-cell">
+	                <input  type="button" name="name" on:click={onClickStore} value="{$_('up2clone_final_panel_store')}"  class="panel-input panel-input-button">
                 </label>
         </div>
          <div class= "class-panel-row">

@@ -638,5 +638,63 @@ export const getFinalInfoprodCols = async function (mock = false) {
     })
 }
 
+/**
+ * Get Final Labeling Columns
+ * @param {any} mock
+ */
+export const getFinalLabelingCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalLabelingCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalLabelingCols(body))
+        }
+    })
+}
+
+/**
+ * Get Final Storage Columns
+ * @param {any} mock
+ */
+export const getFinalStorageCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalStorageCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalStorageCols(body))
+        }
+    })
+}
+
 
 

@@ -152,7 +152,8 @@ let addNode = (ev:any) =>{
 						final:{analysisList:[],
 						batchYelds:{},
 						productInfo:{},
-						labelingAndStore: {},
+						labeling:[],
+						store:[],
 						cleaningVerification: {},
 						notes:[],
 						parent:null}

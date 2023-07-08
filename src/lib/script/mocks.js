@@ -442,7 +442,9 @@ let processes = [
                 analysisList: [],
                 batchYelds: {},
                 productInfo: {},
-                labelingAndStore: {},
+                //labelingAndStore: {},
+                labeling: [],
+                store:[],
                 cleaningVerification: {},
                 notes:[],
                 parent:"NODE-1"
@@ -572,7 +574,8 @@ let processes = [
                 analysisList: [],
                 batchYelds: {},
                 productInfo: {},
-                labelingAndStore: {},
+                labeling: [],
+                store: [],
                 cleaningVerification: {},
                 notes: [],
                 parent: "NODE-0"
@@ -617,7 +620,8 @@ let processes = [
                 analysisList: [],
                 batchYelds: {},
                 productInfo: {},
-                labelingAndStore: {},
+                labeling: [],
+                store: [],
                 cleaningVerification: {},
                 notes: [],
                 parent: "NODE-0"
@@ -662,7 +666,8 @@ let processes = [
                 analysisList: [],
                 batchYelds: {},
                 productInfo: {},
-                labelingAndStore: {},
+                labeling: [],
+                store: [],
                 cleaningVerification: {},
                 notes: [],
                 parent: "NODE-0"
@@ -752,6 +757,23 @@ const finalInfoprodCols = [
     { name: 'STORAGETEMP', type: 'number', header: 'Temperatura storage (DEGC)' },
     { name: 'SIGNATURE', type: 'password', header: 'Firma' },
     { name: 'DATE', type: 'date', header: 'Data' },
+]
+
+const finalLabelingCols = [
+    { name: 'NLABEL', type: 'string', header: 'Etichetta identificatrice' },
+    { name: 'USAGE', type: 'string', header: 'Utilizzo' },
+    { name: 'FCTUO', type: 'boolean', header: 'For Clinical Trial Use Only' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+]
+
+const finalStorageCols = [
+    { name: 'ACTION', type: 'string', header: 'Azione',size:20 },
+    { name: 'VALUE', type: 'boolean', header: 'Valore' },
+    { name: 'NOTE', type: 'string', header: 'Nota' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+    { name: 'CHECHSIGNATURE', type: 'password', header: 'Firma Controllo' },
 ]
 
 // ebrs
@@ -847,7 +869,8 @@ let ebrs = [
                 analysisList: [],
                 batchYelds: {},
                 productInfo: {},
-                labelingAndStore: {},
+                labeling: [],
+                store: [],
                 cleaningVerification: {},
                 notes: [],
                 parent: "NODE-1"
@@ -1196,6 +1219,16 @@ const getFinalInfoprodCols = async function (body) {
     return (body)
 }
 
+const getFinalLabelingCols = async function (body) {
+    body.data = finalLabelingCols
+    return (body)
+}
+
+const getFinalStorageCols = async function (body) {
+    body.data = finalStorageCols
+    return (body)
+}
+
 
 const mocks = {
     login,
@@ -1215,7 +1248,9 @@ const mocks = {
     getMachineCols,
     getFinalAnalysisCols,
     getFinalYeldsCols,
-    getFinalInfoprodCols
+    getFinalInfoprodCols,
+    getFinalLabelingCols,
+    getFinalStorageCols
 }
 
 export default mocks

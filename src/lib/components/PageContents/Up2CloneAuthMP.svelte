@@ -102,8 +102,12 @@ onMount(async ()=>{
         const productInfo = {label:$_('up2clone_final_panel_prodinfo'),children:[],type:"FINALTASK",color:'#ffe599'}
         final.children.push(productInfo)
     }
-    if(process.data.final && process.data.final.labelingAndStore){
-        const labelingAndStore = {label:$_('up2clone_final_panel_labstore'),children:[],type:"FINALTASK",color:'#ffe599'}
+    if(process.data.final && process.data.final.labeling){
+        const labelingAndStore = {label:$_('up2clone_final_panel_labeling'),children:[],type:"FINALTASK",color:'#ffe599'}
+        final.children.push(labelingAndStore)
+    }
+    if(process.data.final && process.data.final.store){
+        const labelingAndStore = {label:$_('up2clone_final_panel_store'),children:[],type:"FINALTASK",color:'#ffe599'}
         final.children.push(labelingAndStore)
     }
     if(process.data.final && process.data.final.cleaningVerification){

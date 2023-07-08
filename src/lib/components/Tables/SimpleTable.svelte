@@ -157,10 +157,10 @@
             <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
         </span>
         <select  on:change={onSelect}>
-            <option value=2>Show 10</option>
-            <option value=3>Show 20</option>
-            <option value=4>Show 30</option>
-            <option value=5>Show 40</option>
+            <option value=5>Show 5</option>
+            <option value=10>Show 10</option>
+            <option value=15>Show 15</option>
+            <option value=20>Show 20</option>
         </select>
     </div>
     {/if}

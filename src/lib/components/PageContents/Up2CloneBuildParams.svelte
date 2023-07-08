@@ -85,15 +85,15 @@ const editRow = (ev:any)=>{
 						{#each row as field,i}
 							<td class="input-cell">
 								{#if paramsCols[i].type == "string"}
-									<input size=12 type="text" value={field} disabled/>
+									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="text" value={field} disabled/>
 								{:else if paramsCols[i].type == "boolean"}
-								    <input size=12 type="checkbox" checked={field} disabled/>
+								    <input size={(paramsCols[i].size?paramsCols[i].size:12)} type="checkbox" checked={field} disabled/>
 								{:else if paramsCols[i].type == "date"}
-									<input size=12 type="datetime-local" value={field} disabled/>
+									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="datetime-local" value={field} disabled/>
 								{:else if paramsCols[i].type == "password"}
-									<input size=12 type="password" value={field} disabled/>
+									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="password" value={field} disabled/>
 								{:else if paramsCols[i].type == "number"}
-									<input size=8 style="width: 70px;" type="number" value={field} disabled/>
+									<input size={(paramsCols[i].size?paramsCols[i].size:8)} style="width: 70px;" type="number" value={field} disabled/>
 								{/if}
 							</td>
 						{/each}
