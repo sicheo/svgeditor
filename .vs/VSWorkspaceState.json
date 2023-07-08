@@ -4,8 +4,6 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\DiagramEditor",
-    "\\src\\lib\\components\\DiagramEditor\\ContextMenu",
     "\\src\\lib\\script"
   ],
   "SelectedNode": "\\src\\lib\\script\\mocks.js",

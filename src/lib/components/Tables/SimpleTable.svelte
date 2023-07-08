@@ -8,6 +8,7 @@
     createSvelteTable,
     getCoreRowModel,
     getSortedRowModel,
+    getPaginationRowModel,
     flexRender
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
@@ -50,6 +51,7 @@
       onSortingChange: setSorting,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
+      etPaginationRowModel: getPaginationRowModel(),
       debugTable: true,
       debugRows: true,
       enableRowSelection: true,
@@ -90,7 +92,9 @@
       refreshData()
   }
   const onNextPage = (e:any) =>{
-      $table.nextPage()
+      
+      if($table.getState().pagination.pageIndex < ($table.getPageCount()-1))
+        $table.nextPage()
       refreshData()
   }
   const onLastPage = (e:any) =>{
@@ -106,14 +110,15 @@
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           {#each headerGroup.headers as header}
-            <th style="--background-color:{color}">
+            <th style="--background-color:{color};cursor:pointer;">
               {#if !header.isPlaceholder}
-                <svelte:component
-                  this={flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                />
+              <div class:cursor-pointer={header.column.getCanSort()} class:select-none={header.column.getCanSort()} on:click={header.column.getToggleSortingHandler()}>
+                <svelte:component this={flexRender( header.column.columnDef.header, header.getContext())}/>
+                {{
+                    asc: ' 🔼',
+                    desc: ' 🔽',
+                  }[header.column.getIsSorted().toString()] ?? ''}
+                </div>
               {/if}
             </th>
           {/each}
@@ -121,7 +126,7 @@
       {/each}
     </thead>
     <tbody>
-      {#each $table.getRowModel().rows.slice(0, 10) as row}
+      {#each $table.getPaginationRowModel().rows.slice($table.getState().pagination.pageIndex*$table.getState().pagination.pageSize, ($table.getState().pagination.pageIndex+1)*$table.getState().pagination.pageSize) as row}
         <tr>
           {#each row.getVisibleCells() as cell}
             <td>

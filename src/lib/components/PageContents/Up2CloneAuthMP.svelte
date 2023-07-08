@@ -139,85 +139,55 @@ onMount(async ()=>{
      console.log("*** BLOCK *****",ev.target.checked)
  }
 
- const columns = [
-    {
-        id : 'name',
+ 
+ const defcolumns = [
+         
+        columnHelper.group({
+        id:'id',
         columns: [
-                
-            columnHelper.accessor('name', {
+            columnHelper.accessor((row:any) => `${row.name}`, {
+            id:'name',
             header: () => $_('up2clone_auth_table_name'),
             cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
-            })
-        ]
-    },
-    {
-        id : 'description',
-        columns: [
-                
-            columnHelper.accessor('description', {
+            }),
+            columnHelper.accessor((row:any) => `${row.description}`, {
+            id:'description',
             header: () => $_('up2clone_auth_table_description'),
             cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
-            })
-        ]
-    },
-    {
-        id : 'doccode',
-        columns: [
-                
-            columnHelper.accessor('doccode', {
+            }),
+            columnHelper.accessor((row:any) => `${row.doccode}`, {
+            id:'doccode',
             header: () => $_('up2clone_auth_table_document'),
             cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
-            })
-        ]
-    },
-    {
-        id : 'version',
-        columns: [
-                
-           columnHelper.accessor('data', {
+            }),
+            columnHelper.accessor((row:any) => `${row.data.authorization.version}`, {
+            id:'version',
             header: () => $_('up2clone_auth_table_version'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.version}),
-            })
-        ]
-    },
-    {
-        id : 'authorized',
-        columns: [
-                
-           columnHelper.accessor('data', {
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            }),
+             columnHelper.accessor((row:any) => `${row.data.authorization.authorized}`, {
+            id:'authorized',
             header: () => $_('up2clone_auth_table_authorized'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue().authorization.authorized}),
-            })
-        ]
-    },
-    {
-        id : 'date',
-        columns: [
-                
-           columnHelper.accessor('data', {
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            }),
+            columnHelper.accessor((row:any) => `${row.data.lastmodified}`, {
+            id:'lastmodified',
             header: () => $_('up2clone_auth_table_date'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue().lastmodified}),
-            })
-        ]
-    },
-    {
-        id : 'signature',
-        columns: [
-           columnHelper.accessor('uuid', {
+            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+            }),
+            columnHelper.accessor((row:any) => `${row.uuid}`, {
+            id:'uuid',
             header: () => $_('up2clone_auth_table_signature'),
             cell: (props) =>  flexRender(TableImage,{image:'/SIGNATURE.svg',onClick:onSign,name:props.getValue(),text:props.getValue()}),
-            })
-        ]
-    },
-    {
-        id : 'block',
-        columns: [
-           columnHelper.accessor('data', {
+            }),
+            columnHelper.accessor('data', {
+            id: 'block',
             header: () => $_('up2clone_auth_table_block'),
             cell: (props) =>  flexRender(TableSwitch,{onChange:onBlock,uuid:props.getValue().uuid,checked:props.getValue().authorization.blocked}),
             })
+
         ]
-    },
+        })
  ]
 
 </script>
@@ -226,7 +196,7 @@ onMount(async ()=>{
         {#await promise}
 	        <p>...waiting</p>
         {:then response}
-		    <SimpleTable data={response.data} columns={columns} color={color}></SimpleTable>
+		    <SimpleTable data={response.data} columns={defcolumns} color={color}></SimpleTable>
         {:catch error}
 	            <p style="color: red">{error.message}</p>
         {/await}
