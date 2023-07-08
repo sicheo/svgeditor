@@ -75,8 +75,9 @@
   let table = createSvelteTable(options)
 
   const onGoToPage = (e:any) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              $table.setPageIndex(page)
+              const page = e.target.value
+              if(page > 0 && page <= $table.getPageCount())
+                $table.setPageIndex(page-1)
             }
   const onSelect = (e:any) => {
       console.log("**** SELECT *****",e.target.value)
@@ -153,7 +154,7 @@
         </span>
         <span>
             | Go to Page:
-            <input type="number" class="" value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
+            <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
         </span>
         <select  on:change={onSelect}>
             <option value=2>Show 10</option>
