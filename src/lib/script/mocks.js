@@ -773,7 +773,23 @@ const finalStorageCols = [
     { name: 'NOTE', type: 'string', header: 'Nota' },
     { name: 'SIGNATURE', type: 'password', header: 'Firma' },
     { name: 'DATE', type: 'date', header: 'Data' },
-    { name: 'CHECHSIGNATURE', type: 'password', header: 'Firma Controllo' },
+    { name: 'CHECKSIGNATURE', type: 'password', header: 'Firma Controllo' },
+]
+
+const finalClearverCols = [
+    { name: 'QPROD', type: 'number', header: "Quantita' prodotta (Kg)"},
+    { name: 'ACCLIM', type: 'number', header: 'Limite di accettazione ricalcolato (mg)' },
+    { name: 'VCLRANVER', type: 'number', header: 'Valore Cleaning Verification (mg)' },
+    { name: 'CONFORITY', type: 'boolean', header: 'Risultato Conforme' },
+    { name: 'DATE', type: 'date', header: 'Data' },
+    { name: 'SIGNATURE', type: 'password', header: 'Firma' },
+    { name: 'CHECKSIGNATURE', type: 'password', header: 'Firma Controllo' },
+]
+
+
+const finalNotesCols = [
+    { name: 'REFERENCE', type: 'string', header: "Riferimento punto" },
+    { name: 'NOTE', type: 'string', header: 'Commenti e osservazioni', size: 40 },
 ]
 
 // ebrs
@@ -1229,6 +1245,16 @@ const getFinalStorageCols = async function (body) {
     return (body)
 }
 
+const getFinalClearverCols = async function (body) {
+    body.data = finalClearverCols
+    return (body)
+}
+
+const getFinalNotesCols = async function (body) {
+    body.data = finalNotesCols
+    return (body)
+}
+
 
 const mocks = {
     login,
@@ -1250,7 +1276,9 @@ const mocks = {
     getFinalYeldsCols,
     getFinalInfoprodCols,
     getFinalLabelingCols,
-    getFinalStorageCols
+    getFinalStorageCols,
+    getFinalClearverCols,
+    getFinalNotesCols
 }
 
 export default mocks

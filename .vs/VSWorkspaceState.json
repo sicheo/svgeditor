@@ -4,8 +4,10 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
+    "\\src\\lib\\components\\PageContents",
+    "\\src\\lib\\i18n",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2CloneBuildParams.svelte",
   "PreviewInSolutionExplorer": false
 }

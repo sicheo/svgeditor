@@ -696,5 +696,64 @@ export const getFinalStorageCols = async function (mock = false) {
     })
 }
 
+/**
+ * Get Final Clearing Verification Columns
+ * @param {any} mock
+ */
+export const getFinalClearverCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalClearverCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalClearverCols(body))
+        }
+    })
+}
+
+/**
+ * Get Final Notes  Columns
+ * @param {any} mock
+ */
+export const getFinalNotesCols = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getFinalNotesCols",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getFinalNotesCols(body))
+        }
+    })
+}
+
+
 
 

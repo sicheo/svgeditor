@@ -15,23 +15,35 @@ const exitPage = (ev:any)=>{
         div.style.display = 'none'
 }
 
-const Save = (ev:any)=>{
-	// Back from paramsRows to node.data
-	node.data.params[paramType] = []
-	for(let i=0; i< paramRows.length; i++){
+const saveObj = (ptype:any)=>{
+	const objtype = Object.prototype.toString.call(node.data.params[ptype])
+	if(objtype == '[object Array]'){
+		node.data.params[paramType] = []
+		for(let i=0; i< paramRows.length; i++){
+			let row = {}
+			for(let j=0;j<paramsCols.length;j++){
+				row[paramsCols[j].name] = paramRows[i][j]
+			}
+			node.data.params[ptype].push(row)
+		}
+	}
+	if(objtype == '[object Object]'){
 		let row = {}
 		for(let j=0;j<paramsCols.length;j++){
-			row[paramsCols[j].header] = paramRows[i][j]
+			row[paramsCols[j].name] = paramRows[j]
 		}
-		node.data.params[paramType].push(row)
+		node.data.params[ptype] = row
 	}
+	console.log("*** SAVE OBJTYPE ***",objtype,node.data.params[ptype],paramRows )
+}
+
+const Save = (ev:any)=>{
+	// Back from paramsRows to node.data
+	saveObj(paramType)
 }
 
 const Add = (ev:any)=>{
-	const row = []
-	for(let i=0; i<paramsCols.length;i++ ){
-		row.push("")
-	}
+	const row = new Array(paramsCols.length)
 	paramRows.push(row)
 	paramRows = paramRows
 }

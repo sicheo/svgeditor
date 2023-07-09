@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount} from 'svelte';
 import { _ } from 'svelte-i18n'
-import {getFinalAnalysisCols,getFinalYeldsCols,getFinalInfoprodCols,getFinalLabelingCols,getFinalStorageCols } from '../../script/api.js'
+import {getFinalAnalysisCols,getFinalYeldsCols,getFinalInfoprodCols,getFinalLabelingCols,getFinalStorageCols, getFinalClearverCols, getFinalNotesCols } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 import Up2CloneBuildParams from '../PageContents/Up2CloneBuildParams.svelte'
 
@@ -17,6 +17,8 @@ let finalYieldsCols = []
 let finalInfoprodCols = []
 let finalLabelingCols = []
 let finalStorageCols = []
+let finalClearverCols = []
+let finalNotesCols = []
 let divParams
 let paramsCols=[]
 let paramName = ""
@@ -36,22 +38,39 @@ onMount(async ()=>{
       divParams = document.getElementById("modal-master-params-div-id")
   });
 
+  const getParamRows = (ptype:any)=>{
+      paramRows=[]
+      const objtype = Object.prototype.toString.call(node.data.params[ptype])
+      const parameters = node.data.params[ptype]
+      if(objtype === '[object Array]'){
+          for(let i=0;i< parameters.length;i++){
+              const keys = Object.keys(paramsCols)
+              const row = []
+              for(let j=0;j<keys.length;j++){
+                  row.push(parameters[i][keys[j]])
+              }
+              paramRows.push(row)
+          }
+      }
+      if(objtype === '[object Object]'){
+            const keys = Object.keys(paramsCols)
+            const row = []
+            if(parameters[keys[0]]){
+                for(let j=0;j<keys.length;j++){
+                    row.push(parameters[keys[j]])
+                }
+                paramRows.push(row)
+            }
+      }
+  }
+
   const onClickSampleAnalysis = async (ev:any)=>{
       const body = await getFinalAnalysisCols($mock)
       finalAnalysisCols = body.data
       paramType= 'analysisList'
       paramName = $_('up2clone_final_panel_anlist')
       paramsCols = finalAnalysisCols
-      const parameters = node.data.params[paramType]
-      paramRows=[]
-      for(let i=0;i< parameters.length;i++){
-          const keys = Object.keys(parameters[i])
-          const row = []
-          for(let j=0;j<keys.length;j++){
-              row.push(parameters[i][keys[j]])
-          }
-          paramRows.push(row)
-      }
+      getParamRows(paramType)
       if(divParams){
         divParams.style.display = 'block'
         
@@ -64,16 +83,7 @@ onMount(async ()=>{
       paramType= 'batchYelds'
       paramName = $_('up2clone_final_panel_yelds')
       paramsCols = finalYieldsCols
-      const parameters = node.data.params[paramType]
-      paramRows=[]
-      for(let i=0;i< parameters.length;i++){
-          const keys = Object.keys(parameters[i])
-          const row = []
-          for(let j=0;j<keys.length;j++){
-              row.push(parameters[i][keys[j]])
-          }
-          paramRows.push(row)
-      }
+      getParamRows(paramType)
       if(divParams){
         divParams.style.display = 'block'
         
@@ -86,16 +96,7 @@ onMount(async ()=>{
       paramType= 'productInfo'
       paramName = $_('up2clone_final_panel_prodinfo')
       paramsCols = finalInfoprodCols
-      const parameters = node.data.params[paramType]
-      paramRows=[]
-      for(let i=0;i< parameters.length;i++){
-          const keys = Object.keys(parameters[i])
-          const row = []
-          for(let j=0;j<keys.length;j++){
-              row.push(parameters[i][keys[j]])
-          }
-          paramRows.push(row)
-      }
+      getParamRows(paramType)
       if(divParams){
         divParams.style.display = 'block'
         
@@ -108,16 +109,7 @@ onMount(async ()=>{
       paramType= 'labeling'
       paramName = $_('up2clone_final_panel_labeling')
       paramsCols = finalLabelingCols
-      const parameters = node.data.params[paramType]
-      paramRows=[]
-      for(let i=0;i< parameters.length;i++){
-          const keys = Object.keys(parameters[i])
-          const row = []
-          for(let j=0;j<keys.length;j++){
-              row.push(parameters[i][keys[j]])
-          }
-          paramRows.push(row)
-      }
+      getParamRows(paramType)
       if(divParams){
         divParams.style.display = 'block'
         
@@ -130,29 +122,39 @@ onMount(async ()=>{
       paramType= 'store'
       paramName = $_('up2clone_final_panel_store')
       paramsCols = finalStorageCols
-      const parameters = node.data.params[paramType]
-      paramRows=[]
-      for(let i=0;i< parameters.length;i++){
-          const keys = Object.keys(parameters[i])
-          const row = []
-          for(let j=0;j<keys.length;j++){
-              row.push(parameters[i][keys[j]])
-          }
-          paramRows.push(row)
-      }
+      getParamRows(paramType)
       if(divParams){
         divParams.style.display = 'block'
         
      }
   }
 
-  const onClickCleanver = (ev:any)=>{
-
+  const onClickCleanver = async (ev:any)=>{
+      const body = await getFinalClearverCols($mock)
+      finalClearverCols = body.data
+      paramType= 'cleaningVerification'
+      paramName = $_('up2clone_final_panel_cleanver')
+      paramsCols = finalClearverCols
+      getParamRows(paramType)
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
   }
 
-  const onClickNotes = (ev:any)=>{
-
+  const onClickNotes = async (ev:any)=>{
+      const body = await getFinalNotesCols($mock)
+      finalNotesCols = body.data
+      paramType= 'notes'
+      paramName = $_('up2clone_final_panel_notes')
+      paramsCols = finalNotesCols
+      getParamRows(paramType)
+      if(divParams){
+        divParams.style.display = 'block'
+        
+     }
   }
+
 </script>
 
 <div class="class-panel-content">
