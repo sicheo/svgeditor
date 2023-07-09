@@ -44,20 +44,18 @@ onMount(async ()=>{
       const parameters = node.data.params[ptype]
       if(objtype === '[object Array]'){
           for(let i=0;i< parameters.length;i++){
-              const keys = Object.keys(paramsCols)
               const row = []
-              for(let j=0;j<keys.length;j++){
-                  row.push(parameters[i][keys[j]])
+              for(let j=0;j<paramsCols.length;j++){
+                  row.push(parameters[i][paramsCols[j].name])
               }
               paramRows.push(row)
           }
       }
       if(objtype === '[object Object]'){
-            const keys = Object.keys(paramsCols)
             const row = []
-            if(parameters[keys[0]]){
-                for(let j=0;j<keys.length;j++){
-                    row.push(parameters[keys[j]])
+            if(parameters[paramsCols[0].name]){
+                for(let j=0;j<paramsCols.length;j++){
+                    row.push(parameters[paramsCols[j].name])
                 }
                 paramRows.push(row)
             }

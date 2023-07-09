@@ -439,8 +439,27 @@ let processes = [
                 }
             ],
             final: {
-                analysisList: [],
-                batchYelds: {},
+                analysisList: [
+                    {
+                        CODE: 'AC1234',
+                        BATCHCODE: 'BATCH1234',
+                        POINT: 'INFIALAMENTO',
+                        ANALYSIS: 'ANALISI PH',
+                        DATE: new Date(Date.now()).toISOString(),
+                        SIGNATURE: 'PAOLO PULICANI',
+                    }
+                ],
+                batchYelds: {
+                    INITWEIGTH: 125.8,
+                    INITMOLE: 14.21,
+                    FINALWEIGTH: 120.9,
+                    FINALMOLE: 13.99,
+                    MOLARYIELD: 0.98,
+                    SIGNATURE:'PAOLO PULICANI',
+                    DATE: new Date(Date.now()).toISOString(),
+                    CHECKSIGNATURE: 'SERGIO PETRONZI',
+                    CHECKDATE: new Date(Date.now()).toISOString()
+                },
                 productInfo: {},
                 //labelingAndStore: {},
                 labeling: [],
