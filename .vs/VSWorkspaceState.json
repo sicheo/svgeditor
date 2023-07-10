@@ -4,10 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\PageContents",
     "\\src\\lib\\i18n",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2CloneBuildParams.svelte",
+  "SelectedNode": "\\src\\lib\\script\\graphutils.ts",
   "PreviewInSolutionExplorer": false
 }

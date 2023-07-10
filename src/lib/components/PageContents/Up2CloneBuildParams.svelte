@@ -71,6 +71,34 @@ const editRow = (ev:any)=>{
 	}
 }
 
+const changeVal = (ev:any)=>{
+	const target = ev.target
+	const i = Number(target.getAttribute("data-i"))
+	const j = Number(target.getAttribute("data-j"))
+	switch(target.type){
+		case 'text':
+			console.log("-- TEXT ---", target.value)
+			paramRows[j][i] = target.value
+			break
+		case 'checkbox':
+			console.log("-- CHECK ---", target.value, target.checked)
+			paramRows[j][i] = target.checked
+			break
+		case 'datetime-local':
+			console.log("-- DATE ---", target.value)
+			paramRows[j][i] = target.value
+			break
+		case 'password':
+			console.log("-- PASSWD ---", target.value)
+			paramRows[j][i] = target.value
+		    break
+		case 'number':
+			console.log("-- NUMBER ---", target.value)
+			paramRows[j][i] = Number(target.value)
+			break
+	}
+}
+
 </script>
 
     <div class="sign-dialog-class">
@@ -92,20 +120,20 @@ const editRow = (ev:any)=>{
 					 {/each}
 				</thead>
 				<tbody>
-					{#each paramRows as row}
+					{#each paramRows as row, j}
 					   <tr>
 						{#each row as field,i}
 							<td class="input-cell">
 								{#if paramsCols[i].type == "string"}
-									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="text" value={field} disabled/>
+									<input data-j={j} data-i={i} size={(paramsCols[i].size?paramsCols[i].size:12)} type="text" value={field} disabled on:change={changeVal}/>
 								{:else if paramsCols[i].type == "boolean"}
-								    <input size={(paramsCols[i].size?paramsCols[i].size:12)} type="checkbox" checked={field} disabled/>
+								    <input data-j={j} data-i={i} size={(paramsCols[i].size?paramsCols[i].size:12)} type="checkbox" checked={field} disabled on:change={changeVal}/>
 								{:else if paramsCols[i].type == "date"}
-									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="datetime-local" value={field} disabled/>
+									<input data-j={j} data-i={i} size={(paramsCols[i].size?paramsCols[i].size:12)} type="datetime-local" value={field} disabled on:change={changeVal}/>
 								{:else if paramsCols[i].type == "password"}
-									<input size={(paramsCols[i].size?paramsCols[i].size:12)} type="password" value={field} disabled/>
+									<input data-j={j} data-i={i} size={(paramsCols[i].size?paramsCols[i].size:12)} type="password" value={field} disabled on:change={changeVal}/>
 								{:else if paramsCols[i].type == "number"}
-									<input size={(paramsCols[i].size?paramsCols[i].size:8)} style="width: 70px;" type="number" value={field} disabled/>
+									<input data-j={j} data-i={i} size={(paramsCols[i].size?paramsCols[i].size:8)} style="width: 70px;" type="number" value={field} disabled on:change={changeVal}/>
 								{/if}
 							</td>
 						{/each}

@@ -160,12 +160,11 @@ const getGraphFromProcess = (process: any) => {
         }
         graph.nodes.push(final)
         graph.paths.push(path)
-        console.log("**** ADD FINAL ***", graph)
     }
     return graph
 }
 
-const getProcessFromGraph = (graph:any) => {
+const getProcessFromGraph = (graph: any) => {
     const process = {
         uuid: null,
         name: '',
@@ -315,8 +314,8 @@ const getProcessFromGraph = (graph:any) => {
             } else {
                 const found = graph.paths.find((item: any) => item.to.includes(node.id))
                 if (found && node.data.params.final)
-                    node.data.params.final.parent =  found.from[0]
-                process.data['final'] = node.data.params.final
+                    node.data.params.parent =  found.from[0]
+                process.data['final'] = node.data.params
             }
         }
     }

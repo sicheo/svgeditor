@@ -151,44 +151,44 @@ onMount(async ()=>{
         id:'id',
         columns: [
             columnHelper.accessor((row:any) => `${row.name}`, {
-            id:'name',
-            header: () => $_('up2clone_auth_table_name'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'name',
+                header: () => $_('up2clone_auth_table_name'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
             columnHelper.accessor((row:any) => `${row.description}`, {
-            id:'description',
-            header: () => $_('up2clone_auth_table_description'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'description',
+                header: () => $_('up2clone_auth_table_description'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
             columnHelper.accessor((row:any) => `${row.doccode}`, {
-            id:'doccode',
-            header: () => $_('up2clone_auth_table_document'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'doccode',
+                header: () => $_('up2clone_auth_table_document'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
             columnHelper.accessor((row:any) => `${row.data.authorization.version}`, {
-            id:'version',
-            header: () => $_('up2clone_auth_table_version'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'version',
+                header: () => $_('up2clone_auth_table_version'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
              columnHelper.accessor((row:any) => `${row.data.authorization.authorized}`, {
-            id:'authorized',
-            header: () => $_('up2clone_auth_table_authorized'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'authorized',
+                header: () => $_('up2clone_auth_table_authorized'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
             columnHelper.accessor((row:any) => `${row.data.lastmodified}`, {
-            id:'lastmodified',
-            header: () => $_('up2clone_auth_table_date'),
-            cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                id:'lastmodified',
+                header: () => $_('up2clone_auth_table_date'),
+                cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
             }),
             columnHelper.accessor((row:any) => `${row.uuid}`, {
-            id:'uuid',
-            header: () => $_('up2clone_auth_table_signature'),
-            cell: (props) =>  flexRender(TableImage,{image:'/SIGNATURE.svg',onClick:onSign,name:props.getValue(),text:props.getValue()}),
+                id:'uuid',
+                header: () => $_('up2clone_auth_table_signature'),
+                cell: (props) =>  flexRender(TableImage,{image:'/SIGNATURE.svg',onClick:onSign,name:props.getValue(),text:props.getValue()}),
             }),
             columnHelper.accessor('data', {
-            id: 'block',
-            header: () => $_('up2clone_auth_table_block'),
-            cell: (props) =>  flexRender(TableSwitch,{onChange:onBlock,uuid:props.getValue().uuid,checked:props.getValue().authorization.blocked}),
+                id: 'block',
+                header: () => $_('up2clone_auth_table_block'),
+                cell: (props) =>  flexRender(TableSwitch,{onChange:onBlock,uuid:props.getValue().uuid,checked:props.getValue().authorization.blocked}),
             })
 
         ]

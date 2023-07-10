@@ -34,6 +34,8 @@ let callback = (params:any)=>{
 		switch(params.type){
 			case "MASTER":
 				break
+			case "INIT":
+				break
 			case "MATERIALS":
 				break
 			case "MACHINES":
@@ -72,6 +74,8 @@ let callback = (params:any)=>{
 						<BreadCrumb bind:items={items} bind:tree={tree}/>
 					</div>
 				</div>
+				<div class="sign-page-right-body">
+					</div>
 			</div>
 		</div>
 	</div>
@@ -100,6 +104,12 @@ let callback = (params:any)=>{
 }
 .sign-page-body{
 	display: flex;
+}
+.sign-page-right-body{
+	width:100%;
+	height: 80%;
+	overflow-y:auto ;
+	border: 1px solid;
 }
 
 </style>

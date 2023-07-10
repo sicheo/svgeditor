@@ -408,9 +408,10 @@ let processes = [
                     PM: 360.4,
                     BP: 235,
                     DENSITY: 15,
+                    INLIST: false,
                     APPEARENCE: "",
                     RISK: "",
-                    CAUTION:"",
+                    CAUTION: "",
                 },
                 {
                     DESCRIPTION: "Acqua Iniettabili",
@@ -420,6 +421,7 @@ let processes = [
                     PM: 18.016,
                     BP: 100,
                     DENSITY: 0.998,
+                    INLIST: false,
                     APPEARENCE: "",
                     RISK: "",
                     CAUTION: "",
@@ -721,6 +723,7 @@ const materialCols = [
     { name: 'PM', type: 'number', header: 'P.M.' },
     { name: 'BP', type: 'number', header: 'P. Eb. (DEGC)' },
     { name: 'DENSITY', type: 'number', header: 'd 20 DEGC (gr/ml)' },
+    { name: 'INLIST', type: 'boolean', header: 'Incluso in elenco' },
     { name: 'APPEARENCE', type: 'string', header: 'Apparenza' },
     { name: 'RISK', type: 'string', header: 'Rischi' },
     { name: 'CAUTIONS', type: 'string', header: 'Precauzioni' },
@@ -1130,7 +1133,7 @@ const filterArray = (array, filters, neg=false) => {
 
 const getDevices = async function (body) {
     let retDevices = JSON.parse(JSON.stringify(devices))
-    const filters = body.option.filters
+    const filters = body.options.filters
 
     retDevices = filterArray(retDevices,filters)
     
@@ -1140,7 +1143,7 @@ const getDevices = async function (body) {
 
 const getAgents = async function (body) {
     let retAgents = JSON.parse(JSON.stringify(agents))
-    const filters = body.option.filters
+    const filters = body.options.filters
 
     retAgents = filterArray(retAgents, filters)
 
