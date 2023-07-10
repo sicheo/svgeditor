@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { getLocalDate } from '../script/utils.js'
 
 let attempts = 0
 let logs = []
@@ -352,7 +353,7 @@ let processes = [
             sapcode: "SAP456XX21",
             sapdesc: "Z567LP789",
             description: "Master Record PROD1234",
-            lastmodified: new Date(Date.now()).toISOString(),
+            lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
                 authorized: false,
                 blocked:false,
@@ -367,10 +368,10 @@ let processes = [
                     CODE: 'AUT-304-001',
                     ONLINECHK: false,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: false,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 },
                 {
@@ -379,10 +380,10 @@ let processes = [
                     CODE: 'RMP-RTGA-001',
                     ONLINECHK: false,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: false,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 },
                 {
@@ -391,10 +392,10 @@ let processes = [
                     CODE: 'LYO-L25-001',
                     ONLINECHK: false,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: false,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 }
             ],
@@ -445,7 +446,7 @@ let processes = [
                         BATCHCODE: 'BATCH1234',
                         POINT: 'INFIALAMENTO',
                         ANALYSIS: 'ANALISI PH',
-                        DATE: new Date(Date.now()).toISOString(),
+                        DATE: getLocalDate(new Date(Date.now())),
                         SIGNATURE: 'PAOLO PULICANI',
                     }
                 ],
@@ -456,9 +457,9 @@ let processes = [
                     FINALMOLE: 13.99,
                     MOLARYIELD: 0.98,
                     SIGNATURE:'PAOLO PULICANI',
-                    DATE: new Date(Date.now()).toISOString(),
+                    DATE: getLocalDate(new Date(Date.now())),
                     CHECKSIGNATURE: 'SERGIO PETRONZI',
-                    CHECKDATE: new Date(Date.now()).toISOString()
+                    CHECKDATE: getLocalDate(new Date(Date.now())),
                 },
                 productInfo: {},
                 //labelingAndStore: {},
@@ -578,7 +579,7 @@ let processes = [
         data: {
             doccode: "DOC5678",
             description: "Master Record PROD5678",
-            lastmodified: new Date(Date.now()).toISOString(),
+            lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
                 authorized: false,
                 blocked: true,
@@ -624,7 +625,7 @@ let processes = [
         data: {
             doccode: "DOC5678",
             description: "Master Record PROD7777",
-            lastmodified: new Date(Date.now()).toISOString(),
+            lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
                 authorized: false,
                 blocked: false,
@@ -670,7 +671,7 @@ let processes = [
         data: {
             doccode: "DOC5678",
             description: "Master Record PROD0909",
-            lastmodified: new Date(Date.now()).toISOString(),
+            lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
                 authorized: false,
                 blocked: false,
@@ -827,7 +828,7 @@ let ebrs = [
             sapcode: "SAP456XX21",
             sapdesc: "Z567LP789",
             description: "Electronic Batch Record BATCH-1234-0945",
-            lastmodified: new Date(Date.now()).toISOString(),
+            lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
                 authorized: true,
                 blocked: true,
@@ -842,10 +843,10 @@ let ebrs = [
                     CODE: 'AUT-304-001',
                     ONLINECHK: true,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: true,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 },
                 {
@@ -854,10 +855,10 @@ let ebrs = [
                     CODE: 'RMP-RTGA-001',
                     ONLINECHK: true,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: true,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 },
                 {
@@ -865,10 +866,10 @@ let ebrs = [
                     CODE: 'LYO-L25-001',
                     ONLINECHK: true,
                     CLEANCHK: true,
-                    PREDATE: new Date(Date.now()).toISOString(),
+                    PREDATE: getLocalDate(new Date(Date.now())),
                     PRESIGNATURE: "",
                     USEDCHK: true,
-                    POSTDATE: new Date(Date.now()).toISOString(),
+                    POSTDATE: getLocalDate(new Date(Date.now())),
                     POSTSIGNATURE: ""
                 }
             ],
@@ -1202,7 +1203,7 @@ const setAgent = async function (body) {
 const setProcess = async function (body) {
     const process = body.options.process
     let old = null
-    process.data.kastmodified = new Date(Date.now()).toISOString()
+    process.data.kastmodified = getLocalDate(new Date(Date.now()))
     if (process) {
         const existing = processes.findIndex((item) => { return item.uuid == process.uuid })
         if (existing > -1) {

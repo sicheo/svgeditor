@@ -120,6 +120,7 @@ onMount(async ()=>{
     }
         
     tree['children'].push(final)
+    console.log("*** GET TREE ***", tree)
 	return tree
 }
 

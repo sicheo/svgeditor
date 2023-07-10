@@ -53,6 +53,8 @@
   "up2clone_master_panel_machines": "MACHINES",
   "up2clone_master_panel_personnel": "PERSONNEL",
   "up2clone_master_panel_phases": "PHASES",
+  "up2clone_master_panel_operations": "OPERATIONS",
+  "up2clone_master_panel_tasks": "TASKS",
   "up2clone_master_panel_init": "INIT",
   "up2clone_master_panel_final": "FINAL",
   "up2clone_final_panel_anlist": "SAMPLE ANALYSIS",

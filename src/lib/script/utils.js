@@ -1,6 +1,6 @@
 // https://stackoverflow.com/questions/40497262/how-to-version-control-an-object
 
-function VersionControlled(obj, changeLog = []) {
+export function VersionControlled(obj, changeLog = []) {
     var targets = [], version = 0, savedLength,
         hash = new Map([[obj, []]]),
         handler = {
@@ -67,6 +67,36 @@ function VersionControlled(obj, changeLog = []) {
     this.getChangeLog = _ => changeLog;
     // apply change log
     gotoLastVersion();
+}
+
+export function getLocalDate(t){
+    const z = t.getTimezoneOffset() * 60 * 1000
+    let tShift = t - z
+    const tLocal = new Date(tShift)
+    let iso = tLocal.toISOString()
+    iso = iso.split(".")[0]
+
+    return(iso)
+
+}
+
+export function findTreePath(tree, target) {
+    // The value of this node
+    let currentValue = tree.label;
+    if (currentValue == target) return [target];
+    for (let t of Object.entries(tree)) {
+        // Search children
+        if (t[0] == "children" && t[1]) {
+            for (let child of t[1]) {
+                let found = findTreePath(child, target);
+                if (found) {
+                    return [currentValue].concat(found);
+                }
+            }
+        }
+    }
+    // Not found in this branch
+    return null;
 }
 
 /*

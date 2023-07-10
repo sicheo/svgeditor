@@ -1,11 +1,21 @@
 <script lang="ts">
 
 import TreeView from '../TreeView.svelte'
+import { _ } from 'svelte-i18n'
+import BreadCrumb from '../BreadCrumb.svelte'
+import {findTreePath} from '../../script/utils.js'
+
 
 export let tree = null
 export let process = null
 export let color
 
+let items = [
+     "MASTER"
+    
+  ]
+
+let title = ''
 
 const exitPage = (ev:any)=>{
 	const div = document.getElementById("modal-auth-sign-div-id")
@@ -13,10 +23,14 @@ const exitPage = (ev:any)=>{
         div.style.display = 'none'
 }
 
+
+
 let callback = (params:any)=>{
 	const div = document.getElementById("sign-page-right-id")
 	const children = div.childNodes
-	console.log("** CHILDREN NODE **", children)
+	console.log("** CHILDREN NODE **", findTreePath(tree,params.name))
+	items=findTreePath(tree,params.name)
+	title = params.name
 		switch(params.type){
 			case "MASTER":
 				break
@@ -54,6 +68,9 @@ let callback = (params:any)=>{
 			</div>
 			<div class="sign-page-right" id="sign-page-right-id">
 				<div class="sign-page-rigth-title">
+					<div class="sign-page-right-title">
+						<BreadCrumb bind:items={items} bind:tree={tree}/>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 import { setLog, getLogs } from "../script/api.js"
+import { getLocalDate } from '../script/utils.js'
 
-
+ 
 
 async function getUser() {
     let { user } = await import("../ustore.js")
@@ -26,14 +27,6 @@ const config = {
     assumesPageview: true
 }
 
-function dateToISOLikeButLocal(date) {
-    const offsetMs = date.getTimezoneOffset() * 60 * 1000;
-    const msLocal = date.getTime() - offsetMs;
-    const dateLocal = new Date(msLocal);
-    const iso = dateLocal.toISOString();
-    const isoLocal = iso.slice(0, 19);
-    return isoLocal;
-}
 
 /* Export the integration */
 export default function analyticPlugin(userConfig) {
@@ -66,7 +59,7 @@ export default function analyticPlugin(userConfig) {
                     details = "target page " + payload.properties.target
                     break
             }
-            const log = { user: user, date: dateToISOLikeButLocal(new Date(payload.meta.ts)), action: payload.event, details: details }
+            const log = { user: user, date: getLocalDate(new Date(payload.meta.ts)), action: payload.event, details: details }
             await setLog(log, getMock())
             const logs = await getLogs(getMock())
             //console.log(logs)
