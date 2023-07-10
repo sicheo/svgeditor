@@ -90,25 +90,25 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => 'DESCRIPTION',
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'connection',
                         header: () => 'CONNECTION',
-                        cell: (props) =>   flexRender(TableImage,{image:'/CONNECTION.svg',style:"background-color: lightgrey;",name:props.getValue().uid, onClick:onConnection}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/CONNECTION.svg',style:"background-color: lightgrey;",name:props.getValue(), onClick:onConnection}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'install',
                         header: () => 'AGENT',
-                        cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'install-img-tool'+props.getValue().uid, onClick:onInstall}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'install-img-tool'+props.getValue(), onClick:onInstall}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'docker',
                         header: () => 'SAVE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'docker-img-tool'+props.getValue().uid,onClick:onDocker}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'docker-img-tool'+props.getValue(),onClick:onDocker}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'deploy',
                         header: () => 'EDIT',
-                        cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool'+props.getValue().uid,onClick:onDeploy}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool'+props.getValue(),onClick:onDeploy}),
                     }),
             ]
         })
