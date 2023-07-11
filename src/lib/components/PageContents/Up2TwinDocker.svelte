@@ -19,6 +19,9 @@ const exitPage = (ev:any)=>{
 	labelCA = "CA"
 	labelCERT = "CERT"
 	labelKEY = "KEY"
+	let button = document.getElementById('docker-submit')
+	button.setAttribute('disabled','disabled')
+	button.style.opacity='0.3'
 	const div = document.getElementById("modal-master-params-div-id")
     if(div)
         div.style.display = 'none'
@@ -119,7 +122,7 @@ const dockerSubmit = (ev:any)=>{
 	display: flex;
     align-items: flex-start;
     justify-content: right;
-    width: 100%;
+    width: 80%;
 }
 
 input[type="file"] {
