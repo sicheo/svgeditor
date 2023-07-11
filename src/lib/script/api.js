@@ -100,7 +100,7 @@ const callFetchGet = async function (url, cheaders = null) {
  * Logs in
  * @param {any} userid
  * @param {any} password
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const login = async function (userid, password, mock = false) {
     return new Promise((resolve, reject) => {
@@ -131,9 +131,9 @@ export const login = async function (userid, password, mock = false) {
 /**
  * Get master records from db
  * @param {any} options
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
-export const getMasters = async function (options, mock = false) {
+/*export const getMasters = async function (options, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
         const body = {
@@ -155,11 +155,11 @@ export const getMasters = async function (options, mock = false) {
             resolve(mocks.getMasters(body))
         }
     })
-}
+}*/
 /**
- * Return option items for graph nodes
- * @param {any} menu
- * @param {any} mock
+ * Return option items for graph context menu
+ * @param {any} menu context menu type
+ * @param {any} mock use mock flag (default false)
  */
 export const getMenuItems = async function (menu, mock = false) {
     return new Promise((resolve, reject) => {
@@ -189,7 +189,7 @@ export const getMenuItems = async function (menu, mock = false) {
 
 /**
  * Return application logs
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getLogs = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -218,8 +218,8 @@ export const getLogs = async function (mock = false) {
 
 /**
  * Set applicatiion log
- * @param {any} log
- * @param {any} mock
+ * @param {any} log log to write
+ * @param {any} mock use mock flag (default false)
  */
 export const setLog = async function (log, mock = false) {
     return new Promise((resolve, reject) => {
@@ -249,8 +249,8 @@ export const setLog = async function (log, mock = false) {
 
 /**
  * Get devices
- * @param {any} filters
- * @param {any} mock
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
  */
 export const getDevices = async function (filters, mock = false) {
     return new Promise((resolve, reject) => {
@@ -280,8 +280,8 @@ export const getDevices = async function (filters, mock = false) {
 
 /**
  * Set Device
- * @param {any} device
- * @param {any} mock
+ * @param {any} device device to set (add or update)
+ * @param {any} mock use mock flag (default false)
  */
 export const setDevice = async function (device, mock = false) {
     return new Promise((resolve, reject) => {
@@ -311,8 +311,8 @@ export const setDevice = async function (device, mock = false) {
 
 /**
  * Get Agents
- * @param {any} filters
- * @param {any} mock
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
  */
 export const getAgents = async function (filters, mock = false) {
     return new Promise((resolve, reject) => {
@@ -342,8 +342,8 @@ export const getAgents = async function (filters, mock = false) {
 
 /**
  * Set Agent
- * @param {any} agent
- * @param {any} mock
+ * @param {any} agent agent to set (add or update)
+ * @param {any} mock use mock flag (default false)
  */
 export const setAgent = async function (agent, mock = false) {
     return new Promise((resolve, reject) => {
@@ -373,8 +373,8 @@ export const setAgent = async function (agent, mock = false) {
 
 /**
  * Get Processes
- * @param {any} filters
- * @param {any} mock
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
  */
 export const getProcesses = async function (filters, mock = false) {
     return new Promise((resolve, reject) => {
@@ -404,8 +404,8 @@ export const getProcesses = async function (filters, mock = false) {
 
 /**
  * Set Process
- * @param {any} agent
- * @param {any} mock
+ * @param {any} process process to set (add or update)
+ * @param {any} mock use mock flag (default false)
  */
 export const setProcess = async function (process, mock = false) {
     return new Promise((resolve, reject) => {
@@ -434,9 +434,71 @@ export const setProcess = async function (process, mock = false) {
 }
 
 /**
+ * Delete Device
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
+ */
+export const deleteDevice = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "deleteDevice",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.deleteDevice(body))
+        }
+    })
+}
+
+/**
+ * Delete Agent
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
+ */
+export const deleteAgent = async function (filters, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "deleteAgent",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.deleteAgent(body))
+        }
+    })
+}
+
+/**
  * Delete Process
- * @param {any} filters
- * @param {any} mock
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
  */
 export const deleteProcess = async function (filters, mock = false) {
     return new Promise((resolve, reject) => {
@@ -466,7 +528,7 @@ export const deleteProcess = async function (filters, mock = false) {
 
 /**
  * Get Material Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getMaterialCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -495,7 +557,7 @@ export const getMaterialCols = async function (mock = false) {
 
 /**
  * Get Personnel Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getPersonnelCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -524,7 +586,7 @@ export const getPersonnelCols = async function (mock = false) {
 
 /**
  * Get Machine Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getMachineCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -553,7 +615,7 @@ export const getMachineCols = async function (mock = false) {
 
 /**
  * Get Final Sample Analysis Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalAnalysisCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -582,7 +644,7 @@ export const getFinalAnalysisCols = async function (mock = false) {
 
 /**
  * Get Final Yelds Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalYeldsCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -611,7 +673,7 @@ export const getFinalYeldsCols = async function (mock = false) {
 
 /**
  * Get Final Product Info Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalInfoprodCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -640,7 +702,7 @@ export const getFinalInfoprodCols = async function (mock = false) {
 
 /**
  * Get Final Labeling Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalLabelingCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -669,7 +731,7 @@ export const getFinalLabelingCols = async function (mock = false) {
 
 /**
  * Get Final Storage Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalStorageCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -698,7 +760,7 @@ export const getFinalStorageCols = async function (mock = false) {
 
 /**
  * Get Final Clearing Verification Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalClearverCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -727,7 +789,7 @@ export const getFinalClearverCols = async function (mock = false) {
 
 /**
  * Get Final Notes  Columns
- * @param {any} mock
+ * @param {any} mock use mock flag (default false)
  */
 export const getFinalNotesCols = async function (mock = false) {
     return new Promise((resolve, reject) => {
@@ -750,6 +812,113 @@ export const getFinalNotesCols = async function (mock = false) {
                 })
         } else {
             resolve(mocks.getFinalNotesCols(body))
+        }
+    })
+}
+
+/**
+ * Ping host
+ * @param {any} hostname hostname or IP address
+ * @param {any} cfg ping configuration (default {timeout: 5, min_replay: 2})
+ * @param {any} mock use mock flag (default false)
+ */
+export const ping = async function (hostname, cfg = { timeout: 5, min_replay: 2 },mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "ping",
+            options: {
+                hostname: hostname,
+                options:cfg
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.ping(body))
+        }
+    })
+}
+
+/**
+ * Get Device Info
+ * @param {any} host hostname or IP address
+ * @param {any} port port
+ * @param {any} prot protocol ('http','https')
+ * @param {any} mock use mock flag (default false)
+ */
+export const getDeviceInfo = async function (host, port,prot, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getDeviceInfo",
+            options: {
+                host: host,
+                port: port,
+                prot:prot
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getDeviceInfo(body))
+        }
+    })
+}
+
+/**
+ * Get Docker Info
+ * @param {any} durl docker daemon url
+ * @param {any} ca docker daemon ca.pem
+ * @param {any} cert docker daemon crt.pem
+ * @param {any} key docker daemon key.pem
+ * @param {any} version docker daemon version
+ * @param {any} mock use mock flag (default false)
+ */
+export const dockerInfo = async function (durl,ca,cert,key,version,mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "dockerInfo",
+            options: {
+                url: durl,
+                ca: ca,
+                cert: cert,
+                key: key,
+                version: version
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.dockerInfo(body))
         }
     })
 }

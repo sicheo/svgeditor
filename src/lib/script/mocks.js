@@ -5,11 +5,11 @@ let attempts = 0
 let logs = []
 
 /** MASTERS */
-const masters = [
+/*const masters = [
     { uid: 1, description: "Master record product XXXXXX", doc: "DOC123", product: "PROD123", authdate: "2022-05-14", status: "AUTH", version:"1.1" },
     { uid: 2, description: "Master record product YYYYYY", doc: "DOC111", product: "PROD123", authdate: "", status: "NOAUTH", version: "0.2" },
     { uid: 3, description: "Master record product ZZZZZZ", doc: "DOC123", product: "PROD123", authdate: "2023-05-21", status: "AUTH", version: "1.0" }
-]
+]*/
 
 /** ITEMS */
 const masteritems = [
@@ -66,7 +66,7 @@ let isaitems = [
 const choiceitems = [{ label: 'CHOICE', name: 'CHOICE', image: '/CHOICE.svg', level: 'level2' }]
 
 // DEVICES
-const devices = [
+let devices = [
     { 
         uid: 'abc-1',
         name: 'DEV1-001',
@@ -137,7 +137,7 @@ const devices = [
 
 // AGENTS
 
-const agents = [
+let agents = [
     {
         uid: 'ag-234-abc-1',
         name: "SCANNER1",
@@ -1036,10 +1036,10 @@ const login = (body) => {
     return(body)
 }
 
-const getMasters = (body) => {
+/*const getMasters = (body) => {
     body.data = masters
     return (body)
-}
+}*/
 
 const getMenuItems = (body) => {
     let menuitems = []
@@ -1160,14 +1160,6 @@ const getProcesses = async function (body) {
     return (body)
 }
 
-const getSignedProcesses = async function (body) {
-    /*let retProcesses = JSON.parse(JSON.stringify(signedprocesses))
-    const filters = body.options.filters
-
-    retProcesses = filterArray(retProcesses, filters)
-    body.data = retProcesses*/
-    return (body)
-}
 
 
 
@@ -1218,6 +1210,22 @@ const setProcess = async function (body) {
     }
 
     return old
+}
+
+const deleteDevice = async function (body) {
+    const filters = body.options.filters
+
+    devices = filterArray(devices, filters, true)
+    body.data = devices
+    return (body)
+}
+
+const deleteAgent = async function (body) {
+    const filters = body.options.filters
+
+    agents = filterArray(agents, filters, true)
+    body.data = agents
+    return (body)
 }
 
 const deleteProcess = async function (body) {
@@ -1278,10 +1286,161 @@ const getFinalNotesCols = async function (body) {
     return (body)
 }
 
+const ping = async function (body) {
+    body.data = { host: body.options.hostname, isAlive: true }
+    return(body) 
+}
+
+const getDeviceInfo = async function (body) {
+    const infos = {
+        service: 'UP2AgentRestService',
+        description: 'UP2Agent Rest service endpoint',
+        env: {
+            VERSION: '1.1',
+            CORSENABLE: 'true',
+            HIDEBUG: 'true',
+            SCDEBUG: 'true',
+            WSDEBUG: 'false',
+            MQTTDEBUG: 'false',
+            WEBSOCK: 'true',
+            BEACONTIMEOUT: '10000',
+            BEACONENABLE: 'false',
+            PORT: '3001'
+        },
+        auth: {
+            name: 'credentials',
+            options: {
+                _credentials: 'credentials.json',
+                defaultroot: null,
+                defaultpassword: null
+            }
+        },
+        log: {
+            name: 'mqttlog',
+            options: {
+                channel: 'LOGGER',
+                mqtts: true,
+                clean: false,
+                qos: 1,
+                username: null,
+                password: null,
+                server: '127.0.0.1',
+                port: 8883
+            }
+        },
+        childrens: [
+            { cname: 'scanner1', ctype: 'scanner', optype: 'fork' },
+            { cname: 'hist1', ctype: 'hist', optype: 'fork' },
+            { cname: 'mqtt', ctype: 'mqtt', optype: 'fork' }
+        ]
+    }
+
+    body.data = infos
+    return (body)
+}
+
+const dockerInfo = async function (body) {
+    const infos = {
+        ID: 'B74L:44XG:GQKA:SKB4:ZUO6:XNB4:X7CR:TNPZ:GMJ5:2I3Q:657H:PAUY',
+        Containers: 2,
+        ContainersRunning: 2,
+        ContainersPaused: 0,
+        ContainersStopped: 0,
+        Images: 2,
+        Driver: 'overlay2',
+        DriverStatus: [
+            ['Backing Filesystem', 'extfs'],
+            ['Supports d_type', 'true'],
+            ['Native Overlay Diff', 'true']
+        ],
+        SystemStatus: null,
+        Plugins: {
+            Volume: ['local'],
+            Network: ['bridge', 'host', 'macvlan', 'null', 'overlay'],
+            Authorization: ['ciscoplugin'],
+            Log: [
+                'awslogs', 'fluentd',
+                'gcplogs', 'gelf',
+                'journald', 'json-file',
+                'logentries', 'splunk',
+                'syslog'
+            ]
+        },
+        MemoryLimit: true,
+        SwapLimit: true,
+        KernelMemory: true,
+        CpuCfsPeriod: true,
+        CpuCfsQuota: true,
+        CPUShares: true,
+        CPUSet: true,
+        IPv4Forwarding: true,
+        BridgeNfIptables: true,
+        BridgeNfIp6tables: true,
+        Debug: false,
+        NFd: 38,
+        OomKillDisable: true,
+        NGoroutines: 50,
+        SystemTime: '2023-07-11T12:48:12.801784187+01:00',
+        LoggingDriver: 'json-file',
+        CgroupDriver: 'cgroupfs',
+        NEventsListener: 0,
+        KernelVersion: '5.4.147',
+        OperatingSystem: '<unknown>',
+        OSType: 'linux',
+        Architecture: 'x86_64',
+        IndexServerAddress: 'https://index.docker.io/v1/',
+        RegistryConfig: {
+            AllowNondistributableArtifactsCIDRs: [],
+            AllowNondistributableArtifactsHostnames: [],
+            InsecureRegistryCIDRs: ['127.0.0.0/8'],
+            IndexConfigs: { 'docker.io': [Object] },
+            Mirrors: []
+        },
+        NCPU: 4,
+        MemTotal: 8081371136,
+        GenericResources: null,
+        DockerRootDir: '/software/docker/1000000.1000000',
+        HttpProxy: '',
+        HttpsProxy: '',
+        NoProxy: '',
+        Name: 'ic3k',
+        Labels: [],
+        ExperimentalBuild: false,
+        ServerVersion: '18.03.0',
+        ClusterStore: '',
+        ClusterAdvertise: '',
+        Runtimes: { runc: { path: 'docker-runc' } },
+        DefaultRuntime: 'runc',
+        Swarm: {
+            NodeID: '',
+            NodeAddr: '',
+            LocalNodeState: 'inactive',
+            ControlAvailable: false,
+            Error: '',
+            RemoteManagers: null
+        },
+        LiveRestoreEnabled: false,
+        Isolation: '',
+        InitBinary: 'docker-init',
+        ContainerdCommit: {
+            ID: 'cfd04396dc68220d1cecbe686a6cc3aa5ce3667c.m',
+            Expected: 'cfd04396dc68220d1cecbe686a6cc3aa5ce3667c'
+        },
+        RuncCommit: {
+            ID: '751f18de2af90495e9c5665b95bfc7adf66ddd57-dirty',
+            Expected: '4fc53a81fb7c994640722ac585fa9ca548971871'
+        },
+        InitCommit: { ID: 'N/A', Expected: '' },
+        SecurityOptions: ['name=userns']
+    }
+    body.data = infos
+    return (body)
+}
+
+
 
 const mocks = {
     login,
-    getMasters,
     getMenuItems,
     getLogs,
     setLog,
@@ -1291,7 +1450,9 @@ const mocks = {
     setAgent,
     getProcesses,
     setProcess,
+    deleteDevice,
     deleteProcess,
+    deleteAgent,
     getMaterialCols,
     getPersonnelCols,
     getMachineCols,
@@ -1301,7 +1462,10 @@ const mocks = {
     getFinalLabelingCols,
     getFinalStorageCols,
     getFinalClearverCols,
-    getFinalNotesCols
+    getFinalNotesCols,
+    ping,
+    getDeviceInfo,
+    dockerInfo
 }
 
 export default mocks
