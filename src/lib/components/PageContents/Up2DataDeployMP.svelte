@@ -124,9 +124,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    }
 
   const columns = [
-        columnHelper.group({
-            id:'id',
-            columns:[
+        
                 columnHelper.accessor('type', {
                         id : 'type',
                         header: () => 'TYPE',
@@ -177,8 +175,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => 'DEPLOY',
                         cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool_'+props.getValue(),onClick:onDeploy}),
                     }),
-            ]
-        })
+  
   ]
 
   

@@ -9,6 +9,10 @@
   import {cloneNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { _ } from 'svelte-i18n'
+  import { onMount} from "svelte";
+  import {getDevices} from '../../../lib/script/api.js'
+  import {mock} from '../../../lib/ustore.js'
+
  
 
    let component = 'MainTabTools'
@@ -25,6 +29,13 @@ let  onSysConfClick = SysConfClick
 
 let  onLogoutClick = LogoutClick
 
+let data = []
+
+onMount(async ()=>{
+       const response = await getDevices(null,$mock)
+       data = response.data
+   
+    });
 </script>
 
 <main>
@@ -37,7 +48,7 @@ let  onLogoutClick = LogoutClick
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <Up2DataConfMp color={color}/>
+            <Up2DataConfMp bind:data={data} color={color}/>
         </div>
     </div>
     </div>

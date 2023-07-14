@@ -4,6 +4,8 @@ import { getLocalDate } from '../script/utils.js'
 let attempts = 0
 let logs = []
 
+let docker = {}
+
 /** MASTERS */
 /*const masters = [
     { uid: 1, description: "Master record product XXXXXX", doc: "DOC123", product: "PROD123", authdate: "2022-05-14", status: "AUTH", version:"1.1" },
@@ -1339,6 +1341,23 @@ const getDeviceInfo = async function (body) {
     return (body)
 }
 
+const setDockerEnv = async function (body) {
+    docker = {}
+    const keys = Object.keys(body.options.env)
+    docker['env'] = {}
+    for (let i = 0; i < keys.length; i++) {
+        docker.env[keys[i]] = body.options.env[keys[i]]
+    }
+}
+
+const dnsLookup = async function (body) {
+    return body.options.hostname
+}
+
+const dockerCreate = async function (body) {
+    return docker
+}
+
 const dockerInfo = async function (body) {
     const infos = {
         ID: 'B74L:44XG:GQKA:SKB4:ZUO6:XNB4:X7CR:TNPZ:GMJ5:2I3Q:657H:PAUY',
@@ -1385,8 +1404,9 @@ const dockerInfo = async function (body) {
         CgroupDriver: 'cgroupfs',
         NEventsListener: 0,
         KernelVersion: '5.4.147',
-        OperatingSystem: '<unknown>',
+        OperatingSystem: 'Ubuntu',
         OSType: 'linux',
+        OSVersion: '20.0',
         Architecture: 'x86_64',
         IndexServerAddress: 'https://index.docker.io/v1/',
         RegistryConfig: {
@@ -1437,7 +1457,48 @@ const dockerInfo = async function (body) {
     return (body)
 }
 
+const dockerListContainers = async function (body) {
+    const containers = [
+        {
+            Id: "8dfafdbc3a40",
+            Names:[],
+            Image: "quesalid/up2agentdata:latest",
+            ImageID: "d74508fb6632491cea586a1fd7d748dfc5274cd6fdfedee309ecdcbc2bf5cb82",
+            Command: "echo 1",
+            Created: 1367854155,
+            State: "Exited",
+            Status: "Exit 0",
+            Ports:[],
+            Labels:{},
+            SizeRw: 12288,
+            SizeRootFs: 0,
+            HostConfig:{},
+            NetworkSettings:{},
+            Mounts:[]
+        },
+    ]
+    body.data = containers
+    return(body)
+}
 
+const dockerListImages = async function (body) {
+    const images = [
+        {
+            Id: "sha256:e216a057b1cb1efc11f8a268f37ef62083e70b1b38323ba252e25ac88904a7e8",
+            ParentId: "",
+            RepoTags:[],
+            RepoDigests:[],
+            Created: 1474925151,
+            Size: 103579269,
+            VirtualSize: 103579269,
+            SharedSize: 0,
+            Labels: {},
+            Containers: 2
+        },
+    ]
+    body.data = images
+    return (body)
+}
 
 const mocks = {
     login,
@@ -1465,6 +1526,11 @@ const mocks = {
     getFinalNotesCols,
     ping,
     getDeviceInfo,
+    setDockerEnv,
+    dockerCreate,
+    dockerListContainers,
+    dockerListImages,
+    dnsLookup,
     dockerInfo
 }
 

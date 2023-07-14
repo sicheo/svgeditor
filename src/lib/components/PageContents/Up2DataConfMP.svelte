@@ -14,7 +14,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
   
    export let color:any
-   let data = []
+   export let data = []
 
    const columnHelper  = createColumnHelper()
 
@@ -43,9 +43,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    }
 
    const columns = [
-        columnHelper.group({
-            id:'id',
-            columns:[
                     columnHelper.accessor('type', {
                         id : 'type',
                         header: () => 'TYPE',
@@ -101,8 +98,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => 'DELETE',
                         cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete}),
                     }),
-             ]
-        })
    ]
 
    

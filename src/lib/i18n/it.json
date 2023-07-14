@@ -71,5 +71,6 @@
   "up2clone_auth_table_authorized": "AUTORIZZATO",
   "up2clone_auth_table_date": "ULTIMA MODIFICA",
   "up2clone_auth_table_signature": "FIRMA",
-  "up2clone_auth_table_block": "BLOCCO"
+  "up2clone_auth_table_block": "BLOCCO",
+  "up2clone_docker_submit": "Invia"
 }

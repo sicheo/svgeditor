@@ -4,8 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\PageContents"
+    "\\src\\lib\\i18n",
+    "\\src\\lib\\script",
+    "\\src\\routes",
+    "\\src\\routes\\up2learn"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2CloneAuthMP.svelte",
+  "SelectedNode": "\\src\\assets",
   "PreviewInSolutionExplorer": false
 }

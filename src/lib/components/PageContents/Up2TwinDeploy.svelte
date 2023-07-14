@@ -16,7 +16,7 @@ const exitPage = (ev:any)=>{
 
 <div class="deploy-dialog-class">
 	<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
-		{dialogOptions.title} {dialogOptions.device.uid}
+		{dialogOptions.title} {dialogOptions.device.name}
 		<div class="class-last-item">
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 	    </div>

@@ -886,6 +886,7 @@ export const getDeviceInfo = async function (host, port,prot, mock = false) {
 
 /**
  * Get Docker Info
+ * 
  * @param {any} durl docker daemon url
  * @param {any} ca docker daemon ca.pem
  * @param {any} cert docker daemon crt.pem
@@ -893,7 +894,7 @@ export const getDeviceInfo = async function (host, port,prot, mock = false) {
  * @param {any} version docker daemon version
  * @param {any} mock use mock flag (default false)
  */
-export const dockerInfo = async function (durl,ca,cert,key,version,mock = false) {
+export const dockerInfo = async function (mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
         const body = {
@@ -901,11 +902,6 @@ export const dockerInfo = async function (durl,ca,cert,key,version,mock = false)
             version: 1.0,
             command: "dockerInfo",
             options: {
-                url: durl,
-                ca: ca,
-                cert: cert,
-                key: key,
-                version: version
             }
         };
         if (!mock) {
@@ -919,6 +915,168 @@ export const dockerInfo = async function (durl,ca,cert,key,version,mock = false)
                 })
         } else {
             resolve(mocks.dockerInfo(body))
+        }
+    })
+}
+
+/**
+ * Set docker Environment
+ * 
+ * @param {any} env doker env variable to set
+ * @param {any} mock use mock flag (default false)
+ */
+export const setDockerEnv = async function (env, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "setDockerEnv",
+            options: {
+                env: env
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.setDockerEnv(body))
+        }
+    })
+}
+
+/**
+ * Create docker client instance
+ * 
+ * @param {any} ca docker daemon ca file
+ * @param {any} cert docker daemon cert file
+ * @param {any} key docker daemon key file
+ * @param {any} mock use mock flag (default false)
+ */
+export const dockerCreate = async function (ca,cert,key, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "dockerCreate",
+            options: {
+                ca: ca,
+                cert: cert,
+                key:key
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.dockerCreate(body))
+        }
+    })
+}
+
+/**
+ * List docker containers
+ * 
+ * @param {any} opts list container option (see dockerode docs)
+ * @param {any} mock use mock flag (default false)
+ */
+export const dockerListContainers = async function (opts, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "dockerListContainers",
+            options: {
+                opts:opts
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.dockerListContainers(body))
+        }
+    })
+}
+
+/**
+ * List docker images
+ * 
+ * @param {any} mock
+ */
+export const dockerListImages = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "dockerListImages",
+            options: {
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.dockerListImages(body))
+        }
+    })
+}
+
+/**
+ * Translates host name to IP address
+ * 
+ * @param {any} hostname host name to translate into IP
+ * @param {any} mock use mock flag (default false)
+ */
+export const dnsLookup = async function (hostname, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "dnsLookup",
+            options: {
+                hostname: hostname
+            }
+        };
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.dnsLookup(body))
         }
     })
 }
