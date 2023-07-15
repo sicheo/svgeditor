@@ -4,27 +4,33 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 import { onMount} from "svelte";
-import {mock} from '../../ustore.js'
-import {getDevices} from '../../script/api.js'
+import { _ } from 'svelte-i18n'
 
+import {sleep, deleteDevice } from '../../script/api.js'
+// DIALOGS FOR EDIT,AGENT,LOCATION, SAVE, DELETE
+import GenericDeleteDialog from '../Dialogs/GenericDeleteDialog.svelte'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
- 
-
-
-  
+    import AddTools from '../InnerTabs/AddTools.svelte';
+   
    export let color:any
    export let data = []
+
+   let refreshData:any
+   let dialog = GenericDeleteDialog
+   let dialogOptions = {data:data,delete:null,dialogDelete:$_('dialog_delete_device')}
+
 
    const columnHelper  = createColumnHelper()
 
    onMount(async ()=>{
-       const response = await getDevices(null,$mock)
-       data = response.data
-   
+       console.log("REFRESH ON LOAD")
+       await sleep(1000)
+       refreshData()
     });
 
-    let promise = getDevices(null,$mock)
+
+    //let promise = getDevices(null,$mock)
 
    const onClickLocation = (ev:any)=>{
 
@@ -39,7 +45,15 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    }
    const onClickDelete = (ev:any)=>{
-
+       const target = ev.target
+       const uid = target.getAttribute("data-uid")
+       console.log("ON CLICK DELETE",uid)
+       const found = data.find((item:any)=>item.uid == uid)
+       dialog = GenericDeleteDialog
+       dialogOptions ={data:found,delete:deleteDevice,dialogDelete:$_('dialog_delete_device')}
+       const dialogdiv = document.getElementById("build-tool-dialog")
+       if(dialogdiv)
+            dialogdiv.style.display = 'block'
    }
 
    const columns = [
@@ -78,25 +92,25 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => 'LOCALIZATION',
                         cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'agent',
                         header: () => 'AGENT',
-                        cell: (props) =>   flexRender(TableImage,{image:'/AGENT.svg',onClick:onClickAgent}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/AGENT.svg',onClick:onClickAgent,uid:props.getValue()}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'save',
                         header: () => 'SAVE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave,uid:props.getValue()}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'edit',
                         header: () => 'EDIT',
-                        cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit,uid:props.getValue()}),
                     }),
-                    columnHelper.accessor((row:any) => `${row}`, {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'delete',
                         header: () => 'DELETE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete,uid:props.getValue()}),
                     }),
    ]
 
@@ -105,14 +119,15 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
 </script>
     <div class= "class-panel-row">
-     {#await promise}
-	        <p>...waiting</p>
-     {:then response}
-            <SimpleTable data={response.data} columns={columns} color={color}></SimpleTable>
-     {:catch error}
-	         <p style="color: red">{error.message}</p>
-      {/await}
+     
+            <SimpleTable bind:data={data} columns={columns} color={color} bind:refreshData={refreshData}></SimpleTable>
+    
     </div>
+
+    <div id="build-tool-dialog">
+        <svelte:component this={dialog} bind:dialogOptions={dialogOptions} {color}/>
+    </div>
+
 <style>
 .class-panel-row {
   display: block;
@@ -121,4 +136,18 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
   font-size: small;
   font-weight: bold;
 }
+
+#build-tool-dialog{
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 11; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
 </style>

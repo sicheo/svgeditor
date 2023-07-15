@@ -1,14 +1,16 @@
 <script lang="ts">
-  import { navigate } from "svelte-routing";
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../../lib/components/NullPage.svelte'
   import Up2DataConfMp from "../../../lib/components/PageContents/Up2DataConfMP.svelte";
-  import {dataNavigation} from '../../../lib/ustore.js'
+  import {dataNavigation,mock} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { _ } from 'svelte-i18n'
+  import {getDevices} from '../../../lib/script/api.js'
+  import { onMount} from "svelte";
+
+
  
 
   let component = 'MainTabTools'
@@ -18,6 +20,20 @@
   let pages = $dataNavigation
 
   let page = $_('up2data_nav_conf')
+
+  let data = []
+
+  const menuadd = ()=>{ console.log("ADD NEW COL TO DATA")}
+
+  const menufunctions = {
+    menuadd: menuadd, 
+}
+
+  onMount(async ()=>{
+       const response = await getDevices(null,$mock)
+       data = response.data
+   
+    });
 
   let onBuddyClick = BuddyClick
 
@@ -36,8 +52,8 @@ let  onLogoutClick = LogoutClick
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <Up2DataConfMp color={color}/>
+            <InnerTab component={NullComponent} options={menufunctions} {color} {bgcolor}/>
+            <Up2DataConfMp color={color} data={data}/>
         </div>
     </div>
     </div>

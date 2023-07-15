@@ -19,7 +19,9 @@
   export let columns:any
   export let color:any
   export let tableOptions = {pagination:true}
+  export let refreshData:any
 
+ 
   let sorting = []
 
   const setSorting = updater => {
@@ -58,7 +60,7 @@
       onRowSelectionChange: setRowSelection,
     }
   )
-  const refreshData = () => {
+  refreshData = () => {
     console.info('refresh')
     options.update(prev => ({
       ...prev,
