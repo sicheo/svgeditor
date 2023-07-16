@@ -3,6 +3,8 @@
 // https://www.npmjs.com/package/gridjs
 
  import { onMount} from "svelte";
+ import {sleep} from '../../script/api.js'
+
 
  import {
     createSvelteTable,
@@ -19,7 +21,7 @@
   export let columns:any
   export let color:any
   export let tableOptions = {pagination:true}
-  export let refreshData:any
+  export let refreshDataExt:any
 
  
   let sorting = []
@@ -60,13 +62,20 @@
       onRowSelectionChange: setRowSelection,
     }
   )
-  refreshData = () => {
+  const refreshData = () => {
     console.info('refresh')
     options.update(prev => ({
       ...prev,
       data: data,
     }))
   }
+
+  refreshDataExt = async()=>{
+      await sleep(1000)
+      $table.setPageIndex(0)
+      refreshData()
+  }
+
   const rerender = () => {
     console.info('rerender')
     options.update(options => ({

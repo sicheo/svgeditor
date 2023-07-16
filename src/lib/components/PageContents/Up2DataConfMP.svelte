@@ -16,17 +16,16 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    export let color:any
    export let data = []
 
-   let refreshData:any
+   let refreshDataExt:any
    let dialog = GenericDeleteDialog
-   let dialogOptions = {data:data,delete:null,dialogDelete:$_('dialog_delete_device')}
+   let dialogOptions = {row:{},delete:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
 
 
    const columnHelper  = createColumnHelper()
 
    onMount(async ()=>{
        console.log("REFRESH ON LOAD")
-       await sleep(1000)
-       refreshData()
+       refreshDataExt()
     });
 
 
@@ -50,7 +49,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        console.log("ON CLICK DELETE",uid)
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericDeleteDialog
-       dialogOptions ={data:found,delete:deleteDevice,dialogDelete:$_('dialog_delete_device')}
+       dialogOptions ={row:found,delete:deleteDevice,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -120,12 +119,12 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 </script>
     <div class= "class-panel-row">
      
-            <SimpleTable bind:data={data} columns={columns} color={color} bind:refreshData={refreshData}></SimpleTable>
+            <SimpleTable bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
     
     </div>
 
     <div id="build-tool-dialog">
-        <svelte:component this={dialog} bind:dialogOptions={dialogOptions} {color}/>
+        <svelte:component this={dialog} bind:data={data} bind:dialogOptions={dialogOptions} {color}/>
     </div>
 
 <style>

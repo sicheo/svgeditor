@@ -6,6 +6,8 @@ import {mock,analytics} from '../../../lib/ustore.js'
 
 export let dialogOptions : any
 export let color
+export let data = []
+
 
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
@@ -14,11 +16,12 @@ const exitDialog = (event:any)=>{
 }
 
 const deleteFunc = async(event:any) =>{
-	console.log("** GENERIC DELETE DIALOG ***", dialogOptions.data)
-	const filters = [{op:'eq',name:'uid',value:dialogOptions.data.uid}]
+	const filters = [{op:'eq',name:'uid',value:dialogOptions.row.uid}]
 	const response = await dialogOptions.delete(filters,$mock)
-	dialogOptions.data = response
 	const dialog = document.getElementById("build-tool-dialog")
+	data = response.data
+	console.log("**** GENERIC DELETE REFRESH DATA*****")
+	dialogOptions.refreshData()
     if(dialog)
         dialog.style.display = 'none'
 }
@@ -35,7 +38,7 @@ const deleteFunc = async(event:any) =>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 				{dialogOptions.dialogDelete}
-				<p>{dialogOptions.data.name}</p>
+				<p>{dialogOptions.row.name}</p>
 		</div>
 		<div class="class-panel-footer">
 				<input type="button" on:click={deleteFunc} value="{$_('dialog_delete_button')}" width="25" height="25"> 
