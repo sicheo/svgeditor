@@ -39,6 +39,7 @@
   "dialog_save_keepversion": "Keep Version",
   "dialog_save_changeversion": "Change Version",
   "dialog_save_newversion": "New Version",
+  "dialog_save_device": "SAVE DEVICE TO DB",
   "dialog_save_button": "SAVE",
   "dialog_delete_process": "DELETE GRAPH FROM DB",
   "dialog_delete_device": "DELETE DEVICE FROM DB",

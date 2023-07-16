@@ -6,9 +6,11 @@ import TableText from  '../Tables/TableText.svelte'
 import { onMount} from "svelte";
 import { _ } from 'svelte-i18n'
 
-import {sleep, deleteDevice } from '../../script/api.js'
+import {sleep, deleteDevice,setDevice } from '../../script/api.js'
 // DIALOGS FOR EDIT,AGENT,LOCATION, SAVE, DELETE
 import GenericDeleteDialog from '../Dialogs/GenericDeleteDialog.svelte'
+import GenericSaveDialog from '../Dialogs/GenericSaveDialog.svelte'
+
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
     import AddTools from '../InnerTabs/AddTools.svelte';
@@ -18,7 +20,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    let refreshDataExt:any
    let dialog = GenericDeleteDialog
-   let dialogOptions = {row:{},delete:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
+   let dialogOptions = {row:{},delete:null,save:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
 
 
    const columnHelper  = createColumnHelper()
@@ -38,6 +40,15 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    }
    const onClickSave = (ev:any)=>{
+       const target = ev.target
+       const uid = target.getAttribute("data-uid")
+       console.log("ON CLICK DELETE",uid)
+       const found = data.find((item:any)=>item.uid == uid)
+       dialog = GenericSaveDialog
+       dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_save_device'),refreshData:refreshDataExt}
+       const dialogdiv = document.getElementById("build-tool-dialog")
+       if(dialogdiv)
+            dialogdiv.style.display = 'block'
 
    }
    const onClickEdit = (ev:any)=>{
@@ -49,7 +60,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        console.log("ON CLICK DELETE",uid)
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericDeleteDialog
-       dialogOptions ={row:found,delete:deleteDevice,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
+       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'

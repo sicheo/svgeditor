@@ -289,7 +289,7 @@ export const setDevice = async function (device, mock = false) {
         const body = {
             type: "api",
             version: 1.0,
-            command: "setDevices",
+            command: "setDevice",
             options: {
                 device: device
             }
@@ -304,7 +304,7 @@ export const setDevice = async function (device, mock = false) {
                     reject(error)
                 })
         } else {
-            resolve(mocks.setDevices(body))
+            resolve(mocks.setDevice(body))
         }
     })
 }

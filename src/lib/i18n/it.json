@@ -38,6 +38,7 @@
   "dialog_save_keepversion": "Mantieni Versione",
   "dialog_save_changeversion": "Cambia Versione",
   "dialog_save_newversion": "Nuova Versione",
+  "dialog_save_device": "SALVA DEVICE SU DB",
   "dialog_save_button": "SALVA",
   "dialog_delete_process": "CANCELLA GRAFO DAL DB",
   "dialog_delete_device": "CANCELLA DEVICE DAL DB",
