@@ -26,6 +26,16 @@
  
   let sorting = []
 
+  onMount(async ()=>{
+       const div = document.getElementById("tanstack-table-id")
+       const refreshListener = async (ev:any)=>{
+           console.log("GOT REFRESHDATA EVENT",ev.detail)
+           data = ev.detail
+           refreshDataExt()
+        }
+       div.addEventListener("refreshtable",refreshListener)
+    });
+
   const setSorting = updater => {
     if (updater instanceof Function) {
       sorting = updater(sorting)
@@ -55,7 +65,7 @@
       onSortingChange: setSorting,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
-      etPaginationRowModel: getPaginationRowModel(),
+      getPaginationRowModel: getPaginationRowModel(),
       debugTable: true,
       debugRows: true,
       enableRowSelection: true,
@@ -63,17 +73,22 @@
     }
   )
   const refreshData = () => {
-    console.info('refresh')
+    console.info('refresh',data)
     options.update(prev => ({
       ...prev,
       data: data,
     }))
   }
 
+  
   refreshDataExt = async()=>{
-      await sleep(1000)
-      $table.setPageIndex(0)
+      await sleep(500)
+      //$table.setPageIndex($table.getPageCount() - 1)
       refreshData()
+      $table.setPageIndex($table.getPageCount() - 1)
+      await sleep(500)
+      refreshData()
+      console.log($table.getPaginationRowModel().rows)
   }
 
   const rerender = () => {

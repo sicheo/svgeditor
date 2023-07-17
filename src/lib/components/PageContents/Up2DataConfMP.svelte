@@ -20,14 +20,15 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    let refreshDataExt:any
    let dialog = GenericDeleteDialog
-   let dialogOptions = {row:{},delete:null,save:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
-
+   let dialogOptions = {row:{},delete:null,save:null,dialogDelete:$_('dialog_delete_device')}
+   let tablediv
 
    const columnHelper  = createColumnHelper()
 
    onMount(async ()=>{
-       console.log("REFRESH ON LOAD")
-       refreshDataExt()
+       tablediv = document.getElementById("tanstack-table-id")
+       const eventShow = new CustomEvent("refreshtable",{detail: data});
+	   tablediv.dispatchEvent(eventShow)
     });
 
 
@@ -45,10 +46,11 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        console.log("ON CLICK DELETE",uid)
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericSaveDialog
-       dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_save_device'),refreshData:refreshDataExt}
+       dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_save_device')}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
+       
 
    }
    const onClickEdit = (ev:any)=>{
@@ -128,7 +130,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
   
 
 </script>
-    <div class= "class-panel-row">
+    <div class= "class-panel-row" id="id-data-conf-table-div">
      
             <SimpleTable bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
     

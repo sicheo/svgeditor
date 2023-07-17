@@ -32,6 +32,7 @@
   "err_miss_final": "L'ULTIMO NODO DEVE ESSERE DI TIPO FINAL",
   "err_process_miss-auth": "AUTH DATA MANCANTI",
   "err_process_miss-ver": "VERSIONE PROCESSO MANCANTE",
+  "err_process_blocked": "VERSIONE BLOCCATA",
   "dialog_load_process": "SELEZIONE DOCUMENTO",
   "dialog_load_button": "CARICA",
   "dialog_save_process": "SALVA GRAFO SU DB",
@@ -73,6 +74,7 @@
   "up2clone_auth_table_version": "VERSIONE",
   "up2clone_auth_table_authorized": "AUTORIZZATO",
   "up2clone_auth_table_date": "ULTIMA MODIFICA",
+  "up2clone_auth_table_authdate": "DATA AUT",
   "up2clone_auth_table_signature": "FIRMA",
   "up2clone_auth_table_block": "BLOCCO",
   "up2clone_docker_submit": "Invia"

@@ -7,7 +7,7 @@ import {findTreePath} from '../../script/utils.js'
 
 
 export let tree = null
-export let process = null
+export let process = {data:{authorization:{}}}
 export let color
 
 let items = [
@@ -56,6 +56,11 @@ let callback = (params:any)=>{
 				break
 		}
 	}
+const authorize = (ev:any)=>{
+	const target = ev.target
+	const checked = target.checked
+	console.log("CHECKED", checked)
+}
 </script>
     <div class="sign-dialog-class">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
@@ -75,7 +80,23 @@ let callback = (params:any)=>{
 					</div>
 				</div>
 				<div class="sign-page-right-body">
+					<div class="sign-page-right-body-body">
 					</div>
+					<div class="sign-page-right-body-footer">
+						<span>{$_("up2clone_auth_table_authorized")}</span>
+						<input  type="checkbox" checked={process.data.authorization.authorized} disabled on:change={authorize}/>
+						<span>{$_("up2clone_auth_table_block")}</span>
+						<input  type="checkbox" checked={process.data.authorization.blocked} disabled on:change={authorize}/>
+						<span>{$_("up2clone_auth_table_authdate")}</span>
+						<input type="datetime-local" value={process.data.authorization.authdate} disabled on:change={authorize}/>
+						<span>{$_("up2clone_auth_table_version")}</span>
+						<input type="text" size="6" value={process.data.authorization.version} disabled on:change={authorize}/>
+						<span>{$_("up2clone_auth_table_signature")}</span>
+						<input type="text" size="10" value={process.data.authorization.signature} disabled on:change={authorize}/>
+						<input type="button" size="10" value={$_("up2clone_auth_table_signature")} on:change={authorize}/>
+
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -109,7 +130,22 @@ let callback = (params:any)=>{
 	width:100%;
 	height: 80%;
 	overflow-y:auto ;
-	border: 1px solid;
+}
+.sign-page-right-body-body{
+	height: 80%;
+}
+.sign-page-right-body-footer{
+	display:flex;
+	justify-content: left ;
+}
+
+.sign-page-right-body-footer span{
+	font-weight: bold ;
+}
+
+.sign-page-right-body-footer input[type="checkbox"]:checked{
+	background-color: red;
+	background: red;
 }
 
 </style>

@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\i18n",
+    "\\src\\lib\\script",
     "\\src\\routes",
     "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\build",
-    "\\src\\routes\\up2data",
-    "\\src\\routes\\up2data\\configuration"
+    "\\src\\routes\\up2clone\\build"
   ],
-  "SelectedNode": "\\src\\routes\\up2data\\configuration\\Up2DataConfiguration.svelte",
+  "SelectedNode": "\\src\\lib\\i18n\\en.json",
   "PreviewInSolutionExplorer": false
 }

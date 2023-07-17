@@ -1,11 +1,23 @@
 <script lang="ts">
 import { _ } from 'svelte-i18n'
+import { onMount} from "svelte";
+
+
 
 export let color="#0e0e0e"
 export let options
+export let data
 
-const add = () =>{
-    options.additem()
+let tablediv
+
+onMount(async ()=>{
+       tablediv = document.getElementById("tanstack-table-id")
+    });
+
+const add = async () =>{
+    data.push(options.newrow)
+    const eventShow = new CustomEvent("refreshtable",{detail: data});
+	tablediv.dispatchEvent(eventShow)
 }
 
 

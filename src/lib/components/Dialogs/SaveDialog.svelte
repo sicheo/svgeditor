@@ -21,9 +21,11 @@ const exitDialog = (event:any)=>{
 
 
 const saveProcess = async(event:any) =>{
+	console.log(" SAVE PROCESS ",dialogOptions.data)
 	if(newversion != dialogOptions.data.data.authorization.version){
 		dialogOptions.data.data.authorization.version = newversion
 		dialogOptions.data.uuid = uuidv4()
+		dialogOptions.data.data.authorization.blocked = false
 	}
 	// CHECK PROCESS BEFORE SAVE
 	const check = isProcessValid(dialogOptions.data)
@@ -48,6 +50,8 @@ const isProcessValid =(process:any) =>{
 		return($_('err_process_miss-auth'))
 	if(!process.data.authorization.version || process.data.authorization.version == "")
 		return($_('err_process_miss-ver'))
+	if(process.data.authorization.blocked)
+		return($_('err_process_blocked'))
 	return("OK")
 }
 

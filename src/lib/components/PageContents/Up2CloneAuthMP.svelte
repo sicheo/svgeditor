@@ -22,7 +22,7 @@ export let color:any
 
 const columnHelper  = createColumnHelper()
 let data = []
-let process = ''
+let process = {data:{authorization:{}}}
 let tree: any = {}
 
 

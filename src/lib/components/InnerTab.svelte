@@ -5,11 +5,12 @@ export let color = "#007d35"
 export let bgcolor = "#d5e8d4"
 export let dialog = null
 export let dialogOptions = {data:[]}
+export let data = []
 
 </script>
 
 <div class="inner-tab-component" style="--color:{color}; --background-color:{bgcolor}">
-	<svelte:component this={component} bind:options={options} {color} {bgcolor} bind:dialog={dialog} bind:dialogOptions={dialogOptions}/>
+	<svelte:component this={component} bind:options={options} bind:data={data} {color} {bgcolor} bind:dialog={dialog} bind:dialogOptions={dialogOptions}/>
 </div>
 
 <style>

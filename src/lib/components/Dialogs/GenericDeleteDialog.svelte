@@ -2,12 +2,18 @@
 
 import { _ } from 'svelte-i18n'
 import {mock,analytics} from '../../../lib/ustore.js'
+import { onMount} from "svelte";
 
 
 export let dialogOptions : any
 export let color
 export let data = []
 
+let tablediv
+
+onMount(async ()=>{
+       tablediv = document.getElementById("tanstack-table-id")
+    });
 
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
@@ -20,8 +26,8 @@ const deleteFunc = async(event:any) =>{
 	const response = await dialogOptions.delete(filters,$mock)
 	const dialog = document.getElementById("build-tool-dialog")
 	data = response.data
-	console.log("**** GENERIC DELETE REFRESH DATA*****")
-	dialogOptions.refreshData()
+	const eventShow = new CustomEvent("refreshtable",{detail: data});
+	tablediv.dispatchEvent(eventShow)
     if(dialog)
         dialog.style.display = 'none'
 }

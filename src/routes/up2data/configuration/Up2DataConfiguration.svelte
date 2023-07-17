@@ -1,7 +1,7 @@
 <script lang="ts">
   import MainTab from '../../../lib/components/MainTab.svelte'
   import InnerTab from '../../../lib/components/InnerTab.svelte'
-  import NullComponent from '../../../lib/components/NullComponent.svelte'
+  import AddTools from '../../../lib/components/InnerTabs/AddTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2DataConfMp from "../../../lib/components/PageContents/Up2DataConfMP.svelte";
   import {dataNavigation,mock} from '../../../lib/ustore.js'
@@ -9,6 +9,9 @@
   import { _ } from 'svelte-i18n'
   import {getDevices} from '../../../lib/script/api.js'
   import { onMount} from "svelte";
+  import { v4 as uuidv4 } from 'uuid';
+  import {getLocalDate} from '../../../lib/script/utils.js'
+
 
 
  
@@ -23,10 +26,34 @@
 
   let data = []
 
-  const menuadd = ()=>{ console.log("ADD NEW COL TO DATA")}
+  
+  const newrow = { 
+        uid: uuidv4(),
+        name: '',
+        lastmodified: getLocalDate(new Date(Date.now())),
+        description: "",
+        localization: {
+            plant: 0,
+            department: 0,
+            line: 0,
+        },
+        host: "",
+        port: 3001,
+        type: "VM",
+        os: "MICROSOFT",
+        userid: "",
+        password: "",
+        hwdetails: {
+            mac: "",
+            brand: "",
+            model: "",
+        },
+    }
+   
 
   const menufunctions = {
-    menuadd: menuadd, 
+    newrow: newrow
+    
 }
 
   onMount(async ()=>{
@@ -52,8 +79,8 @@ let  onLogoutClick = LogoutClick
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
         <div class="content-panel">
-            <InnerTab component={NullComponent} options={menufunctions} {color} {bgcolor}/>
-            <Up2DataConfMp color={color} data={data}/>
+            <InnerTab component={AddTools} options={menufunctions} bind:data={data} {color} {bgcolor}/>
+            <Up2DataConfMp color={color} bind:data={data}/>
         </div>
     </div>
     </div>

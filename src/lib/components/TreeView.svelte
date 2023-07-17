@@ -44,7 +44,7 @@
 		{:else}
 			<span>
 				<span class="no-arrow"/>
-				<span class="item" name="{tree.label}" data-type="{tree.type}" style="--color:{color};--background-color:{tree.color};" on:click={manageNode}>{tree.label}</span>
+				<span class="item-no-arrow" name="{tree.label}" data-type="{tree.type}" style="--color:{color};--background-color:{tree.color};" >{tree.label}</span>
 			</span>
 		{/if}
 	</li>
@@ -78,7 +78,15 @@
 		/*background-color:var(--background-color);*/
 	}
 
-	.item [class^="s"] .checked{
-		background-color: red;
+	.item-no-arrow {
+		cursor: auto;
+		border-radius: 5px;
+		border: 1px solid;
+		padding: 2px;
+		font-weight: bold ;
+		font-size:small;
+		color: var(--color);
+		background-color: var(--background-color);
+		/*background-color:var(--background-color);*/
 	}
 </style>

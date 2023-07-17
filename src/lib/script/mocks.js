@@ -585,11 +585,11 @@ let processes = [
             description: "Master Record PROD5678",
             lastmodified: getLocalDate(new Date(Date.now())),
             authorization: {
-                authorized: false,
+                authorized: true,
                 blocked: true,
-                authdate: '',
+                authdate: '2023-07-17T16:04:00',
                 version: '1.0',
-                signature: null
+                signature: "ABCDEFGHI"
             },
             machines: [],
             materials: [],
