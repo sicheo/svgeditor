@@ -4,6 +4,8 @@
 
  import { onMount} from "svelte";
  import {sleep} from '../../script/api.js'
+ 
+
 
 
  import {
@@ -26,13 +28,18 @@
  
   let sorting = []
 
-  onMount(async ()=>{
-       const div = document.getElementById("tanstack-table-id")
-       const refreshListener = async (ev:any)=>{
+  const getLocalData = ()=>{
+      return data
+  }
+
+  const refreshListener = async (ev:any)=>{
            console.log("GOT REFRESHDATA EVENT",ev.detail)
            data = ev.detail
            refreshDataExt()
         }
+
+  onMount(async ()=>{
+       const div = document.getElementById("tanstack-table-id")
        div.addEventListener("refreshtable",refreshListener)
     });
 
@@ -57,8 +64,8 @@
 
   const options = writable(
     {
-      data,
-      columns,
+      data:data,
+      columns:columns,
       state: {
         sorting,
       },
@@ -66,8 +73,8 @@
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
-      debugTable: true,
-      debugRows: true,
+      debugTable: false,
+      debugRows: false,
       enableRowSelection: true,
       onRowSelectionChange: setRowSelection,
     }
@@ -76,19 +83,17 @@
     console.info('refresh',data)
     options.update(prev => ({
       ...prev,
-      data: data,
+      data: getLocalData(),
     }))
   }
 
   
   refreshDataExt = async()=>{
-      await sleep(500)
+      //await sleep(500)
       //$table.setPageIndex($table.getPageCount() - 1)
-      refreshData()
       $table.setPageIndex($table.getPageCount() - 1)
-      await sleep(500)
+      await sleep(300)
       refreshData()
-      console.log($table.getPaginationRowModel().rows)
   }
 
   const rerender = () => {

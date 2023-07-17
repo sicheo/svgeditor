@@ -4,19 +4,23 @@ import { onMount} from "svelte";
 
 
 
+
 export let color="#0e0e0e"
 export let options
 export let data
 
 let tablediv
+let localdata
 
 onMount(async ()=>{
        tablediv = document.getElementById("tanstack-table-id")
+       localdata = JSON.parse(JSON.stringify(data))
     });
 
 const add = async () =>{
-    data.push(options.newrow)
-    const eventShow = new CustomEvent("refreshtable",{detail: data});
+    localdata = JSON.parse(JSON.stringify(data))
+    localdata.push(options.newrow)
+    const eventShow = new CustomEvent("refreshtable",{detail: localdata});
 	tablediv.dispatchEvent(eventShow)
 }
 

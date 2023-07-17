@@ -99,7 +99,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => 'DESCRIPTION',
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
-                    columnHelper.accessor('localization', {
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'localization',
                         header: () => 'LOCALIZATION',
                         cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation}),
