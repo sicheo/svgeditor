@@ -45,6 +45,7 @@
   "dialog_delete_process": "DELETE GRAPH FROM DB",
   "dialog_delete_device": "DELETE DEVICE FROM DB",
   "dialog_edit_device": "EDIT DEVICE",
+  "dialog_location_device": "EDIT DEVICE LOCATION",
   "dialog_delete_button": "DELETE",
   "dialog_search": "Search...",
   "dialog_drop_placheholder": "Select your option",
@@ -97,5 +98,8 @@
   "table-db-device-connection": "CONNECTION",
   "table-db-device-ssh": "SSH",
   "table-db-device-docker": "DOCKER",
-  "table-db-device-deploy": "DEPLOY"
+  "table-db-device-deploy": "DEPLOY",
+  "table-db-device-mac": "MAC",
+  "table-db-device-brand": "BRAND",
+  "table-db-device-model": "MODEL"
 }

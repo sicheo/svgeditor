@@ -5,7 +5,7 @@
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import NullPage from '../../../lib/components/NullPage.svelte'
-  import Up2DataConfMp from "../../../lib/components/PageContents/Up2DataConfMP.svelte";
+  import Up2CloneConfMp from "../../../lib/components/PageContents/Up2CloneConfMP.svelte";
   import {cloneNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { _ } from 'svelte-i18n'
@@ -48,7 +48,7 @@ onMount(async ()=>{
         </div>
         <div class="content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <Up2DataConfMp bind:data={data} color={color}/>
+            <Up2CloneConfMp bind:data={data} color={color}/>
         </div>
     </div>
     </div>

@@ -41,6 +41,7 @@
   "dialog_save_newversion": "Nuova Versione",
   "dialog_save_device": "SALVA DEVICE SU DB",
   "dialog_edit_device": "EDITA DEVICE",
+  "dialog_location_device": "EDITA LOCALIZZAZIONE DEVICE",
   "dialog_save_button": "SALVA",
   "dialog_delete_process": "ELIMINA GRAFO DAL DB",
   "dialog_delete_device": "ELIMINA DEVICE DAL DB",
@@ -97,5 +98,8 @@
   "table-db-device-connection": "CONNESSIONE",
   "table-db-device-ssh": "SSH",
   "table-db-device-docker": "DOCKER",
-  "table-db-device-deploy": "RILASCIA"
+  "table-db-device-deploy": "RILASCIA",
+  "table-db-device-mac": "MAC",
+  "table-db-device-brand": "MARCHIO",
+  "table-db-device-model": "MODELLO"
 }

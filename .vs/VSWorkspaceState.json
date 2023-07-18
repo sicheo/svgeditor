@@ -4,12 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
+    "\\src\\lib\\components\\InnerTabs",
     "\\src\\lib\\components\\PageContents",
     "\\src\\lib\\i18n",
-    "\\src\\lib\\script",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone"
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataConfMP.svelte",
+  "SelectedNode": "\\src\\lib\\components\\InnerTabs\\AddTools.svelte",
   "PreviewInSolutionExplorer": false
 }

@@ -13,8 +13,6 @@ import {getImage} from '../../script/utils.js'
 import GenericDeleteDialog from '../Dialogs/GenericDeleteDialog.svelte'
 import GenericSaveDialog from '../Dialogs/GenericSaveDialog.svelte'
 import EditDeviceDialog from '../Dialogs/EditDeviceDialog.svelte'
-import EditLocationDialog from '../Dialogs/EditLocationDialog.svelte'
-
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
@@ -37,17 +35,9 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
     });
 
 
- 
+    //let promise = getDevices(null,$mock)
 
    const onClickLocation = (ev:any)=>{
-       const target = ev.target
-       const uid = target.getAttribute("data-uid")
-       const found = data.find((item:any)=>item.uid == uid)
-       dialog = EditLocationDialog
-       dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_location_device')}
-       const dialogdiv = document.getElementById("build-tool-dialog")
-       if(dialogdiv)
-            dialogdiv.style.display = 'block'
 
    }
    const onClickAgent = (ev:any)=>{
@@ -117,11 +107,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         id : 'description',
                         header: () => $_("table-db-device-description"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
-                    }),
-                    columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'localization',
-                        header: () => $_("table-db-device-localization"),
-                        cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'agent',

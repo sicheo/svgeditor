@@ -71,12 +71,18 @@ const changeValue = (ev:any)=>{
 				<label for="name">{$_("table-db-device-name")}: </label>
 				<label for="host">{$_("table-db-device-host")}: </label>
 				<label for="port">{$_("table-db-device-port")}: </label>
+				<label for="mac">{$_("table-db-device-mac")}: </label>
+				<label for="brand">{$_("table-db-device-brand")}: </label>
+				<label for="model">{$_("table-db-device-model")}: </label>
 			</div>
 
 			<div class="inputs1">
 				<input type="text" value="{dialogOptions.row.name}" name="name" id="name" on:change={changeValue}/>
 				<input type="text" value="{dialogOptions.row.host}" name="host" id="host" on:change={changeValue}/>
 				<input type="text" value="{dialogOptions.row.port}" name="port" id="port" on:change={changeValue}/>
+				<input type="text" value="{dialogOptions.row.hwdetails.mac}" name="mac" id="mac" on:change={changeValue}/>
+				<input type="text" value="{dialogOptions.row.hwdetails.brand}" name="brand" id="brand" on:change={changeValue}/>
+				<input type="text" value="{dialogOptions.row.hwdetails.model}" name="model" id="model" on:change={changeValue}/>
 			</div>
 
 			<div class="labels2">
