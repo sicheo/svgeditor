@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import { _ } from 'svelte-i18n'
-import {mock,analytics} from '../../../lib/ustore.js'
+import {mock} from '../../../lib/ustore.js'
 import { onMount} from "svelte";
 
 
@@ -37,13 +37,13 @@ const deleteFunc = async(event:any) =>{
 </script>
 
 <div class="load-dialog-class" >
-		<div class="class-panel-header" style="border-bottom: 1px solid;">
+		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
+				<p>{dialogOptions.dialogDelete}</p>
 				<div class="class-last-item">
 					<input type="image" src="/EXIT.svg" on:click={exitDialog} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
-				{dialogOptions.dialogDelete}
 				<p>{dialogOptions.row.name}</p>
 		</div>
 		<div class="class-panel-footer">
@@ -63,9 +63,16 @@ const deleteFunc = async(event:any) =>{
 }
 
 .class-panel-header {
-  display: block;
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  color: var(--color);
+  font-weight: bold ;
+  background-color: #eeeeee;
 }
+.class-panel-header p{
+ margin-left: 8px;
+}
+
 .class-panel-body {
   display: block;
   text-align: center;
@@ -78,7 +85,7 @@ const deleteFunc = async(event:any) =>{
   font-weight:normal ;
 }
 .class-last-item {
-  margin-left: auto;
+  margin-top: 15px;
 }
 
 .class-panel-body {
@@ -88,6 +95,10 @@ const deleteFunc = async(event:any) =>{
   display: block;
   text-align: center;
   background-color: white ;
+}
+
+.class-panel-footer input {
+	margin-bottom: 10px;
 }
 
 

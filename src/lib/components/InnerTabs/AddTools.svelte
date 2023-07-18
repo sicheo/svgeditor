@@ -43,6 +43,7 @@ const add = async () =>{
       opacity: 0.8;
       color: var(--color);
       cursor: pointer;
+      font-weight: bold ;
   }
 
 </style>
