@@ -13,10 +13,12 @@ const osImages = getImageArray("deviceos")
 const typeImages = getImageArray("devicetype")
 
 let tablediv
+let localdata
+
 
 onMount(async ()=>{
        tablediv = document.getElementById("tanstack-table-id")
-       
+       localdata = JSON.parse(JSON.stringify(data))
     });
 
 const exitPage = (ev:any)=>{
@@ -50,7 +52,8 @@ const changeValue = (ev:any)=>{
 	found.lastmodified = getLocalDate(new Date(Date.now()))
 	// TEST TABLE UPDATE
 	console.log(ev.target.name,ev.target.value,dialogOptions.row.uid,data)
-	const eventShow = new CustomEvent("refreshtable",{detail: data});
+	localdata = JSON.parse(JSON.stringify(data))
+	const eventShow = new CustomEvent("refreshtable",{detail: localdata});
 	tablediv.dispatchEvent(eventShow)
 }
 

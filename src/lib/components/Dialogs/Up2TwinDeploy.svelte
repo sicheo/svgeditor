@@ -1,10 +1,7 @@
 <script lang="ts">
 
-
 export let color
 export let dialogOptions
-
-
 
 
 const exitPage = (ev:any)=>{
@@ -17,21 +14,20 @@ const exitPage = (ev:any)=>{
 
 </script>
 
-<div class="install-dialog-class">
+<div class="deploy-dialog-class">
 	<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
-		{dialogOptions.title} {dialogOptions.device.uid}
+		<p>{dialogOptions.title} {dialogOptions.device.name}</p>
 		<div class="class-last-item">
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 	    </div>
 	</div>
 	<div class="class-panel-body">
-		
 	</div>
 </div>
 
 
 <style>
-.install-dialog-class{
+.deploy-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
@@ -46,6 +42,11 @@ const exitPage = (ev:any)=>{
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
+   background-color: #eeeeee;
+}
+
+.class-panel-header p{
+ margin-left: 8px;
 }
 
 .class-panel-body {
@@ -53,5 +54,9 @@ const exitPage = (ev:any)=>{
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
+}
+
+.class-last-item input{
+	margin-top: 20px;
 }
 </style>

@@ -1028,7 +1028,7 @@ const login = (body) => {
         body.data = { token: 'ABCDEFGH', role: 'SADMIN' }
         body.error = null
         attempts = 0
-    }else if (body.options.username == "MOCKUSER" && body.options.password == "MOCKUSER") {
+    }else if (body.options.username == "USER" && body.options.password == "USER") {
         body.data = { token: 'ABCDEFGH', role: 'USER' }
         body.error = null
         attempts = 0

@@ -8,9 +8,9 @@ import { onMount} from "svelte";
 import {mock} from '../../ustore.js'
 import {getDevices} from '../../script/api.js'
 import {ping,getDeviceInfo} from '../../script/api.js'
-import Up2TwinDocker from '../PageContents/Up2TwinDocker.svelte'
-import Up2TwinInstall from '../PageContents/Up2TwinInstall.svelte'
-import Up2TwinDeploy from '../PageContents/Up2TwinDeploy.svelte'
+import Up2TwinDocker from '../Dialogs/Up2TwinDocker.svelte'
+import Up2TwinInstall from '../Dialogs/Up2TwinInstall.svelte'
+import Up2TwinDeploy from '../Dialogs/Up2TwinDeploy.svelte'
 
 import { _ } from 'svelte-i18n'
 import {getImage} from '../../script/utils.js'
@@ -20,7 +20,7 @@ import {getImage} from '../../script/utils.js'
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
-    import App from '../../../App.svelte';
+   
  
 
   
@@ -230,7 +230,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 .modal-editor-master-params-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 20px;
   border: 1px solid #888;
   width: 90%;
 }

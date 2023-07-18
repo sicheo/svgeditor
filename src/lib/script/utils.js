@@ -122,7 +122,6 @@ export function getImage(type, value) {
             found = deviceOs.find((item) => (item.value == value))
             if (found)
                 image = found.img
-            console.log("** GETIMAGE **", type, value, found)
             break
         default:
             break

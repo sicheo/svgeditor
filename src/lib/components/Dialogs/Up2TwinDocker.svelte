@@ -247,7 +247,6 @@ const getContainers = (ev:any) =>{
 	color: #777777;
 	background-color: white ;
 	width: 100%;
-	min-height: 300px;
 	height: 100%;
 	margin: auto;
 }
@@ -257,6 +256,11 @@ const getContainers = (ev:any) =>{
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
+  background-color: #eeeeee;
+}
+
+.class-panel-header span{
+	margin-left: 5px;
 }
 
 .class-panel-body {
@@ -298,7 +302,7 @@ input[type="file"] {
 input[type="button"] {
         color: var(--color);
 		background-color: white ;
-		padding: 5px 5px;
+		padding: 3px 3px;
 		font-size: 14px;
         font-weight: bold;
       }
@@ -309,8 +313,8 @@ input[type="button"] {
       
 .button {
         display: inline-block;
-        padding: 5px 5px;
-		margin-right: 5px;
+        padding: 3px 3px 3px 3px;
+		margin: 3px 3px 3px 3px;
         cursor: pointer;
         border-radius: 5px;
         background-color: var(--background-color);
