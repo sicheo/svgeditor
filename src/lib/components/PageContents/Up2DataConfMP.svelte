@@ -6,14 +6,17 @@ import TableText from  '../Tables/TableText.svelte'
 import { onMount} from "svelte";
 import { _ } from 'svelte-i18n'
 
-import {sleep, deleteDevice,setDevice } from '../../script/api.js'
+import {deleteDevice,setDevice } from '../../script/api.js'
+import {getImage} from '../../script/utils.js'
+
 // DIALOGS FOR EDIT,AGENT,LOCATION, SAVE, DELETE
 import GenericDeleteDialog from '../Dialogs/GenericDeleteDialog.svelte'
 import GenericSaveDialog from '../Dialogs/GenericSaveDialog.svelte'
+import EditDeviceDialog from '../Dialogs/EditDeviceDialog.svelte'
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
-    import AddTools from '../InnerTabs/AddTools.svelte';
+
    
    export let color:any
    export let data = []
@@ -43,7 +46,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    const onClickSave = (ev:any)=>{
        const target = ev.target
        const uid = target.getAttribute("data-uid")
-       console.log("ON CLICK DELETE",uid)
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericSaveDialog
        dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_save_device')}
@@ -54,15 +56,22 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    }
    const onClickEdit = (ev:any)=>{
+       const target = ev.target
+       const uid = target.getAttribute("data-uid")
+       const found = data.find((item:any)=>item.uid == uid)
+       dialog = EditDeviceDialog
+       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_edit_device')}
+       const dialogdiv = document.getElementById("build-tool-dialog")
+       if(dialogdiv)
+            dialogdiv.style.display = 'block'
 
    }
    const onClickDelete = (ev:any)=>{
        const target = ev.target
        const uid = target.getAttribute("data-uid")
-       console.log("ON CLICK DELETE",uid)
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericDeleteDialog
-       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_delete_device'),refreshData:refreshDataExt}
+       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_delete_device')}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -71,57 +80,57 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    const columns = [
                     columnHelper.accessor('type', {
                         id : 'type',
-                        header: () => 'TYPE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/VMWARE.svg'}),
+                        header: () => $_("table-db-device-type"),
+                        cell: (props) =>   flexRender(TableImage,{image:getImage('devicetype',props.getValue())}),
                     }),
                     columnHelper.accessor('os', {
                         id : 'os',
-                        header: () => 'TYPE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/UBUNTU.svg'}),
+                        header: () => $_("table-db-device-os"),
+                        cell: (props) =>   flexRender(TableImage,{image:getImage('deviceos',props.getValue())}),
                     }),
                     columnHelper.accessor('name', {
                         id : 'name',
-                        header: () => 'NAME',
+                        header: () => $_("table-db-device-name"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor('host', {
                         id : 'host',
-                        header: () => 'IP/HOST',
+                        header: () => $_("table-db-device-host"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor('port', {
                         id : 'port',
-                        header: () => 'PORT',
+                        header: () => $_("table-db-device-port"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),  
                     columnHelper.accessor('description', {
                         id : 'description',
-                        header: () => 'DESCRIPTION',
+                        header: () => $_("table-db-device-description"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'localization',
-                        header: () => 'LOCALIZATION',
+                        header: () => $_("table-db-device-localization"),
                         cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'agent',
-                        header: () => 'AGENT',
+                        header: () => $_("table-db-device-agent"),
                         cell: (props) =>   flexRender(TableImage,{image:'/AGENT.svg',onClick:onClickAgent,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'save',
-                        header: () => 'SAVE',
+                        header: () => $_("table-db-device-save"),
                         cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'edit',
-                        header: () => 'EDIT',
+                        header: () => $_("table-db-device-edit"),
                         cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'delete',
-                        header: () => 'DELETE',
+                        header: () => $_("table-db-device-delete"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete,uid:props.getValue()}),
                     }),
    ]

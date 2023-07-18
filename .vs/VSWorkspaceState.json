@@ -4,13 +4,12 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\PageContents",
     "\\src\\lib\\i18n",
     "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\build"
+    "\\src\\routes\\up2clone"
   ],
-  "SelectedNode": "\\src\\lib\\i18n\\en.json",
+  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataConfMP.svelte",
   "PreviewInSolutionExplorer": false
 }

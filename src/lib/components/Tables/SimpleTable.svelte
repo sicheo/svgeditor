@@ -4,7 +4,8 @@
 
  import { onMount} from "svelte";
  import {sleep} from '../../script/api.js'
- 
+ import { _ } from 'svelte-i18n'
+
 
 
 
@@ -33,7 +34,7 @@
   }
 
   const refreshListener = async (ev:any)=>{
-           console.log("GOT REFRESHDATA EVENT",ev.detail)
+           console.log("EV LISTENER",ev.detail)
            data = ev.detail
            refreshDataExt()
         }
@@ -80,7 +81,6 @@
     }
   )
   const refreshData = () => {
-    console.info('refresh',data)
     options.update(prev => ({
       ...prev,
       data: getLocalData(),
@@ -97,7 +97,6 @@
   }
 
   const rerender = () => {
-    console.info('rerender')
     options.update(options => ({
       ...options,
       data,
@@ -111,7 +110,6 @@
                 $table.setPageIndex(page-1)
             }
   const onSelect = (e:any) => {
-      console.log("**** SELECT *****",e.target.value)
               $table.setPageSize(Number(e.target.value))
               refreshData()
             }
@@ -178,20 +176,19 @@
         <input type="button" class="" value=">" on:click={onNextPage}>
         <input type="button" class="" value=">>" on:click={onLastPage}>
         <span class="flex items-center gap-1">
-          Page
+          {$_("table-page")}
           <strong>
-            {$table.getState().pagination.pageIndex + 1} of {$table.getPageCount()}
+            {$table.getState().pagination.pageIndex + 1} {$_("table-page-of")} {$table.getPageCount()}
           </strong>
         </span>
         <span>
-            | Go to Page:
+            | {$_("table-gotopage")}
             <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
         </span>
         <select  on:change={onSelect}>
-            <option value=5>Show 5</option>
-            <option value=10>Show 10</option>
-            <option value=15>Show 15</option>
-            <option value=20>Show 20</option>
+            <option value=5>{$_("table-option-show")} 5</option>
+            <option value=10>{$_("table-option-show")} 10</option>
+            <option value=15>{$_("table-option-show")} 15</option>
         </select>
     </div>
     {/if}

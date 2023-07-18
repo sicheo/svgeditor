@@ -12,6 +12,10 @@ import Up2TwinDocker from '../PageContents/Up2TwinDocker.svelte'
 import Up2TwinInstall from '../PageContents/Up2TwinInstall.svelte'
 import Up2TwinDeploy from '../PageContents/Up2TwinDeploy.svelte'
 
+import { _ } from 'svelte-i18n'
+import {getImage} from '../../script/utils.js'
+
+
 
 
 
@@ -127,52 +131,52 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
         
                 columnHelper.accessor('type', {
                         id : 'type',
-                        header: () => 'TYPE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/VMWARE.svg'}),
+                        header: () => $_("table-db-device-type"),
+                        cell: (props) =>   flexRender(TableImage,{image:getImage('devicetype',props.getValue())}),
                     }),
                     columnHelper.accessor('os', {
                         id : 'os',
-                        header: () => 'TYPE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/UBUNTU.svg'}),
+                        header: () => $_("table-db-device-os"),
+                        cell: (props) =>   flexRender(TableImage,{image:getImage('deviceos',props.getValue())}),
                     }),
                     columnHelper.accessor('name', {
                         id : 'name',
-                        header: () => 'NAME',
+                        header: () => $_("table-db-device-name"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor('host', {
                         id : 'host',
-                        header: () => 'IP/HOST',
+                        header: () => $_("table-db-device-host"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor('port', {
                         id : 'port',
-                        header: () => 'PORT',
+                        header: () => $_("table-db-device-port"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),  
                     columnHelper.accessor('description', {
                         id : 'description',
-                        header: () => 'DESCRIPTION',
+                        header: () => $_("table-db-device-description"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'connection',
-                        header: () => 'CONNECTION',
+                        header: () => $_("table-db-device-connection"),
                         cell: (props) =>   flexRender(TableImage,{image:'/CONNECTION.svg',style:"background-color: lightgrey;",name:props.getValue(), onClick:onConnection}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'install',
-                        header: () => 'SSH',
+                        header: () => $_("table-db-device-ssh"),
                         cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'install-img-tool_'+props.getValue(), onClick:onInstall}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'docker',
-                        header: () => 'DOCKER',
+                        header: () => $_("table-db-device-docker"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'docker-img-tool_'+props.getValue(),onClick:onDocker}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'deploy',
-                        header: () => 'DEPLOY',
+                        header: () => $_("table-db-device-deploy"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool_'+props.getValue(),onClick:onDeploy}),
                     }),
   
