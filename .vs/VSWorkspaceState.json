@@ -1,14 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\lib",
-    "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
-    "\\src\\lib\\script",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Dialogs\\CGraphSaveDialog.svelte",
+  "SelectedNode": "\\index.html",
   "PreviewInSolutionExplorer": false
 }

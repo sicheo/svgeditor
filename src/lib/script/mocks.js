@@ -2082,6 +2082,89 @@ const dockerListImages = async function (body) {
     return (body)
 }
 
+const getDBArray = async function(treename) {
+    let rcompany = []
+    let rplants = []
+    let rdepartments = []
+    let rlines = []
+    let rmachines = []
+    let rcontrollers = []
+    // Get company
+    const cmp = companies.find((item) => (item.name == treename))
+    if (cmp) {
+        rcompany.push(cmp)
+        const plts = plants.filter((item) => (item.company == cmp.uid))
+        for (let i = 0; i < plts.length; i++) {
+            const dpts = departments.filter((item) => (item.plant == plts[i].uid))
+            for (let j = 0; j < dpts.length; j++) {
+                const lns = lines.filter((item) => (item.department == dpts[j].uid))
+                for (let k = 0; k < lns.length; k++) {
+                    const mcns = machines.filter((item) => (item.line == lns[k].uid))
+                    for (let h = 0; h < mcns.length; h++) {
+                        const clts = controllers.filter((item) => (item.machine == mcns[h].uid))
+                        for (let w = 0; w < clts.length; w++) {
+                            rcontrollers.push(clts[w])
+                        }
+                        rmachines.push(mcns[h])
+                    }
+                    rlines.push(lns[k])
+                }
+                rdepartments.push(dpts[j])
+            }
+            rplants.push(plts[i])
+        }
+    }
+    const result = { company: rcompany, plants: rplants, departments: rdepartments, lines: rlines, machines: rmachines, controllers: rcontrollers }
+    return(result)
+}
+
+const setDBArray = async function (array) {
+    const body = { options:{ } }
+    const cmps = array.companies
+    for (let i = 0; i < cmps.length; i++) {
+        body.options.company = cmps[i]
+        setCompany(body)
+    }
+    const plts = array.plants
+    for (let i = 0; i < plts.length; i++) {
+        body.options.plant = plts[i]
+        setPlant(body)
+    }
+    const dpts = array.departments
+    for (let i = 0; i < dpts.length; i++) {
+        body.options.department = dpts[i]
+        setDepartment(body)
+    }
+    const lns = array.lines
+    for (let i = 0; i < lns.length; i++) {
+        body.options.line = lns[i]
+        setLine(body)
+    }
+    const mcns = array.machines
+    for (let i = 0; i < mcns.length; i++) {
+        body.options.machine = mcns[i]
+        setMachine(body)
+    }
+    const cnts = array.controllers
+    for (let i = 0; i < cnts.length; i++) {
+        body.options.controller = cnts[i]
+        setController(body)
+    }
+}
+
+const deleteDBArray = async function (array) {
+   
+    let filters = []
+    const body = { options: {filters:filters} }
+    const cmps = array.companies
+    filters= []
+    for (let i = 0; i < cmps.length; i++) {
+        const filter = { op: 'eq', name: 'uid', value: cmps[i].uid}
+        filters.push(filter)
+    }
+    deleteCompany(body)
+}
+
 const mocks = {
     login,
     getMenuItems,
@@ -2131,7 +2214,10 @@ const mocks = {
     dockerListContainers,
     dockerListImages,
     dnsLookup,
-    dockerInfo
+    dockerInfo,
+    getDBArray,
+    setDBArray,
+    deleteDBArray
 }
 
 export default mocks
