@@ -144,6 +144,8 @@ export function getImageArray(type) {
     return array
 }
 
+
+
 /*
 // sample data
 var obj = { list: [1, { p: 'hello' }, 3] };

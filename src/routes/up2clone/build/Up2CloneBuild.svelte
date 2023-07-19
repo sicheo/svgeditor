@@ -4,16 +4,15 @@
   import BuildTools from '../../../lib/components/InnerTabs/BuildTools.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
   import Up2CloneEditor from '../../../lib/components/PageContents/Up2CloneEditor.svelte'
-  import {cloneNavigation, currentprocess, mock, navigating } from '../../../lib/ustore.js'
+  import {cloneNavigation, mock, navigating } from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { graphCloneVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
-  import gutils from '../../../lib/script/graphutils'
   import graphutils from '../../../lib/script/graphutils';
-  import {getProcesses, sleep, deleteProcess } from '../../../lib/script/api.js'
-  import LoadDialog from '../../../lib/components/Dialogs/LoadDialog.svelte'
-  import SaveDialog from '../../../lib/components/Dialogs/SaveDialog.svelte'
-  import DeleteDialog from '../../../lib/components/Dialogs/DeleteDialog.svelte'
+  import {getProcesses, sleep} from '../../../lib/script/api.js'
+  import LoadDialog from '../../../lib/components/Dialogs/CGraphLoadDialog.svelte'
+  import SaveDialog from '../../../lib/components/Dialogs/CGraphSaveDialog.svelte'
+  import DeleteDialog from '../../../lib/components/Dialogs/CGraphDeleteDialog.svelte'
 
  
 
@@ -86,7 +85,7 @@ const listener = (e:any)=>{
         const found = processes.find((item:any) => item.uuid == e.detail.processUid)
         if(found){
             const element = document.getElementById("load-graph-redraw")
-            const graph = gutils.getGraphFromProcess(found)
+            const graph = graphutils.getGraphFromProcess(found)
             element.setAttribute("data-graph",JSON.stringify(graph))
             element.click()
         }

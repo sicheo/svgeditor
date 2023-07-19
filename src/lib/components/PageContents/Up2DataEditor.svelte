@@ -114,7 +114,7 @@
 		return graph
 	}
 
-	const graphRebuildGraph = (graphin:any,opts:any) => {
+	const graphRebuildGraph = (graphin:any,opts:any=null) => {
 		graphFunctions.clearGraph()
 		let  nodeoptions:any = {
 				horizontal:true,
@@ -160,7 +160,7 @@
 				panelObject.remove()
 			nd.draw()
 			// ADD EVENT LISTENERS
-			setEventListeners(nd)
+			//setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
 			//console.log("**** REBUILD GRAPH *****", nd)
 		}
@@ -364,6 +364,14 @@
 		}
 	}
 
+	const  redrawGraph = async function(event:any) {
+		const element = event.target
+		if(element){
+			const graph = JSON.parse(element.getAttribute("data-graph"))
+			graphRebuildGraph(graph)
+		}
+	}
+
 	const setEventListeners = (node:any) =>{
 		 if (node.vertical == true) {
             node.socketN.sock.on("mouseover", (ev: any) => {
@@ -507,6 +515,8 @@
 	<div class= "editor-container" id= "editor-container-id">
 			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
+			<input id="load-graph-redraw"name="load-graph-redraw" type='button' accept=".json" style="visibility:hidden;" on:click={redrawGraph}>
+
 	</div>
 
 	

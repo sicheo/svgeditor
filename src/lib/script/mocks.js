@@ -714,8 +714,351 @@ let processes = [
     }
 ]
 
-const signedprocesses = [
+let companies = [
+    {
+        uid: 0,
+        name: "ALFASIGMA",
+        address: "Via Ragazzi del ‘99, 5 Bologna (IT)",
+        x: 0,
+        y: 0,
+    },
 ]
+
+let plants = [
+    {     
+        uid: 1,
+        name: "POMEZIA",
+        description: "Stabilimento Pomezia ",
+        nation: "IT",
+        city: "Rome",
+        lat: "",
+        lon: "",
+        company: 0,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 3,
+        name: "ALANNO",
+        description: "Stabilimento Alanno ",
+        nation: "IT",
+        city: "Alanno",
+        lat: "",
+        lon: "",
+        company: 0,
+        x: 0,
+        y: 0,
+    }
+]
+
+let departments = [
+    {
+        uid: 0,
+        name: "DEP-01",
+        description: "Department 01 - injectables",
+        plant: 1,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 1,
+        name: "DEP-02",
+        description: "Department 01 - solids",
+        plant: 1,
+        x: 0,
+        y: 0,
+
+    },
+    {
+        uid: 2,
+        name: "DEP-03",
+        description: "Department 01 - packaging",
+        plant: 1,
+        x: 0,
+        y: 0,
+    },
+    {
+ 
+        uid: 3,
+        name: "DEP-04",
+        description: "Department 04 - solids",
+        plant: 3,
+        x: 0,
+        y: 0,
+
+    },
+    {
+ 
+        uid: 4,
+        name: "DEP-05",
+        description: "Department 05 - packaging",
+        plant: 3,
+        x: 0,
+        y: 0,
+
+    },
+    {
+ 
+        uid: 5,
+        name: "DEP-06",
+        description: "Department 06 - packaging",
+        plant: 3,
+        x: 0,
+        y: 0,
+
+    }
+]
+
+let lines = [
+    {
+        uid: 0,
+        name: "LINE-01",
+        description: "Line 01 - preparation",
+        department: 0,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 1,
+        name: "LINE-02",
+        description: "Line 01 - lyophilization",
+        department: 0,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 2,
+        name: "LINE-03",
+        description: "Line 03 - pill fabrication",
+        department: 1,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 3,
+        name: "LINE-04",
+        description: "Line 03 - blistering line",
+        department: 2,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 4,
+        name: "LINE-05",
+        description: "Line 03 - mixing line",
+        department: 3,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 5,
+        name: "LINE-06",
+        description: "Line 03 - blistering line",
+        department: 4,
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 6,
+        name: "LINE-07",
+        description: "Line 03 - blistering line",
+        department: 5,
+        x: 0,
+        y: 0,
+    }
+]
+
+let machines = [
+    {
+        uid: 0,
+        name: "AUT-01",
+        description: "Autoclave Fedegari",
+        line: 0,
+        type: "AUTOCLAVE",
+        manufacturer: "FEDEGARI",
+        model: "XFOAF7/Q253",
+        room: "G041",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 1,
+        name: "PRP-01",
+        description: "Preparatore",
+        line: 0,
+        type: "PREPARATORE",
+        manufacturer: "Intertech",
+        model: "010",
+        room: "G040",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 2,
+        name: "INF-01",
+        description: "Infialatrice Pharmasiena",
+        line: 1,
+        type: "INFIALATRICE",
+        manufacturer: "PHARMASIENA",
+        model: "A6-FC",
+        room: "G043",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 3,
+        name: "LIO-01",
+        description: "Liofilizzatore IMA",
+        line: 2,
+        manufacturer: "IMA",
+        model: "LYOFAST 25",
+        room: "G044",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 4,
+        name: "ITU-01",
+        description: "Test filtri Pall",
+        line: 3,
+        manufacturer: "PALL",
+        model: "ACQUAWIT IV",
+        room: "G038",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 5,
+        name: "STE-01",
+        description: "Forno De Lama",
+        line: 4,
+        manufacturer: "DE LAMA",
+        model: "DLST/L",
+        room: "G041",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 6,
+        name: "UTA-01-1",
+        description: "Unita Trattamento Aria",
+        line: 5,
+        manufacturer: "EMI RAD",
+        model: "MXC010",
+        room: "G0002",
+        x: 0,
+        y: 0,
+    }
+]
+
+let controllers = [
+    {
+        uid: 0,
+        name: "CNTL-AUT-01",
+        ctype: "",
+        model: "Controller Thema4",
+        machine: 0,
+        manufacturer: "FEDEGARI",
+        ip: "10.1.234.67",
+        port: 502,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "modbus",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 1,
+        name: "CNTL-PRP-01",
+        ctype: "",
+        model: "Controller Thema4",
+        machine: 1,
+        manufacturer: "",
+        ip: "10.1.234.69",
+        port: 502,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "modbus",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 2,
+        name: "CNTL-INF-01",
+        ctype: "",
+        model: "Controller Siemens S7 300",
+        machine: 2,
+        manufacturer: "SIEMENS",
+        ip: "10.1.234.68",
+        port: 102,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "s7",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 3,
+        name: "CNTL-LIO-01",
+        ctype: "",
+        model: "Controller IMA",
+        machine: 3,
+        manufacturer: "IMA",
+        ip: "10.1.234.70",
+        port: 1433,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "tds",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 4,
+        name: "CNTL-ITU-01",
+        ctype: "",
+        model: "Controller Pall",
+        machine: 4,
+        manufacturer: "PALL",
+        ip: "10.1.234.78",
+        port: 502,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "modbus",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 5,
+        name: "CNTL-STE-01",
+        ctype: "",
+        model: "Controller De Lama",
+        machine: 4,
+        manufacturer: "DE LAMA",
+        ip: "10.1.234.80",
+        port: 7777,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "delama",
+        x: 0,
+        y: 0,
+    },
+    {
+        uid: 6,
+        name: "CNTL-UTA-01",
+        ctype: "",
+        model: "Controller Honeywell",
+        machine: 4,
+        manufacturer: "HONEYWELL",
+        ip: "10.1.234.90",
+        port: 47808,
+        mac: "E1:F7:2D:23:C7:3F",
+        intf: "ETH",
+        driver: "bacnet",
+        x: 0,
+        y: 0,
+    },
+]
+
 
 const materialCols = [
     { name: 'DESCRIPTION', type: 'string', header: 'Descrizione' },
@@ -1166,6 +1509,241 @@ const getProcesses = async function (body) {
     return (body)
 }
 
+const getCompanies = async function (body) {
+    let retCompanies = JSON.parse(JSON.stringify(companies))
+    const filters = body.options.filters
+
+    retCompanies = filterArray(retCompanies, filters)
+    body.data = retCompanies
+    return (body)
+}
+
+const getPlants = async function (body) {
+    let retPlants = JSON.parse(JSON.stringify(plants))
+    const filters = body.options.filters
+
+    retPlants = filterArray(retPlants, filters)
+    body.data = retPlants
+    return (body)
+}
+
+const getDepartments = async function (body) {
+    let retDepartments = JSON.parse(JSON.stringify(departments))
+    const filters = body.options.filters
+
+    retDepartments = filterArray(retDepartments, filters)
+    body.data = retDepartments
+    return (body)
+}
+
+const getLines = async function (body) {
+    let retLines = JSON.parse(JSON.stringify(lines))
+    const filters = body.options.filters
+
+    retLines = filterArray(retLines, filters)
+    body.data = retLines
+    return (body)
+}
+
+const getMachines = async function (body) {
+    let retMachines = JSON.parse(JSON.stringify(machines))
+    const filters = body.options.filters
+
+    retMachines = filterArray(retMachines, filters)
+    body.data = retMachines
+    return (body)
+}
+
+const getControllers = async function (body) {
+    let retControllers = JSON.parse(JSON.stringify(controllers))
+    const filters = body.options.filters
+
+    retControllers = filterArray(retControllers, filters)
+    body.data = retControllers
+    return (body)
+}
+
+const setCompany = async function (body) {
+    const company = body.options.company
+    let old = null
+    if (company) {
+        const existing = companies.findIndex((item) => { return item.uid == company.uid })
+        if (existing > -1) {
+            old = companies[existing]
+            companies[existing] = company
+        } else {
+            companies.push(company)
+        }
+    }
+    return old
+}
+
+const setPlant = async function (body) {
+    const plant = body.options.plant
+    let old = null
+    if (plant) {
+        const existing = companies.findIndex((item) => { return item.uid == plant.uid })
+        if (existing > -1) {
+            old = plants[existing]
+            plants[existing] = plant
+        } else {
+            plants.push(plant)
+        }
+    }
+    return old
+}
+
+const setDepartment = async function (body) {
+    const department = body.options.department
+    let old = null
+    if (department) {
+        const existing = departments.findIndex((item) => { return item.uid == department.uid })
+        if (existing > -1) {
+            old = departments[existing]
+            departments[existing] = department
+        } else {
+            departments.push(department)
+        }
+    }
+    return old
+}
+
+const setLine = async function (body) {
+    const line = body.options.line
+    let old = null
+    if (line) {
+        const existing = lines.findIndex((item) => { return item.uid == line.uid })
+        if (existing > -1) {
+            old = lines[existing]
+            lines[existing] = line
+        } else {
+            lines.push(line)
+        }
+    }
+    return old
+}
+
+const setMachine = async function (body) {
+    const machine = body.options.machine
+    let old = null
+    if (machine) {
+        const existing = machines.findIndex((item) => { return item.uid == machine.uid })
+        if (existing > -1) {
+            old = machines[existing]
+            machines[existing] = machine
+        } else {
+            machines.push(machine)
+        }
+    }
+    return old
+}
+
+const setController = async function (body) {
+    const controller = body.options.controller
+    let old = null
+    if (controller) {
+        const existing = controllers.findIndex((item) => { return item.uid == controller.uid })
+        if (existing > -1) {
+            old = controllers[existing]
+            controllers[existing] = controller
+        } else {
+            controllers.push(controller)
+        }
+    }
+    return old
+}
+
+const deleteController = async function (body) {
+    const filters = body.options.filters
+
+    controllers = filterArray(controllers, filters, true)
+    body.data = controllers
+    return (body)
+}
+
+const deleteMachine = async function (body) {
+    let filters = body.options.filters
+
+    machines = filterArray(machines, filters, true)
+    // DELETE CONTROLLERS
+    for (let i = 0; i < machines.length; i++) {
+        filters = []
+        const filter = { op: 'eq', name: 'machine', value: machines[i].uid }
+        filters.push(filter)
+    }
+    controllers = filterArray(controllers, filters, false)
+
+    body.data = machines
+    return (body)
+}
+
+const deleteLine = async function (body) {
+    let filters = body.options.filters
+
+    lines = filterArray(lines, filters, true)
+    // DELETE MACHINES
+    for (let i = 0; i < lines.length; i++) {
+        filters = []
+        const filter = { op: 'eq', name: 'line', value: lines[i].uid }
+        filters.push(filter)
+    }
+    body.options.filters = filters
+    deleteMachine(body)
+
+    body.data = lines
+    return (body)
+}
+
+const deleteDepartment = async function (body) {
+    let filters = body.options.filters
+
+    departments = filterArray(departments, filters, true)
+    // DELETE LINES
+    for (let i = 0; i < departments.length; i++) {
+        filters = []
+        const filter = { op: 'eq', name: 'department', value: departments[i].uid }
+        filters.push(filter)
+    }
+    body.options.filters = filters
+    deleteLine(body)
+
+    body.data = departments
+    return (body)
+}
+
+const deletePlant = async function (body) {
+    let filters = body.options.filters
+
+    plants = filterArray(plants, filters, true)
+    // DELETE DEPARTMENTS
+    for (let i = 0; i < plants.length; i++) {
+        filters = []
+        const filter = { op: 'eq', name: 'plant', value: plants[i].uid }
+        filters.push(filter)
+    }
+    body.options.filters = filters
+    deleteDepartment(body)
+
+    body.data = plants
+    return (body)
+}
+
+const deleteCompany = async function (body) {
+    let filters = body.options.filters
+
+    companies = filterArray(companies, filters, true)
+    // DELETE DEPARTMENTS
+    for (let i = 0; i < companies.length; i++) {
+        filters = []
+        const filter = { op: 'eq', name: 'company', value: companies[i].uid }
+        filters.push(filter)
+    }
+    body.options.filters = filters
+    deletePlant(body)
+
+    body.data = companies
+    return (body)
+}
 
 
 
@@ -1518,6 +2096,24 @@ const mocks = {
     deleteDevice,
     deleteProcess,
     deleteAgent,
+    getCompanies,
+    setCompany,
+    deleteCompany,
+    getPlants,
+    setPlant,
+    deletePlant,
+    getDepartments,
+    setDepartment,
+    deleteDepartment,
+    getLines,
+    setLine,
+    deleteLine,
+    getMachines,
+    setMachine,
+    deleteMachine,
+    getControllers,
+    setController,
+    deleteController,
     getMaterialCols,
     getPersonnelCols,
     getMachineCols,
