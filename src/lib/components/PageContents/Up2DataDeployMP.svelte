@@ -37,7 +37,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
    const findDevice = (target:any) =>{
        const id = target.id.split("_")[1]
        const found = data.find((item:any)=> item.uid == id)
-       console.log("** FIND DEVICE **",found)
        return(found)
    }
 
@@ -87,7 +86,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
               // CHECK CONNECTION
               const conn = await getDeviceInfo(found.host,found.port,'https',$mock)
                if(!conn.error){
-                console.log("*** CONNECTION RESPONSE ****",conn)
                 toggleConnection(target)
                }
           }
@@ -120,7 +118,6 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        dialog = Up2TwinDocker
        dialogOptions['title'] = "DOCKER"
        dialogOptions['device'] =  findDevice(ev.target)
-       console.log("*** ON DOCKER **",dialogOptions.device)
        if(divParams){
         divParams.style.display = 'block'
         

@@ -6,7 +6,7 @@ import {navigating } from '../../ustore.js'
 import { _ } from 'svelte-i18n'
 import {Circle} from "svelte-loading-spinners"
 import { onMount} from "svelte";
-import DropDown from '../DropDown.svelte'
+import GenericDropDown from '../GenericDropDown.svelte'
 
 
 
@@ -17,7 +17,13 @@ let data = []
 
 
 onMount(async ()=>{
-	dialogOptions.data = dialogOptions.data
+	for(let i=0;i< dialogOptions.data.length;i++){
+		const blocked = dialogOptions.data[i].data.authorization.blocked
+		const text = dialogOptions.data[i].name +' '+ dialogOptions.data[i].data.description +' '+ dialogOptions.data[i].data.doccode+' v'+ dialogOptions.data[i].data.authorization.version + ' '+ dialogOptions.data[i].data.lastmodified
+		const dt = {id:dialogOptions.data[i].uuid,blocked:blocked, text:text}
+		data.push(dt)
+	}
+	data = data
 })
 
 
@@ -54,8 +60,8 @@ const loadProcess = (event:any) =>{
 			{#if !$navigating}
 			<div class="class-panel-body" >
 				<span >{$_('dialog_load_process')}</span>
-				 <DropDown bind:data={dialogOptions.data} bind:selected={dialogOptions.selected} placeholder={$_('dialog_drop_placheholder')}></DropDown>
-			</div>
+				<GenericDropDown bind:data={data} bind:selected={dialogOptions.selected} placeholder={$_('dialog_drop_placheholder')}></GenericDropDown>
+			 </div>
 			<div class="class-panel-footer">
 				<input type="button" on:click={loadProcess} value="{$_('dialog_load_button')}" width="25" height="25"> 
 			  </div>

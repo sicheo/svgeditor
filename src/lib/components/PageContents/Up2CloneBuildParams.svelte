@@ -34,7 +34,6 @@ const saveObj = (ptype:any)=>{
 		}
 		node.data.params[ptype] = row
 	}
-	console.log("*** SAVE OBJTYPE ***",objtype,node.data.params[ptype],paramRows )
 }
 
 const Save = (ev:any)=>{
@@ -77,23 +76,18 @@ const changeVal = (ev:any)=>{
 	const j = Number(target.getAttribute("data-j"))
 	switch(target.type){
 		case 'text':
-			console.log("-- TEXT ---", target.value)
 			paramRows[j][i] = target.value
 			break
 		case 'checkbox':
-			console.log("-- CHECK ---", target.value, target.checked)
 			paramRows[j][i] = target.checked
 			break
 		case 'datetime-local':
-			console.log("-- DATE ---", target.value)
 			paramRows[j][i] = target.value
 			break
 		case 'password':
-			console.log("-- PASSWD ---", target.value)
 			paramRows[j][i] = target.value
 		    break
 		case 'number':
-			console.log("-- NUMBER ---", target.value)
 			paramRows[j][i] = Number(target.value)
 			break
 	}

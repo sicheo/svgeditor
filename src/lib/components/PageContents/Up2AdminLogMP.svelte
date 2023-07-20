@@ -11,13 +11,11 @@ let rows = []
 onMount(async ()=>{
    const response = await getLogs($mock)
    rows = response.data
-   console.log("****** Up2CloneLogMP ******",rows)
-
+   
  });
 
  const onInputComponent = (row:any,tag:any,value:any) =>{
     const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-    //console.log("*** ON INPUT COMPONENT ****", index,tag,value)
      if(index > -1)
         rows[index][tag] = value
 }

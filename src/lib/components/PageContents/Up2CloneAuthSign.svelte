@@ -28,7 +28,6 @@ const exitPage = (ev:any)=>{
 let callback = (params:any)=>{
 	const div = document.getElementById("sign-page-right-id")
 	const children = div.childNodes
-	console.log("** CHILDREN NODE **", findTreePath(tree,params.name))
 	items=findTreePath(tree,params.name)
 	title = params.name
 		switch(params.type){
@@ -59,7 +58,6 @@ let callback = (params:any)=>{
 const authorize = (ev:any)=>{
 	const target = ev.target
 	const checked = target.checked
-	console.log("CHECKED", checked)
 }
 </script>
     <div class="sign-dialog-class">

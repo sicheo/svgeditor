@@ -150,7 +150,7 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 			// ADD EVENT LISTENERS
 			//setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
-			//console.log("**** REBUILD GRAPH *****", nd)
+			
 		}
 		// DRAW PATHS
 		for(let i=0;i<graphin.paths.length;i++){
@@ -205,7 +205,6 @@ const graphRebuildGraph = (graphin:any,opts:any) => {
 				pathn.addFrom(from)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				//console.log(start,end)
 				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
@@ -310,7 +309,7 @@ const setEventListeners = (node:any) =>{
         }
 
         node.node.on('dragstart', (event: any) => {
-            //console.log("DRAGSTART")
+            
         })
 
         node.node.on('dragmove', (event: any) => {

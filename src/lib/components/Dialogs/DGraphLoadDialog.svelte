@@ -6,7 +6,7 @@ import {navigating } from '../../ustore.js'
 import { _ } from 'svelte-i18n'
 import {Circle} from "svelte-loading-spinners"
 import { onMount} from "svelte";
-import DropDown from '../DropDown.svelte'
+import GenericDropDown from '../GenericDropDown.svelte'
 
 
 
@@ -17,7 +17,12 @@ let data = []
 
 
 onMount(async ()=>{
-	dialogOptions.data = dialogOptions.data
+	for(let i=0;i< dialogOptions.data.length;i++){
+		const text = dialogOptions.data[i].roottag 
+		const dt = {id:text,blocked:false, text:text}
+		data.push(dt)
+	}
+	data = data
 })
 
 
@@ -33,7 +38,7 @@ const loadProcess = (event:any) =>{
 		const cevent = new CustomEvent("treeLoaded", 
 			{
 				bubbles: true,
-				detail: { processUid: dialogOptions.selected }
+				detail: { treeUid: dialogOptions.selected }
 			}
 		)
 		element.dispatchEvent( cevent)
@@ -54,7 +59,7 @@ const loadProcess = (event:any) =>{
 			{#if !$navigating}
 			<div class="class-panel-body" >
 				<span >{$_('dialog_load_process')}</span>
-				 <DropDown bind:data={dialogOptions.data} bind:selected={dialogOptions.selected} placeholder={$_('dialog_drop_placheholder')}></DropDown>
+				  <GenericDropDown bind:data={data} bind:selected={dialogOptions.selected} placeholder={$_('dialog_drop_placheholder')}></GenericDropDown>
 			</div>
 			<div class="class-panel-footer">
 				<input type="button" on:click={loadProcess} value="{$_('dialog_load_button')}" width="25" height="25"> 

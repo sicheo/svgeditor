@@ -23,11 +23,6 @@ export let graphtype = 'DAG'
 export let graph:any
 export let currentnode:any ={data:{type:'MASTER',level:'level1'}}
 export let draw:any
-export let mainmenusave: any = (param:any)=>{}
-export let mainmenuload: any = (param:any)=>{}
-export let mainmenuimport: any = (param:any)=>{}
-export let mainmenuexport: any = (param:any)=>{}
-export let mainmenuclear: any = (param:any)=>{}
 export let menubuild:any = (param:any)=>{}
 export let panelcontroller:any
 export let width = 1200
@@ -55,14 +50,6 @@ let path:any
 let saved:any
 let contextname = "context-graph-menu"
 let contextnamesub = "context-subgraph-menu"
-
-const mainmenuitems: any[] = [
-				{ name: 'SAVE', image: './edit.svg', callback: mainmenusave },
-				{ name: 'LOAD', image: './edit.svg', callback: mainmenuload },
-				{ name: 'IMPORT', image: './close.svg', callback: mainmenuimport },
-				{ name: 'EXPORT', image: './close.svg', callback: mainmenuexport },
-				{ name: 'CLEAR', image: './close.svg', callback: mainmenuclear },
-			]
 
 
 onMount(async () => {  
@@ -94,14 +81,14 @@ onMount(async () => {
 		// PAN ZOOM EVENTS
 
 		draw.on("zoom",(event:any)=>{
-			//console.log("**** ZOOM ****",event.detail)
+			
 		})
 
 		draw.on("panning",(event:any)=>{
-			//console.log("**** PANNING ****",event.detail)
+			
 		})
 		draw.on("panEnd",(event:any)=>{
-			//console.log("**** PAN END ****",event.detail)
+			
 		})
 		
 

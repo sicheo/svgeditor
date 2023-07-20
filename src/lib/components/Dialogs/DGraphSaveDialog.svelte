@@ -1,12 +1,15 @@
 <script lang="ts">
 
 import { _ } from 'svelte-i18n'
-import {deleteProcess } from '../../../lib/script/api.js'
+import {setTree } from '../../../lib/script/api.js'
 import {mock,analytics} from '../../../lib/ustore.js'
+import { v4 as uuidv4 } from 'uuid';
+
 
 
 export let dialogOptions : any
 export let color
+
 
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
@@ -14,16 +17,27 @@ const exitDialog = (event:any)=>{
         dialog.style.display = 'none'
 }
 
-const delProcess = async(event:any) =>{
-	const filters = [{op:'eq',name:'uuid',value:dialogOptions.data.uuid}]
-	const response = await deleteProcess(filters,$mock)
-    $analytics.track('graphClear', {
-                masterdoc:dialogOptions.data.doccode
-        })
-	const dialog = document.getElementById("build-tool-dialog")
-    if(dialog)
-        dialog.style.display = 'none'
+
+
+const saveProcess = async(event:any) =>{
+	// CHECK PROCESS BEFORE SAVE
+	const check = isTreeValid(dialogOptions.data)
+	if(check != "OK"){
+		alert(check)
+	}else{
+		// SET MODIFICATION DATE
+		const old = await setTree(dialogOptions.data,$mock)	
+		const dialog = document.getElementById("build-tool-dialog")
+		if(dialog)
+			dialog.style.display = 'none'
+	}
 }
+
+const isTreeValid =(process:any) =>{
+	// 1. Process must have valid version
+	return("OK")
+}
+
 
 
 
@@ -36,12 +50,11 @@ const delProcess = async(event:any) =>{
 				</div>
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
-				{$_('dialog_delete_process')}
-				<p>{dialogOptions.data.name}</p>
-				<p>{dialogOptions.data.description} v{dialogOptions.data.data.authorization.version}</p>
+				{$_('dialog_save_process')}
+				<p> TEXT TO REPLACE </p>
 		</div>
 		<div class="class-panel-footer">
-				<input type="button" on:click={delProcess} value="{$_('dialog_delete_button')}" width="25" height="25"> 
+				<input type="button" on:click={saveProcess} value="{$_('dialog_save_button')}" width="25" height="25"> 
 	    </div>
 		
 	</div>
@@ -51,8 +64,8 @@ const delProcess = async(event:any) =>{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
-	width: 20%;
-	height: 30%;
+	width: 30%;
+	height: 40%;
 	margin: auto;
 }
 
@@ -67,16 +80,15 @@ const delProcess = async(event:any) =>{
   color: var(--color);
   font-weight:bold ;
 }
-
-.class-panel-body p{
-  font-weight:normal ;
-}
 .class-last-item {
   margin-left: auto;
 }
 
 .class-panel-body {
   height: 60%;
+}
+.class-panel-body p{
+  font-weight:normal ;
 }
 .class-panel-footer {
   display: block;

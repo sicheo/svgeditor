@@ -44,7 +44,6 @@ onMount(async ()=>{
   const onClickMaterials = async (ev:any) =>{
       const body = await getMaterialCols($mock)
       materialCols = body.data
-      console.log("*** MATERIAL CLICKED ***", node)
       paramType= 'materials'
       paramName = $_('up2clone_master_panel_materials')
       paramsCols = materialCols
@@ -58,9 +57,7 @@ onMount(async ()=>{
           }
           paramRows.push(row)
       }
-      console.log("****** PARAM ROWS *******", paramRows)
       if(divParams){
-        console.log("*** MATERIAL CLICKED  DIV DISPLAYED***")
         divParams.style.display = 'block'
         
      }
@@ -69,7 +66,6 @@ onMount(async ()=>{
   const onClickMachines = async (ev:any) =>{
       const body = await getMachineCols($mock)
       machineCols = body.data
-      console.log("*** MACHINES CLICKED ***",machineCols)
       paramType= 'machines'
       paramName = $_('up2clone_master_panel_machines')
       paramsCols = machineCols
@@ -92,7 +88,6 @@ onMount(async ()=>{
   const onClickPersonnel = async (ev:any) =>{
       const body =  await getPersonnelCols($mock)
       personnelCols = body.data
-      console.log("*** PERSONNEL CLICKED ***",personnelCols)
       paramType= 'personnel'
       paramName = $_('up2clone_master_panel_personnel')
       paramsCols = personnelCols

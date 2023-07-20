@@ -292,7 +292,6 @@
 				    img = ''
 					if(gnode){
 						gnode.data = structuredClone(gnode.saved)
-						//console.log("**** PANEL HIDE ****",gnode.data)
 						if(!gnode.data.image || gnode.data.image == ''){
 						const pnl = panels.find((item:any)=>(item.type == gnode.data.type))
 						if(pnl)
@@ -534,7 +533,7 @@
         }
 
         node.node.on('dragstart', (event: any) => {
-            //console.log("DRAGSTART")
+            
         })
 
         node.node.on('dragmove', (event: any) => {
@@ -605,7 +604,7 @@ const onHidePdf = (e:any)=>{
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component}  {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {panelcontroller} {panels} bind:component={component}  {width} {height} {menubuild}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 			<input id="load-graph-redraw"name="load-graph-redraw" type='button' accept=".json" style="visibility:hidden;" on:click={redrawGraph}>
 	</div>

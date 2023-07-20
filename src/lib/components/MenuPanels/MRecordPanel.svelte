@@ -39,19 +39,16 @@ let inputs:any[] = [
 ]
 
 const saveEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT SAVE******")
                                    opcontdiv.innerHTML = '';
                                    opmacdiv.innerHTML = '';
                                    opinpdiv.innerHTML = '';
                                 }
 const hideEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT HIDE******")
                                     opcontdiv.innerHTML = '';
                                     opmacdiv.innerHTML = '';
                                     opinpdiv.innerHTML = '';
                                 }
 const showEventHandler = (e:any) => {
-                                    //node = e.detail.node
                                     if(e.detail.node == "MASTER")
                                         setTimeout(redrawOperations,50)
                                 }

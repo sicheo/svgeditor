@@ -19,7 +19,7 @@ const getTreeFromGraph = (graph:any,parent: any) => {
     return(tree)
 }
 
-const getGraphFromTree = (tree: any, graph: any,pathuid:any) => {
+const getGraphFromTree = (tree: any, graph: any, pathuid: any) => {
     let node = { id: tree.id, data: tree.data }
     graph.nodes.push(node)
     for (let i = 0; i < tree.children.length; i++) {
@@ -31,6 +31,66 @@ const getGraphFromTree = (tree: any, graph: any,pathuid:any) => {
         graph.paths.push(path)
         getGraphFromTree(child, graph, pathuid + tree.children.length)
     }
+    return graph
+}
+
+const getTreeFromDGraph = (graph: any, parentnode: any, parent: any) => {
+    let nodes: any[] = getChildrens(graph, parentnode.id)
+    const uid = parentnode.data.uid
+    // MUST ENSURE UNIQUE DATA ID 
+    let tree = {
+        children: [],
+        key: parentnode.id,
+        parent: parent,
+        value: {
+            data: parentnode.data,
+            edges: [],
+            graph: { level: parentnode.data.level, x: parentnode.data.x, y: parentnode.data.y, uid: uid }
+        }
+    }
+    for (let i = 0; i < nodes.length; i++) {
+        // For strange reason this check is needed to avoid bad recursion from getChildrens
+        if (nodes[i].id) {
+            const parent = tree
+            const subtree = getTreeFromGraph(graph, nodes[i], parent)
+            tree.children.push(subtree)
+        }
+    }
+    return (tree)
+
+}
+
+
+const graphGetPathnum = (graph: any) => {
+    let ret = 0
+    for (let i = 0; i < graph.paths.length; i++)
+        if (graph.paths[i].uid >= ret)
+            ret = graph.paths[i].uid
+    return ret
+}
+const getDDGraphFromTree = (tree: any, graph: any, pathuid: any) => {
+    const locdata = JSON.parse(JSON.stringify(tree.value.data))
+    locdata.level = tree.value.graph.level
+    let node = { id: tree.key, data: locdata }
+    graph.nodes.push(node)
+    for (let i = 0; i < tree.children.length; i++) {
+        let child = tree.children[i]
+        // For strange reason this check is needed to avoid bad recursion from getChildrens
+        if (child.key) {
+            pathuid = graphGetPathnum(graph) + i + 1
+            let path = { id: 'PATH-' + pathuid, uid: pathuid, from: [], to: [] }
+            path.from.push(node.id)
+            path.to.push(child.key)
+            graph.paths.push(path)
+            getDGraphFromTree(child, graph, pathuid)
+        }
+    }
+}
+
+const getDGraphFromTree = (tree: any, graph: any, pathuid: any) => {
+    getDDGraphFromTree(tree, graph, pathuid)
+    const retgraph = graph
+    return(retgraph)
 }
 
 const getGraphFromProcess = (process: any) => {
@@ -331,7 +391,6 @@ const  fromTreeToDb = (tree:any)=> {
         root.value.data.x = root.value.graph.x
         root.value.data.y = root.value.graph.y
         root.value.data.uid = root.value.graph.uid
-        //console.log("COMPANY", root.key, root.value.data)
         toDb.company.push(root.value.data)
         // GET PLANTS
         for (let i = 0; i < root.children.length; i++) {
@@ -340,7 +399,6 @@ const  fromTreeToDb = (tree:any)=> {
             plant.value.data.x = plant.value.graph.x
             plant.value.data.y = plant.value.graph.y
             plant.value.data.uid = plant.value.graph.uid
-            //console.log("PLANTS", plant.key, plant.value.data)
             toDb.plants.push(plant.value.data)
             // GET DEPARTMENTS
             for (let j = 0; j < plant.children.length; j++) {
@@ -349,7 +407,6 @@ const  fromTreeToDb = (tree:any)=> {
                 department.value.data.x = department.value.graph.x
                 department.value.data.y = department.value.graph.y
                 department.value.data.uid = department.value.graph.uid
-                //console.log("DEPARTMENTS", department.key, department.value.data)
                 toDb.departments.push(department.value.data)
                 // GET LINES
                 for (let k = 0; k < department.children.length; k++) {
@@ -358,7 +415,6 @@ const  fromTreeToDb = (tree:any)=> {
                     line.value.data.x = line.value.graph.x
                     line.value.data.y = line.value.graph.y
                     line.value.data.uid = line.value.graph.uid
-                    //console.log("LINES", line.key, line.value.data)
                     toDb.lines.push(line.value.data)
                     // GET MACHINES
                     for (let h = 0; h < line.children.length; h++) {
@@ -367,7 +423,6 @@ const  fromTreeToDb = (tree:any)=> {
                         machine.value.data.x = machine.value.graph.x
                         machine.value.data.y = machine.value.graph.y
                         machine.value.data.uid = machine.value.graph.uid
-                        //console.log("MACHINES", machine.key, machine.value.data)
                         toDb.machines.push(machine.value.data)
                         // GET CONTROLLERS
                         for (let l = 0; l < machine.children.length; l++) {
@@ -376,7 +431,6 @@ const  fromTreeToDb = (tree:any)=> {
                             controller.value.data.x = controller.value.graph.x
                             controller.value.data.y = controller.value.graph.y
                             controller.value.data.uid = controller.value.graph.uid
-                            //console.log("CONTROLLERS", controller.key, controller.value.data)
                             toDb.controllers.push(controller.value.data)
                         }
                     }
@@ -501,6 +555,6 @@ const fromDbToTree = (dbarray:any ) => {
     return (JSON.parse(strdata))
 }
 
-const graphutils = { getChildrens, getTreeFromGraph, getGraphFromTree, getGraphFromProcess, getProcessFromGraph, fromTreeToDb, fromDbToTree }
+const graphutils = { getTreeFromDGraph, getDGraphFromTree, getChildrens, getTreeFromGraph, getGraphFromTree, getGraphFromProcess, getProcessFromGraph, fromTreeToDb, fromDbToTree }
 
 export default graphutils

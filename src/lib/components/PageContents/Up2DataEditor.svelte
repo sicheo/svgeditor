@@ -162,7 +162,6 @@
 			// ADD EVENT LISTENERS
 			//setEventListeners(nd)
 			graphFunctions.addNode(nd.getNodeInfo(),nd,draw)
-			//console.log("**** REBUILD GRAPH *****", nd)
 		}
 		// DRAW PATHS
 		for(let i=0;i<graphin.paths.length;i++){
@@ -217,7 +216,6 @@
 				pathn.addFrom(from)
 				const start ={position:{x:point.x,y:point.y},dir:'right'}
 				const end ={position:{x:point1.x,y:point1.y},dir:'left'}
-				//console.log(start,end)
 				const d1 = _calcDAttr(pathn.coef,start,end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)
@@ -446,7 +444,6 @@
         }
 
         node.node.on('dragstart', (event: any) => {
-            //console.log("DRAGSTART")
         })
 
         node.node.on('dragmove', (event: any) => {
@@ -513,7 +510,7 @@
 </script>
 
 	<div class= "editor-container" id= "editor-container-id">
-			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} {width} {height} {menubuild} {mainmenuclear} {mainmenusave} {mainmenuimport} {mainmenuexport} {mainmenuload}/>
+			<DiagramEditor {menuoptions} {submenuoptions} {graphtype} graph={graphFunctions} bind:draw={draw} bind:currentnode={currentnode} {nodeoptions} {panelcontroller} panels={datapanels} bind:component={component} {width} {height} {menubuild}/>
 			<input id="file-graph-input"name="file-graph-input" type='file' accept=".json" style="visibility:hidden;" on:click={readFile}>
 			<input id="load-graph-redraw"name="load-graph-redraw" type='button' accept=".json" style="visibility:hidden;" on:click={redrawGraph}>
 

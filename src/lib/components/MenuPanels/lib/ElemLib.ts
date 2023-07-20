@@ -219,7 +219,6 @@ function onMoveDown(event: any, array: any, divname: any, node: any, type: any, 
 
 function drawOperations(array: any, divname: any, node: any, type: any, modalTag: any = 'modal-editor-div-id') {
     if (node) {
-        //console.log("OPERATIONS LENGTH ---->",node.data.operations.length)
         const opcontdiv = document.getElementById(divname)
         if (opcontdiv)
             opcontdiv.innerHTML = ''

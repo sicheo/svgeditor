@@ -22,7 +22,6 @@ const exitDialog = (event:any)=>{
 }
 
 const menuDelete = async ()=>{
-    console.log("**** DELETE PROCESS *****")
     await options.menudelete()
     await options.menuclear()
 }

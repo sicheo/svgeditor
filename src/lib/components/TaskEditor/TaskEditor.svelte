@@ -193,7 +193,6 @@ const onSelectComponent = (row:any,tag:any,value:any) =>{
 
 const onInputComponent = (row:any,tag:any,value:any) =>{
     const index = rows.findIndex((item:any) => { return (item.id == row.id ) })
-    //console.log("*** ON INPUT COMPONENT ****", index,tag,value)
      if(index > -1)
         rows[index][tag] = value
 }
@@ -219,7 +218,7 @@ const addTask = (event:any) =>{
 
 const onChangeSelectInput = (e:any)=>{
     const value = e.target.value
-    console.log("VALUE",value)
+   
 }
 
 const saveTask = (event:any) =>{

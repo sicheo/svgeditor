@@ -13,12 +13,7 @@ let titlelem:any
 onMount(async ()=>{
 	saved = node.data
 	titlelem = document.getElementById("property-panel-title-id")
-	// ADD SHOW EVENT LISTENER
-	/*const panel = document.getElementById("property-panel-main-id")
-    const showListener = (ev:any)=>{
-		  console.log("**** PANEL NODE SHOW *****",node)
-      }
-	panel.addEventListener("panelshow",showListener)*/
+	
  });
 
 const panelSave = (event:any) =>{

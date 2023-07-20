@@ -6,7 +6,6 @@
 
   const onClick = (ev:any)=>{
       const target = ev.target
-      console.log("**** BREADCRUMB CLICK ****",target.value)
       items = findTreePath(tree,target.value)
   }
 </script>

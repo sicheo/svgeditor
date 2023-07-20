@@ -152,7 +152,7 @@ export default class gnode {
         foreign.node.setAttribute("height", this.height)
         foreign.node.setAttribute("style", "z-index:10;")
         foreign.node.innerHTML = '<div xmlns="http://www.w3.org/1999/xhtml" >pippo</div>'
-        console.log(this._draw.svg(), foreign.node)*/
+        */
 
         // ADD SOCKETS
         const options = { x: this.x + this.width / 2 - this.radius / 2, y: this.y - this.radius / 2 }

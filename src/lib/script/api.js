@@ -1,5 +1,6 @@
 import mocks from '../script/mocks.js'
 import { token } from "../ustore.js"
+import graphutils from '../script/graphutils'
 
 const baseUrl = 'https://' + window.location.hostname + ':9001'
 
@@ -1641,6 +1642,90 @@ export const deleteController = async function (filters, mock = false) {
                 })
         } else {
             resolve(mocks.deleteController(body))
+        }
+    })
+}
+
+/**
+ * Get Tree
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
+ */
+export const getTrees = async function (filters, mock = false) {
+    return new Promise(async (resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getTrees",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    // FOR EACH FILTER GET DB ARRAY
+                    // FROM DB ARRAY TO TREE
+                    // BUILD TREE ARRAY
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            // FOR EACH FILTER GET DB ARRAY
+            const trees = []
+            const rescomp = await mocks.getCompanies(body)
+            for (let i = 0; i < rescomp.data.length; i++) {
+                const dbarray =  await mocks.getDBArray(rescomp.data[i].name)
+                // FROM DB ARRAY TO TREE
+                const tree = graphutils.fromDbToTree(dbarray)
+                // BUILD TREE ARRAY
+                trees.push(tree)   
+            }
+            body.data = trees
+            resolve(body)
+        }
+    })
+}
+
+/**
+ * Set Tree
+ * @param {any} tree tree to set
+ * @param {any} mock use mock flag (default false)
+ */
+export const setTree = async function (tree, mock = false) {
+    return new Promise(async (resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "setTree",
+            options: {
+                tree: tree
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    // FOR EACH FILTER GET DB ARRAY
+                    // FROM DB ARRAY TO TREE
+                    // BUILD TREE ARRAY
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            // FROM TREE TO DB ARRAY
+            const dbarray = graphutils.fromTreeToDb(tree)
+            // SAVE DBARRAY
+            const ret = await mocks.setDBArray(dbarray)
+            body.data = ret
+            resolve(body)
         }
     })
 }

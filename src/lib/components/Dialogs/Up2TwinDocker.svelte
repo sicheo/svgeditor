@@ -76,7 +76,6 @@ const  readFile = async function(event:any) {
 }
 
 const dockerSubmit = async (ev:any)=>{
-		console.log("** CONNECTING TO DOCKER ***",dialogOptions.device.host)
 		let res
 		try{
 			const ipdockerhost = await dnsLookup(dialogOptions.device.host,$mock)
@@ -106,7 +105,6 @@ const dockerSubmit = async (ev:any)=>{
 						res = res.data
 						if(Array.isArray(res)){
 							containers = res
-							console.log("*+*+ CONTAINERS *+*+", containers)
 							for(let i =0; i< containers.length;i++) 
 								containers[i].Created = new Date(containers[i].Created).toISOString()
 						}
@@ -179,7 +177,6 @@ const listContainers = new Promise(async(resolve:any,reject:any)=>{
 		res = res.data
 		if(Array.isArray(res)){
 			containers = res
-			console.log("*+*+ CONTAINERS *+*+", containers)
 			for(let i =0; i< containers.length;i++) 
 				containers[i].Created = new Date(containers[i].Created).toISOString()
 			resolve(containers)

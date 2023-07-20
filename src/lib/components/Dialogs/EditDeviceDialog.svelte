@@ -51,7 +51,6 @@ const changeValue = (ev:any)=>{
 	}
 	found.lastmodified = getLocalDate(new Date(Date.now()))
 	// TEST TABLE UPDATE
-	console.log(ev.target.name,ev.target.value,dialogOptions.row.uid,data)
 	localdata = JSON.parse(JSON.stringify(data))
 	const eventShow = new CustomEvent("refreshtable",{detail: localdata});
 	tablediv.dispatchEvent(eventShow)

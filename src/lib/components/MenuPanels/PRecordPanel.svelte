@@ -52,22 +52,17 @@ let operations:any[] = [
 let opcontdiv:any
 
 const saveEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT SAVE******")
                                     opcontdiv.innerHTML = '';
                                 }
 const hideEventHandler = (e:any) => {
-                                    //console.log("**** FIRED EVENT HIDE******")
                                     opcontdiv.innerHTML = '';
                                 }
 const showEventHandler = (e:any) => {
-                                    //node = e.detail.node
                                     if(e.detail.node == "PHASE")
                                         setTimeout(redrawOperations,50)
                                 }
 
 onMount(async ()=>{
-   //console.log("MOUNT PANEL PHASE")
-   
    node.data.level = 'level1'
    opcontdiv = document.getElementById("class-operations")
    // GET MODAL
@@ -103,9 +98,6 @@ onMount(async ()=>{
  });
 
  onDestroy(async ()=>{
-    //console.log("DESTROY PANEL PHASE")
-   //const opcontdiv = document.getElementById("class-operations")
-   //modal = document.getElementById("modal-editor-div-id")
 
    if(opcontdiv){
         opcontdiv.removeEventListener(

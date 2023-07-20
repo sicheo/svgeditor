@@ -120,7 +120,6 @@ onMount(async ()=>{
     }
         
     tree['children'].push(final)
-    console.log("*** GET TREE ***", tree)
 	return tree
 }
 
@@ -141,7 +140,6 @@ onMount(async ()=>{
 
  const onBlock = async (ev:any) =>{
      const target = ev.target
-     console.log("*** BLOCK *****",ev.target.checked)
  }
 
  

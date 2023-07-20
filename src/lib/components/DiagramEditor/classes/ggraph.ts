@@ -161,7 +161,6 @@ export default class ggraph {
         }
 
         node.node.on('dragstart', (event: any) => {
-            console.log("DRAGSTART")
         })
 
         node.node.on('dragmove', (event: any) => {
@@ -324,7 +323,6 @@ export default class ggraph {
 				pathn.addFrom(from)
 				const start = { position: { x: point.x, y: point.y }, dir: 'right' }
 				const end = { position: { x: point1.x, y: point1.y }, dir: 'left' }
-				console.log(start, end)
 				const d1 = _calcDAttr(path.coef, start, end)
 				pathn.path.plot(d1)
 				sockS.addPath(pathn)

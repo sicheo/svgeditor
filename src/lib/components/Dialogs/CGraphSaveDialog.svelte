@@ -21,7 +21,6 @@ const exitDialog = (event:any)=>{
 
 
 const saveProcess = async(event:any) =>{
-	console.log(" SAVE PROCESS ",dialogOptions.data)
 	if(newversion != dialogOptions.data.data.authorization.version){
 		dialogOptions.data.data.authorization.version = newversion
 		dialogOptions.data.uuid = uuidv4()

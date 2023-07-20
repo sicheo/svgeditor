@@ -24,7 +24,6 @@ class TreeNode {
             if (childnode > maxnode)
                 maxnode = childnode
         }
-        console.log("tree.js MAXNODE ", maxnode)
         return maxnode
     }
 }

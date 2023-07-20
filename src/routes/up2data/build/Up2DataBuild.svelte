@@ -6,11 +6,12 @@
   import Up2DataEditor from '../../../lib/components/PageContents/Up2DataEditor.svelte'
   import {dataNavigation,mock, navigating } from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
+   import { graphDataVerify } from "../../../lib/script/verification/graphverify"
   import { _ } from 'svelte-i18n'
   import graphutils from '../../../lib/script/graphutils';
-  import {getProcesses, sleep} from '../../../lib/script/api.js'
+  import {getTrees, sleep} from '../../../lib/script/api.js'
   import LoadDialog from '../../../lib/components/Dialogs/DGraphLoadDialog.svelte'
-  import SaveDialog from '../../../lib/components/Dialogs/CGraphSaveDialog.svelte'
+  import SaveDialog from '../../../lib/components/Dialogs/DGraphSaveDialog.svelte'
   import DeleteDialog from '../../../lib/components/Dialogs/CGraphDeleteDialog.svelte'
 
 
@@ -28,9 +29,9 @@
 
   let onBuddyClick = BuddyClick
 
-let  onSysConfClick = SysConfClick
+  let  onSysConfClick = SysConfClick
 
-let  onLogoutClick = LogoutClick
+  let  onLogoutClick = LogoutClick
 
 
 // MENU MANAGEMENT
@@ -55,16 +56,32 @@ const upload = async ()=>{
 		}
    }
 
-const menusave = ()=>{ }
+const menusave = async ()=>{ 
+    // CHECK GRAPH CONSISTENCY
+    const verification = await graphDataVerify(graph)
+    if(verification != "OK"){
+        alert(verification)
+        return
+    }
+    const tree = await graphutils.getTreeFromDGraph(graph,graph.nodes[0],null)
+   
+    // CHECK SAVE
+    dialogOptions = {data:tree,selected:''}
+    dialogComponent = SaveDialog
+    const dialog = document.getElementById("build-tool-dialog")
+    if(dialog){
+        dialog.style.display = 'block'
+    }
+}
 
 const listener = (e:any)=>{
-    //console.log("**** EVENT ******",e.detail.processUid)
-    if(e.detail.processUid && e.detail.processUid != ''){
-        const found = trees.find((item:any) => item.uuid == e.detail.processUid)
+    if(e.detail.treeUid && e.detail.treeUid != ''){
+        const found = trees.find((item:any) => item.roottag == e.detail.treeUid)
         if(found){
             const element = document.getElementById("load-graph-redraw")
-            const graph = graphutils.getGraphFromProcess(found)
-            element.setAttribute("data-graph",JSON.stringify(graph))
+            let lgraph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
+            lgraph = graphutils.getDGraphFromTree(found.root,lgraph,0)
+            element.setAttribute("data-graph",JSON.stringify(lgraph))
             element.click()
         }
     }
@@ -77,13 +94,12 @@ const menuload = async ()=>{
     element.addEventListener("treeLoaded",listener)
     // POP UP LOAD PAGE
     // **** TBD LOAD TREES ******
-    const response = await getProcesses(null,$mock)
+    const response = await getTrees(null,$mock)
     // ***** END TBD *******
     trees = response.data
-    dialogOptions = {data:trees,selected:''}
+    dialogOptions = {data:response.data,selected:''}
     $navigating = {}
     dialogComponent = LoadDialog
-    console.log("UP2DATA BUILD SHOW LOAD DIALOG",dialogComponent,dialogOptions)
     const dialog = document.getElementById("build-tool-dialog")
     if(dialog){
         dialog.style.display = 'block'

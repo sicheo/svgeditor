@@ -1,8 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\src",
+    "\\src\\lib",
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\index.html",
+  "SelectedNode": "\\src\\lib\\script\\graphutils.ts",
   "PreviewInSolutionExplorer": false
 }

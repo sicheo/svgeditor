@@ -34,7 +34,6 @@
   }
 
   const refreshListener = async (ev:any)=>{
-           console.log("EV LISTENER",ev.detail)
            data = ev.detail
            refreshDataExt()
         }
@@ -60,7 +59,7 @@
   }
 
   const setRowSelection = ()=>{
-      console.log("SET ROW SELECTION")
+      
   }
 
   const options = writable(

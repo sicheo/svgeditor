@@ -5,8 +5,7 @@ import { _ } from 'svelte-i18n'
 export let data = []
 export let selected = ''
 export let placeholder = "Select your option"
-export let description1 = 'description'
-export let description2 = 'doccode'
+
 
 let optionMenu, selectBtn ,options ,sBtn_text
 
@@ -63,12 +62,9 @@ const getClass = (blocked:boolean)=>{
   <input type="text"  placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}">
   <ul class="options" id="myDropdown">
      <!--input type="text" placeholder="{$_('dialog_search')}" id="myInput" on:keyup="{filterFunction}"-->
-    {#each data as Item, index(Item['uuid'])}
+    {#each data as Item, index(Item.id)}
     <li class="option">
-      <span class="option-text {getClass(Item.data['authorization'].blocked)}" data-uid="{Item['uuid']}">{Item['name']} {Item[description1]} {Item[description2]} v{Item.data['authorization'].version} {Item.data['lastmodified']}</span>
-      <!--span class="option-text1">{Item[description1]}</!--span>
-      <span class="option-text2">{Item[description2]}</span>
-      <span class="option-text2">v{Item.data['authorization'].version} {Item.data['lastmodified']}</span-->
+      <span class="option-text {getClass(Item.blocked)}" data-uid="{Item.id}">{Item.text} </span>
     </li>
     {/each}
   </ul>

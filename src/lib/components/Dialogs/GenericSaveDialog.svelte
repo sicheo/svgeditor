@@ -25,7 +25,6 @@ const saveFunc = async(event:any) =>{
 	const response = await dialogOptions.save(dialogOptions.row,$mock)
 	const dialog = document.getElementById("build-tool-dialog")
 	//data = response.data
-	console.log("**** GENERIC SAVW REFRESH DATA*****")
 	const eventShow = new CustomEvent("refreshtable",{detail: data});
 	tablediv.dispatchEvent(eventShow)
     if(dialog)

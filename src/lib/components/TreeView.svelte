@@ -15,7 +15,6 @@
 		const type = ev.target.getAttribute("data-type")
 		// TOGGLE CHECKED
 		ev.target.classList.add('checked')
-		console.log("MANAGE NODE",ev.target.getAttribute("name"),ev.target.className)
 		callback({name:name,type:type})
 	}
 
