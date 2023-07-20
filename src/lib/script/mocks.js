@@ -1378,7 +1378,7 @@ const setPlant = async function (body) {
     const plant = body.options.plant
     let old = null
     if (plant) {
-        const existing = companies.findIndex((item) => { return item.uid == plant.uid })
+        const existing = plants.findIndex((item) => { return item.uid == plant.uid })
         if (existing > -1) {
             old = plants[existing]
             plants[existing] = plant
@@ -1915,37 +1915,51 @@ const getDBArray = async function(treename) {
 }
 
 const setDBArray = async function (array) {
+    
     const body = { options:{ } }
     const cmps = array.company
     for (let i = 0; i < cmps.length; i++) {
         body.options.company = cmps[i]
         setCompany(body)
     }
+    console.log("COMPANIES", companies)
+
     const plts = array.plants
+    console.log("ARRAY PLANTS", array.plants)
     for (let i = 0; i < plts.length; i++) {
         body.options.plant = plts[i]
         setPlant(body)
     }
+    console.log("PLANTS", plants)
+
     const dpts = array.departments
     for (let i = 0; i < dpts.length; i++) {
         body.options.department = dpts[i]
         setDepartment(body)
     }
+    console.log("DEPARTMENTS", departments)
+
     const lns = array.lines
     for (let i = 0; i < lns.length; i++) {
         body.options.line = lns[i]
         setLine(body)
     }
+    console.log("LINES", lines)
+
     const mcns = array.machines
     for (let i = 0; i < mcns.length; i++) {
         body.options.machine = mcns[i]
         setMachine(body)
     }
+    console.log("MACHINES", machines)
+
     const cnts = array.controllers
     for (let i = 0; i < cnts.length; i++) {
         body.options.controller = cnts[i]
         setController(body)
     }
+    console.log("CONTROLLERS", controllers)
+
     return (array)
 }
 

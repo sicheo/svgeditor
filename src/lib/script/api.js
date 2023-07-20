@@ -1679,7 +1679,7 @@ export const getTrees = async function (filters, mock = false) {
             const trees = []
             const rescomp = await mocks.getCompanies(body)
             for (let i = 0; i < rescomp.data.length; i++) {
-                const dbarray =  await mocks.getDBArray(rescomp.data[i].name)
+                const dbarray = await mocks.getDBArray(rescomp.data[i].name)
                 // FROM DB ARRAY TO TREE
                 const tree = graphutils.fromDbToTree(dbarray)
                 // BUILD TREE ARRAY
@@ -1723,6 +1723,7 @@ export const setTree = async function (tree, mock = false) {
             // FROM TREE TO DB ARRAY
             const dbarray = graphutils.fromTreeToDb(tree)
             // SAVE DBARRAY
+            console.log(">>>>>>>> DBARRAY",dbarray)
             const ret = await mocks.setDBArray(dbarray)
             body.data = ret
             resolve(body)
