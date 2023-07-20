@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\lib",
-    "\\src\\lib\\script"
+    "\\src\\lib\\components",
+    "\\src\\routes\\up2clone\\build",
+    "\\src\\routes\\up2data\\build"
   ],
-  "SelectedNode": "\\src\\lib\\script\\graphutils.ts",
+  "SelectedNode": "\\LICENSE",
   "PreviewInSolutionExplorer": false
 }

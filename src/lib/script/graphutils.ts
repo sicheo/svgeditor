@@ -52,7 +52,7 @@ const getTreeFromDGraph = (graph: any, parentnode: any, parent: any) => {
         // For strange reason this check is needed to avoid bad recursion from getChildrens
         if (nodes[i].id) {
             const parent = tree
-            const subtree = getTreeFromGraph(graph, nodes[i], parent)
+            const subtree = getTreeFromDGraph(graph, nodes[i], parent)
             tree.children.push(subtree)
         }
     }
@@ -68,7 +68,7 @@ const graphGetPathnum = (graph: any) => {
             ret = graph.paths[i].uid
     return ret
 }
-const getDDGraphFromTree = (tree: any, graph: any, pathuid: any) => {
+const getDDGraphFromTree = async (tree: any, graph: any, pathuid: any) => {
     const locdata = JSON.parse(JSON.stringify(tree.value.data))
     locdata.level = tree.value.graph.level
     let node = { id: tree.key, data: locdata }
@@ -82,13 +82,13 @@ const getDDGraphFromTree = (tree: any, graph: any, pathuid: any) => {
             path.from.push(node.id)
             path.to.push(child.key)
             graph.paths.push(path)
-            getDGraphFromTree(child, graph, pathuid)
+            await getDDGraphFromTree(child, graph, pathuid)
         }
     }
 }
 
-const getDGraphFromTree = (tree: any, graph: any, pathuid: any) => {
-    getDDGraphFromTree(tree, graph, pathuid)
+const getDGraphFromTree = async (tree: any, graph: any, pathuid: any) => {
+    await getDDGraphFromTree(tree, graph, pathuid)
     const retgraph = graph
     return(retgraph)
 }
@@ -441,7 +441,7 @@ const  fromTreeToDb = (tree:any)=> {
     return toDb
 }
 
-const fromDbToTree = (dbarray:any ) => {
+const fromDbToTree = (dbarray: any) => {
     let key = ""
     let levels = "level"
     let index = 0

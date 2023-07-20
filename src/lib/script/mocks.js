@@ -1916,7 +1916,7 @@ const getDBArray = async function(treename) {
 
 const setDBArray = async function (array) {
     const body = { options:{ } }
-    const cmps = array.companies
+    const cmps = array.company
     for (let i = 0; i < cmps.length; i++) {
         body.options.company = cmps[i]
         setCompany(body)

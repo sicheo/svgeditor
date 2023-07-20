@@ -21,7 +21,7 @@ const exitDialog = (event:any)=>{
 
 const saveProcess = async(event:any) =>{
 	// CHECK PROCESS BEFORE SAVE
-	const check = isTreeValid(dialogOptions.data)
+	const check = isTreeValid(dialogOptions.data.root)
 	if(check != "OK"){
 		alert(check)
 	}else{

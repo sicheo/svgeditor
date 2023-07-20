@@ -66,7 +66,7 @@ const menusave = async ()=>{
     const tree = await graphutils.getTreeFromDGraph(graph,graph.nodes[0],null)
    
     // CHECK SAVE
-    dialogOptions = {data:tree,selected:''}
+    dialogOptions = {data:{root:tree},selected:''}
     dialogComponent = SaveDialog
     const dialog = document.getElementById("build-tool-dialog")
     if(dialog){
@@ -74,13 +74,13 @@ const menusave = async ()=>{
     }
 }
 
-const listener = (e:any)=>{
+const listener = async (e:any)=>{
     if(e.detail.treeUid && e.detail.treeUid != ''){
         const found = trees.find((item:any) => item.roottag == e.detail.treeUid)
         if(found){
             const element = document.getElementById("load-graph-redraw")
             let lgraph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
-            lgraph = graphutils.getDGraphFromTree(found.root,lgraph,0)
+            lgraph = await graphutils.getDGraphFromTree(found.root,lgraph,0)
             element.setAttribute("data-graph",JSON.stringify(lgraph))
             element.click()
         }
