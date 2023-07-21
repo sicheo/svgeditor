@@ -1723,7 +1723,6 @@ export const setTree = async function (tree, mock = false) {
             // FROM TREE TO DB ARRAY
             const dbarray = graphutils.fromTreeToDb(tree)
             // SAVE DBARRAY
-            console.log(">>>>>>>> DBARRAY",dbarray)
             const ret = await mocks.setDBArray(dbarray)
             body.data = ret
             resolve(body)
@@ -1731,6 +1730,52 @@ export const setTree = async function (tree, mock = false) {
     })
 }
 
+/**
+ * Delete Tree
+ * @param {any} filters array of selection filters [{op:operation,name:field,value:field value}] 
+ * @param {any} mock use mock flag (default false)
+ */
+export const deleteTree = async function (filters, mock = false) {
+    return new Promise(async (resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "deleteTree",
+            options: {
+                filters: filters
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    // FOR EACH FILTER GET DB ARRAY
+                    // FROM DB ARRAY TO TREE
+                    // BUILD TREE ARRAY
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            // FOR EACH FILTER GET DB ARRAY
+            let trees = []
+            let resp
+            resp = await getTrees(filters, mock)
+            trees = resp.data
+            for (let i = 0; i < trees.length; i++) {
+                
+                const dbarray = graphutils.fromTreeToDb(trees[i])
+                await mocks.deleteDBArray(dbarray)
+            }
+            resp = await getTrees(null, mock)
+            trees = resp.data
+            body.data = trees
+            resolve(body)
+        }
+    })
+}
 
 
 

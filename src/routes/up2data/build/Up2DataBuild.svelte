@@ -12,7 +12,7 @@
   import {getTrees, sleep} from '../../../lib/script/api.js'
   import LoadDialog from '../../../lib/components/Dialogs/DGraphLoadDialog.svelte'
   import SaveDialog from '../../../lib/components/Dialogs/DGraphSaveDialog.svelte'
-  import DeleteDialog from '../../../lib/components/Dialogs/CGraphDeleteDialog.svelte'
+  import DeleteDialog from '../../../lib/components/Dialogs/DGraphDeleteDialog.svelte'
 
 
   let component = 'MainTabTools'
@@ -128,12 +128,25 @@ const menuclear = ()=>{
         panel.style.visibility = 'hidden'
 }
 
+const menudelete = async ()=>{
+    const process = await graphutils.getProcessFromGraph(graph)
+    if(process){
+        dialogOptions = {data:process,selected:''}
+        dialogComponent = DeleteDialog
+        const dialog = document.getElementById("build-tool-dialog")
+        if(dialog){
+            dialog.style.display = 'block'
+        }
+    }
+}
+
 const menufunctions = {
     menusave: menusave,
     menuload: menuload,
     menuimport: menuimport,
     menuexport: menuexport,
-    menuclear: menuclear
+    menuclear: menuclear,
+    menudelete: menudelete
 }
 
 </script>

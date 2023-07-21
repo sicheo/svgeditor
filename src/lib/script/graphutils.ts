@@ -88,7 +88,6 @@ const getDDGraphFromTree = async (tree: any, graph: any, pathuid: any) => {
 }
 
 const getDGraphFromTree = async (tree: any, graph: any, pathuid: any) => {
-    console.log("GET GRAPH FROM TREE", tree)
     await getDDGraphFromTree(tree, graph, pathuid)
     const retgraph = graph
     return(retgraph)

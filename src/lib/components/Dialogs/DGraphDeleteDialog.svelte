@@ -1,15 +1,12 @@
 <script lang="ts">
 
 import { _ } from 'svelte-i18n'
-import {setTree } from '../../../lib/script/api.js'
+import {deleteTree } from '../../../lib/script/api.js'
 import {mock,analytics} from '../../../lib/ustore.js'
-import { v4 as uuidv4 } from 'uuid';
-
 
 
 export let dialogOptions : any
 export let color
-
 
 const exitDialog = (event:any)=>{
     const dialog = document.getElementById("build-tool-dialog")
@@ -17,27 +14,13 @@ const exitDialog = (event:any)=>{
         dialog.style.display = 'none'
 }
 
-
-
-const saveProcess = async(event:any) =>{
-	// CHECK PROCESS BEFORE SAVE
-	const check = isTreeValid(dialogOptions.data.root)
-	if(check != "OK"){
-		alert(check)
-	}else{
-		// SET MODIFICATION DATE
-		const old = await setTree(dialogOptions.data,$mock)	
-		const dialog = document.getElementById("build-tool-dialog")
-		if(dialog)
-			dialog.style.display = 'none'
-	}
+const delTree = async(event:any) =>{
+	const filters = [{op:'eq',name:'name',value:dialogOptions.data.name}]
+	const response = await deleteTree(filters,$mock)
+	const dialog = document.getElementById("build-tool-dialog")
+    if(dialog)
+        dialog.style.display = 'none'
 }
-
-const isTreeValid =(process:any) =>{
-	// 1. Process must have valid version
-	return("OK")
-}
-
 
 
 
@@ -50,11 +33,11 @@ const isTreeValid =(process:any) =>{
 				</div>
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
-				{$_('dialog_save_tree')}
-				<p> {dialogOptions.data.roottag} </p>
-		</div>
+				{$_('dialog_delete_tree')}
+				<p>{dialogOptions.data.roottag}</p>
+				</div>
 		<div class="class-panel-footer">
-				<input type="button" on:click={saveProcess} value="{$_('dialog_save_button')}" width="25" height="25"> 
+				<input type="button" on:click={delTree} value="{$_('dialog_delete_button')}" width="25" height="25"> 
 	    </div>
 		
 	</div>
@@ -64,8 +47,8 @@ const isTreeValid =(process:any) =>{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
-	width: 30%;
-	height: 40%;
+	width: 20%;
+	height: 30%;
 	margin: auto;
 }
 
@@ -80,15 +63,16 @@ const isTreeValid =(process:any) =>{
   color: var(--color);
   font-weight:bold ;
 }
+
+.class-panel-body p{
+  font-weight:normal ;
+}
 .class-last-item {
   margin-left: auto;
 }
 
 .class-panel-body {
   height: 60%;
-}
-.class-panel-body p{
-  font-weight:normal ;
 }
 .class-panel-footer {
   display: block;

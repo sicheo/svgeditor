@@ -43,6 +43,8 @@
   "dialog_save_device": "SAVE DEVICE TO DB",
   "dialog_save_button": "SAVE",
   "dialog_delete_process": "DELETE GRAPH FROM DB",
+  "dialog_save_tree": "SAVE TREE NODES TO DB",
+  "dialog_delete_tree": "DELETE TREE NODES FROM DB",
   "dialog_delete_device": "DELETE DEVICE FROM DB",
   "dialog_edit_device": "EDIT DEVICE",
   "dialog_location_device": "EDIT DEVICE LOCATION",

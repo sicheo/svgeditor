@@ -1223,6 +1223,65 @@ const setLog = function (body) {
     return (body)
 }
 
+
+const filterArrayAdd = (array, filters, neg = false) => {
+    let ret = []
+    if (filters && filters.length) {
+        for (let i = 0; i < filters.length; i++) {
+            const filter = filters[i]
+            let A = []
+            switch (filter.op) {
+                case "eq":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] == filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] != filter.value })
+                    break;
+                case "neq":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] != filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] == filter.value })
+                    break;
+                case "leq":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] <= filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] > filter.value })
+                    break;
+                case "le":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] < filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] >= filter.value })
+                    break;
+                case "geq":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] >= filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] < filter.value })
+                    break;
+                case "gr":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name] > filter.value })
+                    else
+                        A = array.filter((item) => { return item[filter.name] <= filter.value })
+                    break;
+                case "in":
+                    if (!neg)
+                        A = array.filter((item) => { return item[filter.name].includes(filter.value) })
+                    else
+                        A = array.filter((item) => { return !item[filter.name].includes(filter.value) })
+                    break;
+            }
+            ret.push.apply(ret,A)
+        }
+    }
+    
+    return ret
+}
+
+
 const filterArray = (array, filters, neg=false) => {
     if (filters && filters.length) {
         for (let i = 0; i < filters.length; i++) {
@@ -1451,7 +1510,6 @@ const setController = async function (body) {
 
 const deleteController = async function (body) {
     const filters = body.options.filters
-
     controllers = filterArray(controllers, filters, true)
     body.data = controllers
     return (body)
@@ -1459,15 +1517,20 @@ const deleteController = async function (body) {
 
 const deleteMachine = async function (body) {
     let filters = body.options.filters
+    let locmac = []
 
+    //locmac = filterArray(machines, filters, false)
+    locmac = filterArrayAdd(machines, filters, false)
     machines = filterArray(machines, filters, true)
     // DELETE CONTROLLERS
-    for (let i = 0; i < machines.length; i++) {
-        filters = []
-        const filter = { op: 'eq', name: 'machine', value: machines[i].uid }
+    filters = []
+    for (let i = 0; i < locmac.length; i++) {
+        const filter = { op: 'eq', name: 'machine', value: locmac[i].uid }
         filters.push(filter)
     }
-    controllers = filterArray(controllers, filters, false)
+    body.options.filters = filters
+    await deleteController(body)
+
 
     body.data = machines
     return (body)
@@ -1475,16 +1538,19 @@ const deleteMachine = async function (body) {
 
 const deleteLine = async function (body) {
     let filters = body.options.filters
+    let loclin = []
 
+    //loclin = filterArray(lines, filters, false)
+    loclin = filterArrayAdd(lines, filters, false)
     lines = filterArray(lines, filters, true)
     // DELETE MACHINES
-    for (let i = 0; i < lines.length; i++) {
-        filters = []
-        const filter = { op: 'eq', name: 'line', value: lines[i].uid }
+    filters = []
+    for (let i = 0; i < loclin.length; i++) {
+        const filter = { op: 'eq', name: 'line', value: loclin[i].uid }
         filters.push(filter)
     }
     body.options.filters = filters
-    deleteMachine(body)
+    await deleteMachine(body)
 
     body.data = lines
     return (body)
@@ -1492,16 +1558,19 @@ const deleteLine = async function (body) {
 
 const deleteDepartment = async function (body) {
     let filters = body.options.filters
+    let locdept = []
 
+    //locdept = filterArray(departments, filters, false)
+    locdept = filterArrayAdd(departments, filters, false)
     departments = filterArray(departments, filters, true)
     // DELETE LINES
-    for (let i = 0; i < departments.length; i++) {
-        filters = []
-        const filter = { op: 'eq', name: 'department', value: departments[i].uid }
+    filters = []
+    for (let i = 0; i < locdept.length; i++) {
+        const filter = { op: 'eq', name: 'department', value: locdept[i].uid }
         filters.push(filter)
     }
     body.options.filters = filters
-    deleteLine(body)
+    await deleteLine(body)
 
     body.data = departments
     return (body)
@@ -1509,16 +1578,19 @@ const deleteDepartment = async function (body) {
 
 const deletePlant = async function (body) {
     let filters = body.options.filters
-
+    let locplant = []
+    
+    //locplant = filterArray(plants, filters, false)
+    locplant = filterArrayAdd(plants, filters, false)
     plants = filterArray(plants, filters, true)
     // DELETE DEPARTMENTS
-    for (let i = 0; i < plants.length; i++) {
-        filters = []
-        const filter = { op: 'eq', name: 'plant', value: plants[i].uid }
+    filters = []
+    for (let i = 0; i < locplant.length; i++) {
+        const filter = { op: 'eq', name: 'plant', value: locplant[i].uid }
         filters.push(filter)
     }
     body.options.filters = filters
-    deleteDepartment(body)
+    await deleteDepartment(body)
 
     body.data = plants
     return (body)
@@ -1526,16 +1598,20 @@ const deletePlant = async function (body) {
 
 const deleteCompany = async function (body) {
     let filters = body.options.filters
+    let loccomp = []
 
+    loccomp = filterArrayAdd(companies, filters, false)
     companies = filterArray(companies, filters, true)
-    // DELETE DEPARTMENTS
-    for (let i = 0; i < companies.length; i++) {
+
+    // DELETE PLANTS
+    for (let i = 0; i < loccomp.length; i++) {
         filters = []
-        const filter = { op: 'eq', name: 'company', value: companies[i].uid }
+        const filter = { op: 'eq', name: 'company', value: loccomp[i].uid }
         filters.push(filter)
     }
     body.options.filters = filters
-    deletePlant(body)
+    await deletePlant(body)
+
 
     body.data = companies
     return (body)
@@ -1922,7 +1998,7 @@ const setDBArray = async function (array) {
         body.options.company = cmps[i]
         setCompany(body)
     }
-    console.log("COMPANIES", companies)
+    
 
     const plts = array.plants
     console.log("ARRAY PLANTS", array.plants)
@@ -1930,49 +2006,49 @@ const setDBArray = async function (array) {
         body.options.plant = plts[i]
         setPlant(body)
     }
-    console.log("PLANTS", plants)
+    
 
     const dpts = array.departments
     for (let i = 0; i < dpts.length; i++) {
         body.options.department = dpts[i]
         setDepartment(body)
     }
-    console.log("DEPARTMENTS", departments)
+    
 
     const lns = array.lines
     for (let i = 0; i < lns.length; i++) {
         body.options.line = lns[i]
         setLine(body)
     }
-    console.log("LINES", lines)
+   
 
     const mcns = array.machines
     for (let i = 0; i < mcns.length; i++) {
         body.options.machine = mcns[i]
         setMachine(body)
     }
-    console.log("MACHINES", machines)
+    
 
     const cnts = array.controllers
     for (let i = 0; i < cnts.length; i++) {
         body.options.controller = cnts[i]
         setController(body)
     }
-    console.log("CONTROLLERS", controllers)
+    
 
     return (array)
 }
 
 const deleteDBArray = async function (array) {
-   
     let filters = []
     const body = { options: {filters:filters} }
-    const cmps = array.companies
+    const cmps = array.company
     filters= []
     for (let i = 0; i < cmps.length; i++) {
         const filter = { op: 'eq', name: 'uid', value: cmps[i].uid}
         filters.push(filter)
     }
+    body.options.filters = filters
     deleteCompany(body)
 }
 
