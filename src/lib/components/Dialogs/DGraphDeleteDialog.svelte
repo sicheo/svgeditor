@@ -34,7 +34,7 @@ const delTree = async(event:any) =>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 				{$_('dialog_delete_tree')}
-				<p>{dialogOptions.data.roottag}</p>
+				<p>{dialogOptions.data.name}</p>
 				</div>
 		<div class="class-panel-footer">
 				<input type="button" on:click={delTree} value="{$_('dialog_delete_button')}" width="25" height="25"> 
@@ -55,6 +55,7 @@ const delTree = async(event:any) =>{
 .class-panel-header {
   display: block;
   text-align: right;
+  background-color: #eeeeee;
 }
 .class-panel-body {
   display: block;

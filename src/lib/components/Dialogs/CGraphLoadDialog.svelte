@@ -86,6 +86,7 @@ const loadProcess = (event:any) =>{
 .class-panel-header {
   display: flex;
   text-align: right;
+  background-color: #eeeeee;
 }
 .class-last-item {
   margin-left: auto;

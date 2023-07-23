@@ -91,11 +91,13 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                     columnHelper.accessor('type', {
                         id : 'type',
                         header: () => $_("table-db-device-type"),
+                        enableColumnFilter:false,
                         cell: (props) =>   flexRender(TableImage,{image:getImage('devicetype',props.getValue())}),
                     }),
                     columnHelper.accessor('os', {
                         id : 'os',
                         header: () => $_("table-db-device-os"),
+                        enableColumnFilter:false,
                         cell: (props) =>   flexRender(TableImage,{image:getImage('deviceos',props.getValue())}),
                     }),
                     columnHelper.accessor('name', {
@@ -110,6 +112,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                     }),
                     columnHelper.accessor('port', {
                         id : 'port',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-port"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),  
@@ -120,26 +123,31 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'localization',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-localization"),
                         cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'agent',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-agent"),
                         cell: (props) =>   flexRender(TableImage,{image:'/AGENT.svg',onClick:onClickAgent,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'save',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-save"),
                         cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'edit',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-edit"),
                         cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'delete',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-delete"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete,uid:props.getValue()}),
                     }),

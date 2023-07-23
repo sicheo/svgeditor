@@ -103,5 +103,9 @@
   "table-db-device-deploy": "DEPLOY",
   "table-db-device-mac": "MAC",
   "table-db-device-brand": "BRAND",
-  "table-db-device-model": "MODEL"
+  "table-db-device-model": "MODEL",
+  "table-db-device-plant": "PLANT",
+  "table-db-device-department": "DEPARTMENT",
+  "table-db-device-line": "LINE",
+  "table-filter-placehoder": "Filter column..."
 }

@@ -103,5 +103,9 @@
   "table-db-device-deploy": "RILASCIA",
   "table-db-device-mac": "MAC",
   "table-db-device-brand": "MARCHIO",
-  "table-db-device-model": "MODELLO"
+  "table-db-device-model": "MODELLO",
+  "table-db-device-plant": "IMPIANTO",
+  "table-db-device-department": "DIPARTIMENTO",
+  "table-db-device-line": "LINEA",
+  "table-filter-placehoder": "Filtra colonna..."
 }

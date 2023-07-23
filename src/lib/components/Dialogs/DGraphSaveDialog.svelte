@@ -20,8 +20,9 @@ const exitDialog = (event:any)=>{
 
 
 const saveProcess = async(event:any) =>{
+	console.log("SAVE",dialogOptions.data.root.value.data.name)
 	// CHECK PROCESS BEFORE SAVE
-	const check = isTreeValid(dialogOptions.data.root)
+	const check = isTreeValid(dialogOptions.data)
 	if(check != "OK"){
 		alert(check)
 	}else{
@@ -33,8 +34,9 @@ const saveProcess = async(event:any) =>{
 	}
 }
 
-const isTreeValid =(process:any) =>{
-	// 1. Process must have valid version
+const isTreeValid =(tree:any) =>{
+	// 1. TREE MUST START WITH COMPANY NODE
+	// 2. LEVELS MUST BE RESPECTED
 	return("OK")
 }
 
@@ -51,7 +53,7 @@ const isTreeValid =(process:any) =>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 				{$_('dialog_save_tree')}
-				<p> {dialogOptions.data.roottag} </p>
+				<p> {dialogOptions.data.root.value.data.name} </p>
 		</div>
 		<div class="class-panel-footer">
 				<input type="button" on:click={saveProcess} value="{$_('dialog_save_button')}" width="25" height="25"> 
@@ -72,6 +74,7 @@ const isTreeValid =(process:any) =>{
 .class-panel-header {
   display: block;
   text-align: right;
+  background-color: #eeeeee;
 }
 .class-panel-body {
   display: block;

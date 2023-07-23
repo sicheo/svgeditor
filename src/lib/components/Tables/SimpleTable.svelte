@@ -5,7 +5,7 @@
  import { onMount} from "svelte";
  import {sleep} from '../../script/api.js'
  import { _ } from 'svelte-i18n'
-
+ import TableFilter from './TableFilter.svelte'
 
 
 
@@ -14,6 +14,7 @@
     getCoreRowModel,
     getSortedRowModel,
     getPaginationRowModel,
+    getFilteredRowModel,
     flexRender
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
@@ -28,6 +29,7 @@
 
  
   let sorting = []
+  let columnFilters = []
 
   const getLocalData = ()=>{
       return data
@@ -62,17 +64,21 @@
       
   }
 
+
+
   const options = writable(
     {
       data:data,
       columns:columns,
       state: {
         sorting,
+        columnFilters
       },
       onSortingChange: setSorting,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
+      getFilteredRowModel: getFilteredRowModel(),
       debugTable: false,
       debugRows: false,
       enableRowSelection: true,
@@ -149,13 +155,18 @@
                   }[header.column.getIsSorted().toString()] ?? ''}
                 </div>
               {/if}
+              {#if header.column.getCanFilter() }
+                <div>
+                    <TableFilter column={header.column} table={$table} />
+                </div>
+              {/if}
             </th>
           {/each}
         </tr>
       {/each}
     </thead>
     <tbody>
-      {#each $table.getPaginationRowModel().rows.slice($table.getState().pagination.pageIndex*$table.getState().pagination.pageSize, ($table.getState().pagination.pageIndex+1)*$table.getState().pagination.pageSize) as row}
+      {#each $table.getPaginationRowModel().rows as row}
         <tr>
           {#each row.getVisibleCells() as cell}
             <td>
@@ -216,6 +227,7 @@ th {
   background-color: var(--background-color) ;
   opacity: 0.5 ;
   font-size: 15px;
+  text-align: left;
 }
 
 tfoot {

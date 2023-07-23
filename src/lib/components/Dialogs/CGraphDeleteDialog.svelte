@@ -59,6 +59,7 @@ const delProcess = async(event:any) =>{
 .class-panel-header {
   display: block;
   text-align: right;
+  background-color: #eeeeee;
 }
 .class-panel-body {
   display: block;
