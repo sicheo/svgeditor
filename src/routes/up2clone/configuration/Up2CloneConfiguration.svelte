@@ -4,7 +4,6 @@
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import NullPage from '../../../lib/components/NullPage.svelte'
   import Up2CloneConfMp from "../../../lib/components/PageContents/Up2CloneConfMP.svelte";
   import {cloneNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
@@ -40,7 +39,7 @@ onMount(async ()=>{
 
 <main>
   <div class="main-content">
-    <MainTab image="/ICO_UP2_CLONE.png" title="{$_('up2data_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_CLONE.png" title="{$_('up2clone_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="page-container">
     <div class="page-horizontal">
         <div class="navigation-panel" style="--color:{color};">

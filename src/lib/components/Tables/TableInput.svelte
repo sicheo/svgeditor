@@ -21,17 +21,18 @@ export let list = ""
 .text {
   position: relative;
   display: inline-block;
-  
+  width: 100%;
 }
+
+
 .text input { 
-	 width: 100%;
+  opacity: 1;
+  background-color: #eeeeee;
+  width: 100%;
+  border: none;
+  outline: none;
+  margin: 2px,2px,2px,2px;
 }
-/*
-.text input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}*/
 
 
 </style>

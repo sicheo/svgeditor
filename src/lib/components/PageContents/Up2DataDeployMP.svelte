@@ -128,11 +128,13 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
         
                 columnHelper.accessor('type', {
                         id : 'type',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-type"),
                         cell: (props) =>   flexRender(TableImage,{image:getImage('devicetype',props.getValue())}),
                     }),
                     columnHelper.accessor('os', {
                         id : 'os',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-os"),
                         cell: (props) =>   flexRender(TableImage,{image:getImage('deviceos',props.getValue())}),
                     }),
@@ -148,6 +150,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                     }),
                     columnHelper.accessor('port', {
                         id : 'port',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-port"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),  
@@ -158,21 +161,25 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'connection',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-connection"),
                         cell: (props) =>   flexRender(TableImage,{image:'/CONNECTION.svg',style:"background-color: lightgrey;",name:props.getValue(), onClick:onConnection}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'install',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-ssh"),
                         cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'install-img-tool_'+props.getValue(), onClick:onInstall}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'docker',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-docker"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'docker-img-tool_'+props.getValue(),onClick:onDocker}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'deploy',
+                        enableColumnFilter:false,
                         header: () => $_("table-db-device-deploy"),
                         cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool_'+props.getValue(),onClick:onDeploy}),
                     }),

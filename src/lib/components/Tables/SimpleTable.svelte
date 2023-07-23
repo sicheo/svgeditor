@@ -14,6 +14,7 @@
     getCoreRowModel,
     getSortedRowModel,
     getPaginationRowModel,
+    getFacetedUniqueValues,
     getFilteredRowModel,
     flexRender
   } from '@tanstack/svelte-table'
@@ -30,6 +31,10 @@
  
   let sorting = []
   let columnFilters = []
+  let paginationState = {
+                pageIndex: 0,
+                pageSize: 5
+            }
 
   const getLocalData = ()=>{
       return data
@@ -60,6 +65,36 @@
     }))
   }
 
+  const setColumnFilters = updater => {
+    if (updater instanceof Function) {
+      columnFilters = updater(columnFilters)
+    } else {
+      columnFilters = updater
+    }
+    options.update(old => ({
+      ...old,
+      state: {
+        ...old.state,
+        columnFilters,
+      },
+    }))
+  }
+
+ /* const setPaginationState = updater => {
+    if (updater instanceof Function) {
+      initialState = updater(initialState)
+    } else {
+      initialState = updater
+    }
+    options.update(old => ({
+      ...old,
+      state: {
+        ...old.state,
+        initialState,
+      },
+    }))
+  }*/
+
   const setRowSelection = ()=>{
       
   }
@@ -74,11 +109,15 @@
         sorting,
         columnFilters
       },
-      onSortingChange: setSorting,
+      initialState: {
+          paginationState
+      },
+      onColumnFiltersChange: setColumnFilters,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
       getFilteredRowModel: getFilteredRowModel(),
+      getFacetedUniqueValues: getFacetedUniqueValues(),
       debugTable: false,
       debugRows: false,
       enableRowSelection: true,
@@ -114,6 +153,12 @@
               if(page > 0 && page <= $table.getPageCount())
                 $table.setPageIndex(page-1)
             }
+  
+  const selectOptions = [
+      {value:5},
+      {value:10},
+      {value:15}
+  ]
   const onSelect = (e:any) => {
               $table.setPageSize(Number(e.target.value))
               refreshData()
@@ -156,7 +201,7 @@
                 </div>
               {/if}
               {#if header.column.getCanFilter() }
-                <div>
+                <div class="tablefilter">
                     <TableFilter column={header.column} table={$table} />
                 </div>
               {/if}
@@ -195,10 +240,14 @@
             | {$_("table-gotopage")}
             <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
         </span>
-        <select  on:change={onSelect}>
-            <option value=5>{$_("table-option-show")} 5</option>
-            <option value=10>{$_("table-option-show")} 10</option>
-            <option value=15>{$_("table-option-show")} 15</option>
+        <select  on:change={onSelect} >
+            {#each selectOptions as Option}
+                {#if Option.value == $table.getState().pagination.pageSize}
+                    <option value={Option.value} selected>{$_("table-option-show")} {Option.value}</option>
+                {:else}
+                    <option value={Option.value}>{$_("table-option-show")} {Option.value}</option>
+                {/if}
+            {/each}
         </select>
     </div>
     {/if}
@@ -228,15 +277,18 @@ th {
   opacity: 0.5 ;
   font-size: 15px;
   text-align: left;
+  vertical-align: top;
+  
 }
 
+.tablefilter{
+    width: 100%;
+    background-color: #eeeeee ;
+}
 tfoot {
   color: gray;
 }
 
-tfoot th {
-  font-weight: normal;
-}
 .pagination-tool-class{
     margin-top: 15px;
 }
