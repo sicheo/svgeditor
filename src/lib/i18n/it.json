@@ -46,6 +46,7 @@
   "dialog_delete_process": "ELIMINA GRAFO DAL DB",
   "dialog_delete_device": "ELIMINA DEVICE DAL DB",
   "dialog_save_tree": "SALVA NODI DELL'ALBERO SU DB",
+  "dialog_edit_agent": "CONFIGURA AGENT",
   "dialog_delete_tree": "ELIMINA NODI DELL'ALBERO DAL DB",
   "dialog_delete_button": "ELIMINA",
   "up2_add_tool_add": "AGGIUNGI",

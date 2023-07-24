@@ -23,7 +23,7 @@ const exitDialog = (event:any)=>{
 
 const deleteFunc = async(event:any) =>{
 	const filters = [{op:'eq',name:'uid',value:dialogOptions.row.uid}]
-	const response = await dialogOptions.delete(filters,$mock)
+	const response = await dialogOptions.func(filters,$mock)
 	const dialog = document.getElementById("build-tool-dialog")
 	data = response.data
 	const eventShow = new CustomEvent("refreshtable",{detail: data});

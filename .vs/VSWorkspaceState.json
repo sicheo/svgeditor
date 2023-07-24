@@ -5,12 +5,12 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\i18n",
     "\\src\\lib\\script",
     "\\src\\routes",
     "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\configuration",
     "\\src\\routes\\up2data"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
+  "SelectedNode": "\\src\\routes\\up2clone\\configuration\\Up2CloneConfiguration.svelte",
   "PreviewInSolutionExplorer": false
 }

@@ -256,6 +256,7 @@ let agents = [
         },
         dbs: [{ uid: 0, name: "modbus.csv" }],
         status: "INACTIVE",
+        devuid: 'abc-1',
     },
     {
         uid: 'ag-234-hst-2',
@@ -281,7 +282,7 @@ let agents = [
             username: "aiqadmin",
             password: "aiqadmin",
         },
-        uid: 'bca-2',
+        devuid: 'bca-2',
         status: "INACTIVE",
     },
     { 
@@ -310,6 +311,7 @@ let agents = [
         },
         dbs: [{ uid: 0, name: "modbus1.csv" }],
         status: "ACTIVE",
+        devuid: 'abc-1',
     },
     {
         uid: 'ag-234-hst-3',
@@ -336,6 +338,7 @@ let agents = [
             password: "aiqadmin",
         },
         status: "ACTIVE",
+        devuid: 'abc-1',
     },
     
 ]

@@ -336,7 +336,7 @@ export const getAgents = async function (filters, mock = false) {
                     reject(error)
                 })
         } else {
-            resolve(mocks.getDevices(body))
+            resolve(mocks.getAgents(body))
         }
     })
 }

@@ -23,7 +23,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    let refreshDataExt:any
    let dialog = GenericDeleteDialog
-   let dialogOptions = {row:{},delete:null,save:null,dialogDelete:$_('dialog_delete_device')}
+   let dialogOptions = {row:{},func:null,options:null,dialogDelete:$_('dialog_delete_device')}
    let tablediv
 
    const columnHelper  = createColumnHelper()
@@ -48,7 +48,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericSaveDialog
-       dialogOptions ={row:found,delete:null,save:setDevice,dialogDelete:$_('dialog_save_device')}
+       dialogOptions ={row:found,func:setDevice,options:null,dialogDelete:$_('dialog_save_device')}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -60,7 +60,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = EditDeviceDialog
-       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_edit_device')}
+       dialogOptions ={row:found,func:null,options:null,dialogDelete:$_('dialog_edit_device')}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -71,7 +71,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericDeleteDialog
-       dialogOptions ={row:found,delete:deleteDevice,save:null,dialogDelete:$_('dialog_delete_device')}
+       dialogOptions ={row:found,func:deleteDevice,options:null,dialogDelete:$_('dialog_delete_device')}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'

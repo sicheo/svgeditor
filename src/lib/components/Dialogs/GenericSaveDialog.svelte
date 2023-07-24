@@ -22,7 +22,7 @@ const exitDialog = (event:any)=>{
 }
 
 const saveFunc = async(event:any) =>{
-	const response = await dialogOptions.save(dialogOptions.row,$mock)
+	const response = await dialogOptions.func(dialogOptions.row,$mock)
 	const dialog = document.getElementById("build-tool-dialog")
 	//data = response.data
 	const eventShow = new CustomEvent("refreshtable",{detail: data});

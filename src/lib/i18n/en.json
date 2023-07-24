@@ -41,6 +41,7 @@
   "dialog_save_changeversion": "Change Version",
   "dialog_save_newversion": "New Version",
   "dialog_save_device": "SAVE DEVICE TO DB",
+  "dialog_edit_agent": "CONFIGURE AGENT",
   "dialog_save_button": "SAVE",
   "dialog_delete_process": "DELETE GRAPH FROM DB",
   "dialog_save_tree": "SAVE TREE NODES TO DB",
