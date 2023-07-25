@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone\\configuration"
+    "\\src\\lib",
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib",
+  "SelectedNode": "\\src\\lib\\script\\utils.js",
   "PreviewInSolutionExplorer": false
 }

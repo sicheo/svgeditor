@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 let locagent
 let agentuid 
+let sdropts = []
+let ddropts = []
 
 let agentTypes = getAgentTypes()
 let sourcedrivers = getSourceDrivers()
@@ -28,20 +30,22 @@ let newagent = {
         source: {
             name: "",
             timeout: 10,
-            driver: "",
+            driver: "s7",
             server: "",
             port: 0,
             username: "",
             password: "",
+			options:[]
         },
         destination: {
             name: "",
-            driver: "",
+            driver: "osipi",
             timeout: 10,
             server: "",
             port: 0,
             username: "",
             password: "",
+			options:[]
         },
         dbs: [],
         devuid: dialogOptions.row.uid,
@@ -63,12 +67,13 @@ const exitPage = (ev:any)=>{
         div.style.display = 'none'
 }
 
-const changeValue = (ev:any)=>{
+const changeAgentValue = (ev:any)=>{
 	const target = ev.target
 	const uid = target.value
 	locagent = dialogOptions.array.find((item:any)=> item.uid == target.value)
 	if(locagent){
-		console.log("**** AGENT *****",locagent,dialogOptions.row)
+		sdropts=getSourceOptions(locagent.source.driver)
+		ddropts=getDestinationOptions(locagent.destination.driver)
 	}else{
 		console.log("**** NEW AGENT *****")
 		locagent = newagent
@@ -82,11 +87,76 @@ const toggleInputs = (val:boolean)=>{
 		inputs[i].disabled = val
 	}
 }
-
+const changeValue = (ev:any)=>{
+	const target = ev.target
+	switch(target.id){
+		case 'name':
+			locagent.name = target.value
+			break
+		case 'description':
+			locagent.description = target.value
+			break
+	}
+}
 const changeValueSource = (ev:any)=>{
+	const target = ev.target
+	switch(target.id){
+		case 'sourcetimeout':
+			locagent.source.timeout = target.value
+			break
+		case 'sourcepassword':
+			locagent.source.password = target.value
+			break
+		case 'sourceusername':
+			locagent.source.username = target.value
+			break
+		case 'sourcename':
+			locagent.source.name = target.value
+			break
+		case 'sourceserver':
+			locagent.source.server = target.value
+			break
+		case 'sourceport':
+			locagent.source.port = target.value
+			break
+	}
 }
 
 const changeSourceDriver = (ev:any)=>{
+	const target = ev.target
+	locagent.source.driver = target.value
+	sdropts=getSourceOptions(target.value)
+}
+
+const changeValueDestination = (ev:any)=>{
+	const target = ev.target
+	console.log(target.id)
+	switch(target.id){
+		case 'destinationtimeout':
+			locagent.destination.timeout = target.value
+			break
+		case 'destinationpassword':
+			locagent.destination.password = target.value
+			break
+		case 'destinationusername':
+			locagent.destination.username = target.value
+			break
+		case 'destinationname':
+			locagent.destination.name = target.value
+			break
+		case 'destinationserver':
+			locagent.destination.server = target.value
+			break
+		case 'destinationport':
+			locagent.destination.port = target.value
+			break
+	}
+}
+
+const changeDestinationDriver = (ev:any)=>{
+	const target = ev.target
+	locagent.destination.driver = target.value
+	ddropts=getDestinationOptions(target.value)
 }
 
 const changeAgentType = (ev:any)=>{
@@ -110,13 +180,19 @@ const clickDelete = () =>{
 const getSourceOptions = (driver:any)=>{
 	const drv = sourcedrivers.find((item:any)=> item.value == driver)
 	console.log("GET SOURCE OPTIONS", drv)
-	return drv.options
+	if(drv)
+		return drv.options
+	else
+		return([])
 }
 
 const getDestinationOptions = (driver:any)=>{
 	const drv = destinationdrivers.find((item:any)=> item.value == driver)
 	console.log("GET DESTINATION OPTIONS", driver,drv,destinationdrivers)
-	return drv.options
+	if(drv)
+		return drv.options
+	else
+		return([])
 }
 
 
@@ -133,9 +209,9 @@ const getDestinationOptions = (driver:any)=>{
 			<div class="class-panel-body" style="--color:{color};">
 				<!-- START EDIT DEVICE INPUTS-->
 				<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;--color:{color};">
-					<span>Choose agent</span>
-					<select name="agent" id="agent-select" value={agentuid} on:change={changeValue} style="margin:5px">
-						<option value="" style="font-weight:bold;font-style:italic;">NEW AGENT</option>
+					<span>{$_("table-db-agent-choose")}</span>
+					<select name="agent" id="agent-select" value={agentuid} on:change={changeAgentValue} style="margin:5px">
+						<option value="" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-new")}</option>
 						{#each dialogOptions.array as Agent}
 								<option value={Agent.uid}>{Agent.name}</option>
 						{/each}
@@ -148,9 +224,9 @@ const getDestinationOptions = (driver:any)=>{
 					{#if locagent}
 						<!--span>{locagent.name}</!--span-->
 						<div class="agent-show">
-							<label for="name">Name</label> 
-							<input name="name" class="class-edit-agent" type="text" value="{locagent.name}" disabled/>
-							<label for="type">Type</label> 
+							<label for="name">{$_("table-db-agent-name")}</label> 
+							<input name="name" id="name" class="class-edit-agent" type="text" value="{locagent.name}" on:change={changeValue} disabled/>
+							<label for="type">{$_("table-db-agent-type")}</label> 
 							<select class="class-edit-agent" name="type" id="agent-type-select"  on:change={changeAgentType} style="margin:5px" disabled>
 								{#each agentTypes as AgentType}
 									{#if AgentType.value == locagent.type}
@@ -160,19 +236,19 @@ const getDestinationOptions = (driver:any)=>{
 									{/if}
 								{/each}
 							</select>
-							<label for="description">Description</label> 
-							<input name="description" size=40 class="class-edit-agent" type="text" value="{locagent.description}" disabled/>
-							<label for="lastmodified">Last Modified</label> 
+							<label for="description">{$_("table-db-agent-description")}</label> 
+							<input name="description" id="description" size=40 class="class-edit-agent" type="text" value="{locagent.description}" on:change={changeValue} disabled/>
+							<label for="lastmodified">{$_("table-db-agent-lastmodified")}</label> 
 							<input name="lastmodified" type="datetime-local" value="{locagent.lastmodified}" disabled/>
 						</div>
 						{#if locagent.type == 'SCANNER' || locagent.type == 'RECORDER'}
 							<div class="agent-show-source">
-								<span>SOURCE</span>
+								<span>{$_("table-db-agent-source")}</span>
 								<div class="labels1">
-									<label for="sourcename">Name </label>
-									<label for="sourcetimeout">Timeout </label>
-									<label for="sourceserver">Server </label>
-									<label for="sourceport">Port </label>
+									<label for="sourcename">{$_("table-db-agent-source-name")} </label>
+									<label for="sourcetimeout">{$_("table-db-agent-source-timeout")} </label>
+									<label for="sourceserver">{$_("table-db-agent-source-server")} </label>
+									<label for="sourceport">{$_("table-db-agent-source-port")} </label>
 								</div>
 								<div class="inputs1">
 									<input type="text" value="{locagent.source.name}" class="class-edit-agent" name="sourcename" id="sourcename" on:change={changeValueSource} disabled/>
@@ -182,9 +258,9 @@ const getDestinationOptions = (driver:any)=>{
 
 								</div>
 								<div class="labels2">
-									<label for="sourcedriver">Driver </label>
-									<label for="sourceusername">Userid </label>
-									<label for="sourcepassword">Password </label>
+									<label for="sourcedriver">{$_("table-db-agent-source-driver")} </label>
+									<label for="sourceusername">{$_("table-db-agent-source-username")} </label>
+									<label for="sourcepassword">{$_("table-db-agent-source-password")} </label>
 								</div>
 								<div class="inputs2">
 									<select class="class-edit-agent" name="sourcedriver" id="sourcedriver"  on:change={changeSourceDriver} style="margin:5px" disabled>
@@ -201,40 +277,40 @@ const getDestinationOptions = (driver:any)=>{
 
 								</div>
 								<div class="labels3">
-									{#each getSourceOptions(locagent.source.driver) as DrvOption}
+									{#each sdropts as DrvOption}
 										<label for="{ DrvOption.name}">{DrvOption.name} </label>
 									{/each}
 								</div>
 								<div class="input3">
-									{#each getSourceOptions(locagent.source.driver) as DrvOption}
-										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.source.options[DrvOption.name]}" disabled/>
+									{#each sdropts as DrvOption}
+										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.source.options[DrvOption.name]}" on:change={changeValueSource} disabled/>
 									{/each}
 								</div>
 							</div>
 						{/if}
 						{#if locagent.type == 'HISTORIAN'}
 						<div class="agent-show-source">
-							  <span>DESTINATION</span>
+							  <span>{$_("table-db-agent-destination")}</span>
 							  <div class="labels1">
-									<label for="destinationname">Name </label>
-									<label for="destinationtimeout">Timeout </label>
-									<label for="destinationserver">Server </label>
-									<label for="destinationport">Port </label>
+									<label for="destinationname">{$_("table-db-agent-destination-name")} </label>
+									<label for="destinationtimeout">{$_("table-db-agent-destination-timeout")} </label>
+									<label for="destinationserver">{$_("table-db-agent-destination-server")} </label>
+									<label for="destinationport">{$_("table-db-agent-destination-port")} </label>
 								</div>
 								<div class="inputs1">
-									<input type="text" value="{locagent.destination.name}" class="class-edit-agent" name="destinationname" id="destinationname" on:change={changeValueSource} disabled/>
-									<input type="number" value="{locagent.destination.timeout}" class="class-edit-agent" name="destinationtimeout" id="destinationtimeout" on:change={changeValueSource} disabled/>
-									<input type="text" value="{locagent.destination.server}" class="class-edit-agent" name="destinationserver" id="destinationserver" on:change={changeValueSource} disabled/>
-									<input type="text" value="{locagent.destination.port}" class="class-edit-agent" name="destinationport" id="destinationport" on:change={changeValueSource} disabled/>
+									<input type="text" value="{locagent.destination.name}" class="class-edit-agent" name="destinationname" id="destinationname" on:change={changeValueDestination} disabled/>
+									<input type="number" value="{locagent.destination.timeout}" class="class-edit-agent" name="destinationtimeout" id="destinationtimeout" on:change={changeValueDestination} disabled/>
+									<input type="text" value="{locagent.destination.server}" class="class-edit-agent" name="destinationserver" id="destinationserver" on:change={changeValueDestination} disabled/>
+									<input type="text" value="{locagent.destination.port}" class="class-edit-agent" name="destinationport" id="destinationport" on:change={changeValueDestination} disabled/>
 
 								</div>
 								<div class="labels2">
-									<label for="destinationdriver">Driver </label>
-									<label for="destinationusername">Userid </label>
-									<label for="destinationpassword">Password </label>
+									<label for="destinationdriver">{$_("table-db-agent-destination-driver")} </label>
+									<label for="destinationusername">{$_("table-db-agent-destination-username")} </label>
+									<label for="destinationpassword">{$_("table-db-agent-destination-password")} </label>
 								</div>
 								<div class="inputs2">
-									<select class="class-edit-agent" name="destinationdriver" id="destinationdriver"  on:change={changeSourceDriver} style="margin:5px" disabled>
+									<select class="class-edit-agent" name="destinationdriver" id="destinationdriver"  on:change={changeDestinationDriver} style="margin:5px" disabled>
 										{#each destinationdrivers as Driver}
 											{#if Driver.value == locagent.destination.driver}
 												<option value={Driver.value} selected>{Driver.name}</option>
@@ -243,18 +319,18 @@ const getDestinationOptions = (driver:any)=>{
 											{/if}
 										{/each}
 									</select>
-									<input type="text" value="{locagent.destination.username}" class="class-edit-agent" name="destinationusername" id="destinationusername" on:change={changeValueSource} disabled/>
-									<input type="password" value="{locagent.destination.password}" class="class-edit-agent" name="destinationpassword" id="destinationpassword" on:change={changeValueSource} disabled/>
+									<input type="text" value="{locagent.destination.username}" class="class-edit-agent" name="destinationusername" id="destinationusername" on:change={changeValueDestination} disabled/>
+									<input type="password" value="{locagent.destination.password}" class="class-edit-agent" name="destinationpassword" id="destinationpassword" on:change={changeValueDestination} disabled/>
 
 								</div>
 								<div class="labels3">
-									{#each getDestinationOptions(locagent.destination.driver) as DrvOption}
+									{#each ddropts as DrvOption}
 										<label for="{ DrvOption.name}">{DrvOption.name} </label>
 									{/each}
 								</div>
 								<div class="input3">
-									{#each getDestinationOptions(locagent.destination.driver) as DrvOption}
-										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.destination.options[DrvOption.name]}" disabled/>
+									{#each ddropts as DrvOption}
+										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.destination.options[DrvOption.name]}" on:change={changeValueDestination} disabled/>
 									{/each}
 								</div>
 						</div>
@@ -321,6 +397,11 @@ const getDestinationOptions = (driver:any)=>{
 
 .agent-show input{
 	margin-bottom: 5px;
+}
+
+.agent-show input[type=check]{
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .agent-show-source {
