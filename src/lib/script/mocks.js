@@ -154,6 +154,9 @@ let agents = [
             port: 102,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "MQTT SCANNER1.",
@@ -163,6 +166,9 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         dbs: [{
             uid: 0,
@@ -180,11 +186,14 @@ let agents = [
         source: {
             name: "S7 driver test client.",
             timeout: 10,
-            driver: "s7",
+            driver: "modbus",
             server: "192.168.1.31",
             port: 102,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "MQTT SCANNER1.",
@@ -194,6 +203,9 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         dbs: [{
             uid: 0,
@@ -216,15 +228,21 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "CRATEDB SERVER.",
-            driver: "crate",
+            driver: "craterest",
             timeout: 10,
             server: "192.168.1.31",
             port: 5432,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         devuid: 'abc-1',
         status: "ACTIVE",
@@ -238,11 +256,14 @@ let agents = [
         source: {
             name: "MODBUS driver test client.",
             timeout: 10,
-            driver: "modbus",
+            driver: "ip",
             server: "192.168.1.31",
             port: 502,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
 
         },
         destination: {
@@ -253,6 +274,9 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         dbs: [{ uid: 0, name: "modbus.csv" }],
         status: "INACTIVE",
@@ -272,6 +296,9 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "CRATEDB SERVER.",
@@ -281,6 +308,9 @@ let agents = [
             port: 5432,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         devuid: 'bca-2',
         status: "INACTIVE",
@@ -294,11 +324,14 @@ let agents = [
         source: {
             name: "MODBUS driver test client.",
             timeout: 10,
-            driver: "modbus",
+            driver: "s7",
             server: "192.168.1.31",
             port: 502,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "MQTT SCANNER3.",
@@ -308,6 +341,9 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         dbs: [{ uid: 0, name: "modbus1.csv" }],
         status: "ACTIVE",
@@ -327,15 +363,24 @@ let agents = [
             port: 8883,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+
+            }
         },
         destination: {
             name: "CRATEDB SERVER.",
-            driver: "mssql",
+            driver: "pirest",
             timeout: 10,
             server: "192.168.1.31",
             port: 5432,
             username: "aiqadmin",
             password: "aiqadmin",
+            options: {
+                dbosi: 'AN023',
+                machine: 'AUT-020',
+                machineprefix: 'PI_AUT_020',
+                cbufsize: 200
+            }
         },
         status: "ACTIVE",
         devuid: 'abc-1',
@@ -743,6 +788,33 @@ let plants = [
         y: 259,
         level: 'level2',
         type: 'FACTORY'
+    }
+]
+
+let itsystems = [
+    {
+        uid: 1,
+        name: "OSIPI-1",
+        type: "osipi",
+        description: "OSI PI system impianto 1 ",
+        plant: 1,
+        options: {
+            ip: "osipiOne",
+            port: "4040",
+            drivers: 'osirest',
+        }
+    },
+    {
+        uid: 2,
+        name: "IFIX-1",
+        type: "ifix",
+        description: "IFIX system impianto 1 ",
+        plant: 1,
+        options: {
+            ip: "ifixOne",
+            port: "4040",
+            drivers: 'ifix',
+        }
     }
 ]
 
@@ -1421,6 +1493,15 @@ const getControllers = async function (body) {
     return (body)
 }
 
+const getItsystems = async function (body) {
+    let retItsystems = JSON.parse(JSON.stringify(itsystems))
+    const filters = body.options.filters
+
+    retItsystems = filterArray(retItsystems, filters)
+    body.data = retItsystems
+    return (body)
+}
+
 const setCompany = async function (body) {
     const company = body.options.company
     let old = null
@@ -1446,6 +1527,21 @@ const setPlant = async function (body) {
             plants[existing] = plant
         } else {
             plants.push(plant)
+        }
+    }
+    return old
+}
+
+const setItsystem = async function (body) {
+    const itsystem = body.options.itsystem
+    let old = null
+    if (itsystem) {
+        const existing = itsystems.findIndex((item) => { return item.uid == itsystem.uid })
+        if (existing > -1) {
+            old = itsystems[existing]
+            itsystems[existing] = itsystem
+        } else {
+            itsystems.push(itsystem)
         }
     }
     return old
@@ -1515,6 +1611,13 @@ const deleteController = async function (body) {
     const filters = body.options.filters
     controllers = filterArray(controllers, filters, true)
     body.data = controllers
+    return (body)
+}
+
+const deleteItsystem = async function (body) {
+    const filters = body.options.filters
+    controllers = filterArray(itsystems, filters, true)
+    body.data = itsystems
     return (body)
 }
 
@@ -1594,6 +1697,7 @@ const deletePlant = async function (body) {
     }
     body.options.filters = filters
     await deleteDepartment(body)
+    await deleteItsystem(body)
 
     body.data = plants
     return (body)
@@ -2087,6 +2191,9 @@ const mocks = {
     getControllers,
     setController,
     deleteController,
+    getItsystems,
+    setItsystem,
+    deleteItsystem,
     getMaterialCols,
     getPersonnelCols,
     getMachineCols,

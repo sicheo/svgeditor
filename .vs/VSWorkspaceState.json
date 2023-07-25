@@ -2,15 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\lib",
-    "\\src\\lib\\components",
-    "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\script",
     "\\src\\routes",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\configuration",
-    "\\src\\routes\\up2data"
+    "\\src\\routes\\up2clone\\configuration"
   ],
-  "SelectedNode": "\\src\\routes\\up2clone\\configuration\\Up2CloneConfiguration.svelte",
+  "SelectedNode": "\\src\\lib",
   "PreviewInSolutionExplorer": false
 }

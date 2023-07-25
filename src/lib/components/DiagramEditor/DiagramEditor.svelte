@@ -3,6 +3,8 @@
 // https://www.sarasoueidan.com/blog/svg-coordinate-systems/
 // https://icons8.com/icons/material-outlined
 // 3D Graphics https://zzz.dog/getting-started
+// https://github.com/jagenjo/litegraph.js/
+// https://svelvet.mintlify.app/introduction
 
 import { onMount} from "svelte";
 import { SVG } from '@svgdotjs/svg.js'
