@@ -4,10 +4,10 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\PageContents",
     "\\src\\lib\\i18n",
-    "\\src\\lib\\script"
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\i18n\\it.json",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs",
   "PreviewInSolutionExplorer": false
 }

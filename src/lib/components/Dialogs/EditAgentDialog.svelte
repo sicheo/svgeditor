@@ -23,7 +23,6 @@ let sdropts = []
 let ddropts = []
 let dbs = []
 let dialog:any = EditAgentDBDialog
-let intdata = []
 let intDialogOptions  = {row:{},func:null,array:[],norefresh:false,dialogDelete:$_('dialog_edit_agent'),divname:'agent-db-dialog'}
 
 let agentTypes = getAgentTypes()
@@ -83,6 +82,7 @@ const changeAgentValue = (ev:any)=>{
 	locagent = dialogOptions.array.find((item:any)=> item.uid == target.value)
 	if(locagent){
 		dbs = locagent.dbs
+		console.log("CHANGEAGENT",dbs)
 		sdropts=getSourceOptions(locagent.source.driver)
 		ddropts=getDestinationOptions(locagent.destination.driver)
 	}else{
@@ -226,7 +226,6 @@ const getDestinationOptions = (driver:any)=>{
 
 const changeButtonDB = (ev:any)=>{
 	 dialog = EditAgentDBDialog
-	 intdata = dbs
 	 intDialogOptions  = {row:locagent,func:null,array:[],norefresh:true,dialogDelete:$_('dialog_edit_agent'),divname:'agent-db-dialog'}
 	 const dialogdiv = document.getElementById("agent-db-dialog")
 	 console.log("SHOW DB",dialogdiv)
@@ -389,7 +388,7 @@ const changeButtonDB = (ev:any)=>{
 	</div>
 	<div id="agent-db-dialog">
 		<!--EditAgentDBDialog dbs={dbs} /-->
-		<svelte:component this={dialog} bind:data={intdata} dialogOptions={intDialogOptions} {color}/>
+		<svelte:component this={dialog} bind:data={dbs} dialogOptions={intDialogOptions} {color}/>
 	</div>
 	
 

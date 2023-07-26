@@ -6,7 +6,7 @@ import TableImage from '../Tables/TableImage.svelte'
 import { v4 as uuidv4 } from 'uuid';
 
 
-export let dbs = []
+export let data = []
 export let color 
 export let dialogOptions : any 
 
@@ -25,6 +25,7 @@ onMount(async ()=>{
 
 const exitDialog = (event:any)=>{
 	localdb = null
+	dbuid = null
     const dialog = document.getElementById("agent-db-dialog")
     if(dialog)
         dialog.style.display = 'none'
@@ -33,7 +34,8 @@ const exitDialog = (event:any)=>{
 
 const changeDBValue = (ev:any)=>{
 	const target = ev.target
-	localdb = dbs.find((item:any)=> item.uid == target.value)
+	localdb = data.find((item:any)=> item.uid == target.value)
+	console.log("CHANGE DB",data,target.value)
 	if(localdb){
 	}else{
 		console.log("**** NEW AGENT *****")
@@ -65,8 +67,8 @@ const clickDelete = ()=>{
 		<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;">
 					<span>{$_("table-db-agent-db-choose")}</span>
 					<select name="agent" id="agent-select" value={dbuid} on:change={changeDBValue} style="margin:5px">
-						<option value="" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-new")}</option>
-						{#each dbs as DB}
+						<option value="" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-db-new")}</option>
+						{#each data as DB}
 								<option value={DB.uid}>{DB.name}</option>
 						{/each}
 					</select>
@@ -75,6 +77,12 @@ const clickDelete = ()=>{
 					<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
+			<div class="column left">
+				<p>Some text..</p>
+				</div>
+			<div class="column right">
+				<p>Some text..</p>
+				</div>
 		</div>
 	</div>
 
@@ -99,11 +107,27 @@ const clickDelete = ()=>{
  margin-left: 8px;
 }
 
-
 .class-last-item {
   margin-top: 15px;
 }
+.class-panel-body-agent{
+  display: flex;
+  clear: both;
+}
 
+.column {
+  float: left;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 75%;
+}
 
 
 </style>
