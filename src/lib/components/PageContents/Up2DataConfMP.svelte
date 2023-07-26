@@ -28,7 +28,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
    let refreshDataExt:any
    let dialog = GenericDeleteDialog
-   let dialogOptions = {row:{},func:null,array:[],dialogDelete:$_('dialog_delete_device')}
+   let dialogOptions = {row:{},func:null,array:[],dialogDelete:$_('dialog_delete_device'),divname:'build-tool-dialog'}
    let tablediv
 
    const columnHelper  = createColumnHelper()
@@ -47,7 +47,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = EditLocationDialog
-       dialogOptions ={row:found,func:null,array:[],dialogDelete:$_('dialog_location_device')}
+       dialogOptions ={row:found,func:null,array:[],dialogDelete:$_('dialog_location_device'),divname:'build-tool-dialog'}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -57,13 +57,12 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const target = ev.target
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
-       dialog = EditAgentDialog
        const filters = []
        const filter = {op:'eq',name:'devuid',value:uid}
        filters.push(filter)
        const ret = await getAgents(filters,$mock)
-       console.log("DEVICE AGENTS",found,ret.data)
-       dialogOptions ={row:found,func:null,array:ret.data,dialogDelete:$_('dialog_edit_agent')}
+       dialog = EditAgentDialog
+       dialogOptions ={row:found,func:null,array:ret.data,dialogDelete:$_('dialog_edit_agent'),divname:'build-tool-dialog'}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block' 
@@ -74,7 +73,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericSaveDialog
-       dialogOptions ={row:found,func:setDevice,array:[],dialogDelete:$_('dialog_save_device')}
+       dialogOptions ={row:found,func:setDevice,array:[],dialogDelete:$_('dialog_save_device'),divname:'build-tool-dialog'}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -85,7 +84,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = EditDeviceDialog
-       dialogOptions ={row:found,func:null,array:[],dialogDelete:$_('dialog_edit_device')}
+       dialogOptions ={row:found,func:null,array:[],dialogDelete:$_('dialog_edit_device'),divname:'build-tool-dialog'}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -96,7 +95,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
        const uid = target.getAttribute("data-uid")
        const found = data.find((item:any)=>item.uid == uid)
        dialog = GenericDeleteDialog
-       dialogOptions ={row:found,func:deleteDevice,array:[],dialogDelete:$_('dialog_delete_device')}
+       dialogOptions ={row:found,func:deleteDevice,array:[],dialogDelete:$_('dialog_delete_device'),divname:'build-tool-dialog'}
        const dialogdiv = document.getElementById("build-tool-dialog")
        if(dialogdiv)
             dialogdiv.style.display = 'block'

@@ -40,6 +40,7 @@ export const cloneNavigation = writable([
     { name: "AUTHORIZATION", link: "/UP2CLONE/AUTH", roles: ['SADMIN'], type: 'link', subnav: [] },
     { name: "AUTHBUILD", link: "/UP2CLONE/AUTHBUILD", roles: ['SADMIN'], type: 'link', subnav: [] },
     { name: "CONFIGURATION", link: "/UP2CLONE/CONFIGURATION", roles: ['ADMIN'], type: 'link', subnav: [] },
+    { name: "TEMPLATE", link: "/UP2CLONE/TEMPLATE", roles: ['ADMIN'], type: 'link', subnav: [] },
 ])
 
 // Navigation table for DATA

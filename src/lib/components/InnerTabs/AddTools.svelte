@@ -5,7 +5,7 @@ import { onMount} from "svelte";
 
 
 
-export let color="#0e0e0e"
+//export let color="#0e0e0e"
 export let options
 export let data
 
@@ -36,8 +36,9 @@ const add = async () =>{
 .main-tab-tool-class{
       display:flex;
       justify-content: left;
-      margin-top: 10px;
-      margin-right: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      margin-left: 5px;
   }
   .image-tool-component{
       opacity: 0.8;

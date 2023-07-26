@@ -1,20 +1,30 @@
 <script lang="ts">
 
-export let color
-export let dialogOptions : any
-export let data = []
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
 
 import {getAgentTypes,getLocalDate, getSourceDrivers, getDestinationDrivers} from '../../script/utils.js'
 import TableImage from '../Tables/TableImage.svelte'
 import { v4 as uuidv4 } from 'uuid';
+import EditAgentDBDialog from './EditAgentDBDialog.svelte'
+import GenericSaveDialog from './GenericSaveDialog.svelte'
+import GenericDeleteDialog from './GenericDeleteDialog.svelte'
+import {setAgent,deleteAgent} from '../../script/api.js'
+import {mock} from '../../ustore.js'
 
+
+export let color
+export let dialogOptions : any 
+export let data = []
 
 let locagent
 let agentuid 
 let sdropts = []
 let ddropts = []
+let dbs = []
+let dialog:any = EditAgentDBDialog
+let intdata = []
+let intDialogOptions  = {row:{},func:null,array:[],norefresh:false,dialogDelete:$_('dialog_edit_agent'),divname:'agent-db-dialog'}
 
 let agentTypes = getAgentTypes()
 let sourcedrivers = getSourceDrivers()
@@ -54,8 +64,8 @@ let newagent = {
 
 
 onMount(async ()=>{
-	   const uid = dialogOptions.row.uid
-	   console.log("DIALOG UID", dialogOptions.row)
+	  // const uid = dialogOptions.row.uid
+	   console.log("DIALOG UID")
     });
 
 const exitPage = (ev:any)=>{
@@ -72,6 +82,7 @@ const changeAgentValue = (ev:any)=>{
 	const uid = target.value
 	locagent = dialogOptions.array.find((item:any)=> item.uid == target.value)
 	if(locagent){
+		dbs = locagent.dbs
 		sdropts=getSourceOptions(locagent.source.driver)
 		ddropts=getDestinationOptions(locagent.destination.driver)
 	}else{
@@ -169,12 +180,30 @@ const clickEdit = () =>{
 	console.log("CLICK EDIT",locagent)
 	toggleInputs(false)
 }
-const clickSave = () =>{
+const clickSave = async() =>{
 	console.log("CLICK SAVE",locagent)
+	//await setAgent(locagent,$mock)
+	if(locagent){
+		dialog = GenericSaveDialog
+		intDialogOptions  = {row:locagent,func:setAgent,array:[],norefresh:true,dialogDelete:$_('dialog_save_agent'),divname:'agent-db-dialog'}
+		const dialogdiv = document.getElementById("agent-db-dialog")
+		console.log("SHOW DB",dialogdiv)
+		if(dialogdiv)
+			dialogdiv.style.display = 'block'
+	}
+
 }
-const clickDelete = () =>{
+const clickDelete = async() =>{
 	console.log("CLICK DELETE",locagent)
-	toggleInputs(true)
+	if(locagent){
+		dialog = GenericDeleteDialog
+		intDialogOptions  = {row:locagent,func:deleteAgent,array:[],norefresh:true,dialogDelete:$_('dialog_save_agent'),divname:'agent-db-dialog'}
+		const dialogdiv = document.getElementById("agent-db-dialog")
+		console.log("DELETE DB",dialogdiv)
+		//toggleInputs(true)
+		if(dialogdiv)
+			dialogdiv.style.display = 'block'
+	}
 }
 
 const getSourceOptions = (driver:any)=>{
@@ -195,6 +224,15 @@ const getDestinationOptions = (driver:any)=>{
 		return([])
 }
 
+const changeButtonDB = (ev:any)=>{
+	 dialog = EditAgentDBDialog
+	 intdata = dbs
+	 intDialogOptions  = {row:locagent,func:null,array:[],norefresh:true,dialogDelete:$_('dialog_edit_agent'),divname:'agent-db-dialog'}
+	 const dialogdiv = document.getElementById("agent-db-dialog")
+	 console.log("SHOW DB",dialogdiv)
+       if(dialogdiv)
+            dialogdiv.style.display = 'block'
+}
 
 </script>
     
@@ -220,7 +258,7 @@ const getDestinationOptions = (driver:any)=>{
 					<TableImage image='/SAVE.svg' onClick={clickSave}/>
 					<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 				</div>
-				<div class="class-panel-body-agent" style="border-bottom: 1px solid;--color:{color};">
+				<div class="class-panel-body-agent" style="--color:{color};">
 					{#if locagent}
 						<!--span>{locagent.name}</!--span-->
 						<div class="agent-show">
@@ -281,10 +319,16 @@ const getDestinationOptions = (driver:any)=>{
 										<label for="{ DrvOption.name}">{DrvOption.name} </label>
 									{/each}
 								</div>
-								<div class="input3">
+								<div class="inputs3">
 									{#each sdropts as DrvOption}
 										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.source.options[DrvOption.name]}" on:change={changeValueSource} disabled/>
 									{/each}
+								</div>
+								<div class="labels4">
+										<label for="dbbutton">Field DB </label>
+								</div>
+								<div class="inputs4">
+										<input class="class-edit-agent" type="button" name="dbbutton" id="dbbutton" value="SHOW DB" on:click={changeButtonDB} />
 								</div>
 							</div>
 						{/if}
@@ -328,7 +372,7 @@ const getDestinationOptions = (driver:any)=>{
 										<label for="{ DrvOption.name}">{DrvOption.name} </label>
 									{/each}
 								</div>
-								<div class="input3">
+								<div class="inputs3">
 									{#each ddropts as DrvOption}
 										<input class="class-edit-agent" type="{DrvOption.type}" name="{DrvOption.name}" id="{DrvOption.name}" value="{locagent.destination.options[DrvOption.name]}" on:change={changeValueDestination} disabled/>
 									{/each}
@@ -337,12 +381,33 @@ const getDestinationOptions = (driver:any)=>{
 						{/if}
 					{/if}
 				</div>
+				<div class="class-panel-body-footer" style="border-bottom: 1px solid;--color:{color};">
+					<span>{$_("table-db-agent-choose")}</span>
+				</div>
 				<!-- END EDIT DEVICE INPUTS-->
 			</div>
+	</div>
+	<div id="agent-db-dialog">
+		<!--EditAgentDBDialog dbs={dbs} /-->
+		<svelte:component this={dialog} bind:data={intdata} dialogOptions={intDialogOptions} {color}/>
 	</div>
 	
 
 <style>
+
+#agent-db-dialog{
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 12; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
 
 .sign-edit-class{
 	font-family: Arial, Helvetica, sans-serif;
@@ -351,6 +416,7 @@ const getDestinationOptions = (driver:any)=>{
 	width: 90%;
 	height: 350px;
 	margin: auto;
+	position: relative;
 }
 .class-panel-header {
   display: flex;
@@ -377,6 +443,16 @@ const getDestinationOptions = (driver:any)=>{
 	justify-content:left
 }
 
+.class-panel-body-footer {
+	display:flex;
+	justify-content:left;
+	position: absolute;
+    bottom: 0px;
+	border-top: 1px solid;
+	width:100%;
+	background-color: #eeeeee;
+}
+
 .class-panel-body-toolbar span{
 	margin-left: 5px;
 }
@@ -384,10 +460,11 @@ const getDestinationOptions = (driver:any)=>{
 .agent-show {
 	display:flex;
 	justify-content:space-between;
+	margin: 2px 10px 2px 2px;
 }
 
-.agent-show span{
-	margin-left: 5px;
+.agent-show label{
+	margin-left: 2px;
 }
 
 .agent-show label{
@@ -412,6 +489,7 @@ const getDestinationOptions = (driver:any)=>{
 
 .agent-show-source span{
 	margin-left: 5px;
+	margin-right: 1px;
 }
 
 .labels1 {
@@ -426,15 +504,23 @@ const getDestinationOptions = (driver:any)=>{
     float: left;
     width: 150px;
 }
+.labels4 {
+    float: left;
+    width: 150px;
+}
 .inputs1 {
     float: left;
     width: 150px;
 }
 .inputs2 {
     float: left;
-    width: 180px;
+    width: 150px;
 }
 .inputs3 {
+    float: left;
+    width: 150px;
+}
+.inputs4 {
     float: left;
     width: 150px;
 }

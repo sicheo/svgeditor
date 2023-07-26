@@ -367,7 +367,7 @@ export const setAgent = async function (agent, mock = false) {
                     reject(error)
                 })
         } else {
-            resolve(mocks.setDevices(body))
+            resolve(mocks.setAgent(body))
         }
     })
 }

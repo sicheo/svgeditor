@@ -16,19 +16,22 @@ onMount(async ()=>{
     });
 
 const exitDialog = (event:any)=>{
-    const dialog = document.getElementById("build-tool-dialog")
+    const dialog = document.getElementById(dialogOptions.divname)
     if(dialog)
         dialog.style.display = 'none'
 }
 
 const saveFunc = async(event:any) =>{
 	const response = await dialogOptions.func(dialogOptions.row,$mock)
-	const dialog = document.getElementById("build-tool-dialog")
-	//data = response.data
-	const eventShow = new CustomEvent("refreshtable",{detail: data});
-	tablediv.dispatchEvent(eventShow)
-    if(dialog)
-        dialog.style.display = 'none'
+	console.log("GENERIC SAVE",dialogOptions)
+	const dialog = document.getElementById(dialogOptions.divname)
+	if(!dialogOptions.norefresh){
+		const eventShow = new CustomEvent("refreshtable",{detail: data});
+		tablediv.dispatchEvent(eventShow)
+	}
+	if(dialog)
+		dialog.style.display = 'none'
+	
 }
 
 

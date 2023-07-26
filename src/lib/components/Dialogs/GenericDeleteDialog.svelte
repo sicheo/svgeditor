@@ -16,7 +16,7 @@ onMount(async ()=>{
     });
 
 const exitDialog = (event:any)=>{
-    const dialog = document.getElementById("build-tool-dialog")
+    const dialog = document.getElementById(dialogOptions.divname)
     if(dialog)
         dialog.style.display = 'none'
 }
@@ -24,10 +24,12 @@ const exitDialog = (event:any)=>{
 const deleteFunc = async(event:any) =>{
 	const filters = [{op:'eq',name:'uid',value:dialogOptions.row.uid}]
 	const response = await dialogOptions.func(filters,$mock)
-	const dialog = document.getElementById("build-tool-dialog")
+	const dialog = document.getElementById(dialogOptions.divname)
 	data = response.data
-	const eventShow = new CustomEvent("refreshtable",{detail: data});
-	tablediv.dispatchEvent(eventShow)
+	if(!dialogOptions.norefresh){
+		const eventShow = new CustomEvent("refreshtable",{detail: data});
+		tablediv.dispatchEvent(eventShow)
+	}
     if(dialog)
         dialog.style.display = 'none'
 }

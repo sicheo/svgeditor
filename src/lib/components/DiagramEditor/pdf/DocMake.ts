@@ -3,15 +3,16 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 //import pdfMakeUnicode from 'pdfmake-unicode';
 //pdfMake.vfs = pdfMakeUnicode.pdfMake.vfs;
 
-(pdfMake as any).vfs =
-    pdfFonts && pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : globalThis.pdfMake.vfs;
+/*(pdfMake as any).vfs =
+    pdfFonts && pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : globalThis.pdfMake.vfs;*/
+
 
 export default class DocMake {
 
     pdfMake: any
-
     constructor() {
         this.pdfMake = pdfMake
+        this.pdfMake.vfs = pdfFonts && pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : globalThis.pdfMake.vfs;
         this.pdfMake.fonts = {
             'Roboto': {
                 normal: 'Roboto-Regular.ttf',

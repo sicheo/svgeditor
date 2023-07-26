@@ -8,6 +8,7 @@
   "up2clone_nav_auth": "AUTHORIZATION",
   "up2clone_nav_auth_build": "AUTHPROCESS",
   "up2clone_nav_conf": "CONFIGURATION",
+  "up2clone_nav_template": "TEMPLATE",
   "up2data_nav_monitor": "MONITOR",
   "up2data_nav_conf": "CONFIGURATION",
   "up2data_nav_conf_device": "Device",
@@ -42,6 +43,7 @@
   "dialog_save_newversion": "New Version",
   "dialog_save_device": "SAVE DEVICE TO DB",
   "dialog_edit_agent": "CONFIGURE AGENT",
+  "dialog_save_agent": "SAVE AGENT",
   "dialog_save_button": "SAVE",
   "dialog_delete_process": "DELETE GRAPH FROM DB",
   "dialog_save_tree": "SAVE TREE NODES TO DB",
@@ -130,5 +132,7 @@
   "table-db-agent-destination-port": "Port",
   "table-db-agent-destination-driver": "Driver",
   "table-db-agent-destination-username": "Username",
-  "table-db-agent-destination-password": "Password"
+  "table-db-agent-destination-password": "Password",
+  "table-db-agent-db-intro": "CONFIGURE DB FOR AGENT",
+  "table-db-agent-db-choose": "Choose DB"
 }

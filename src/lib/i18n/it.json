@@ -8,6 +8,7 @@
   "up2clone_nav_auth": "AUTORIZZAZIONE",
   "up2clone_nav_auth_build": "FLOWAPPROVAZIONE",
   "up2clone_nav_conf": "CONFIGURAZIONE",
+  "up2clone_nav_template": "TEMPLATE",
   "up2data_nav_monitor": "MONITORAGGIO",
   "up2data_nav_conf": "CONFIGURAZIONE",
   "up2data_nav_conf_device": "Device",
@@ -46,7 +47,8 @@
   "dialog_delete_process": "ELIMINA GRAFO DAL DB",
   "dialog_delete_device": "ELIMINA DEVICE DAL DB",
   "dialog_save_tree": "SALVA NODI DELL'ALBERO SU DB",
-  "dialog_edit_agent": "CONFIGURA AGENT",
+  "dialog_edit_agent": "CONFIGURA AGENTE",
+  "dialog_save_agent": "SALVA AGENTE",
   "dialog_delete_tree": "ELIMINA NODI DELL'ALBERO DAL DB",
   "dialog_delete_button": "ELIMINA",
   "up2_add_tool_add": "AGGIUNGI",
@@ -130,5 +132,7 @@
   "table-db-agent-destination-port": "Porta",
   "table-db-agent-destination-driver": "Driver",
   "table-db-agent-destination-username": "Nome Utente",
-  "table-db-agent-destination-password": "Password"
+  "table-db-agent-destination-password": "Password",
+  "table-db-agent-db-intro": "CONFIGURA DB PER AGENTE",
+  "table-db-agent-db-choose": "Scegli DB"
 }
