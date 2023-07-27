@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { getLocalDate } from '../script/utils.js'
+import { getLocalDate, makePointsUid } from '../script/utils.js'
 
 let attempts = 0
 let logs = []
@@ -1234,6 +1234,29 @@ let ebrs = [
     }
 ]
 
+const generatePoints = () => {
+    const array = []
+    for (let i = 0; i < agents.length; i++) {
+        if (agents[i].type == 'SCANNER') {
+            const agentuid = agents[i].uid
+            const devuid = agents[i].devuid
+            const driver = agents[i].source.driver
+            const index = Math.floor(Math.random() * 2)
+            const controller = controllers[index]
+            const cuid = controller.uid
+            const muid = controller.machine
+            const index2 = Math.floor(Math.random() * agents[i].dbs.length)
+            const dbuid = agents[i].dbs[index2].uid
+            const points = makePointsUid(driver, agentuid, devuid, cuid, muid, dbuid)
+            array.push.apply(array, points)
+        }
+    }
+    console.log("GENERATEPOINTS",array)
+    return array
+}
+
+let  points = generatePoints()
+
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
         body.data = { token: 'ABCDEFGH', role:'ADMIN'}
@@ -1503,6 +1526,15 @@ const getItsystems = async function (body) {
     return (body)
 }
 
+const getPoints = async function (body) {
+    let retPoints = JSON.parse(JSON.stringify(points))
+    const filters = body.options.filters
+
+    retPoints = filterArray(retPoints, filters)
+    body.data = retPoints
+    return (body)
+}
+
 const setCompany = async function (body) {
     const company = body.options.company
     let old = null
@@ -1607,6 +1639,23 @@ const setController = async function (body) {
     }
     return old
 }
+
+const setPoint = async function (body) {
+    const point = body.options.point
+    let old = null
+    if (point) {
+        const existing = points.findIndex((item) => { return item.uid == point.uid })
+        if (existing > -1) {
+            old = points[existing]
+            points[existing] = point
+        } else {
+            points.push(point)
+        }
+    }
+    return old
+}
+
+
 
 const deleteController = async function (body) {
     const filters = body.options.filters
@@ -1725,6 +1774,13 @@ const deleteCompany = async function (body) {
     return (body)
 }
 
+const deletePoint = async function (body) {
+    const filters = body.options.filters
+
+    points = filterArray(points, filters, true)
+    body.data = points
+    return (body)
+}
 
 
 const setDevice = async function (body) {
@@ -2215,7 +2271,10 @@ const mocks = {
     dockerInfo,
     getDBArray,
     setDBArray,
-    deleteDBArray
+    deleteDBArray,
+    getPoints,
+    setPoint,
+    deletePoint
 }
 
 export default mocks

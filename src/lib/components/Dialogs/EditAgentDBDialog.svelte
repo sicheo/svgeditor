@@ -4,6 +4,8 @@ import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
 import TableImage from '../Tables/TableImage.svelte'
 import { v4 as uuidv4 } from 'uuid';
+import {getPoints} from '../../script/api.js'
+import {mock} from '../../ustore.js'
 
 
 export let data = []
@@ -13,6 +15,7 @@ export let dialogOptions : any
 
 let dbuid 
 let localdb
+let points = []
 
 let newdb = {
 	  uid: uuidv4(),
@@ -32,11 +35,18 @@ const exitDialog = (event:any)=>{
 }
 
 
-const changeDBValue = (ev:any)=>{
+const changeDBValue = async(ev:any)=>{
 	const target = ev.target
 	localdb = data.find((item:any)=> item.uid == target.value)
 	console.log("CHANGE DB",data,target.value)
 	if(localdb){
+		const filters = [
+			{op:'eq',name:'agent',value:dialogOptions.row.uid},
+			{op:'eq',name:'db',value:localdb.uid}
+		]
+		const res = await getPoints(filters,$mock)
+		points = res.data
+		console.log("GET POINTS",points,filters)
 	}else{
 		console.log("**** NEW AGENT *****")
 		localdb = newdb

@@ -2,12 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\assets",
     "\\src\\lib",
-    "\\src\\lib\\components",
-    "\\src\\lib\\components\\PageContents",
     "\\src\\lib\\i18n",
+    "\\src\\lib\\script",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Dialogs",
+  "SelectedNode": "\\src\\lib\\components",
   "PreviewInSolutionExplorer": false
 }

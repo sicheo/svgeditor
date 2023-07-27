@@ -1,4 +1,5 @@
 // https://stackoverflow.com/questions/40497262/how-to-version-control-an-object
+import { v4 as uuidv4 } from 'uuid';
 
 export function VersionControlled(obj, changeLog = []) {
     var targets = [], version = 0, savedLength,
@@ -459,6 +460,80 @@ export function getSourceDrivers() {
 
 export function getDestinationDrivers() {
     return destinationdrivers
+}
+
+export function makePointsUid(driver,agent, device, controller, machine, db, num = 20) {
+    const points = []
+    for (let i = 0; i<num; i++) {
+        const point = { uid: uuidv4(), tag: '', description: '', um: '', dtype: '', delta: false, bit: 0, hscale: 0.0, lowscale: 0.0, area: '', numarea: 0, address: 0, amount: 1, atype: '', agent: agent, device: device, controller: controller, machine: machine, db: db }
+        const [tag, desc, um, atype, bit, dtype] = randomTDUABD(5)
+        point.tag = tag
+        point.description = desc
+        point.um = um
+        point.atype = atype
+        point.dtype = dtype
+        point.bit = Number(bit)
+        point.address = Math.floor(Math.random() * 40000)
+        switch (driver) {
+            case 's7':
+                point.area = 'DB'
+                point.numarea = Math.floor(Math.random() * 8)
+                break;
+            case 'modbus':
+                if (point.atype == 'ALARM')
+                    point.area = 'COIL'
+                else
+                    point.area = 'INPUT'
+                break;
+            case 'ip':
+                break
+        }
+        points.push(point)
+    }
+    return points
+}
+
+function randomTDUABD(length) {
+    const pre = ['TT-', 'PP-', 'HH-', 'RPM-', 'AA-', 'VV-', 'NUM-', "FL-", "AL-T-", "AL-P-", "AL-H-", "AL-RPM-", "AL-A-", "AL-V-", "AL-NUM-", "AL-FL-"]
+    const desc = [
+        "Temperature measure",
+        "Pressure measure",
+        "Humidity measure",
+        "Rotational Speed measure",
+        "Current measure",
+        "Voltage measure",
+        "Particle num measure",
+        "Flow measure",
+        "Temperature alarm",
+        "Pressure alarm",
+        "Humidity alarm",
+        "Rotational Speed alarm",
+        "Current alarm",
+        "Voltage alarm",
+        "Particle num alarm",
+        "Flow alarm"
+    ]
+    const um = ['DEGC', 'PSIA', "%", "RPM", "A", "V", "n/m3", "m3/sec", '', '', "", "", "", "", "", ""]
+    let result = ''
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const charactersLength = characters.length;
+    let counter = 0;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    const index = Math.floor(Math.random() * pre.length)
+    let bit = String(Math.floor(Math.random() * 16))
+    let atype = 'VALUE'
+    let dtype = 'bool'
+    if (index > 7) {
+        atype = 'ALARM'
+    } else {
+        bit = "0"
+        dtype = 'real'
+    }
+    const tag = pre[index] + result
+
+    return[tag,desc[index],um[index],atype,bit,dtype]
 }
 
 
