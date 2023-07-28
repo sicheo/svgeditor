@@ -377,7 +377,7 @@ const changeButtonDB = (ev:any)=>{
 					{/if}
 				</div>
 				<div class="class-panel-body-footer" style="border-bottom: 1px solid;--color:{color};">
-					<span>{$_("table-db-agent-choose")}</span>
+					<!--span>{$_("table-db-agent-choose")}</!--span-->
 				</div>
 				<!-- END EDIT DEVICE INPUTS-->
 			</div>

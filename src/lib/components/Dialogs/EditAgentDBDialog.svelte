@@ -3,7 +3,7 @@
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
 import { v4 as uuidv4 } from 'uuid';
-import {getPoints} from '../../script/api.js'
+import {getPoints,getControllers, setPoint, deletePoint} from '../../script/api.js'
 import {mock} from '../../ustore.js'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
@@ -12,6 +12,7 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
+    import { A, Point } from '@svgdotjs/svg.js';
 
 
 export let data = []
@@ -23,6 +24,7 @@ let dbuid
 let localdb
 let points = []
 let currpoint = null
+let controllers = []
 
 const columnHelper  = createColumnHelper()
 let refreshDataExt:any
@@ -33,13 +35,16 @@ let newdb = {
 }
 
 onMount(async ()=>{
-       
+	   const  res = await getControllers(null,$mock)
+       controllers = res.data
     });
 
 const exitDialog = (event:any)=>{
 	localdb = null
 	dbuid = null
 	points=[]
+	currpoint=null
+	toggleDisable(true)
 	refreshDataExt()
     const dialog = document.getElementById("agent-db-dialog")
     if(dialog)
@@ -67,15 +72,101 @@ const changeDBValue = async(ev:any)=>{
 }
 
 const clickEdit = ()=>{
+	toggleDisable(false)
+}
+
+const clickSave = async()=>{
+	let res = await setPoint(currpoint,$mock)
+	const filters = [
+			{op:'eq',name:'agent',value:dialogOptions.row.uid},
+			{op:'eq',name:'db',value:localdb.uid}
+		]
+	res = await getPoints(filters,$mock)
+	points = res.data
+	refreshDataExt()
+}
+
+const clickDelete = async ()=>{
+	let filters = [
+			{op:'eq',name:'uid',value:currpoint.uid}
+		]
+	let ret = await deletePoint(filters,$mock)
+	filters = [
+			{op:'eq',name:'agent',value:dialogOptions.row.uid},
+			{op:'eq',name:'db',value:localdb.uid}
+		]
+	ret = await getPoints(filters,$mock)
+	points = ret.data
+	currpoint=null
+	refreshDataExt()
 
 }
 
-const clickSave = ()=>{
+const clickAdd = ()=>{
+	let area = ''
+	switch(dialogOptions.row.driver){
+		case 's7':
+			area = 'DB'
+			break;
+		case 'modbus':
+			area= 'COIL'
+			break;
+	}
+	const newpoint = {
+		uid:uuidv4(),
+		tag:'NEWPOINT',
+		driver:dialogOptions.row.source.driver,
+		agent:dialogOptions.row.uid,
+		device:dialogOptions.row.devuid,
+		controller:'',
+		machine:'',
+		amount:1,
+		hscale:0.0,
+		lscale:0.0,
+		delta:false,
+		db: localdb.uid,
+		description:"",
+		address:0,
+		bit:0,
+		dtype:'bool',
+		atype:'ALARM',
+		area:area,
+		numarea: 0
+	}
+	currpoint=newpoint
 
 }
 
-const clickDelete = ()=>{
+const changeValuePoint = (ev:any)=>{
+	const target = ev.target
+	switch(target.id){
+		case 'point-tag':
+			currpoint.tag = target.value
+			break;
+		case 'point-address':
+			currpoint.address = target.value
+			break;
+		case 'point-um':
+			currpoint.um = target.value
+			break;
+		case 'point-bit':
+			currpoint.bit = target.value
+			break;
+		case 'point-description':
+			currpoint.description = target.value
+			break;
+	}
+}
 
+const changeSelectValue = (ev:any)=>{
+
+}
+
+const toggleDisable= (disable:boolean)=>{
+	const items = document.getElementsByClassName("class-edit-point")
+	for(let i=0;i<items.length;i++){
+		items[i].disabled = disable
+	}
 }
 
 const toggleSelection = (target)=>{
@@ -89,8 +180,10 @@ const toggleSelection = (target)=>{
 		target.style.backgroundColor  = 'white'
 }
 const clickTag = (ev:any)=>{
+	currpoint = points.find((items:any)=> items.tag == ev.target.innerHTML)
+	console.log("CURRENTPOINT",currpoint)
 	toggleSelection(ev.target)
-	currpoint = ev.target.innerHTML
+	
 }
 
 const columns = [
@@ -116,8 +209,8 @@ const columns = [
 					<input type="image" src="/EXIT.svg" on:click={exitDialog} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
-		<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;">
-					<span>{$_("table-db-agent-db-choose")}</span>
+		<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;--color:{color};">
+					<span style="margin-left:5px;margin-right:5px">{$_("table-db-agent-db-choose")}</span>
 					<select name="agent" id="agent-select" value={dbuid} on:change={changeDBValue} style="margin:5px">
 						<option value={null} style="font-weight:bold;font-style:italic;">{$_("table-db-agent-db-new")}</option>
 						{#each data as DB}
@@ -133,13 +226,53 @@ const columns = [
 				<SimpleTable viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 				</div>
 			<div class="column right">
-				{#if currpoint != null}
-					<div class="class-panel-column-rigth-toolbar" style="border-bottom: 1px solid;">
+				
+					<div class="class-panel-column-rigth-toolbar">
 						<span>EDIT POINT</span>
 						<div class="class-last-item">
+							<TableImage image='/add.svg' onClick={clickAdd}/>
 							<TableImage image='/edit.svg' onClick={clickEdit}/>
 							<TableImage image='/SAVE.svg' onClick={clickSave}/>
 							<TableImage image='/DELETE.svg' onClick={clickDelete}/>
+						</div>
+					</div>
+				{#if currpoint != null}
+					<div class="class-panel-column-rigth-body" >
+						<div class="labels1">
+							<label for="point-tag">TAG </label>
+							<label for="point-address">ADDRESS </label>
+							{#if currpoint.atype == 'VALUE'}
+								<label for="point-um">UM </label>
+							{:else}
+								<label for="point-bit">BIT </label>
+							{/if}
+						</div>
+						<div class="inputs1">
+							<input type="text" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
+							<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
+							{#if currpoint.atype == 'VALUE'}
+								<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
+							{:else}
+								<input type="text" value="{currpoint.bit}" class="class-edit-point" name="point-bit" id="point-bit" on:change={changeValuePoint} disabled/>
+							{/if}
+						</div>
+						<div class="labels2">
+							<label for="point-description">DESCRIPTION </label>
+							<label for="point-area">AREA </label>
+							<label for="point-controller">CONTROLLER </label>
+						</div>
+						<div class="inputs2">
+							<input type="text" value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
+							<input type="text" value="{currpoint.area}" class="class-edit-point" name="point-area" id="point-area" on:change={changeValuePoint} disabled/>
+							<select class="class-edit-point" name="point-controller" id="point-controller"  on:change={changeSelectValue} style="margin:5px" disabled>
+								{#each controllers as Controller}
+									{#if Controller.uid == currpoint.controller}
+										<option value={Controller.uid} selected>{Controller.name}</option>
+									{:else}
+										<option value={Controller.uid}>{Controller.name}</option>
+									{/if}
+								{/each}
+							</select>
 						</div>
 					</div>
 				{/if}
@@ -177,6 +310,13 @@ const columns = [
   clear: both;
 }
 
+.class-panel-body-toolbar {
+	display:flex;
+	justify-content:left;
+	color: var(--color);
+	font-weight:bold ;
+}
+
 .column {
   float: left;
   /*padding: 10px;*/
@@ -190,19 +330,53 @@ const columns = [
 
 .right {
   width: 65%;
-  border-left: 1px solid;
+  margin-right: 5px;
+  margin-top: 10px;
   height:100%;
+  border: 1px solid;
 }
 .class-panel-column-rigth-toolbar{
+	border-bottom: 1px solid;
 	display:flex;
 	text-align: right;
 	background-color: #eeeeee;
 }
 .class-panel-column-rigth-toolbar span{
 	font-weight: bold;
+	margin-left: 5px ;
 }
+
 .class-last-item {
   margin-left: auto;
+}
+.labels1 {
+    float: left;
+    width: 140px;
+}
+.inputs1 {
+    float: left;
+    width: 180px;
+}
+.labels2 {
+    float: left;
+    width: 140px;
+}
+.inputs2 {
+    float: left;
+    width: 160px;
+}
+label,
+input {
+    display: block;
+}
+label {
+    padding: 10px 10px 0;
+}
+input {
+    margin: 12px 0 0;
+}
+.inputs2 select {
+    vertical-align: middle;
 }
 
 </style>

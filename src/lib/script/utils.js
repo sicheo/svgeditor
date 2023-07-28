@@ -484,8 +484,11 @@ export function makePointsUid(driver,agent, device, controller, machine, db, num
                     point.area = 'COIL'
                 else
                     point.area = 'INPUT'
+                point.numarea = 0
                 break;
             case 'ip':
+                point.area = 'NA'
+                point.numarea = 0
                 break
         }
         points.push(point)
@@ -513,9 +516,9 @@ function randomTDUABD(length) {
         "Particle num alarm",
         "Flow alarm"
     ]
-    const um = ['DEGC', 'PSIA', "%", "RPM", "A", "V", "n/m3", "m3/sec", '', '', "", "", "", "", "", ""]
+    const um = ['DEGC', 'PSIA', "%", "RPM", "A", "V", "#/m3", "m3/sec", '', '', "", "", "", "", "", ""]
     let result = ''
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     const charactersLength = characters.length;
     let counter = 0;
     for (let i = 0; i < length; i++) {
