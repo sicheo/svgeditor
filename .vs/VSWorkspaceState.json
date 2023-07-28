@@ -4,10 +4,11 @@
     "\\src",
     "\\src\\assets",
     "\\src\\lib",
-    "\\src\\lib\\i18n",
+    "\\src\\lib\\components",
+    "\\src\\lib\\components\\Dialogs",
     "\\src\\lib\\script",
     "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\components",
+  "SelectedNode": "\\src\\lib\\script\\utils.js",
   "PreviewInSolutionExplorer": false
 }

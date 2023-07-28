@@ -53,6 +53,8 @@
   "dialog_location_device": "EDIT DEVICE LOCATION",
   "dialog_delete_button": "DELETE",
   "dialog_search": "Search...",
+  "dialog_agent_db_button": "SHOW DB",
+  "dialog_agent_db_label": "Field DB",
   "dialog_drop_placheholder": "Select your option",
   "up2clone_master_panel_description": "Description",
   "up2clone_master_panel_doccode": "Document Code",
@@ -135,5 +137,6 @@
   "table-db-agent-destination-username": "Username",
   "table-db-agent-destination-password": "Password",
   "table-db-agent-db-intro": "CONFIGURE DB FOR AGENT",
-  "table-db-agent-db-choose": "Choose DB"
+  "table-db-agent-db-choose": "Choose DB",
+  "table-db-agent-db-tag": "TAG"
 }

@@ -27,9 +27,11 @@
   export let color:any
   export let tableOptions = {pagination:true}
   export let refreshDataExt:any
+  export let viewOptions = { showGotoPage:true,showPageSize:true}
 
  
   let sorting = []
+  let rowselection = []
   let columnFilters = []
   let paginationState = {
                 pageIndex: 0,
@@ -95,8 +97,19 @@
     }))
   }*/
 
-  const setRowSelection = ()=>{
-      
+  const setRowSelection = updater => {
+    if (updater instanceof Function) {
+      rowselection = updater(rowselection)
+    } else {
+      rowselection = updater
+    }
+    options.update(old => ({
+      ...old,
+      state: {
+        ...old.state,
+        rowselection,
+      },
+    }))
   }
 
 
@@ -113,6 +126,7 @@
           paginationState
       },
       onColumnFiltersChange: setColumnFilters,
+      onRowSelectionChange: setRowSelection,
       getCoreRowModel: getCoreRowModel(),
       getSortedRowModel: getSortedRowModel(),
       getPaginationRowModel: getPaginationRowModel(),
@@ -121,7 +135,6 @@
       debugTable: false,
       debugRows: false,
       enableRowSelection: true,
-      onRowSelectionChange: setRowSelection,
     }
   )
   const refreshData = () => {
@@ -236,10 +249,13 @@
             {$table.getState().pagination.pageIndex + 1} {$_("table-page-of")} {$table.getPageCount()}
           </strong>
         </span>
-        <span>
-            | {$_("table-gotopage")}
-            <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
-        </span>
+        {#if viewOptions.showGotoPage}
+            <span>
+                | {$_("table-gotopage")}
+                <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
+            </span>
+        {/if}
+        {#if viewOptions.showPageSize}
         <select  on:change={onSelect} >
             {#each selectOptions as Option}
                 {#if Option.value == $table.getState().pagination.pageSize}
@@ -249,6 +265,7 @@
                 {/if}
             {/each}
         </select>
+        {/if}
     </div>
     {/if}
   

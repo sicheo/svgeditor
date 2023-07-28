@@ -2,20 +2,30 @@
 
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
-import TableImage from '../Tables/TableImage.svelte'
 import { v4 as uuidv4 } from 'uuid';
 import {getPoints} from '../../script/api.js'
 import {mock} from '../../ustore.js'
+import TableImage from  '../Tables/TableImage.svelte'
+import TableText from  '../Tables/TableText.svelte'
+import SimpleTable from '../Tables/SimpleTable.svelte'
+
+
+
+import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 
 
 export let data = []
 export let color 
 export let dialogOptions : any 
 
-
+let viewOptions = { showGotoPage:false,showPageSize:false}
 let dbuid 
 let localdb
 let points = []
+let currpoint = null
+
+const columnHelper  = createColumnHelper()
+let refreshDataExt:any
 
 let newdb = {
 	  uid: uuidv4(),
@@ -29,6 +39,8 @@ onMount(async ()=>{
 const exitDialog = (event:any)=>{
 	localdb = null
 	dbuid = null
+	points=[]
+	refreshDataExt()
     const dialog = document.getElementById("agent-db-dialog")
     if(dialog)
         dialog.style.display = 'none'
@@ -36,9 +48,10 @@ const exitDialog = (event:any)=>{
 
 
 const changeDBValue = async(ev:any)=>{
+	points = []
+	currpoint=null
 	const target = ev.target
 	localdb = data.find((item:any)=> item.uid == target.value)
-	console.log("CHANGE DB",data,target.value)
 	if(localdb){
 		const filters = [
 			{op:'eq',name:'agent',value:dialogOptions.row.uid},
@@ -46,11 +59,11 @@ const changeDBValue = async(ev:any)=>{
 		]
 		const res = await getPoints(filters,$mock)
 		points = res.data
-		console.log("GET POINTS",points,filters)
+		points = points
 	}else{
-		console.log("**** NEW AGENT *****")
 		localdb = newdb
 	}
+	refreshDataExt()
 }
 
 const clickEdit = ()=>{
@@ -65,9 +78,38 @@ const clickDelete = ()=>{
 
 }
 
+const toggleSelection = (target)=>{
+	const spans = document.getElementsByClassName("text-tool-component")
+	for(let i=0;i<spans.length;i++){
+		spans[i].style.backgroundColor  = 'white'
+	}
+	if(target.style.backgroundColor  != 'yellow')
+		target.style.backgroundColor  = 'yellow'
+	else
+		target.style.backgroundColor  = 'white'
+}
+const clickTag = (ev:any)=>{
+	toggleSelection(ev.target)
+	currpoint = ev.target.innerHTML
+}
+
+const columns = [
+                    columnHelper.accessor('tag', {
+                        id : 'tag',
+                        header: () => $_("table-db-agent-db-tag"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickTag,cursor:'pointer'}),
+                    }),  
+                    columnHelper.accessor('description', {
+                        id : 'description',
+                        header: () => $_("table-db-device-description"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                    }),
+   ]
+
 </script>
 
 <div class="load-dialog-class" >
+		{#if dialogOptions.row.type == 'SCANNER'}
 		<div class="class-panel-header" style="border-bottom: 1px solid;">
 				<p>{$_("table-db-agent-db-intro")} {dialogOptions.row.name}</p>
 				<div class="class-last-item">
@@ -77,23 +119,33 @@ const clickDelete = ()=>{
 		<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;">
 					<span>{$_("table-db-agent-db-choose")}</span>
 					<select name="agent" id="agent-select" value={dbuid} on:change={changeDBValue} style="margin:5px">
-						<option value="" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-db-new")}</option>
+						<option value={null} style="font-weight:bold;font-style:italic;">{$_("table-db-agent-db-new")}</option>
 						{#each data as DB}
 								<option value={DB.uid}>{DB.name}</option>
 						{/each}
 					</select>
-					<TableImage image='/edit.svg' onClick={clickEdit}/>
-					<TableImage image='/SAVE.svg' onClick={clickSave}/>
+					<TableImage image='/DOWNARROW.svg' onClick={clickEdit}/>
+					<TableImage image='/UPARROW.svg' onClick={clickSave}/>
 					<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
 			<div class="column left">
-				<p>Some text..</p>
+				<SimpleTable viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 				</div>
 			<div class="column right">
-				<p>Some text..</p>
-				</div>
+				{#if currpoint != null}
+					<div class="class-panel-column-rigth-toolbar" style="border-bottom: 1px solid;">
+						<span>EDIT POINT</span>
+						<div class="class-last-item">
+							<TableImage image='/edit.svg' onClick={clickEdit}/>
+							<TableImage image='/SAVE.svg' onClick={clickSave}/>
+							<TableImage image='/DELETE.svg' onClick={clickDelete}/>
+						</div>
+					</div>
+				{/if}
+			</div>
 		</div>
+		{/if}
 	</div>
 
 <style>
@@ -101,7 +153,7 @@ const clickDelete = ()=>{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
-	width: 60%;
+	width: 80%;
 	height: 80%;
 	margin: auto;
 }
@@ -127,17 +179,30 @@ const clickDelete = ()=>{
 
 .column {
   float: left;
-  padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
+  /*padding: 10px;*/
+  /*height: 300px;  Should be removed. Only for demonstration */
 }
 
 .left {
-  width: 25%;
+  padding: 10px;
+  width: 35%;
 }
 
 .right {
-  width: 75%;
+  width: 65%;
+  border-left: 1px solid;
+  height:100%;
 }
-
+.class-panel-column-rigth-toolbar{
+	display:flex;
+	text-align: right;
+	background-color: #eeeeee;
+}
+.class-panel-column-rigth-toolbar span{
+	font-weight: bold;
+}
+.class-last-item {
+  margin-left: auto;
+}
 
 </style>

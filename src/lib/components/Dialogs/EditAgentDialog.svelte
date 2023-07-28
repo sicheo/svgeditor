@@ -64,7 +64,7 @@ let newagent = {
 
 onMount(async ()=>{
 	  // const uid = dialogOptions.row.uid
-	   console.log("DIALOG UID")
+	   
     });
 
 const exitPage = (ev:any)=>{
@@ -77,16 +77,15 @@ const exitPage = (ev:any)=>{
 }
 
 const changeAgentValue = (ev:any)=>{
+	dbs=[]
 	const target = ev.target
 	const uid = target.value
 	locagent = dialogOptions.array.find((item:any)=> item.uid == target.value)
 	if(locagent){
 		dbs = locagent.dbs
-		console.log("CHANGEAGENT",dbs)
 		sdropts=getSourceOptions(locagent.source.driver)
 		ddropts=getDestinationOptions(locagent.destination.driver)
 	}else{
-		console.log("**** NEW AGENT *****")
 		locagent = newagent
 	}
 	
@@ -208,7 +207,6 @@ const clickDelete = async() =>{
 
 const getSourceOptions = (driver:any)=>{
 	const drv = sourcedrivers.find((item:any)=> item.value == driver)
-	console.log("GET SOURCE OPTIONS", drv)
 	if(drv)
 		return drv.options
 	else
@@ -217,7 +215,6 @@ const getSourceOptions = (driver:any)=>{
 
 const getDestinationOptions = (driver:any)=>{
 	const drv = destinationdrivers.find((item:any)=> item.value == driver)
-	console.log("GET DESTINATION OPTIONS", driver,drv,destinationdrivers)
 	if(drv)
 		return drv.options
 	else
@@ -228,7 +225,6 @@ const changeButtonDB = (ev:any)=>{
 	 dialog = EditAgentDBDialog
 	 intDialogOptions  = {row:locagent,func:null,array:[],norefresh:true,dialogDelete:$_('dialog_edit_agent'),divname:'agent-db-dialog'}
 	 const dialogdiv = document.getElementById("agent-db-dialog")
-	 console.log("SHOW DB",dialogdiv)
        if(dialogdiv)
             dialogdiv.style.display = 'block'
 }
@@ -324,10 +320,10 @@ const changeButtonDB = (ev:any)=>{
 									{/each}
 								</div>
 								<div class="labels4">
-										<label for="dbbutton">Field DB </label>
+										<label for="dbbutton">{$_('dialog_agent_db_label')} </label>
 								</div>
 								<div class="inputs4">
-										<input class="class-edit-agent" type="button" name="dbbutton" id="dbbutton" value="SHOW DB" on:click={changeButtonDB} />
+										<input class="class-edit-agent" type="button" name="dbbutton" id="dbbutton" value="{$_('dialog_agent_db_button')}" on:click={changeButtonDB} />
 								</div>
 							</div>
 						{/if}
@@ -386,10 +382,12 @@ const changeButtonDB = (ev:any)=>{
 				<!-- END EDIT DEVICE INPUTS-->
 			</div>
 	</div>
-	<div id="agent-db-dialog">
-		<!--EditAgentDBDialog dbs={dbs} /-->
-		<svelte:component this={dialog} bind:data={dbs} dialogOptions={intDialogOptions} {color}/>
-	</div>
+	
+		<div id="agent-db-dialog">
+			<!--EditAgentDBDialog dbs={dbs} /-->
+			<svelte:component this={dialog} bind:data={dbs} dialogOptions={intDialogOptions} {color}/>
+		</div>
+	
 	
 
 <style>
