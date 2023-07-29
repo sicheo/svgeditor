@@ -228,12 +228,18 @@ const columns = [
                     columnHelper.accessor('tag', {
                         id : 'tag',
                         header: () => $_("table-db-agent-db-tag"),
-                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickTag,cursor:'pointer'}),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickTag,cursor:'pointer',fontsize:'12px',fontweight:'bold'}),
                     }),  
                     columnHelper.accessor('description', {
                         id : 'description',
-                        header: () => $_("table-db-device-description"),
-                        cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor('address', {
+                        id : 'address',
+						enableColumnFilter:false,
+                        header: () => $_("table-db-agent-db-address"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
    ]
 
@@ -266,28 +272,29 @@ const columns = [
 			<div class="column right">
 				
 					<div class="class-panel-column-rigth-toolbar">
-						<span>EDIT POINT</span>
+						<span>{$_("table-db-agent-db-edit-point")}</span>
+						<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
+
 						<div class="class-last-item">
 							<TableImage image='/add.svg' onClick={clickAdd}/>
 							<TableImage image='/edit.svg' onClick={clickEdit}/>
 							<TableImage image='/SAVE.svg' onClick={clickSave}/>
 							<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 						</div>
-						<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
 					</div>
 				{#if currpoint != null}
 					<div class="class-panel-column-rigth-body" >
 						<div class="labels1">
-							<label for="point-tag">TAG </label>
-							<label for="point-address">ADDRESS </label>
+							<label for="point-tag">{$_("table-db-agent-db-tag")} </label>
+							<label for="point-address">{$_("table-db-agent-db-address")} </label>
 							{#if currpoint.atype == 'VALUE'}
-								<label for="point-um">UM </label>
+								<label for="point-um">{$_("table-db-agent-db-um")} </label>
 							{:else}
-								<label for="point-bit">BIT </label>
+								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
 							{/if}
 						</div>
 						<div class="inputs1">
-							<input type="text" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
+							<input type="text" size="17" style="font-weight:bold;" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
 							<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
 							{#if currpoint.atype == 'VALUE'}
 								<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
@@ -296,12 +303,12 @@ const columns = [
 							{/if}
 						</div>
 						<div class="labels2">
-							<label for="point-description">DESCRIPTION </label>
-							<label for="point-area">AREA </label>
-							<label for="point-controller">CONTROLLER </label>
+							<label for="point-description">{$_("table-db-agent-db-description")} </label>
+							<label for="point-area">{$_("table-db-agent-db-area")} </label>
+							<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
 						</div>
 						<div class="inputs2">
-							<input type="text" value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
+							<input type="text" size="38" value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
 							<input type="text" value="{currpoint.area}" class="class-edit-point" name="point-area" id="point-area" on:change={changeValuePoint} disabled/>
 							<select class="class-edit-point" name="point-controller" id="point-controller"  on:change={changeSelectValue} style="margin:5px" disabled>
 								{#each controllers as Controller}
@@ -341,9 +348,6 @@ const columns = [
  margin-left: 8px;
 }
 
-.class-last-item {
-  margin-top: 15px;
-}
 .class-panel-body-agent{
   display: flex;
   clear: both;
@@ -377,7 +381,7 @@ const columns = [
 .class-panel-column-rigth-toolbar{
 	border-bottom: 1px solid;
 	display:flex;
-	text-align: right;
+	justify-content: space-between;
 	background-color: #eeeeee;
 }
 .class-panel-column-rigth-toolbar span{

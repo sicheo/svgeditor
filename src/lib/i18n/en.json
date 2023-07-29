@@ -138,5 +138,12 @@
   "table-db-agent-destination-password": "Password",
   "table-db-agent-db-intro": "CONFIGURE DB FOR AGENT",
   "table-db-agent-db-choose": "Choose DB",
-  "table-db-agent-db-tag": "TAG"
+  "table-db-agent-db-edit-point": "EDIT POINT",
+  "table-db-agent-db-tag": "TAG",
+  "table-db-agent-db-address": "ADDRESS",
+  "table-db-agent-db-description": "DESCRIPTION",
+  "table-db-agent-db-area": "AREA",
+  "table-db-agent-db-bit": "BIT",
+  "table-db-agent-db-controller": "CONTROLLER",
+  "table-db-agent-db-um": "UoM"
 }

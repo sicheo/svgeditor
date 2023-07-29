@@ -4,13 +4,16 @@ export let text = ""
 export let width = '100px'
 export let onClick = ()=>{}
 export let cursor = 'normal'
+export let fontsize = 'inherit'
+export let fontweight = 'normal'
+
 
 
 </script>
 
 	<!--input type="text" class= "text-tool-component" value="{text}"  height="25" disabled/-->
 	<div class="text-tool-component-div">
-		<span style="--cursor:{cursor};--width:{width};" class="text-tool-component" role="textbox" on:click={onClick}>{text}</span> 
+		<span style="--cursor:{cursor};--width:{width};--fontsize:{fontsize};--fontweight:{fontweight}" class="text-tool-component" role="textbox" on:click={onClick}>{text}</span> 
 	</div>
 
 <style>
@@ -19,10 +22,11 @@ export let cursor = 'normal'
 	border: none;
 	border-color: transparent;
 	font-family: inherit;
-	font-size: inherit;
+	font-size: var(--fontsize);
+	font-weight: var(--fontweight) ;
 	padding: 1px 6px;
 	width: var(--width);
 	background-color: white;
-	cursor: var(--cursor)
+	cursor: var(--cursor);
 }
 </style>
