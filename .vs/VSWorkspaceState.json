@@ -9,6 +9,6 @@
     "\\src\\lib\\i18n",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataConfMP.svelte",
+  "SelectedNode": "\\src\\lib\\script\\utils.js",
   "PreviewInSolutionExplorer": false
 }

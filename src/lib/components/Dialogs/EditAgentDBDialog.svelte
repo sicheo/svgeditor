@@ -8,6 +8,8 @@ import {mock} from '../../ustore.js'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 import SimpleTable from '../Tables/SimpleTable.svelte'
+import {uploadFile,downloadCSV} from '../../script/utils.js'
+import Papa from 'papaparse'
 
 
 
@@ -31,7 +33,7 @@ let refreshDataExt:any
 
 let newdb = {
 	  uid: uuidv4(),
-	  value: ''
+	  name: 'newdb.csv'
 }
 
 onMount(async ()=>{
@@ -75,8 +77,44 @@ const clickEdit = ()=>{
 	toggleDisable(false)
 }
 
+const clickUpload = (ev:any)=>{
+	// TRASFORM points INTO CSV STRING
+	if(localdb){
+		const csv = Papa.unparse(points)
+		const filename = localdb.name
+		uploadFile(csv,filename)
+	}
+}
+
+const clickDownload = ()=>{
+	const element = document.getElementById("file-db-input")
+		if(element)
+			element.click()
+}
+
+const downloadDB = async (evt:any)=>{
+	let file = evt.target.files[0];
+	const points = await downloadCSV(file)
+	console.log("DOWNLOAD POINTS",points)
+}
+
+const clickDeleteDb = async (ev:any)=>{
+	let filters = [
+			{op:'eq',name:'agent',value:dialogOptions.row.uid},
+			{op:'eq',name:'db',value:localdb.uid}
+		]
+	let ret = await deletePoint(filters,$mock)
+
+}
+
 const clickSave = async()=>{
+	// SAVE POINTS
 	let res = await setPoint(currpoint,$mock)
+	// IF NEW DB SAVE NEW DB
+	const dbuid = localdb.uid
+	const found = data.find((item:any)=> item.uid == dbuid)
+	if(!found)
+		data.push(localdb)
 	const filters = [
 			{op:'eq',name:'agent',value:dialogOptions.row.uid},
 			{op:'eq',name:'db',value:localdb.uid}
@@ -217,9 +255,9 @@ const columns = [
 								<option value={DB.uid}>{DB.name}</option>
 						{/each}
 					</select>
-					<TableImage image='/DOWNARROW.svg' onClick={clickEdit}/>
-					<TableImage image='/UPARROW.svg' onClick={clickSave}/>
-					<TableImage image='/DELETE.svg' onClick={clickDelete}/>
+					<TableImage image='/DOWNARROW.svg' onClick={clickDownload}/>
+					<TableImage image='/UPARROW.svg' onClick={clickUpload}/>
+					<TableImage image='/DELETE.svg' onClick={clickDeleteDb}/>
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
 			<div class="column left">
@@ -235,6 +273,7 @@ const columns = [
 							<TableImage image='/SAVE.svg' onClick={clickSave}/>
 							<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 						</div>
+						<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
 					</div>
 				{#if currpoint != null}
 					<div class="class-panel-column-rigth-body" >

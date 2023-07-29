@@ -1,5 +1,7 @@
 // https://stackoverflow.com/questions/40497262/how-to-version-control-an-object
 import { v4 as uuidv4 } from 'uuid';
+import Papa from 'papaparse'
+
 
 export function VersionControlled(obj, changeLog = []) {
     var targets = [], version = 0, savedLength,
@@ -539,6 +541,34 @@ function randomTDUABD(length) {
     return[tag,desc[index],um[index],atype,bit,dtype]
 }
 
+export function uploadFile(filestring,filename) {
+    try {
+        let textFileUrl = null;
+        let fileData = new Blob([filestring], { type: 'text/plain' });
+        if (textFileUrl !== null) {
+            window.URL.revokeObjectURL(textFileUrl);
+        }
+        textFileUrl = window.URL.createObjectURL(fileData);
+        var a = document.createElement("a");
+        a.href = textFileUrl
+        a.download = filename;
+        a.click();
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export function downloadCSV(file) {
+    return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+            worker: true, // Don't bog down the main thread if its a big file
+            header: true,
+            complete: function (results, file) {
+                resolve(results.data)
+            }
+        });
+    })
+}
 
 /*
 // sample data

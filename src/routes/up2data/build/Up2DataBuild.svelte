@@ -13,6 +13,7 @@
   import LoadDialog from '../../../lib/components/Dialogs/DGraphLoadDialog.svelte'
   import SaveDialog from '../../../lib/components/Dialogs/DGraphSaveDialog.svelte'
   import DeleteDialog from '../../../lib/components/Dialogs/DGraphDeleteDialog.svelte'
+  import {uploadFile} from '../../../lib/script/utils.js'
 
 
   let component = 'MainTabTools'
@@ -38,22 +39,9 @@
 let graph = {nodes:[],paths:[],svg:'',gnodes:[],gpaths:[]}
 
 const upload = async ()=>{
-		try{
-			let textFileUrl = null;
-			//const jsontree = await getTreeFile($token,$currentcompany.name)
-			const graphToSave = {nodes:graph.nodes,paths:graph.paths,svg:graph.svg}
-			let fileData = new Blob([JSON.stringify(graphToSave)], {type: 'text/plain'});
-			    if (textFileUrl !== null) {
-					window.URL.revokeObjectURL(textFileUrl);
-				}		
-			textFileUrl = window.URL.createObjectURL(fileData);
-			var a = document.createElement("a");
-			a.href = textFileUrl
-			a.download = 'TEST.json';
-			a.click(); 
-		}catch(error){
-			console.log(error)
-		}
+            const graphToSave = {nodes:graph.nodes,paths:graph.paths,svg:graph.svg}		
+            const filename = 'TEST.json'
+            uploadFile(JSON.stringify(graphToSave),filename)
    }
 
 const menusave = async ()=>{ 
