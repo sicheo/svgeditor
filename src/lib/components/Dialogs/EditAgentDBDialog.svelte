@@ -94,8 +94,16 @@ const clickDownload = ()=>{
 
 const downloadDB = async (evt:any)=>{
 	let file = evt.target.files[0];
-	const points = await downloadCSV(file)
-	console.log("DOWNLOAD POINTS",points)
+	const filepoints = await downloadCSV(file)
+	console.log("DOWNLOAD POINTS",evt.target.files[0].name)
+	points = filepoints
+	refreshDataExt()
+	// UPDATE DATA
+	for(let i=0;i<data.length;i++){
+		if(data[i].uid == localdb.uid)
+			data[i].uid=evt.target.files[0].name
+	}
+	localdb.name = evt.target.files[0].name
 }
 
 const clickDeleteDb = async (ev:any)=>{
@@ -267,7 +275,7 @@ const columns = [
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
 			<div class="column left">
-				<SimpleTable viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+				<SimpleTable fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 				</div>
 			<div class="column right">
 				

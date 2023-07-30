@@ -10,7 +10,6 @@ import EditAgentDBDialog from './EditAgentDBDialog.svelte'
 import GenericSaveDialog from './GenericSaveDialog.svelte'
 import GenericDeleteDialog from './GenericDeleteDialog.svelte'
 import {setAgent,deleteAgent} from '../../script/api.js'
-import {mock} from '../../ustore.js'
 
 
 export let color
@@ -64,7 +63,9 @@ let newagent = {
 
 onMount(async ()=>{
 	  // const uid = dialogOptions.row.uid
-	   
+	   /*const element = document.getElementById("sign-edit-agent-id")
+	   const elementheader = document.getElementById("sign-edit-agent-id-header")
+	   dragElement(element,elementheader)*/
     });
 
 const exitPage = (ev:any)=>{
@@ -232,7 +233,7 @@ const changeButtonDB = (ev:any)=>{
 </script>
     
 		<div class="sign-edit-class" id="sign-edit-agent-id">
-			<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
+			<div id="sign-edit-agent-id-header" class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 					<p>{dialogOptions.dialogDelete} {dialogOptions.row.name}</p>
 					<div class="class-last-item">
 						<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 

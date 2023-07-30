@@ -28,6 +28,7 @@
   export let tableOptions = {pagination:true}
   export let refreshDataExt:any
   export let viewOptions = { showGotoPage:true,showPageSize:true}
+  export let fontsize = '15px'
 
  
   let sorting = []
@@ -203,20 +204,20 @@
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           {#each headerGroup.headers as header}
-            <th style="--background-color:{color};cursor:pointer;">
+            <th style="--background-color:{color};cursor:pointer;--font-size:{fontsize}">
               {#if !header.isPlaceholder}
-              <div class:cursor-pointer={header.column.getCanSort()} class:select-none={header.column.getCanSort()} on:click={header.column.getToggleSortingHandler()}>
-                <svelte:component this={flexRender( header.column.columnDef.header, header.getContext())}/>
-                {{
-                    asc: ' 🔼',
-                    desc: ' 🔽',
-                  }[header.column.getIsSorted().toString()] ?? ''}
-                </div>
-              {/if}
-              {#if header.column.getCanFilter() }
-                <div class="tablefilter">
-                    <TableFilter column={header.column} table={$table} />
-                </div>
+                  <div class:cursor-pointer={header.column.getCanSort()} class:select-none={header.column.getCanSort()} on:click={header.column.getToggleSortingHandler()}>
+                    <svelte:component this={flexRender( header.column.columnDef.header, header.getContext())}/>
+                    {{
+                        asc: ' 🔼',
+                        desc: ' 🔽',
+                      }[header.column.getIsSorted().toString()] ?? ''}
+                   </div>
+                  {#if header.column.getCanFilter() }
+                    <div class="tablefilter">
+                        <TableFilter column={header.column} table={$table} />
+                    </div>
+                  {/if}
               {/if}
             </th>
           {/each}
@@ -224,7 +225,7 @@
       {/each}
     </thead>
     <tbody>
-      {#each $table.getPaginationRowModel().rows as row}
+      {#each $table.getRowModel().rows as row}
         <tr>
           {#each row.getVisibleCells() as cell}
             <td>
@@ -292,7 +293,7 @@ th {
   color: white ;
   background-color: var(--background-color) ;
   opacity: 0.5 ;
-  font-size: 15px;
+  font-size: var(--font-size);
   text-align: left;
   vertical-align: top;
   
