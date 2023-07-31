@@ -78,16 +78,19 @@ const exitPage = (ev:any)=>{
 }
 
 const changeAgentValue = (ev:any)=>{
-	dbs=[]
 	const target = ev.target
 	const uid = target.value
 	locagent = dialogOptions.array.find((item:any)=> item.uid == target.value)
 	if(locagent){
-		dbs = locagent.dbs
+		if(locagent.dbs)
+			dbs = locagent.dbs
+		else
+			dbs = []
 		sdropts=getSourceOptions(locagent.source.driver)
 		ddropts=getDestinationOptions(locagent.destination.driver)
 	}else{
 		locagent = newagent
+		dbs=[]
 	}
 	
 }

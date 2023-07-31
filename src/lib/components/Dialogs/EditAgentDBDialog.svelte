@@ -39,6 +39,8 @@ let newdb = {
 onMount(async ()=>{
 	   const  res = await getControllers(null,$mock)
        controllers = res.data
+	   if(!controllers)
+			controllers = []
     });
 
 const exitDialog = (event:any)=>{

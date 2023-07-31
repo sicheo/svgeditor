@@ -57,6 +57,7 @@ onMount(async ()=>{
 <style>
   .main-content{
       margin: 0;
+      overflow-y:unset;
   }
   .page-container{
       display:block;
@@ -66,7 +67,7 @@ onMount(async ()=>{
   }
   .navigation-panel{
       display:block;
-      min-height: clamp(200px,60vh,0vh); 
+      min-height: clamp(100px,50%,200px); 
       min-width: clamp(100px,15vw,15vw);  
       /*border-left: 1px solid var(--color);
       border-right: 1px solid var(--color);

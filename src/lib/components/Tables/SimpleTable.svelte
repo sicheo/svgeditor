@@ -50,7 +50,8 @@
 
   onMount(async ()=>{
        const div = document.getElementById("tanstack-table-id")
-       div.addEventListener("refreshtable",refreshListener)
+       if(div)
+            div.addEventListener("refreshtable",refreshListener)
     });
 
   const setSorting = updater => {

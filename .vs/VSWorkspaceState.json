@@ -4,9 +4,13 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\i18n"
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\PageContents",
+    "\\src\\routes",
+    "\\src\\routes\\up2clone",
+    "\\src\\routes\\up2clone\\monitor",
+    "\\src\\routes\\up2clone\\template"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Tables\\SimpleTable.svelte",
+  "SelectedNode": "\\src\\routes\\up2clone\\monitor\\Up2CloneMonitor.svelte",
   "PreviewInSolutionExplorer": false
 }
