@@ -1,20 +1,22 @@
 <script lang="ts">
 
 export let image = "/BUDDY.png"
-export let style  = "enabled"
+export let style  = "enabled;"
 export let onClick = ()=>{console.log("TST CLICK")}
 export let name = 'img-generic'
 export let uid = 'abcdefgh'
+export let height = "25"
 </script>
-	
-	<input type="image" id={name} data-uid={uid} style="{style}" class="image-tool-component" src="{image}" alt="ALT IMAGE" height="25" on:click={onClick}/>
-	
+	<div class="image-tool-component-div">
+	<input type="image" id={name} data-uid={uid} style="{style}" class="image-tool-component" src="{image}" alt="ALT IMAGE" height="{height}" on:click={onClick}/>
+	</div>
 <style>
 
 
-.image-tool-component {
+.image-tool-component-div {
 	margin: 2px 2px 2px 2px;
-	opacity: 1.0;
+	opacity: 0.8;
+	text-align: center;
 }
 
 

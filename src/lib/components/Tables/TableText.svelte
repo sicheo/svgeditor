@@ -6,6 +6,7 @@ export let onClick = ()=>{}
 export let cursor = 'normal'
 export let fontsize = 'inherit'
 export let fontweight = 'normal'
+export let classname = "text-tool-component"
 
 
 
@@ -13,7 +14,7 @@ export let fontweight = 'normal'
 
 	<!--input type="text" class= "text-tool-component" value="{text}"  height="25" disabled/-->
 	<div class="text-tool-component-div">
-		<span style="--cursor:{cursor};--width:{width};--fontsize:{fontsize};--fontweight:{fontweight}" class="text-tool-component" role="textbox" on:click={onClick}>{text}</span> 
+		<span style="--cursor:{cursor};--width:{width};--fontsize:{fontsize};--fontweight:{fontweight}" class=" text-tool-component {classname}" role="textbox" on:click={onClick}>{text}</span> 
 	</div>
 
 <style>

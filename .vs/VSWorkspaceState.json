@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
     "\\src\\lib\\components\\PageContents",
     "\\src\\routes",
     "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\monitor",
-    "\\src\\routes\\up2clone\\template"
+    "\\src\\routes\\up2clone\\template",
+    "\\src\\routes\\up2data",
+    "\\src\\routes\\up2data\\configuration"
   ],
-  "SelectedNode": "\\src\\routes\\up2clone\\monitor\\Up2CloneMonitor.svelte",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditAgentDBDialog.svelte",
   "PreviewInSolutionExplorer": false
 }

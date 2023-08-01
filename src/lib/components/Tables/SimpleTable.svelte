@@ -29,6 +29,7 @@
   export let refreshDataExt:any
   export let viewOptions = { showGotoPage:true,showPageSize:true}
   export let fontsize = '15px'
+  export let pagesize = '10'
 
  
   let sorting = []
@@ -52,6 +53,7 @@
        const div = document.getElementById("tanstack-table-id")
        if(div)
             div.addEventListener("refreshtable",refreshListener)
+        $table.setPageSize(Number(pagesize))
     });
 
   const setSorting = updater => {

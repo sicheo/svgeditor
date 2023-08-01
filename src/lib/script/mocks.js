@@ -1956,6 +1956,8 @@ const getDeviceInfo = async function (body) {
     }
 
     body.data = infos
+    if (body.options.host == "10.112.1.71")
+        body.error="CONNECTION TIMEOUT"
     return (body)
 }
 
