@@ -5,12 +5,9 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\PageContents",
-    "\\src\\routes",
-    "\\src\\routes\\up2clone",
-    "\\src\\routes\\up2clone\\template",
-    "\\src\\routes\\up2data",
+    "\\src\\lib\\script",
     "\\src\\routes\\up2data\\configuration"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditAgentDBDialog.svelte",
+  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataMonitorMP.svelte",
   "PreviewInSolutionExplorer": false
 }

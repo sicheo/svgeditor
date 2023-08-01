@@ -6,10 +6,11 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 
-import {getDevices,getPoints,getAgents,getDeviceInfo } from '../../script/api.js'
+import {getDevices,getPoints,getAgents,getDeviceInfo, sleep } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
+    import AddTools from '../InnerTabs/AddTools.svelte';
 
 export let color:any
 
@@ -33,8 +34,23 @@ onMount(async ()=>{
 	   devices = JSON.parse(JSON.stringify(response.data))
 	   response = await getAgents(null,$mock)
        allagents = JSON.parse(JSON.stringify(response.data))
-	   
 	   refreshDataExtDev()
+	   await sleep(1000)
+	   let src = '/GREENCIRCLE.svg'
+	   for(let i=0;i<devices.length;i++){
+		   const image = document.getElementById("img-generic"+devices[i].uid)
+		   if(image){
+				const ret = await getDeviceInfo(devices[i].host,devices[i].port,'https',$mock)
+				console.log("getDeviceConnection",devices[i].name,ret.error)
+				if(ret.error)
+					src = '/REDCIRCLE.svg'
+				else
+					src = '/GREENCIRCLE.svg'
+			
+				image.src = src
+			}
+	   }
+		
     });
 
 
@@ -53,7 +69,7 @@ const devicecolumns = [
                         id : 'edit',
                         enableColumnFilter:false,
                         header: () => "CONNECTION",
-                        cell: (props) =>   flexRender(TableImage,{image:((getDeviceConnection(props.getValue()) == 'true')?'/GREENCIRCLE.svg':'/REDCIRCLE.svg'),uid:props.getValue(),height:"18"}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle"}),
                     }),
    ]
 
@@ -129,22 +145,6 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 		target.style.backgroundColor  = 'white'
 }
 
-const getDeviceConnection= async(uid:any)=>{
-	let res = 'true'
-	const dev = devices.find((item:any)=>item.uid == uid)
-	if(dev){
-		const ret = await getDeviceInfo(dev.host,dev.port,'https',$mock)
-		console.log("getDeviceConnection",dev.name,ret.error)
-		if(ret.error)
-			res =  'false'
-		else
-			res = 'true'
-	}else{
-		res =  'false'
-	}
-	console.log(">>>>>>>>>>>>>>> RET",res)
-	return(res)
-}
 
 </script>
 
