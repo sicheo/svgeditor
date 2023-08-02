@@ -5,9 +5,9 @@
     "\\src\\lib",
     "\\src\\lib\\components",
     "\\src\\lib\\components\\PageContents",
-    "\\src\\lib\\script",
-    "\\src\\routes\\up2data\\configuration"
+    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataMonitorMP.svelte",
+  "SelectedNode": "\\src\\lib\\script\\utils.js",
   "PreviewInSolutionExplorer": false
 }

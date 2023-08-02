@@ -886,6 +886,39 @@ export const getDeviceInfo = async function (host, port,prot, mock = false) {
 }
 
 /**
+ * Get Agent Status
+ * @param {any} agent 
+ * @param {any} device
+ * @param {any} mock use mock flag (default false)
+ */
+export const getAgentStatus = async function (agent, device, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getAgentStatus",
+            options: {
+                agent: agent,
+                device: device,
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getAgentStatus(body))
+        }
+    })
+}
+
+/**
  * Get Docker Info
  * 
  * @param {any} durl docker daemon url

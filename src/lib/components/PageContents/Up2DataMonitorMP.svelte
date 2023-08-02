@@ -6,11 +6,11 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 
-import {getDevices,getPoints,getAgents,getDeviceInfo, sleep } from '../../script/api.js'
+import {getDevices,getPoints,getAgents,getDeviceInfo, sleep, getAgentStatus, getMachines } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
-    import AddTools from '../InnerTabs/AddTools.svelte';
+import ShowPointDialog from '../Dialogs/ShowPointDialog.svelte'
 
 export let color:any
 
@@ -20,8 +20,10 @@ const columnHelper  = createColumnHelper()
 let devices = []
 let agents = []
 let points = []
+let machines = []
 let device:any
 let agent:any
+let point:any
 let allagents = []
 
 let viewOptions = { showGotoPage:false,showPageSize:false}
@@ -34,6 +36,8 @@ onMount(async ()=>{
 	   devices = JSON.parse(JSON.stringify(response.data))
 	   response = await getAgents(null,$mock)
        allagents = JSON.parse(JSON.stringify(response.data))
+	   response = await getMachines(null,$mock)
+       machines = JSON.parse(JSON.stringify(response.data))
 	   refreshDataExtDev()
 	   await sleep(1000)
 	   let src = '/GREENCIRCLE.svg'
@@ -41,7 +45,6 @@ onMount(async ()=>{
 		   const image = document.getElementById("img-generic"+devices[i].uid)
 		   if(image){
 				const ret = await getDeviceInfo(devices[i].host,devices[i].port,'https',$mock)
-				console.log("getDeviceConnection",devices[i].name,ret.error)
 				if(ret.error)
 					src = '/REDCIRCLE.svg'
 				else
@@ -50,10 +53,40 @@ onMount(async ()=>{
 				image.src = src
 			}
 	   }
-		
     });
 
+	const setAgentImage = async (agents:any,device:any) =>{
+		console.log("SET AGENT IMAGE")
+		 let src = '/GREENCIRCLE.svg'
+		for(let j=0;j<agents.length;j++){
+			const image = document.getElementById("img-generic"+agents[j].uid)
+			if(image){
+					const ret = await getAgentStatus(agents[j],device,$mock)
+					switch(ret.data){
+						case 'RUN':
+							src = '/GREENCIRCLE.svg'
+							break;
+						case 'IDLE':
+							src = '/REDCIRCLE.svg'
+							break
+						case 'STOP':
+							src = '/YELLOWCIRCLE.svg'
+							break
+						default:
+							break
+					}
+					image.src = src
+				}
+		}
+	}
 
+const getMachineName = (uid:any)=>{
+	let machinename = ''
+	const found = machines.find((item:any)=>item.uid == uid)
+	if(found)
+		machinename = found.name
+	return(machinename)
+}
 const devicecolumns = [
                     columnHelper.accessor('name', {
                         id : 'name',
@@ -69,7 +102,7 @@ const devicecolumns = [
                         id : 'edit',
                         enableColumnFilter:false,
                         header: () => "CONNECTION",
-                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle"}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:default;"}),
                     }),
    ]
 
@@ -88,7 +121,7 @@ const agentcolumns = [
                         id : 'edit',
                         enableColumnFilter:false,
                         header: () => "STATUS",
-                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18"}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:default;"}),
                     }),
    ]
 
@@ -102,36 +135,82 @@ const agentcolumns = [
                         id : 'description',
                         header: () => $_("table-db-agent-db-description"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
-                    })
+                    }),
+					columnHelper.accessor('machine', {
+                        id : 'machine',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:getMachineName(props.getValue()),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor((row:any) => `${row.uid}`, {
+                        id : 'edit',
+                        enableColumnFilter:false,
+                        header: () => "VIEW",
+                        cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickPointView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
+                    }),
    ]
 
 const clickDevice = async(ev:any)=>{
 	
 	device = devices.find((items:any)=> items.name == ev.target.innerHTML)
 	if(device){
-		agents  = allagents.filter((item:any)=>item.devuid == device.uid)
-		refreshDataExtAg()
-		points= []
-		refreshDataExtPnt()
+		const ret = await getDeviceInfo(device.host,device.port,'https',$mock)
+		if(ret.error){
+			alert("DEVICE NOT REACHABLE")
+			agents=[]
+			refreshDataExtAg()
+			points= []
+			refreshDataExtPnt()
+		}else{
+			agents  = allagents.filter((item:any)=>item.devuid == device.uid)
+			refreshDataExtAg()
+			await sleep(1000)
+			await setAgentImage(agents,device)
+			points= []
+			refreshDataExtPnt()
+		}
+		toggleSelection(ev.target)
 	}
-	toggleSelection(ev.target)
 }
 
 const clickAgent = async(ev:any)=>{
-	
+	await setAgentImage(agents,device)
 	agent = agents.find((items:any)=> items.name == ev.target.innerHTML)
 	if(agent){
-		const filters = [{op:'eq',name:'agent',value:agent.uid}]
-		const response  = await getPoints(filters,$mock)
-		points = response.data
-		refreshDataExtPnt()
+		const ret = await getAgentStatus(agent,device,$mock)
+		switch(ret.data){
+			case 'RUN':
+				const filters = [{op:'eq',name:'agent',value:agent.uid}]
+				const response  = await getPoints(filters,$mock)
+				points = response.data
+				refreshDataExtPnt()
+				break;
+			case 'IDLE':
+				alert("AGENT NOT REACHABLE")
+				points=[]
+				break;
+			case 'STOP':
+				alert("AGENT STOPPED")
+				points=[]
+				break;
+		}
 	}
-	
+	refreshDataExtPnt()
 	toggleSelection(ev.target,"text-tool-component-agent")
 }
 
 const clickPoint = async(ev:any)=>{
+	point = points.find((items:any)=> items.tag == ev.target.innerHTML)
+	console.log("SELECTED POINT >>>>>>",point)
 	toggleSelection(ev.target,"text-tool-component-point")
+}
+
+const clickPointView = async(ev:any)=>{
+	const uid = ev.target.getAttribute("data-uid")
+	point = points.find((item:any)=>item.uid == uid)
+	const dialogdiv = document.getElementById("show-point-dialog")
+	console.log("VIEW", dialogdiv)
+    if(dialogdiv)
+            dialogdiv.style.display = 'block'
 }
 
 const toggleSelection = (target,classname="text-tool-component")=>{
@@ -177,6 +256,10 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 	</div>
 </div>
 
+<div id="show-point-dialog">
+        <ShowPointDialog bind:point={point} {color}/>
+</div>
+
 <style>
 .monitor-body-class{
   display: block;
@@ -216,7 +299,7 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 .right {
  margin-top: 10px;
   padding: 10px;
-  width: 25%;
+  width: 35%;
 }
 
 
@@ -245,5 +328,19 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 	font-weight: bold;
 	margin-left: 5px ;
 }
+
+#show-point-dialog{
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 11; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
 
 </style>

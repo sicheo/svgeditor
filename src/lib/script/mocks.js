@@ -1961,6 +1961,19 @@ const getDeviceInfo = async function (body) {
     return (body)
 }
 
+const getAgentStatus = async function (body) {
+    let status = "RUN"
+    const agent = agents.find((item) => item.uid == body.options.agent.uid)
+    if (agent) {
+        if (agent.name == 'SCANNER3')
+            status = "IDLE"
+        if (agent.name == 'HIST1')
+            status = "STOP"
+    }
+    body.data = status
+    return (body)
+}
+
 const setDockerEnv = async function (body) {
     docker = {}
     const keys = Object.keys(body.options.env)
@@ -2265,6 +2278,7 @@ const mocks = {
     getFinalNotesCols,
     ping,
     getDeviceInfo,
+    getAgentStatus,
     setDockerEnv,
     dockerCreate,
     dockerListContainers,
