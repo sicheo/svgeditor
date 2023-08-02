@@ -1,16 +1,25 @@
 <script lang="ts">
-
-export let color
-export let point:any = {}
+import {getControllers,getMachines} from '../../script/api.js'
+import {mock} from '../../ustore.js'
 
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
 
+export let color
+export let point:any = {}
+export let agent:any = {source:{}}
 
+let controllers = []
+let machines = []
 
 
 onMount(async ()=>{
-      
+      let  response = await getControllers(null,$mock)
+       controllers = response.data
+	   if(!controllers)
+			controllers = []
+	   response = await getMachines(null,$mock)
+       machines = JSON.parse(JSON.stringify(response.data))
     });
 
 const exitPage = (ev:any)=>{
@@ -19,7 +28,13 @@ const exitPage = (ev:any)=>{
         div.style.display = 'none'
 }
 
-
+const getMachineName = (uid:any)=>{
+	let machinename = ''
+	const found = machines.find((item:any)=>item.uid == uid)
+	if(found)
+		machinename = found.name
+	return(machinename)
+}
 
 </script>
     <div class="point-graph-class">
@@ -35,6 +50,46 @@ const exitPage = (ev:any)=>{
 				<div class="row upleft">
 					<div class="class-div-toolbar">
 						<span>POINT DETAIL</span>
+					</div>
+					<div class="class-div-body">
+						<div class="labels1">
+							<label for="tag">{$_("table-db-agent-db-tag")}: </label>
+							<label for="atype">{$_("table-db-agent-db-atype")}: </label>
+							<label for="host">{$_("table-db-agent-db-address")}: </label>
+							{#if point.atype == 'ANALOG'}
+									<label for="point-um">{$_("table-db-agent-db-um")} </label>
+							{:else}
+								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
+							{/if}
+							<label for="point-description">{$_("table-db-agent-db-description")} </label>
+							<label for="point-area">{$_("table-db-agent-db-area")} </label>
+							<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
+							<label for="point-machine">{$_("table-db-agent-db-machine")} </label>
+							<label for="point-driver">{$_("table-db-agent-source-driver").toUpperCase()} </label>
+						</div>
+						<div class="inputs1">
+							<input type="text" size="17" style="font-weight:bold;" value="{point.tag}" class="class-edit-point" name="point-tag" id="point-tag"  disabled/>
+							<input type="text" value="{point.atype}" class="class-edit-point" name="atype" id="atype"  disabled/>
+							<input type="number" value="{point.address}" class="class-edit-point" name="point-address" id="point-address"  disabled/>
+							{#if point.atype == 'ANALOG'}
+								<input type="text" value="{point.um}" class="class-edit-point" name="point-um" id="point-um"  disabled/>
+							{:else}
+								<input type="text" value="{point.bit}" class="class-edit-point" name="point-bit" id="point-bit"  disabled/>
+							{/if}
+							<input type="text" size="38" value="{point.description}" class="class-edit-point" name="point-description" id="point-description"  disabled/>
+							<input type="text" value="{point.area}" class="class-edit-point" name="point-area" id="point-area"  disabled/>
+							<select class="class-edit-point" name="point-controller" id="point-controller"  style="align-items:left;" disabled>
+								{#each controllers as Controller}
+									{#if Controller.uid == point.controller}
+										<option value={Controller.uid} selected>{Controller.name}</option>
+									{:else}
+										<option value={Controller.uid}>{Controller.name}</option>
+									{/if}
+								{/each}
+							</select>
+							<input type="text" value="{getMachineName(point.machine)}" class="class-edit-point" name="point-machine" id="point-machine"  disabled/>
+							<input type="text" value="{agent.source.driver}" class="class-edit-point" name="point-driver" id="point-driver"  disabled/>
+						</div>
 					</div>
 				</div>
 				<div class="row downleft">
@@ -96,26 +151,27 @@ const exitPage = (ev:any)=>{
 .left {
   margin-top: 5px;
   padding: 10px;
-  width: 30%;
+  width: 38%;
 }
 
 .right {
  margin-top: 5px;
   padding: 10px;
-  width: 60%;
+  width: 57%;
 }
 .row {
   display: block;
 }
 .upleft{
-	display:flex;
+	display:block;
 	margin-top: 5px;
 	width: 90%;
+	
 }
 
 .downleft{
 	display:flex;
-	margin-top: 5px;
+	margin-top: 15px;
 	width: 40%;
 }
 
@@ -136,7 +192,41 @@ const exitPage = (ev:any)=>{
 	padding-left: 5px;
 	display:block;
 	text-align: left;
-	background-color: #eeeeee;
-	width:100%;
+	background-color: #cccccc;
+	width:99%;
+}
+.class-div-body{
+	width: 100%;
+	display:flex;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	border-left: 1px solid;
+	background-color: #f9f9f9f9;
+}
+label,
+input {
+    display: block;
+}
+label {
+    padding: 10px 0 0;
+}
+input {
+    margin: 12px 0 0;
+}
+select {
+    margin: 12px 0 0;
+}
+.labels1 {
+    float: left;
+    width: 180px;
+	text-align: left;
+	margin-left: 5px;
+}
+.inputs1 {
+    float: left;
+    width: 200px;
+}
+.inputs1 select{
+    display: flex;
 }
 </style>

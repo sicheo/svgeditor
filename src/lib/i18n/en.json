@@ -145,5 +145,7 @@
   "table-db-agent-db-area": "AREA",
   "table-db-agent-db-bit": "BIT",
   "table-db-agent-db-controller": "CONTROLLER",
-  "table-db-agent-db-um": "UoM"
+  "table-db-agent-db-um": "UoM",
+  "table-db-agent-db-machine": "MACHINE",
+  "table-db-agent-db-atype": "TYPE"
 }

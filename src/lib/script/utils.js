@@ -482,7 +482,7 @@ export function makePointsUid(driver,agent, device, controller, machine, db, num
                 point.numarea = Math.floor(Math.random() * 8)
                 break;
             case 'modbus':
-                if (point.atype == 'ALARM')
+                if (point.atype == 'DIGITAL')
                     point.area = 'COIL'
                 else
                     point.area = 'INPUT'
@@ -528,10 +528,10 @@ function randomTDUABD(length) {
     }
     const index = Math.floor(Math.random() * pre.length)
     let bit = String(Math.floor(Math.random() * 16))
-    let atype = 'VALUE'
+    let atype = 'ANALOG'
     let dtype = 'bool'
     if (index > 7) {
-        atype = 'ALARM'
+        atype = 'DIGITAL'
     } else {
         bit = "0"
         dtype = 'real'

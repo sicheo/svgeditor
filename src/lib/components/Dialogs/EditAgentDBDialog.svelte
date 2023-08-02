@@ -177,7 +177,7 @@ const clickAdd = ()=>{
 		address:0,
 		bit:0,
 		dtype:'bool',
-		atype:'ALARM',
+		atype:'DIGITAL',
 		area:area,
 		numarea: 0
 	}
@@ -297,7 +297,7 @@ const columns = [
 						<div class="labels1">
 							<label for="point-tag">{$_("table-db-agent-db-tag")} </label>
 							<label for="point-address">{$_("table-db-agent-db-address")} </label>
-							{#if currpoint.atype == 'VALUE'}
+							{#if currpoint.atype == 'ANALOG'}
 								<label for="point-um">{$_("table-db-agent-db-um")} </label>
 							{:else}
 								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
@@ -306,7 +306,7 @@ const columns = [
 						<div class="inputs1">
 							<input type="text" size="17" style="font-weight:bold;" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
 							<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
-							{#if currpoint.atype == 'VALUE'}
+							{#if currpoint.atype == 'ANALOG'}
 								<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
 							{:else}
 								<input type="text" value="{currpoint.bit}" class="class-edit-point" name="point-bit" id="point-bit" on:change={changeValuePoint} disabled/>

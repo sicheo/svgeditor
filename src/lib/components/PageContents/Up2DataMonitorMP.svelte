@@ -257,7 +257,7 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 </div>
 
 <div id="show-point-dialog">
-        <ShowPointDialog bind:point={point} {color}/>
+        <ShowPointDialog bind:point={point} agent={agent} {color}/>
 </div>
 
 <style>
