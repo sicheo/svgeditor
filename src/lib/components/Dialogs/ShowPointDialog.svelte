@@ -31,7 +31,30 @@ const exitPage = (ev:any)=>{
 		</div>
 		<div class="class-panel-body" style="--color:{color};">
 			<!-- START EDIT DEVICE INPUTS-->
-			
+			<div class="column left">
+				<div class="row upleft">
+					<div class="class-div-toolbar">
+						<span>POINT DETAIL</span>
+					</div>
+				</div>
+				<div class="row downleft">
+					<div class="class-div-toolbar">
+						<span>CHART TYPE</span>
+					</div>
+				</div>
+			</div>
+			<div class="column right">
+				<div class="row upright">
+					<div class="class-div-toolbar">
+						<span>CHART TOOLBAR</span>
+					</div>
+				</div>
+				<div class="row downright">
+					<div class="class-div-toolbar">
+						<span>CHART</span>
+					</div>
+				</div>
+			</div>
 			<!-- END EDIT DEVICE INPUTS-->
 		</div>
 	</div>
@@ -63,11 +86,57 @@ const exitPage = (ev:any)=>{
 .class-panel-body {
   display: block;
   text-align: center;
-  margin-top: 20px;
   color: var(--color);
   font-weight:bold ;
 }
+.column {
+  float: left;
+}
 
+.left {
+  margin-top: 5px;
+  padding: 10px;
+  width: 30%;
+}
 
+.right {
+ margin-top: 5px;
+  padding: 10px;
+  width: 60%;
+}
+.row {
+  display: block;
+}
+.upleft{
+	display:flex;
+	margin-top: 5px;
+	width: 90%;
+}
 
+.downleft{
+	display:flex;
+	margin-top: 5px;
+	width: 40%;
+}
+
+.upright{
+	display:flex;
+	margin-top: 5px;
+	width: 100%;
+}
+
+.downright{
+	display:flex;
+	margin-top: 5px;
+	width: 100%;
+}
+
+.class-div-toolbar{
+	border: 1px solid;
+	padding-left: 5px;
+	display:block;
+	text-align: left;
+	background-color: #eeeeee;
+	width:100%;
+}
 </style>

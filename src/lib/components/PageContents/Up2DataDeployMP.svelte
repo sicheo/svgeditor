@@ -30,6 +30,8 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
     let divParams
     let dialog:any 
     let dialogOptions:any = {}
+    let refreshDataExtDev:any
+
 
 
    const columnHelper  = createColumnHelper()
@@ -79,12 +81,15 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
       const id = target.id
       // GET DATA ROW
       const found = data.find((item:any)=> item.uid == id)
+      console.log("CONNECTION",data,target.getAttribute("data-uid"))
       if(found){
           // CHECK PING
           const res = await ping(found.host,{ timeout: 5, min_replay: 2 }, $mock)
+           console.log("CONNECTION",res)
           if(!res.error){
               // CHECK CONNECTION
               const conn = await getDeviceInfo(found.host,found.port,'https',$mock)
+              console.log("CONNECTION",conn)
                if(!conn.error){
                 toggleConnection(target)
                }
@@ -169,19 +174,19 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         id : 'install',
                         enableColumnFilter:false,
                         header: () => $_("table-db-device-ssh"),
-                        cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'install-img-tool_'+props.getValue(), onClick:onInstall}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/TERMINAL.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'install-img-tool_',uid:props.getValue(), onClick:onInstall}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'docker',
                         enableColumnFilter:false,
                         header: () => $_("table-db-device-docker"),
-                        cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'docker-img-tool_'+props.getValue(),onClick:onDocker}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/DOCKER.svg',style:"opacity:1.0;cursor:dafult;pointer-events:auto",name:'docker-img-tool_',uid:props.getValue(),onClick:onDocker}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'deploy',
                         enableColumnFilter:false,
                         header: () => $_("table-db-device-deploy"),
-                        cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool_'+props.getValue(),onClick:onDeploy}),
+                        cell: (props) =>   flexRender(TableImage,{image:'/DEPLOY.svg',style:"opacity:0.3;cursor:default;pointer-events: none;",name:'deploy-img-tool_',uid:props.getValue(),onClick:onDeploy}),
                     }),
   
   ]
@@ -194,7 +199,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
      {#await promise}
 	        <p>...waiting</p>
      {:then response}
-            <SimpleTable data={response.data} columns={columns} color={color}></SimpleTable>
+            <SimpleTable data={response.data} columns={columns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
      {:catch error}
 	         <p style="color: red">{error.message}</p>
       {/await}

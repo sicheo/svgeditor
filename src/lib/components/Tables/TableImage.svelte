@@ -4,13 +4,13 @@ export let image = "/BUDDY.png"
 export let style  = "enabled;"
 export let onClick = ()=>{console.log("TST CLICK")}
 export let name = 'img-generic'
-export let uid = 'abcdefgh'
+export let uid = ''
 export let height = "25"
 export let classname = "image-tool-component"
 
 </script>
 	<div class="image-tool-component-div">
-	<input type="image" id="{name+uid}" data-uid={uid} style="{style}" class="image-tool-component {classname}" src="{image}" alt="ALT IMAGE" height="{height}" on:click={onClick}/>
+		<input type="image" id="{name+uid}" data-uid={uid} style="{style}" class="image-tool-component {classname}" src="{image}" alt="ALT IMAGE" height="{height}" on:click={onClick}/>
 	</div>
 <style>
 

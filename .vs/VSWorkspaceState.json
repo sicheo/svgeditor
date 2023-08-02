@@ -4,10 +4,8 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\PageContents",
-    "\\src\\lib\\components\\Tables",
-    "\\src\\lib\\script"
+    "\\src\\lib\\components\\Dialogs"
   ],
-  "SelectedNode": "\\src\\lib\\script\\utils.js",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditDeviceDialog.svelte",
   "PreviewInSolutionExplorer": false
 }
