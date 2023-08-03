@@ -31,6 +31,8 @@ let refreshDataExtDev:any
 let refreshDataExtAg:any
 let refreshDataExtPnt:any
 
+let timeout = 300
+
 onMount(async ()=>{
 	   let response = await getDevices(null,$mock)
 	   devices = JSON.parse(JSON.stringify(response.data))
@@ -39,7 +41,7 @@ onMount(async ()=>{
 	   response = await getMachines(null,$mock)
        machines = JSON.parse(JSON.stringify(response.data))
 	   refreshDataExtDev()
-	   await sleep(1000)
+	   await sleep(timeout)
 	   let src = '/GREENCIRCLE.svg'
 	   for(let i=0;i<devices.length;i++){
 		   const image = document.getElementById("img-generic"+devices[i].uid)
@@ -163,7 +165,7 @@ const clickDevice = async(ev:any)=>{
 		}else{
 			agents  = allagents.filter((item:any)=>item.devuid == device.uid)
 			refreshDataExtAg()
-			await sleep(1000)
+			await sleep(timeout)
 			await setAgentImage(agents,device)
 			points= []
 			refreshDataExtPnt()

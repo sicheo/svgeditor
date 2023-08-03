@@ -36,6 +36,11 @@ const getMachineName = (uid:any)=>{
 	return(machinename)
 }
 
+const setGraph = (ev:any)=>{
+	const target = ev.target
+	console.log("SET GRAPH",target.name )
+}
+
 </script>
     <div class="point-graph-class">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
@@ -95,6 +100,22 @@ const getMachineName = (uid:any)=>{
 				<div class="row downleft">
 					<div class="class-div-toolbar">
 						<span>CHART TYPE</span>
+						</div>
+					<div class="class-div-body">
+						<div class="labels1">
+							{#if point.atype == 'ANALOG'}
+								<label for="chart-line">LINE CHART </label>
+								<label for="chart-area">AREA CHART </label>
+							{/if}
+							<label for="chart-bar">BARCHART </label>
+						</div>
+						<div class="inputss1">
+							{#if point.atype == 'ANALOG'}
+								<input type="image" name="chart-line"  src="/LINECHART.svg" alt="ALT IMAGE" height="20" on:click={setGraph}/>
+								<input type="image" name="chart-area"  src="/AREACHART.svg" alt="ALT IMAGE" height="20" on:click={setGraph}/>
+							{/if}
+							<input type="image" name="chart-bar"  src="/BARCHART.svg" alt="ALT IMAGE" height="20" on:click={setGraph}/>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -170,9 +191,9 @@ const getMachineName = (uid:any)=>{
 }
 
 .downleft{
-	display:flex;
+	display:block;
 	margin-top: 15px;
-	width: 40%;
+	width: 43%;
 }
 
 .upright{

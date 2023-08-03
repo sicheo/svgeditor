@@ -4,9 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Tables",
+    "\\src\\lib\\i18n",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Dialogs",
+  "SelectedNode": "\\src\\lib\\script\\utils.js",
   "PreviewInSolutionExplorer": false
 }
