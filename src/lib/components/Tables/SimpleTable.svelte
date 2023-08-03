@@ -58,7 +58,6 @@
             div.addEventListener("refreshtable",refreshListener)
         $table.setPageSize(Number(pagesize))
         const headerGroup = $table.getHeaderGroups()
-        console.log(">>>>> HEADREGROUP",headerGroup)
         if(headerGroup.length >0)
             footcols = headerGroup[0].headers.length
     });

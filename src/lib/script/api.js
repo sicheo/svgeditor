@@ -2033,6 +2033,35 @@ export const getPointsers = async function (point, from, to, mock = false) {
     })
 }
 
+/**
+ * Get Alarms not acnowledged
+ * @param {any} mock
+ */
+export const getNackAlarms = async function (mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getNackAlarms",
+            options: {
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getNackAlarms(body))
+        }
+    })
+}
+
 
 
 

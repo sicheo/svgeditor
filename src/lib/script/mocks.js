@@ -1542,6 +1542,25 @@ const getPointsers = async function (body) {
     return (body)
 }
 
+const getNackAlarms = async function (body) {
+    const nackalarms = []
+    let alarms = points.filter((item) => item.type == "ALARM")
+    const to = new Date(Date.now()).toISOString
+    const from = new Date(Date.now() - 30*1000).toISOString
+    for (let i = 0; i < alarms.length; i++) {
+        let timeseries = generateTimeSeries(alarms[i], from, to)
+        const nalms = timeseries.filter((item) => item.value != 0)
+        for (let j = 0; j < nalms.length; j++) {
+            const nackalm = JSON.parse(JSON.stringify(alarms[i]))
+            nackalm.value = nalms[j].value
+            nackalm.timestamp = getLocalDate(new Date(nalms[j].timestamp))
+            nackalarms.push(nackalm)
+        }
+    }
+    body.data = nackalarms
+    return (body)
+}
+
 
 const setCompany = async function (body) {
     const company = body.options.company
@@ -2299,7 +2318,8 @@ const mocks = {
     getPoints,
     getPointsers,
     setPoint,
-    deletePoint
+    deletePoint,
+    getNackAlarms
 }
 
 export default mocks

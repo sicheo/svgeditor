@@ -97,7 +97,6 @@ const clickDownload = ()=>{
 const downloadDB = async (evt:any)=>{
 	let file = evt.target.files[0];
 	const filepoints = await downloadCSV(file)
-	console.log("DOWNLOAD POINTS",evt.target.files[0].name)
 	points = filepoints
 	refreshDataExt()
 	// UPDATE DATA
@@ -180,7 +179,8 @@ const clickAdd = ()=>{
 		atype:'DIGITAL',
 		type:'ALARM',
 		area:area,
-		numarea: 0
+		numarea: 0,
+		ack:false
 	}
 	currpoint=newpoint
 
@@ -254,7 +254,6 @@ const toggleSelection = (target)=>{
 }
 const clickTag = (ev:any)=>{
 	currpoint = points.find((items:any)=> items.tag == ev.target.innerHTML)
-	console.log("CURRENTPOINT",currpoint)
 	toggleSelection(ev.target)
 	
 }

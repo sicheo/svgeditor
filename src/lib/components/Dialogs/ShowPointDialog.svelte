@@ -66,18 +66,19 @@ const getMachineName = (uid:any)=>{
 
 const setGraph = async (ev:any)=>{
 	const target = ev.target
-	console.log(">>>> CHART TYPE", target.name)
 	chartoptions.title="Point "+point.tag+" Macchina: "+machines.find((item:any)=>item.uid == point.machine).name+ " "+point.description
 	chartoptions.axes.left.title = point.type+" "+point.um
+	chartoptions.curve = "curveMonotoneX"
 	switch(target.name){
 		case 'chart-line':
 			component=LineChart
 			break
-		case 'chart-bar':
-			component=BarChartSimple
-			break
 		case 'chart-area':
 			component=AreaChart
+			break
+		case 'chart-bar':
+			component=LineChart
+			chartoptions.curve = "curveStepAfter"
 			break
 	}
 	const ret = await getPointsers(point,null,null,$mock)
@@ -88,7 +89,6 @@ const setGraph = async (ev:any)=>{
         const pnt = { group: point.tag, value: point.value, date: date.toISOString() }
         chartdata.push(pnt)
     }
-	console.log(">>>> POINTSERS", chartdata)
 }
 
 </script>

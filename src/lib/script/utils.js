@@ -467,7 +467,7 @@ export function getDestinationDrivers() {
 export function makePointsUid(driver,agent, device, controller, machine, db, num = 30) {
     const points = []
     for (let i = 0; i<num; i++) {
-        const point = { uid: uuidv4(), tag: '', description: '', um: '', dtype: '', delta: false, bit: 0, hlim: 0.0, llim: 0.0, area: '', numarea: 0, address: 0, amount: 1, atype: '', type:'',agent: agent, device: device, controller: controller, machine: machine, db: db }
+        const point = { uid: uuidv4(), tag: '', description: '', um: '', dtype: '', delta: false, bit: 0, hlim: 0.0, llim: 0.0, area: '', ack:false,numarea: 0, address: 0, amount: 1, atype: '', type:'',agent: agent, device: device, controller: controller, machine: machine, db: db }
         const [tag, desc, um, atype, bit, dtype] = randomTDUABD(5)
         point.tag = tag
         point.description = desc
@@ -761,6 +761,11 @@ export function generateTimeSeries(point, from, to, max = 800) {
         case 'DIGITAL':
             for (let i = 0; i < timestamps.length; i++) {
                 const pointvalue = { tag: point.tag, value: 0, timestamp: timestamps[i] }
+                const rand = Math.floor(Math.random() * 400)
+                if (rand < 399)
+                    pointvalue.value = 0
+                else
+                    pointvalue.value = 1
                 timeseries.push(pointvalue)
             }
             break;

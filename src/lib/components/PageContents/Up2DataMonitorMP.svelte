@@ -6,7 +6,7 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 
-import {getDevices,getPoints,getAgents,getDeviceInfo, sleep, getAgentStatus, getMachines } from '../../script/api.js'
+import {getDevices,getPoints,getAgents,getDeviceInfo, sleep, getAgentStatus, getMachines, getNackAlarms } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
@@ -24,14 +24,18 @@ let machines = []
 let device:any
 let agent:any
 let point:any
+let alarm: any
+let item:any
 let allagents = []
+let nackalarms = []
 
 let viewOptions = { showGotoPage:false,showPageSize:false}
 let refreshDataExtDev:any
 let refreshDataExtAg:any
 let refreshDataExtPnt:any
+let refreshDataExtAlms:any
 
-let timeout = 300
+let timeout = 800
 
 onMount(async ()=>{
 	   let response = await getDevices(null,$mock)
@@ -40,6 +44,9 @@ onMount(async ()=>{
        allagents = JSON.parse(JSON.stringify(response.data))
 	   response = await getMachines(null,$mock)
        machines = JSON.parse(JSON.stringify(response.data))
+	   response = await getNackAlarms($mock)
+	   nackalarms =  JSON.parse(JSON.stringify(response.data))
+	   refreshDataExtAlms()
 	   refreshDataExtDev()
 	   await sleep(timeout)
 	   let src = '/GREENCIRCLE.svg'
@@ -58,7 +65,6 @@ onMount(async ()=>{
     });
 
 	const setAgentImage = async (agents:any,device:any) =>{
-		console.log("SET AGENT IMAGE")
 		 let src = '/GREENCIRCLE.svg'
 		for(let j=0;j<agents.length;j++){
 			const image = document.getElementById("img-generic"+agents[j].uid)
@@ -89,6 +95,23 @@ const getMachineName = (uid:any)=>{
 		machinename = found.name
 	return(machinename)
 }
+
+const getDeviceName = (uid:any)=>{
+	let devicename = ''
+	const found = devices.find((item:any)=>item.uid == uid)
+	if(found)
+		devicename = found.name
+	return(devicename)
+}
+
+const getAgentName = (uid:any)=>{
+	let agentname = ''
+	const found = allagents.find((item:any)=>item.uid == uid)
+	if(found)
+		agentname = found.name
+	return(agentname)
+}
+
 const devicecolumns = [
                     columnHelper.accessor('name', {
                         id : 'name',
@@ -144,10 +167,49 @@ const agentcolumns = [
                         cell: (props) =>  flexRender(TableText,{text:getMachineName(props.getValue()),fontsize:'11px'}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'edit',
+                        id : 'view',
                         enableColumnFilter:false,
                         header: () => "VIEW",
                         cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickPointView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
+                    }),
+   ]
+
+   const alarmcolumns =[
+					columnHelper.accessor('tag', {
+                        id : 'tag',
+                        header: () => $_("table-db-agent-db-tag"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickAlarm,cursor:'pointer',fontsize:'12px',fontweight:'bold',classname:"text-tool-component-point"}),
+                    }),  
+                    columnHelper.accessor('description', {
+                        id : 'description',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor('device', {
+                        id : 'device',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:getDeviceName(props.getValue()),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor('agent', {
+                        id : 'agent',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:getAgentName(props.getValue()),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor('machine', {
+                        id : 'machine',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:getMachineName(props.getValue()),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor('timestamp', {
+                        id : 'timestamp',
+                        header: () => $_("table-db-agent-db-description"),
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
+                    }),
+					columnHelper.accessor((row:any) => `${row.uid}`, {
+                        id : 'view',
+                        enableColumnFilter:false,
+                        header: () => "VIEW",
+                        cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickAlarmView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
                     }),
    ]
 
@@ -202,15 +264,28 @@ const clickAgent = async(ev:any)=>{
 
 const clickPoint = async(ev:any)=>{
 	point = points.find((items:any)=> items.tag == ev.target.innerHTML)
-	console.log("SELECTED POINT >>>>>>",point)
 	toggleSelection(ev.target,"text-tool-component-point")
 }
 
 const clickPointView = async(ev:any)=>{
 	const uid = ev.target.getAttribute("data-uid")
 	point = points.find((item:any)=>item.uid == uid)
+	item = point
 	const dialogdiv = document.getElementById("show-point-dialog")
-	console.log("VIEW", dialogdiv)
+    if(dialogdiv)
+            dialogdiv.style.display = 'block'
+}
+
+const clickAlarm = async(ev:any)=>{
+	alarm = nackalarms.find((items:any)=> items.tag == ev.target.innerHTML)
+	toggleSelection(ev.target,"text-tool-component-point")
+}
+
+const clickAlarmView = async(ev:any)=>{
+	const uid = ev.target.getAttribute("data-uid")
+	alarm = nackalarms.find((item:any)=>item.uid == uid)
+	item=alarm
+	const dialogdiv = document.getElementById("show-point-dialog")
     if(dialogdiv)
             dialogdiv.style.display = 'block'
 }
@@ -232,11 +307,13 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 
 <div class="monitor-body-class" >
 	<div class="row up">
-		<div class="class-row-up-toolbar">
+		<!--div class="class-row-up-toolbar">
 				<span>ALARMS</span>
-		</div>
+		</!--div>
 		<div class="class-row-up-body">
-		</div>
+		</div-->
+		<SimpleTable title="ALARMS" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
+
 	</div>
 	<div class="row down">
 		<div class="column left">
@@ -261,7 +338,7 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 </div>
 
 <div id="show-point-dialog">
-        <ShowPointDialog bind:point={point} agent={agent} {color}/>
+        <ShowPointDialog bind:point={item} agent={agent} {color}/>
 </div>
 
 <style>
@@ -277,8 +354,8 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 .up{
 	display:block;
 	margin: 10px;
-	border: 1px solid;
 	opacity: 0.8;
+	height: 280px;
 }
 
 .down{
