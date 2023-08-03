@@ -1,5 +1,5 @@
 <script lang="ts">
-import "@carbon/styles/css/styles.css";
+//import "@carbon/styles/css/styles.css";
 import "@carbon/charts/styles.css";
 import { LineChart} from "@carbon/charts-svelte";
 

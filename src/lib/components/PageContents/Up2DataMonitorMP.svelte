@@ -234,26 +234,28 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 	<div class="row up">
 		<div class="class-row-up-toolbar">
 				<span>ALARMS</span>
-			</div>
+		</div>
+		<div class="class-row-up-body">
+		</div>
 	</div>
 	<div class="row down">
 		<div class="column left">
-			<div class="class-column-left-toolbar">
+			<!--div class="class-column-left-toolbar">
 				<span>SELECT DEVICE</span>
-			</div>
-			<SimpleTable fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
+			</!--div-->
+			<SimpleTable title="SELECT DEVICE" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
 		</div>
 		<div class="column center">
-			<div class="class-column-left-toolbar">
+			<!--div class="class-column-left-toolbar">
 				<span>SELECT AGENT</span>
-			</div>
-			<SimpleTable fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
+			</!--div-->
+			<SimpleTable title="SELECT AGENT" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
 		</div>
 		<div class="column right">
-			<div class="class-column-left-toolbar">
+			<!--div class="class-column-left-toolbar">
 				<span>SELECT POINT</span>
-			</div>
-			<SimpleTable fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
+			</!--div-->
+			<SimpleTable title="SELECT POINT" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
 		</div>
 	</div>
 </div>
@@ -273,9 +275,10 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 }
 
 .up{
-	display:flex;
-	margin-top: 10px;
-    padding: 10px;
+	display:block;
+	margin: 10px;
+	border: 1px solid;
+	opacity: 0.8;
 }
 
 .down{
@@ -319,11 +322,15 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 }
 
 .class-row-up-toolbar{
-	border: 1px solid;
 	display:block;
 	justify-content: space-between;
 	background-color: #eeeeee;
 	width:100%;
+}
+.class-row-up-body{
+	background-color: #ffffff;
+	width:100%;
+	height: 150px;
 }
 
 .class-row-up-toolbar span{

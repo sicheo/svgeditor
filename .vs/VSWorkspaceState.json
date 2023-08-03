@@ -4,9 +4,9 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\i18n",
+    "\\src\\lib\\components\\Chart",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\script\\utils.js",
+  "SelectedNode": "\\src\\lib\\script\\mocks.js",
   "PreviewInSolutionExplorer": false
 }

@@ -4,6 +4,8 @@ import {mock} from '../../ustore.js'
 
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
+import SvelteChart from '../Chart/SvelteChart.svelte'
+import { BarChartSimple,LineChart,AreaChart } from "@carbon/charts-svelte";
 
 export let color
 export let point:any = {}
@@ -11,6 +13,32 @@ export let agent:any = {source:{}}
 
 let controllers = []
 let machines = []
+let chartdata = []
+let component = LineChart
+let chartoptions = {
+		"title": "Point "+point.tag+" Macchina: "+point.machine+ " "+point.description,
+        "axes": {
+            "bottom": {
+                "title": "Sampling time ",
+                "mapsTo": "date",
+                "scaleType": "time"
+            },
+            "left": {
+                "mapsTo": "value",
+                "title": "UM "+point.um,
+                "scaleType": "linear"
+            }
+        },
+        "curve": "curveMonotoneX",
+        "height": "400px",
+        "width": "800px",
+        "experimental": true,
+        "zoomBar": {
+            "top": {
+                "enabled": true
+            }
+        },
+}
 
 
 onMount(async ()=>{
@@ -38,9 +66,29 @@ const getMachineName = (uid:any)=>{
 
 const setGraph = async (ev:any)=>{
 	const target = ev.target
-	console.log("SET GRAPH",target.name )
+	console.log(">>>> CHART TYPE", target.name)
+	chartoptions.title="Point "+point.tag+" Macchina: "+machines.find((item:any)=>item.uid == point.machine).name+ " "+point.description
+	chartoptions.axes.left.title = point.type+" "+point.um
+	switch(target.name){
+		case 'chart-line':
+			component=LineChart
+			break
+		case 'chart-bar':
+			component=BarChartSimple
+			break
+		case 'chart-area':
+			component=AreaChart
+			break
+	}
 	const ret = await getPointsers(point,null,null,$mock)
-	console.log(">>>> POINTSERS", ret.data)
+	chartdata = []
+    for (let i = 0; i < ret.data.length; i++) {
+		const point = ret.data[i]
+        var date = new Date(point.timestamp);
+        const pnt = { group: point.tag, value: point.value, date: date.toISOString() }
+        chartdata.push(pnt)
+    }
+	console.log(">>>> POINTSERS", chartdata)
 }
 
 </script>
@@ -136,9 +184,7 @@ const setGraph = async (ev:any)=>{
 					</div>
 				</div>
 				<div class="row downright">
-					<div class="class-div-toolbar">
-						<span>CHART</span>
-					</div>
+					<SvelteChart component={component} data={chartdata} options={chartoptions}/>
 				</div>
 			</div>
 			<!-- END EDIT DEVICE INPUTS-->

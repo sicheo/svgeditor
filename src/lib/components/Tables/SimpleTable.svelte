@@ -27,9 +27,10 @@
   export let color:any
   export let tableOptions = {pagination:true}
   export let refreshDataExt:any
-  export let viewOptions = { showGotoPage:true,showPageSize:true}
+  export let viewOptions = { showGotoPage:true,showPageSize:true,paginationBgColor:"#FFFFFF",paginationColor:"#777777",border:'none'}
   export let fontsize = '15px'
   export let pagesize = '10'
+  export let title = ""
 
  
   let sorting = []
@@ -39,6 +40,8 @@
                 pageIndex: 0,
                 pageSize: 5
             }
+  
+  let footcols = 3
 
   const getLocalData = ()=>{
       return data
@@ -54,6 +57,10 @@
        if(div)
             div.addEventListener("refreshtable",refreshListener)
         $table.setPageSize(Number(pagesize))
+        const headerGroup = $table.getHeaderGroups()
+        console.log(">>>>> HEADREGROUP",headerGroup)
+        if(headerGroup.length >0)
+            footcols = headerGroup[0].headers.length
     });
 
   const setSorting = updater => {
@@ -206,6 +213,11 @@
     <thead>
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
+          <th id="headercols" colspan={footcols}>
+              {title}
+         </th>
+        </tr>
+        <tr>
           {#each headerGroup.headers as header}
             <th style="--background-color:{color};cursor:pointer;--font-size:{fontsize}">
               {#if !header.isPlaceholder}
@@ -239,39 +251,41 @@
       {/each}
     </tbody>
     <tfoot>
+        <th id="footercols" colspan={footcols}>
+            {#if tableOptions.pagination}
+                <div class="pagination-tool-class" style="--border:{viewOptions.border};--background-color:{viewOptions.paginationBgColor};--color:{viewOptions.paginationColor}">
+                    <input type="button" class="" value="<<" on:click={onFirstPage}>
+                    <input type="button" class="" value="<" on:click={onPrevPage}>
+                    <input type="button" class="" value=">" on:click={onNextPage}>
+                    <input type="button" class="" value=">>" on:click={onLastPage}>
+                    <span class="flex items-center gap-1">
+                      {$_("table-page")}
+                      <strong>
+                        {$table.getState().pagination.pageIndex + 1} {$_("table-page-of")} {$table.getPageCount()}
+                      </strong>
+                    </span>
+                    {#if viewOptions.showGotoPage}
+                        <span>
+                            | {$_("table-gotopage")}
+                            <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
+                        </span>
+                    {/if}
+                    {#if viewOptions.showPageSize}
+                    <select  on:change={onSelect} >
+                        {#each selectOptions as Option}
+                            {#if Option.value == $table.getState().pagination.pageSize}
+                                <option value={Option.value} selected>{$_("table-option-show")} {Option.value}</option>
+                            {:else}
+                                <option value={Option.value}>{$_("table-option-show")} {Option.value}</option>
+                            {/if}
+                        {/each}
+                    </select>
+                    {/if}
+                </div>
+            {/if}
+        </th>
     </tfoot>
     </table>
-    {#if tableOptions.pagination}
-    <div class="pagination-tool-class">
-        <input type="button" class="" value="<<" on:click={onFirstPage}>
-        <input type="button" class="" value="<" on:click={onPrevPage}>
-        <input type="button" class="" value=">" on:click={onNextPage}>
-        <input type="button" class="" value=">>" on:click={onLastPage}>
-        <span class="flex items-center gap-1">
-          {$_("table-page")}
-          <strong>
-            {$table.getState().pagination.pageIndex + 1} {$_("table-page-of")} {$table.getPageCount()}
-          </strong>
-        </span>
-        {#if viewOptions.showGotoPage}
-            <span>
-                | {$_("table-gotopage")}
-                <input type="number" class="" min=1 max={$table.getPageCount()} value="{$table.getState().pagination.pageIndex + 1}" on:change={onGoToPage}>
-            </span>
-        {/if}
-        {#if viewOptions.showPageSize}
-        <select  on:change={onSelect} >
-            {#each selectOptions as Option}
-                {#if Option.value == $table.getState().pagination.pageSize}
-                    <option value={Option.value} selected>{$_("table-option-show")} {Option.value}</option>
-                {:else}
-                    <option value={Option.value}>{$_("table-option-show")} {Option.value}</option>
-                {/if}
-            {/each}
-        </select>
-        {/if}
-    </div>
-    {/if}
   
 </div>
 
@@ -285,17 +299,17 @@ table {
   border: 1px solid lightgray;
 }
 
-tbody {
+/*tbody {
   border-bottom: 1px solid lightgray;
-}
+}*/
 
 th {
-  border-bottom: 1px solid lightgray;
-  border-right: 1px solid lightgray;
+  /*border-bottom: 1px solid lightgray;
+  border-right: 1px solid lightgray;*/
   padding: 2px 4px;
   color: white ;
   background-color: var(--background-color) ;
-  opacity: 0.6 ;
+  opacity: 0.8 ;
   font-size: var(--font-size);
   text-align: center;
   vertical-align: top;
@@ -306,11 +320,21 @@ th {
     width: 100%;
     background-color: #eeeeee ;
 }
-tfoot {
+tfoot th{
   color: gray;
+  text-align: left;
 }
 
 .pagination-tool-class{
     margin-top: 15px;
+    padding: 3px;
+    border: var(--border);
+    background-color: var(--background-color) ;
+    color: var(--color);
+}
+#headercols{
+  color: #222222;
+  text-align: left;
+  background-color: #dddddd;
 }
 </style>

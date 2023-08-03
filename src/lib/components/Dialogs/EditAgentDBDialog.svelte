@@ -169,8 +169,8 @@ const clickAdd = ()=>{
 		controller:'',
 		machine:'',
 		amount:1,
-		hscale:0.0,
-		lscale:0.0,
+		hlim:0.0,
+		llim:0.0,
 		delta:false,
 		db: localdb.uid,
 		description:"",
@@ -178,6 +178,7 @@ const clickAdd = ()=>{
 		bit:0,
 		dtype:'bool',
 		atype:'DIGITAL',
+		type:'ALARM',
 		area:area,
 		numarea: 0
 	}
@@ -216,10 +217,22 @@ const changeValuePoint = (ev:any)=>{
 			currpoint.llim = target.value
 			break;
 	}
+	currpoint=currpoint
 }
 
 const changeSelectValue = (ev:any)=>{
-
+	const target = ev.target
+	switch(target.id){
+		case 'point-atype':
+			currpoint.atype = target.value
+			break;
+		case 'point-type':
+			currpoint.type = target.type
+			break;
+		case 'point-controller':
+			currpoint.controller = controllers.find((item:any) => item.name == target.value).uid
+			break;
+	}
 }
 
 const toggleDisable= (disable:boolean)=>{
@@ -306,7 +319,7 @@ const types = [
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
 			<div class="column left">
-				<SimpleTable fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+				<SimpleTable title="SELECT POINT" fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 				</div>
 			<div class="column right">
 				
