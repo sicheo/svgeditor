@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { getLocalDate, makePointsUid } from '../script/utils.js'
+import { getLocalDate, makePointsUid, generateTimeSeries } from '../script/utils.js'
 
 let attempts = 0
 let logs = []
@@ -1535,6 +1535,14 @@ const getPoints = async function (body) {
     return (body)
 }
 
+const getPointsers = async function (body) {
+    let timeseries = generateTimeSeries(body.options.point,body.options.from,body.options.to)
+   
+    body.data = timeseries
+    return (body)
+}
+
+
 const setCompany = async function (body) {
     const company = body.options.company
     let old = null
@@ -2289,6 +2297,7 @@ const mocks = {
     setDBArray,
     deleteDBArray,
     getPoints,
+    getPointsers,
     setPoint,
     deletePoint
 }

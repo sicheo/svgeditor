@@ -21,6 +21,7 @@
     "vite": "^4.3.2"
   },
   "dependencies": {
+    "@carbon/charts-svelte": "^1.11.16",
     "@svgdotjs/svg.draggable.js": "^3.0.3",
     "@svgdotjs/svg.js": "^3.2.0",
     "@svgdotjs/svg.panzoom.js": "^2.1.2",

@@ -464,10 +464,10 @@ export function getDestinationDrivers() {
     return destinationdrivers
 }
 
-export function makePointsUid(driver,agent, device, controller, machine, db, num = 20) {
+export function makePointsUid(driver,agent, device, controller, machine, db, num = 30) {
     const points = []
     for (let i = 0; i<num; i++) {
-        const point = { uid: uuidv4(), tag: '', description: '', um: '', dtype: '', delta: false, bit: 0, hscale: 0.0, lowscale: 0.0, area: '', numarea: 0, address: 0, amount: 1, atype: '', agent: agent, device: device, controller: controller, machine: machine, db: db }
+        const point = { uid: uuidv4(), tag: '', description: '', um: '', dtype: '', delta: false, bit: 0, hlim: 0.0, llim: 0.0, area: '', numarea: 0, address: 0, amount: 1, atype: '', type:'',agent: agent, device: device, controller: controller, machine: machine, db: db }
         const [tag, desc, um, atype, bit, dtype] = randomTDUABD(5)
         point.tag = tag
         point.description = desc
@@ -476,6 +476,10 @@ export function makePointsUid(driver,agent, device, controller, machine, db, num
         point.dtype = dtype
         point.bit = Number(bit)
         point.address = Math.floor(Math.random() * 40000)
+        point.type = getPointType(tag)
+        const [hlim, llim] = getPointLims(point.type)
+        point.hlim = hlim
+        point.llim = llim
         switch (driver) {
             case 's7':
                 point.area = 'DB'
@@ -499,7 +503,32 @@ export function makePointsUid(driver,agent, device, controller, machine, db, num
 }
 
 function randomTDUABD(length) {
-    const pre = ['TT-', 'PP-', 'HH-', 'RPM-', 'AA-', 'VV-', 'NUM-', "FL-", "AL-T-", "AL-P-", "AL-H-", "AL-RPM-", "AL-A-", "AL-V-", "AL-NUM-", "AL-FL-"]
+    const pre = [
+        'TT-',
+        'PP-',
+        'HH-',
+        'RPM-',
+        'AA-',
+        'VV-',
+        'NUM-',
+        "FL-",
+        "AL-T-",
+        "AL-P-",
+        "AL-H-",
+        "AL-RPM-",
+        "AL-A-",
+        "AL-V-",
+        "AL-NUM-",
+        "AL-FL-",
+        "EV-T-",
+        "EV-P-",
+        "EV-H-",
+        "EV-RPM-",
+        "EV-A-",
+        "EV-V-",
+        "EV-NUM-",
+        "EV-FL-"
+    ]
     const desc = [
         "Temperature measure",
         "Pressure measure",
@@ -516,9 +545,42 @@ function randomTDUABD(length) {
         "Current alarm",
         "Voltage alarm",
         "Particle num alarm",
-        "Flow alarm"
+        "Flow alarm",
+        "Temperature event",
+        "Pressure event",
+        "Humidity event",
+        "Rotational Speed event",
+        "Current event",
+        "Voltage event",
+        "Particle num event",
+        "Flow event"
     ]
-    const um = ['DEGC', 'PSIA', "%", "RPM", "A", "V", "#/m3", "m3/sec", '', '', "", "", "", "", "", ""]
+    const um = [
+        'DEGC',
+        'PSIA',
+        "%",
+        "RPM",
+        "A",
+        "V",
+        "#/m3",
+        "m3/sec",
+        '',
+        '',
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        '',
+        '',
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ]
     let result = ''
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     const charactersLength = characters.length;
@@ -539,6 +601,77 @@ function randomTDUABD(length) {
     const tag = pre[index] + result
 
     return[tag,desc[index],um[index],atype,bit,dtype]
+}
+
+function getPointType(tag) {
+    let ret = ''
+    const pre = tag.substring(0, 3)
+    switch (pre) {
+        case 'TT-':
+            ret = 'TEMPERATURE'
+            break;
+        case 'PP-':
+            ret = 'PRESSURE'
+            break;
+        case 'HH-':
+            ret = 'HUMIDITY'
+            break;
+        case 'RPM':
+            ret = 'SPEED'
+            break;
+        case 'AA-':
+            ret = 'CURRENT'
+            break;
+        case 'VV-':
+            ret = 'VOLTAGE'
+            break;
+        case 'NUM':
+            ret = 'NUMBER'
+            break;
+        case 'FL-':
+            ret = 'FLOW'
+            break;
+        case 'AL-':
+            ret = 'ALARM'
+            break;
+        case 'EV-':
+            ret = 'EVENT'
+            break;
+    }
+    return(ret)
+}
+
+function getPointLims(type) {
+    let hlim = 0.0
+    let llim = 0.0
+    switch (type) {
+        case 'TEMPERATURE':
+            llim = -10.0
+            hlim = 200.0
+            break;
+        case 'PRESSURE':
+            hlim = 3.0
+            break;
+        case 'HUMIDITY':
+            hlim = 100.0
+            break;
+        case 'SPEED':
+            hlim = 5000.0
+            break;
+        case 'CURRENT':
+            hlim = 50.0
+            break;
+        case 'VOLTAGE':
+            hlim = 340.0
+            break;
+        case 'NUMBER':
+            hlim = 10
+            break;
+        case 'FLOW':
+            hlim = 2.0
+            break;
+    }
+    return[hlim,llim]
 }
 
 export function uploadFile(filestring,filename) {
@@ -610,6 +743,54 @@ export function dragElement(elmnt,elemntheader) {
         document.onmouseup = null;
         document.onmousemove = null;
     }
+}
+
+export function generateTimeSeries(point, from, to, max = 800) {
+    const oscillation = 0.1
+    const timeseries = []
+    const timestamps = generateTimestamp(from,to,max)
+    switch (point.atype) {
+        case 'ANALOG':
+            for (let i = 0; i < timestamps.length; i++) {
+                const pointvalue = { tag: point.tag, value: 0, timestamp: timestamps[i] }
+                const midpoint = (point.hlim - point.llim) / 2
+                pointvalue.value = midpoint * (1 + oscillation*Math.random())
+                timeseries.push(pointvalue)
+            }
+            break;
+        case 'DIGITAL':
+            for (let i = 0; i < timestamps.length; i++) {
+                const pointvalue = { tag: point.tag, value: 0, timestamp: timestamps[i] }
+                timeseries.push(pointvalue)
+            }
+            break;
+    }
+    return (timeseries)
+}
+
+function generateTimestamp(from, to, max = 800) {
+    let start
+    let end
+    const timestamps = []
+    if(end)
+        end = new Date(to).getTime()
+    else
+        end = new Date(Date.now()).getTime()
+    if (start)
+        start = new Date(from).getTime()
+    else
+        start = end - max * 10000
+    let numticks = (end - start) / 10000
+    if (numticks > max) {
+        // ADJUST NUMTICKS
+        end = start + max * 10000
+    }
+    for (let i = 0; i < max; i++) {
+        const timestamp = start + i * 10000
+        timestamps.push(timestamp)
+    }
+    
+    return(timestamps)
 }
 
 /*

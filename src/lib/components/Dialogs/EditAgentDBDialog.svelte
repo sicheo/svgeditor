@@ -400,11 +400,12 @@ const columns = [
 }
 
 .class-last-item {
+  display:flex;
   margin-left: auto;
 }
 .labels1 {
     float: left;
-    width: 140px;
+    width: 150px;
 }
 .inputs1 {
     float: left;
@@ -412,7 +413,7 @@ const columns = [
 }
 .labels2 {
     float: left;
-    width: 140px;
+    width: 150px;
 }
 .inputs2 {
     float: left;
@@ -423,13 +424,14 @@ input {
     display: block;
 }
 label {
-    padding: 10px 10px 0;
+    padding: 10px 5px 0;
 }
 input {
     margin: 12px 0 0;
 }
 .inputs2 select {
-    vertical-align: middle;
+   display: flex;
+   margin: 12px 0 0;
 }
 
 </style>

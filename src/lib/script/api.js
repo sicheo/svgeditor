@@ -1998,6 +1998,41 @@ export const deleteTree = async function (filters, mock = false) {
     })
 }
 
+/**
+ * Get Point Time Series
+ * @param {any} point point object
+ * @param {any} from TS start date
+ * @param {any} to TS end date
+  * @param {any} mock use mock flag (default false)
+ */
+export const getPointsers = async function (point, from, to, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getPointsers",
+            options: {
+                point: point,
+                from: from,
+                to:to
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getPointsers(body))
+        }
+    })
+}
+
 
 
 

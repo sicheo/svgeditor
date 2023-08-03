@@ -147,5 +147,8 @@
   "table-db-agent-db-controller": "CONTROLLORE",
   "table-db-agent-db-um": "UM",
   "table-db-agent-db-machine": "MACCHINA",
-  "table-db-agent-db-atype": "TIPO"
+  "table-db-agent-db-atype": "TIPO",
+  "table-db-agent-db-type": "MISURA",
+  "table-db-agent-db-hlim": "LIMITE ALTO",
+  "table-db-agent-db-llim": "LIMITE BASSO"
 }

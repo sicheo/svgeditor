@@ -1,5 +1,5 @@
 <script lang="ts">
-import {getControllers,getMachines} from '../../script/api.js'
+import {getControllers,getMachines,getPointsers } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 
 import { _ } from 'svelte-i18n'
@@ -36,9 +36,11 @@ const getMachineName = (uid:any)=>{
 	return(machinename)
 }
 
-const setGraph = (ev:any)=>{
+const setGraph = async (ev:any)=>{
 	const target = ev.target
 	console.log("SET GRAPH",target.name )
+	const ret = await getPointsers(point,null,null,$mock)
+	console.log(">>>> POINTSERS", ret.data)
 }
 
 </script>
@@ -59,30 +61,38 @@ const setGraph = (ev:any)=>{
 					<div class="class-div-body">
 						<div class="labels1">
 							<label for="tag">{$_("table-db-agent-db-tag")}: </label>
-							<label for="atype">{$_("table-db-agent-db-atype")}: </label>
-							<label for="host">{$_("table-db-agent-db-address")}: </label>
-							{#if point.atype == 'ANALOG'}
-									<label for="point-um">{$_("table-db-agent-db-um")} </label>
-							{:else}
-								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
-							{/if}
 							<label for="point-description">{$_("table-db-agent-db-description")} </label>
+							<label for="atype">{$_("table-db-agent-db-atype")}: </label>
+							<label for="type">{$_("table-db-agent-db-type")}: </label>
+							{#if point.atype == 'ANALOG'}
+								<label for="point-um">{$_("table-db-agent-db-um")} </label>
+								<label for="hlim">{$_("table-db-agent-db-hlim")}: </label>
+								<label for="llim">{$_("table-db-agent-db-llim")}: </label>
+							{/if}
 							<label for="point-area">{$_("table-db-agent-db-area")} </label>
+							<label for="host">{$_("table-db-agent-db-address")}: </label>
+							{#if point.atype !== 'ANALOG'}
+									<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
+							{/if}
 							<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
 							<label for="point-machine">{$_("table-db-agent-db-machine")} </label>
 							<label for="point-driver">{$_("table-db-agent-source-driver").toUpperCase()} </label>
 						</div>
 						<div class="inputs1">
 							<input type="text" size="17" style="font-weight:bold;" value="{point.tag}" class="class-edit-point" name="point-tag" id="point-tag"  disabled/>
+							<input type="text" size="38" value="{point.description}" class="class-edit-point" name="point-description" id="point-description"  disabled/>
 							<input type="text" value="{point.atype}" class="class-edit-point" name="atype" id="atype"  disabled/>
-							<input type="number" value="{point.address}" class="class-edit-point" name="point-address" id="point-address"  disabled/>
+							<input type="text" value="{point.type}" class="class-edit-point" name="type" id="type"  disabled/>
 							{#if point.atype == 'ANALOG'}
 								<input type="text" value="{point.um}" class="class-edit-point" name="point-um" id="point-um"  disabled/>
-							{:else}
+								<input type="text" value="{point.hlim}" class="class-edit-point" name="point-hlim" id="point-hlim"  disabled/>
+								<input type="text" value="{point.llim}" class="class-edit-point" name="point-llim" id="point-hlim"  disabled/>
+							{/if}
+							<input type="text" value="{point.area}" class="class-edit-point" name="point-area" id="point-area"  disabled/>
+							<input type="number" value="{point.address}" class="class-edit-point" name="point-address" id="point-address"  disabled/>
+							{#if point.atype !== 'ANALOG'}
 								<input type="text" value="{point.bit}" class="class-edit-point" name="point-bit" id="point-bit"  disabled/>
 							{/if}
-							<input type="text" size="38" value="{point.description}" class="class-edit-point" name="point-description" id="point-description"  disabled/>
-							<input type="text" value="{point.area}" class="class-edit-point" name="point-area" id="point-area"  disabled/>
 							<select class="class-edit-point" name="point-controller" id="point-controller"  style="align-items:left;" disabled>
 								{#each controllers as Controller}
 									{#if Controller.uid == point.controller}
@@ -98,9 +108,9 @@ const setGraph = (ev:any)=>{
 					</div>
 				</div>
 				<div class="row downleft">
-					<div class="class-div-toolbar">
+					<div class="class-div-toolbar" style="width:98%;">
 						<span>CHART TYPE</span>
-						</div>
+					</div>
 					<div class="class-div-body">
 						<div class="labels1">
 							{#if point.atype == 'ANALOG'}
@@ -213,7 +223,7 @@ const setGraph = (ev:any)=>{
 	padding-left: 5px;
 	display:block;
 	text-align: left;
-	background-color: #cccccc;
+	background-color: #c0c0c0;
 	width:99%;
 }
 .class-div-body{
@@ -230,12 +240,16 @@ input {
 }
 label {
     padding: 10px 0 0;
+	font-size: small;
 }
 input {
-    margin: 12px 0 0;
+    margin: 8px 0 0;
 }
 select {
-    margin: 12px 0 0;
+    margin: 8px 0 0;
+}
+span {
+	color:white;
 }
 .labels1 {
     float: left;
