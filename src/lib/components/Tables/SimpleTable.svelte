@@ -295,9 +295,9 @@ th {
   padding: 2px 4px;
   color: white ;
   background-color: var(--background-color) ;
-  opacity: 0.5 ;
+  opacity: 0.6 ;
   font-size: var(--font-size);
-  text-align: left;
+  text-align: center;
   vertical-align: top;
   
 }

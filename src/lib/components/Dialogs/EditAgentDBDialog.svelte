@@ -203,6 +203,18 @@ const changeValuePoint = (ev:any)=>{
 		case 'point-description':
 			currpoint.description = target.value
 			break;
+		case 'point-atype':
+			currpoint.atype = target.value
+			break;
+		case 'point-type':
+			currpoint.type = target.value
+			break;
+		case 'point-hlim':
+			currpoint.hlim = target.value
+			break;
+		case 'point-llim':
+			currpoint.llim = target.value
+			break;
 	}
 }
 
@@ -253,6 +265,23 @@ const columns = [
                     }),
    ]
 
+const atypes = [
+	{name:'ANALOG',value:'ANALOG'},
+	{name:'DIGITAL',value:'DIGITAL'},
+]
+
+const types = [
+	{name:'TEMPERATURE',value:'TEMPERATURE'},
+	{name:'PRESSURE',value:'PRESSURE'},
+	{name:'HUMIDITY',value:'HUMIDITY'},
+	{name:'SPEED',value:'SPEED'},
+	{name:'CURRENT',value:'CURRENT'},
+	{name:'VOLTAGE',value:'VOLTAGE'},
+	{name:'NUMBER',value:'NUMBER'},
+	{name:'FLOW',value:'FLOW'},
+	{name:'ALARM',value:'ALARM'},
+	{name:'EVENT',value:'EVENT'},
+]
 </script>
 
 <div class="load-dialog-class" >
@@ -299,6 +328,8 @@ const columns = [
 							<label for="point-address">{$_("table-db-agent-db-address")} </label>
 							{#if currpoint.atype == 'ANALOG'}
 								<label for="point-um">{$_("table-db-agent-db-um")} </label>
+								<label for="point-hlim">{$_("table-db-agent-db-hlim")} </label>
+								<label for="point-llim">{$_("table-db-agent-db-llim")} </label>
 							{:else}
 								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
 							{/if}
@@ -308,6 +339,8 @@ const columns = [
 							<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
 							{#if currpoint.atype == 'ANALOG'}
 								<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
+								<input type="text" value="{currpoint.hlim}" class="class-edit-point" name="point-hlim" id="point-hlim" on:change={changeValuePoint} disabled/>
+								<input type="text" value="{currpoint.llim}" class="class-edit-point" name="point-llim" id="point-llim" on:change={changeValuePoint} disabled/>
 							{:else}
 								<input type="text" value="{currpoint.bit}" class="class-edit-point" name="point-bit" id="point-bit" on:change={changeValuePoint} disabled/>
 							{/if}
@@ -315,11 +348,31 @@ const columns = [
 						<div class="labels2">
 							<label for="point-description">{$_("table-db-agent-db-description")} </label>
 							<label for="point-area">{$_("table-db-agent-db-area")} </label>
+							<label for="point-atype">{$_("table-db-agent-db-atype")} </label>
+							<label for="point-type">{$_("table-db-agent-db-type")} </label>
 							<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
 						</div>
 						<div class="inputs2">
 							<input type="text" size="38" value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
 							<input type="text" value="{currpoint.area}" class="class-edit-point" name="point-area" id="point-area" on:change={changeValuePoint} disabled/>
+							<select class="class-edit-point" name="point-atype" id="point-atype"  on:change={changeSelectValue} style="margin:5px" disabled>
+								{#each atypes as Type}
+									{#if Type.value == currpoint.atype}
+										<option value={Type.value} selected>{Type.name}</option>
+									{:else}
+										<option value={Type.value}>{Type.name}</option>
+									{/if}
+								{/each}
+							</select>
+							<select class="class-edit-point" name="point-type" id="point-type"  on:change={changeSelectValue} style="margin:5px" disabled>
+								{#each types as Type}
+									{#if Type.value == currpoint.type}
+										<option value={Type.value} selected>{Type.name}</option>
+									{:else}
+										<option value={Type.value}>{Type.name}</option>
+									{/if}
+								{/each}
+							</select>
 							<select class="class-edit-point" name="point-controller" id="point-controller"  on:change={changeSelectValue} style="margin:5px" disabled>
 								{#each controllers as Controller}
 									{#if Controller.uid == currpoint.controller}
@@ -424,14 +477,15 @@ input {
     display: block;
 }
 label {
-    padding: 10px 5px 0;
+    padding: 8px 5px 0;
 }
 input {
-    margin: 12px 0 0;
+    margin: 10px 5px 0;
 }
 .inputs2 select {
-   display: flex;
-   margin: 12px 0 0;
+   display: inline-block;
+   margin-top: 15px ;
+   margin-bottom: 15px ;
 }
 
 </style>
