@@ -2062,6 +2062,33 @@ export const getNackAlarms = async function (mock = false) {
     })
 }
 
+export const ackAlarm = async function (alarm, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "ackAlarm",
+            options: {
+                alarm: alarm
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.ackAlarm(body))
+        }
+    })
+}
+
+
 
 
 

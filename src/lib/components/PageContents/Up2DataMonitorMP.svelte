@@ -6,7 +6,7 @@ import SimpleTable from '../Tables/SimpleTable.svelte'
 import TableImage from  '../Tables/TableImage.svelte'
 import TableText from  '../Tables/TableText.svelte'
 
-import {getDevices,getPoints,getAgents,getDeviceInfo, sleep, getAgentStatus, getMachines, getNackAlarms } from '../../script/api.js'
+import {getDevices,getPoints,getAgents,getDeviceInfo, sleep, getAgentStatus, getMachines, getNackAlarms, ackAlarm } from '../../script/api.js'
 import {mock} from '../../ustore.js'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
@@ -29,7 +29,7 @@ let item:any
 let allagents = []
 let nackalarms = []
 
-let viewOptions = { showGotoPage:false,showPageSize:false}
+let viewOptions = { showGotoPage:false,showPageSize:false,paginationBgColor:"#FFFFFF",paginationColor:"#777777",border:'none'}
 let refreshDataExtDev:any
 let refreshDataExtAg:any
 let refreshDataExtPnt:any
@@ -156,6 +156,11 @@ const agentcolumns = [
                         header: () => $_("table-db-agent-db-tag"),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickPoint,cursor:'pointer',fontsize:'12px',fontweight:'bold',classname:"text-tool-component-point"}),
                     }),  
+					 columnHelper.accessor('type', {
+                        id : 'type',
+                        header: () => "TYPE",
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
+                    }),
                     columnHelper.accessor('description', {
                         id : 'description',
                         header: () => $_("table-db-agent-db-description"),
@@ -188,12 +193,12 @@ const agentcolumns = [
 					columnHelper.accessor('device', {
                         id : 'device',
                         header: () => $_("table-db-agent-db-description"),
-                        cell: (props) =>  flexRender(TableText,{text:getDeviceName(props.getValue()),fontsize:'11px'}),
+                        cell: (props) =>  flexRender(TableText,{text:getDeviceName(props.getValue()),onClick:clickDevice,cursor:'pointer',fontsize:'11px'}),
                     }),
 					columnHelper.accessor('agent', {
                         id : 'agent',
                         header: () => $_("table-db-agent-db-description"),
-                        cell: (props) =>  flexRender(TableText,{text:getAgentName(props.getValue()),fontsize:'11px'}),
+                        cell: (props) =>  flexRender(TableText,{text:getAgentName(props.getValue()),onClick:clickAgent,cursor:'pointer',fontsize:'11px'}),
                     }),
 					columnHelper.accessor('machine', {
                         id : 'machine',
@@ -210,6 +215,12 @@ const agentcolumns = [
                         enableColumnFilter:false,
                         header: () => "VIEW",
                         cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickAlarmView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
+                    }),
+					columnHelper.accessor((row:any) => `${row.uid}`, {
+                        id : 'ack',
+                        enableColumnFilter:false,
+                        header: () => "ACK",
+                        cell: (props) =>   flexRender(TableImage,{image:'/REDCIRCLE.svg',uid:props.getValue(),onClick:acknowledgeAlarm,height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
                     }),
    ]
 
@@ -273,7 +284,7 @@ const clickPointView = async(ev:any)=>{
 	item = point
 	const dialogdiv = document.getElementById("show-point-dialog")
 	const tablediv = document.getElementById("svelte-chart-viewer")
-    const eventShowChart = new CustomEvent("refreshchart",{detail: point});
+    const eventShowChart =  new CustomEvent("refreshchart",{detail: {item:item,from:null,to:null}});
 	tablediv.dispatchEvent(eventShowChart)
     if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -288,9 +299,12 @@ const clickAlarmView = async(ev:any)=>{
 	const uid = ev.target.getAttribute("data-uid")
 	alarm = nackalarms.find((item:any)=>item.uid == uid)
 	item=alarm
+	agent = allagents.find((items:any)=> items.uid == item.agent)
 	const dialogdiv = document.getElementById("show-point-dialog")
 	const tablediv = document.getElementById("svelte-chart-viewer")
-    const eventShowChart = new CustomEvent("refreshchart",{detail: alarm});
+	const from = new Date(Date.now() - 100 * 1000).toISOString()
+	const to = new Date(Date.now()).toISOString()
+    const eventShowChart = new CustomEvent("refreshchart",{detail: {item:item,from:from,to:to}});
 	tablediv.dispatchEvent(eventShowChart)
     if(dialogdiv)
             dialogdiv.style.display = 'block'
@@ -307,6 +321,17 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 		target.style.backgroundColor  = 'white'
 }
 
+const acknowledgeAlarm = async (ev:any)=>{
+	const uid = ev.target.getAttribute("data-uid")
+	const found = nackalarms.find((item:any)=>item.uid == uid)
+	if(found){
+		const ret = await ackAlarm(found,$mock)
+	}
+	const ret = await getNackAlarms($mock)
+	nackalarms = ret.data
+	refreshDataExtAlms()
+	
+}
 
 </script>
 
@@ -355,6 +380,7 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 
 .row {
   display: block;
+  font-size: small;
 }
 
 .up{
@@ -387,39 +413,11 @@ const toggleSelection = (target,classname="text-tool-component")=>{
 .right {
  margin-top: 10px;
   padding: 10px;
-  width: 35%;
+  width: 42%;
 }
 
 
-.class-column-left-toolbar{
-	border: 1px solid;
-	display:block;
-	justify-content: space-between;
-	background-color: #eeeeee;
-}
 
-
-.class-column-left-toolbar span{
-	font-weight: bold;
-	margin-left: 5px ;
-}
-
-.class-row-up-toolbar{
-	display:block;
-	justify-content: space-between;
-	background-color: #eeeeee;
-	width:100%;
-}
-.class-row-up-body{
-	background-color: #ffffff;
-	width:100%;
-	height: 150px;
-}
-
-.class-row-up-toolbar span{
-	font-weight: bold;
-	margin-left: 5px ;
-}
 
 #show-point-dialog{
       display: none; /* Hidden by default */

@@ -289,10 +289,6 @@
 </div>
 
 <style>
-html {
-  font-family: sans-serif;
-  font-size: 14px;
-}
 
 table {
   border: 1px solid lightgray;
@@ -322,6 +318,7 @@ th {
 tfoot th{
   color: gray;
   text-align: left;
+  font-weight: normal;
 }
 
 .pagination-tool-class{

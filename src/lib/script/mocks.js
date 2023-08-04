@@ -1251,11 +1251,33 @@ const generatePoints = () => {
             array.push.apply(array, points)
         }
     }
-    console.log("GENERATEPOINTS",array)
+
     return array
 }
 
-let  points = generatePoints()
+const generateNackAlarms = function () {
+    const nackalarms = []
+    let alarms = points.filter((item) => item.type == "ALARM")
+    const toticks = new Date(Date.now())
+    const fromticks = new Date(Date.now() - 300 * 1000)
+    const to = getLocalDate(toticks)
+    const from = getLocalDate(fromticks)
+    for (let i = 0; i < alarms.length; i++) {
+        let timeseries = generateTimeSeries(alarms[i], from, to)
+        const nalms = timeseries.filter((item) => item.value != 0)
+        for (let j = 0; j < nalms.length; j++) {
+            const nackalm = JSON.parse(JSON.stringify(alarms[i]))
+            nackalm.value = nalms[j].value
+            nackalm.timestamp = getLocalDate(new Date(nalms[j].timestamp))
+            nackalarms.push(nackalm)
+        }
+    }
+   
+    return (nackalarms)
+}
+
+let points = generatePoints()
+let nackalarms = generateNackAlarms()
 
 const login = (body) => {
     if (body.options.username == "MOCKUSER" && body.options.password == "MOCKPASSWD") {
@@ -1543,21 +1565,17 @@ const getPointsers = async function (body) {
 }
 
 const getNackAlarms = async function (body) {
-    const nackalarms = []
-    let alarms = points.filter((item) => item.type == "ALARM")
-    const to = new Date(Date.now()).toISOString
-    const from = new Date(Date.now() - 30*1000).toISOString
-    for (let i = 0; i < alarms.length; i++) {
-        let timeseries = generateTimeSeries(alarms[i], from, to)
-        const nalms = timeseries.filter((item) => item.value != 0)
-        for (let j = 0; j < nalms.length; j++) {
-            const nackalm = JSON.parse(JSON.stringify(alarms[i]))
-            nackalm.value = nalms[j].value
-            nackalm.timestamp = getLocalDate(new Date(nalms[j].timestamp))
-            nackalarms.push(nackalm)
-        }
+    const nacks = nackalarms.filter((item)=> item.ack == false)
+    body.data = nacks
+    return (body)
+}
+
+const ackAlarm = async function (body) {
+    const index = nackalarms.findIndex((item) => (item.uid == body.options.alarm.uid && item.ack == false))
+    if (index > -1) {
+        nackalarms[index].ack = true
     }
-    body.data = nackalarms
+    body.data = nackalarms[index]
     return (body)
 }
 
@@ -2207,7 +2225,6 @@ const setDBArray = async function (array) {
     
 
     const plts = array.plants
-    console.log("ARRAY PLANTS", array.plants)
     for (let i = 0; i < plts.length; i++) {
         body.options.plant = plts[i]
         setPlant(body)
@@ -2319,7 +2336,8 @@ const mocks = {
     getPointsers,
     setPoint,
     deletePoint,
-    getNackAlarms
+    getNackAlarms,
+    ackAlarm
 }
 
 export default mocks

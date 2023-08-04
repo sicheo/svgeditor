@@ -247,8 +247,9 @@ const changeButtonDB = (ev:any)=>{
 				<!-- START EDIT DEVICE INPUTS-->
 				<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;--color:{color};">
 					<span>{$_("table-db-agent-choose")}</span>
-					<select name="agent" id="agent-select" value={agentuid} on:change={changeAgentValue} style="margin:5px">
-						<option value="" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-new")}</option>
+					<select name="agent" id="agent-select" value={agentuid} on:change={changeAgentValue} required style="margin:5px">
+						<!--option value="" disabled selected>{$_("table-db-agent-choose")}</!--option-->
+						<option value="xy" style="font-weight:bold;font-style:italic;">{$_("table-db-agent-new")}</option>
 						{#each dialogOptions.array as Agent}
 								<option value={Agent.uid}>{Agent.name}</option>
 						{/each}

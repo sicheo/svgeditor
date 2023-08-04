@@ -777,20 +777,21 @@ function generateTimestamp(from, to, max = 800) {
     let start
     let end
     const timestamps = []
-    if(end)
+    if(to)
         end = new Date(to).getTime()
     else
         end = new Date(Date.now()).getTime()
-    if (start)
+    if (from)
         start = new Date(from).getTime()
     else
         start = end - max * 10000
     let numticks = (end - start) / 10000
     if (numticks > max) {
         // ADJUST NUMTICKS
-        end = start + max * 10000
+        //end = start + max * 10000
+        numticks = max
     }
-    for (let i = 0; i < max; i++) {
+    for (let i = 0; i < numticks; i++) {
         const timestamp = start + i * 10000
         timestamps.push(timestamp)
     }

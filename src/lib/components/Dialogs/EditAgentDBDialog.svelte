@@ -21,7 +21,7 @@ export let data = []
 export let color 
 export let dialogOptions : any 
 
-let viewOptions = { showGotoPage:false,showPageSize:false}
+let viewOptions = { showGotoPage:false,showPageSize:false,paginationBgColor:"#FFFFFF",paginationColor:"#777777",border:'none'}
 let dbuid 
 let localdb
 let points = []
@@ -317,7 +317,7 @@ const types = [
 					<TableImage image='/DELETE.svg' onClick={clickDeleteDb}/>
 		</div>
 		<div class="class-panel-body-agent" style="--color:{color};">
-			<div class="column left">
+			<div class="column left table">
 				<SimpleTable title="SELECT POINT" fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 				</div>
 			<div class="column right">
@@ -462,6 +462,10 @@ const types = [
 .class-panel-column-rigth-toolbar span{
 	font-weight: bold;
 	margin-left: 5px ;
+	font-size: small;
+}
+.class-panel-column-rigth-body{
+	font-size: small;
 }
 
 .class-last-item {
@@ -489,15 +493,18 @@ input {
     display: block;
 }
 label {
-    padding: 8px 5px 0;
+    padding: 10px 5px 0;
 }
 input {
-    margin: 10px 5px 0;
+    margin: 8px 5px 0;
 }
 .inputs2 select {
    display: inline-block;
    margin-top: 15px ;
    margin-bottom: 15px ;
+}
+.table {
+	font-size: small;
 }
 
 </style>

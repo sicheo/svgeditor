@@ -59,7 +59,7 @@ const refreshChartListener = async (ev:any)=>{
 	component=LineChart
 	chartoptions.curve = "curveStepAfter"
 	chartoptions.toolbar.enabled = false
-	const ret = await getPointsers(ev.detail,null,null,$mock)
+	const ret = await getPointsers(ev.detail.item,null,null,$mock)
 	chartdata = []
     for (let i = 0; i < ret.data.length; i++) {
 		const p = ret.data[i]
