@@ -38,6 +38,7 @@ let chartoptions = {
                 "enabled": true
             }
         },
+		"toolbar":{"enabled":false}
 }
 
 
@@ -48,7 +49,25 @@ onMount(async ()=>{
 			controllers = []
 	   response = await getMachines(null,$mock)
        machines = JSON.parse(JSON.stringify(response.data))
+	   const div = document.getElementById("svelte-chart-viewer")
+       if(div)
+            div.addEventListener("refreshchart",refreshChartListener)
+
     });
+
+const refreshChartListener = async (ev:any)=>{
+	component=LineChart
+	chartoptions.curve = "curveStepAfter"
+	chartoptions.toolbar.enabled = false
+	const ret = await getPointsers(ev.detail,null,null,$mock)
+	chartdata = []
+    for (let i = 0; i < ret.data.length; i++) {
+		const p = ret.data[i]
+        var date = new Date(p.timestamp);
+        const pnt = { group: p.tag, value: p.value, date: date.toISOString() }
+        chartdata.push(pnt)
+    }
+}
 
 const exitPage = (ev:any)=>{
 	const div = document.getElementById("show-point-dialog")

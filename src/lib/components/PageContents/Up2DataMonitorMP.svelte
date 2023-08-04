@@ -272,6 +272,9 @@ const clickPointView = async(ev:any)=>{
 	point = points.find((item:any)=>item.uid == uid)
 	item = point
 	const dialogdiv = document.getElementById("show-point-dialog")
+	const tablediv = document.getElementById("svelte-chart-viewer")
+    const eventShowChart = new CustomEvent("refreshchart",{detail: point});
+	tablediv.dispatchEvent(eventShowChart)
     if(dialogdiv)
             dialogdiv.style.display = 'block'
 }
@@ -286,6 +289,9 @@ const clickAlarmView = async(ev:any)=>{
 	alarm = nackalarms.find((item:any)=>item.uid == uid)
 	item=alarm
 	const dialogdiv = document.getElementById("show-point-dialog")
+	const tablediv = document.getElementById("svelte-chart-viewer")
+    const eventShowChart = new CustomEvent("refreshchart",{detail: alarm});
+	tablediv.dispatchEvent(eventShowChart)
     if(dialogdiv)
             dialogdiv.style.display = 'block'
 }

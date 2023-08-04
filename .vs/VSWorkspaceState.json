@@ -4,9 +4,10 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Chart",
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\Tables",
     "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\script\\mocks.js",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditAgentDBDialog.svelte",
   "PreviewInSolutionExplorer": false
 }
