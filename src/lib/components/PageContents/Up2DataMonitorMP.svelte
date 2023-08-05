@@ -11,6 +11,8 @@ import {mock} from '../../ustore.js'
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 import ShowPointDialog from '../Dialogs/ShowPointDialog.svelte'
+import ShowDeviceDialog from '../Dialogs/ShowDeviceDialog.svelte'
+
 
 export let color:any
 
@@ -124,28 +126,28 @@ const devicecolumns = [
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'edit',
+                        id : 'connection',
                         enableColumnFilter:false,
-                        header: () => "CONNECTION",
-                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:default;"}),
+                        header: () => $_("table-db-device-connection").toUpperCase(),
+                        cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),onClick:clickDeviceShow,height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
                     }),
    ]
 
 const agentcolumns = [
                     columnHelper.accessor('name', {
                         id : 'name',
-                        header: () => $_("table-db-agent-db-tag"),
+                        header: () => $_("table-db-agent-name").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),onClick:clickAgent,cursor:'pointer',fontsize:'12px',fontweight:'bold',classname:"text-tool-component-agent"}),
                     }),  
 					 columnHelper.accessor('type', {
                         id : 'type',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-agent-type").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'edit',
+                        id : 'status',
                         enableColumnFilter:false,
-                        header: () => "STATUS",
+                        header: () => $_("table-db-agent-status").toUpperCase(),
                         cell: (props) =>   flexRender(TableImage,{image:'/GREENCIRCLE.svg',uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:default;"}),
                     }),
    ]
@@ -158,23 +160,23 @@ const agentcolumns = [
                     }),  
 					 columnHelper.accessor('type', {
                         id : 'type',
-                        header: () => "TYPE",
+                        header: () => $_("table-db-agent-db-type").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
                     columnHelper.accessor('description', {
                         id : 'description',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-agent-db-description").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
 					columnHelper.accessor('machine', {
                         id : 'machine',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-agent-db-machine").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:getMachineName(props.getValue()),fontsize:'11px'}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'view',
+                        id : 'chart',
                         enableColumnFilter:false,
-                        header: () => "VIEW",
+                        header: () =>  $_("table-db-chart").toUpperCase(),
                         cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickPointView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
                     }),
    ]
@@ -187,33 +189,33 @@ const agentcolumns = [
                     }),  
                     columnHelper.accessor('description', {
                         id : 'description',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-agent-db-description").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
 					columnHelper.accessor('device', {
                         id : 'device',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("up2data_nav_conf_device").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:getDeviceName(props.getValue()),onClick:clickDevice,cursor:'pointer',fontsize:'11px'}),
                     }),
 					columnHelper.accessor('agent', {
                         id : 'agent',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-device-agent").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:getAgentName(props.getValue()),onClick:clickAgent,cursor:'pointer',fontsize:'11px'}),
                     }),
 					columnHelper.accessor('machine', {
                         id : 'machine',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => $_("table-db-agent-db-machine").toUpperCase(),
                         cell: (props) =>  flexRender(TableText,{text:getMachineName(props.getValue()),fontsize:'11px'}),
                     }),
 					columnHelper.accessor('timestamp', {
                         id : 'timestamp',
-                        header: () => $_("table-db-agent-db-description"),
+                        header: () => "TIMESTAMP",
                         cell: (props) =>  flexRender(TableText,{text:props.getValue(),fontsize:'11px'}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
-                        id : 'view',
+                        id : 'chart',
                         enableColumnFilter:false,
-                        header: () => "VIEW",
+                        header: () => $_("table-db-chart").toUpperCase(),
                         cell: (props) =>   flexRender(TableImage,{image:'/EYE.svg',onClick:clickAlarmView,uid:props.getValue(),height:"18",classname:"image-tool-toggle",style:"cursor:pointer;"}),
                     }),
 					columnHelper.accessor((row:any) => `${row.uid}`, {
@@ -333,43 +335,48 @@ const acknowledgeAlarm = async (ev:any)=>{
 	
 }
 
+const clickDeviceShow = async (ev:any)=>{
+	let devinfo={}
+	const uid = ev.target.getAttribute("data-uid")
+	const found = devices.find((item:any)=>item.uid == uid)
+	if(found){
+		device = found
+	}
+	// https://github.com/rcruzper/express-actuator
+	const dialogdiv = document.getElementById("show-device-dialog")
+	const spandiv = document.getElementById("test-interval-span")
+	const eventShowChart = new CustomEvent("refreshdevice",{detail: {item:device}});
+	spandiv.dispatchEvent(eventShowChart)
+	if(dialogdiv)
+		dialogdiv.style.display = 'block'
+}
+
 </script>
 
 
 <div class="monitor-body-class" >
 	<div class="row up">
-		<!--div class="class-row-up-toolbar">
-				<span>ALARMS</span>
-		</!--div>
-		<div class="class-row-up-body">
-		</div-->
-		<SimpleTable title="ALARMS" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
-
+		<SimpleTable title="{$_("monitor-page-alarms")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
 	</div>
 	<div class="row down">
 		<div class="column left">
-			<!--div class="class-column-left-toolbar">
-				<span>SELECT DEVICE</span>
-			</!--div-->
-			<SimpleTable title="SELECT DEVICE" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
+			<SimpleTable title="{$_("monitor-page-device")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
 		</div>
 		<div class="column center">
-			<!--div class="class-column-left-toolbar">
-				<span>SELECT AGENT</span>
-			</!--div-->
-			<SimpleTable title="SELECT AGENT" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
+			<SimpleTable title="{$_("monitor-page-agent")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
 		</div>
 		<div class="column right">
-			<!--div class="class-column-left-toolbar">
-				<span>SELECT POINT</span>
-			</!--div-->
-			<SimpleTable title="SELECT POINT" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
+			<SimpleTable title="{$_("monitor-page-point")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
 		</div>
 	</div>
 </div>
 
-<div id="show-point-dialog">
+<div id="show-point-dialog" class="show-dialog">
         <ShowPointDialog bind:point={item} agent={agent} {color}/>
+</div>
+
+<div id="show-device-dialog" class="show-dialog">
+        <ShowDeviceDialog bind:device={device} {color}/>
 </div>
 
 <style>
@@ -417,9 +424,7 @@ const acknowledgeAlarm = async (ev:any)=>{
 }
 
 
-
-
-#show-point-dialog{
+.show-dialog {
       display: none; /* Hidden by default */
       position: fixed; /* Stay in place */
       z-index: 11; /* Sit on top */
@@ -432,5 +437,7 @@ const acknowledgeAlarm = async (ev:any)=>{
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
+
+ 
 
 </style>

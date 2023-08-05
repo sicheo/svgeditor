@@ -57,8 +57,10 @@ onMount(async ()=>{
 
 const refreshChartListener = async (ev:any)=>{
 	component=LineChart
+	chartoptions.title="Point "+ev.detail.item.tag+" Macchina: "+machines.find((item:any)=>item.uid == ev.detail.item.machine).name+ " "+ev.detail.item.description
 	chartoptions.curve = "curveStepAfter"
 	chartoptions.toolbar.enabled = false
+	chartoptions.axes.left.title = ev.detail.item.type+" "+ev.detail.item.um
 	const ret = await getPointsers(ev.detail.item,null,null,$mock)
 	chartdata = []
     for (let i = 0; i < ret.data.length; i++) {
@@ -67,6 +69,7 @@ const refreshChartListener = async (ev:any)=>{
         const pnt = { group: p.tag, value: p.value, date: date.toISOString() }
         chartdata.push(pnt)
     }
+	chartoptions =chartoptions
 }
 
 const exitPage = (ev:any)=>{
@@ -123,7 +126,7 @@ const setGraph = async (ev:any)=>{
 			<div class="column left">
 				<div class="row upleft">
 					<div class="class-div-toolbar">
-						<span>POINT DETAIL</span>
+						<span>{$_("point-show-detail")}</span>
 					</div>
 					<div class="class-div-body">
 						<div class="labels1">
@@ -176,7 +179,7 @@ const setGraph = async (ev:any)=>{
 				</div>
 				<div class="row downleft">
 					<div class="class-div-toolbar" style="width:98%;">
-						<span>CHART TYPE</span>
+						<span>{$_("point-show-chart-type")}</span>
 					</div>
 					<div class="class-div-body">
 						<div class="labels1">
@@ -184,7 +187,7 @@ const setGraph = async (ev:any)=>{
 								<label for="chart-line">LINE CHART </label>
 								<label for="chart-area">AREA CHART </label>
 							{/if}
-							<label for="chart-bar">BARCHART </label>
+							<label for="chart-bar">BAR CHART </label>
 						</div>
 						<div class="inputss1">
 							{#if point.atype == 'ANALOG'}
@@ -199,11 +202,11 @@ const setGraph = async (ev:any)=>{
 			<div class="column right">
 				<div class="row upright">
 					<div class="class-div-toolbar">
-						<span>CHART TOOLBAR</span>
+						<span>{$_("point-show-chart-chart")}</span>
 					</div>
 				</div>
 				<div class="row downright">
-					<SvelteChart component={component} data={chartdata} options={chartoptions}/>
+					<SvelteChart component={component} bind:data={chartdata} bind:options={chartoptions}/>
 				</div>
 			</div>
 			<!-- END EDIT DEVICE INPUTS-->

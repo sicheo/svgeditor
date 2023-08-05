@@ -2062,6 +2062,11 @@ export const getNackAlarms = async function (mock = false) {
     })
 }
 
+/**
+ * Acknowledge alarm
+ * @param {any} alarm
+ * @param {any} mock
+ */
 export const ackAlarm = async function (alarm, mock = false) {
     return new Promise((resolve, reject) => {
         const url = baseUrl + '/command'
@@ -2084,6 +2089,37 @@ export const ackAlarm = async function (alarm, mock = false) {
                 })
         } else {
             resolve(mocks.ackAlarm(body))
+        }
+    })
+}
+
+/**
+ * Get Monitoring Statistics
+ * @param {any} device
+ * @param {any} mock
+ */
+export const getMonitorStats = async function (device, mock = false) {
+    return new Promise((resolve, reject) => {
+        const url = baseUrl + '/command'
+        const body = {
+            type: "api",
+            version: 1.0,
+            command: "getMonitorStats",
+            options: {
+                device: device
+            }
+        }
+        if (!mock) {
+            callFetchPost(url, body, getCHeader())
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    reject(error)
+                })
+        } else {
+            resolve(mocks.getMonitorStats(body))
         }
     })
 }

@@ -136,6 +136,7 @@
   "table-db-agent-destination-driver": "Driver",
   "table-db-agent-destination-username": "Nome Utente",
   "table-db-agent-destination-password": "Password",
+  "table-db-agent-status": "Stato",
   "table-db-agent-db-intro": "CONFIGURA DB PER AGENTE",
   "table-db-agent-db-choose": "Scegli DB",
   "table-db-agent-db-edit-point": "EDITA PUNTO",
@@ -150,5 +151,13 @@
   "table-db-agent-db-atype": "TIPO",
   "table-db-agent-db-type": "MISURA",
   "table-db-agent-db-hlim": "LIMITE ALTO",
-  "table-db-agent-db-llim": "LIMITE BASSO"
+  "table-db-agent-db-llim": "LIMITE BASSO",
+  "table-db-chart": "GRAFICO",
+  "monitor-page-alarms": "ALLARMI",
+  "monitor-page-device": "SELEZIONA DEVICE",
+  "monitor-page-agent": "SELEZIONA AGENT",
+  "monitor-page-point": "SELEZIONA PUNTO",
+  "point-show-detail": "DETTAGLIO PUNTO",
+  "point-show-chart-type": "TIPO GRAFICO",
+  "point-show-chart-chart": "GRAFICO"
 }

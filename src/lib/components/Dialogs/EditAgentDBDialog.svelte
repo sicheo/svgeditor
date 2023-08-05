@@ -322,7 +322,7 @@ const types = [
 				</div>
 			<div class="column right">
 				
-					<div class="class-panel-column-rigth-toolbar">
+					<div class="class-panel-column-rigth-toolbar" >
 						<span>{$_("table-db-agent-db-edit-point")}</span>
 						<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
 

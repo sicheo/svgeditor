@@ -2019,6 +2019,44 @@ const getAgentStatus = async function (body) {
     return (body)
 }
 
+const getMonitorStats = async function (body) {
+    const cpuUsage = Math.random() * 20 + 10
+    const usedMemPercentage = Math.random() * 10 + 70
+    const freeMemPercentage = 100 - usedMemPercentage
+    const totalMemMb = 10177.01
+    const usedMemMb = totalMemMb * usedMemPercentage / 100
+    const freeMemMb = totalMemMb * freeMemPercentage / 100
+    const monitor = {
+        osInfo: {
+            oos: "not supported",
+            platform: "win32",
+            ip: "192.168.43.149",
+            hostname: "LAPTOP-3HG93FVJ",
+            type: "Windows_NT",
+            arch: "x64"
+        },
+        cpuAverage: {
+            totalIdle: 164759637,
+            totalTick: 183285687,
+            avgIdle: 20594954.625,
+            avgTotal: 22910710.875
+        },
+        cpuUsage: cpuUsage,
+        driveInfo: "not supported",
+        memInfo: {
+            totalMemMb: totalMemMb,
+            usedMemMb: usedMemMb,
+            freeMemMb: freeMemMb,
+            usedMemPercentage: usedMemPercentage,
+            freeMemPercentage: freeMemPercentage
+        },
+        netInfo: "not supported"
+    }
+
+    return(monitor)
+
+}
+
 const setDockerEnv = async function (body) {
     docker = {}
     const keys = Object.keys(body.options.env)
@@ -2337,7 +2375,8 @@ const mocks = {
     setPoint,
     deletePoint,
     getNackAlarms,
-    ackAlarm
+    ackAlarm,
+    getMonitorStats
 }
 
 export default mocks

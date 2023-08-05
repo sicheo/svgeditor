@@ -1,4 +1,5 @@
 <script lang="ts">
+// https://github.com/open-source-labs/Docketeer
  import { _ } from 'svelte-i18n'
  import {dockerInfo, dnsLookup, setDockerEnv, dockerCreate, dockerListContainers, dockerListImages } from '../../script/api.js'
  import {mock} from '../../ustore.js'

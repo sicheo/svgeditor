@@ -1,0 +1,26 @@
+{
+  "osInfo": {
+    "oos": "not supported",
+    "platform": "win32",
+    "ip": "192.168.43.149",
+    "hostname": "LAPTOP-3HG93FVJ",
+    "type": "Windows_NT",
+    "arch": "x64"
+  },
+  "cpuAverage": {
+    "totalIdle": 164759637,
+    "totalTick": 183285687,
+    "avgIdle": 20594954.625,
+    "avgTotal": 22910710.875
+  },
+  "cpuUsage": 5.79,
+  "driveInfo": "not supported",
+  "memInfo": {
+    "totalMemMb": 10177.01,
+    "usedMemMb": 8278.9,
+    "freeMemMb": 1898.11,
+    "usedMemPercentage": 81.35,
+    "freeMemPercentage": 18.65
+  },
+  "netInfo": "not supported"
+}
