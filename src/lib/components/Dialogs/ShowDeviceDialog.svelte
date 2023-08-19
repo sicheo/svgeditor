@@ -44,7 +44,7 @@ const exitPage = (ev:any)=>{
 </script>
     <div class="point-graph-class">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
-				<p>SHOW</p>
+				<p>TO BE COMPLETED</p>
 				<div class="class-last-item">
 					<input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 				</div>

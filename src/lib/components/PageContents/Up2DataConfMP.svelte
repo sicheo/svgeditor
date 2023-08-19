@@ -173,7 +173,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 </script>
     <div class= "class-panel-row" id="id-data-conf-table-div">
      
-            <SimpleTable title="CONFIGURE DEVICE" bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+            <SimpleTable  bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
     
     </div>
 
@@ -182,12 +182,26 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
     </div>
 
 <style>
-.class-panel-row {
+/*.class-panel-row {
   display: block;
   justify-content:left;
   font-family: Arial, Helvetica, sans-serif;
   font-size: small;
   font-weight: bold;
+}*/
+
+.class-panel-row {
+        display:block;
+		align-items: left;
+		width:max-content;
+		border-radius: 6px;
+		overflow: hidden;
+		box-shadow: var(--minimap-shadow, var(--default-minimap-shadow));
+		border: solid 1px;
+		justify-content: space-between;
+		align-items: left;
+		font-family:Verdana, Geneva, Tahoma, sans-serif;
+		font-size: small;
 }
 
 #build-tool-dialog{

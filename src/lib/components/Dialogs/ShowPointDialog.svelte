@@ -5,6 +5,8 @@ import {mock} from '../../ustore.js'
 import { _ } from 'svelte-i18n'
 import { onMount} from "svelte";
 import SvelteChart from '../Chart/SvelteChart.svelte'
+import SvelteEChart from '../Chart/SvelteEChart.svelte'
+
 import { BarChartSimple,LineChart,AreaChart } from "@carbon/charts-svelte";
 
 export let color
@@ -206,7 +208,7 @@ const setGraph = async (ev:any)=>{
 					</div>
 				</div>
 				<div class="row downright">
-					<SvelteChart component={component} bind:data={chartdata} bind:options={chartoptions}/>
+					<SvelteEChart component={component} bind:data={chartdata} bind:options={chartoptions}/>
 				</div>
 			</div>
 			<!-- END EDIT DEVICE INPUTS-->

@@ -28,7 +28,7 @@
   export let tableOptions = {pagination:true}
   export let refreshDataExt:any
   export let viewOptions = { showGotoPage:true,showPageSize:true,paginationBgColor:"#FFFFFF",paginationColor:"#777777",border:'none'}
-  export let fontsize = '15px'
+  export let fontsize = '16px'
   export let pagesize = '10'
   export let title = ""
 
@@ -212,7 +212,7 @@
     <thead>
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
-          <th id="headercols" colspan={footcols}>
+          <th id="headercols" colspan={footcols} style="--font-size:{fontsize}">
               {title}
          </th>
         </tr>
@@ -291,7 +291,8 @@
 <style>
 
 table {
-  border: 1px solid lightgray;
+  border: 1px solid;
+  border-radius: 6px;
 }
 
 /*tbody {
@@ -304,8 +305,9 @@ th {
   padding: 2px 4px;
   color: white ;
   background-color: var(--background-color) ;
-  opacity: 0.8 ;
+  opacity: 1.0 ;
   font-size: var(--font-size);
+  font-weight: normal ;
   text-align: center;
   vertical-align: top;
   
@@ -332,5 +334,8 @@ tfoot th{
   color: #222222;
   text-align: left;
   background-color: #dddddd;
+  font-size: var(--font-size);
+  font-weight: bold ;
+
 }
 </style>

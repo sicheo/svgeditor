@@ -356,17 +356,17 @@ const clickDeviceShow = async (ev:any)=>{
 
 <div class="monitor-body-class" >
 	<div class="row up">
-		<SimpleTable title="{$_("monitor-page-alarms")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
+		<SimpleTable title="{$_("monitor-page-alarms")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
 	</div>
 	<div class="row down">
 		<div class="column left">
-			<SimpleTable title="{$_("monitor-page-device")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
+			<SimpleTable title="{$_("monitor-page-device")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
 		</div>
 		<div class="column center">
-			<SimpleTable title="{$_("monitor-page-agent")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
+			<SimpleTable title="{$_("monitor-page-agent")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={agents} columns={agentcolumns} color={color} bind:refreshDataExt={refreshDataExtAg}></SimpleTable>	
 		</div>
 		<div class="column right">
-			<SimpleTable title="{$_("monitor-page-point")}" fontsize='13px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
+			<SimpleTable title="{$_("monitor-page-point")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={points} columns={pointcolumns} color={color} bind:refreshDataExt={refreshDataExtPnt}></SimpleTable>
 		</div>
 	</div>
 </div>
@@ -393,7 +393,7 @@ const clickDeviceShow = async (ev:any)=>{
 .up{
 	display:block;
 	margin: 10px;
-	opacity: 0.8;
+	/*opacity: 1.0;*/
 	height: 280px;
 }
 

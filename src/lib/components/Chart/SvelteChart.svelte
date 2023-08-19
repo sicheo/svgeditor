@@ -1,4 +1,5 @@
 <script lang="ts">
+// https://echarts.apache.org/en/index.html
 //import "@carbon/styles/css/styles.css";
 import "@carbon/charts/styles.css";
 import { LineChart} from "@carbon/charts-svelte";

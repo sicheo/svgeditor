@@ -4,9 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\i18n",
-    "\\src\\lib\\script"
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\PageContents",
+    "\\src\\lib\\script",
+    "\\src\\routes"
   ],
-  "SelectedNode": "\\src\\lib\\script\\api.js",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditDeviceDialog.svelte",
   "PreviewInSolutionExplorer": false
 }
