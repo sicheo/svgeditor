@@ -208,7 +208,7 @@ const setGraph = async (ev:any)=>{
 					</div>
 				</div>
 				<div class="row downright">
-					<SvelteEChart component={component} bind:data={chartdata} bind:options={chartoptions}/>
+					<SvelteChart component={component} bind:data={chartdata} bind:options={chartoptions}/>
 				</div>
 			</div>
 			<!-- END EDIT DEVICE INPUTS-->

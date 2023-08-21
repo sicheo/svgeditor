@@ -4,11 +4,11 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Dialogs",
+    "\\src\\lib\\components\\Chart",
     "\\src\\lib\\components\\PageContents",
-    "\\src\\lib\\script",
-    "\\src\\routes"
+    "\\src\\routes",
+    "\\src\\routes\\up2data\\monitor"
   ],
-  "SelectedNode": "\\src\\lib\\components\\Dialogs\\EditDeviceDialog.svelte",
+  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataMonitorMP.svelte",
   "PreviewInSolutionExplorer": false
 }

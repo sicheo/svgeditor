@@ -6,6 +6,8 @@
  import {sleep} from '../../script/api.js'
  import { _ } from 'svelte-i18n'
  import TableFilter from './TableFilter.svelte'
+ import {dragElement} from '../../script/utils.js'
+
 
 
 
@@ -19,6 +21,8 @@
     flexRender
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
+    import { v4 as uuidv4 } from 'uuid';
+
 
   
 
@@ -31,6 +35,7 @@
   export let fontsize = '16px'
   export let pagesize = '10'
   export let title = ""
+  export let id = uuidv4()
 
  
   let sorting = []
@@ -60,6 +65,10 @@
         const headerGroup = $table.getHeaderGroups()
         if(headerGroup.length >0)
             footcols = headerGroup[0].headers.length
+        const dragable = document.getElementById("tanstack-table-id"+id);
+		const dragzone = document.getElementById("dragzone"+id);
+		console.log("UPDATAMONITOR",dragable,dragzone)
+		dragElement(dragable, dragzone);
     });
 
   const setSorting = updater => {
@@ -206,10 +215,10 @@
   }
 </script>
 
-<div class="p-2">
+<div class="p-2" >
   <div class="h-2" />
-  <table id="tanstack-table-id">
-    <thead>
+  <table id="{'tanstack-table-id'+id}">
+    <thead id="{'dragzone'+id}">
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           <th id="headercols" colspan={footcols} style="--font-size:{fontsize}">
@@ -293,6 +302,7 @@
 table {
   border: 1px solid;
   border-radius: 6px;
+  position: absolute;
 }
 
 /*tbody {
@@ -336,6 +346,7 @@ tfoot th{
   background-color: #dddddd;
   font-size: var(--font-size);
   font-weight: bold ;
+  cursor: grab;
 
 }
 </style>

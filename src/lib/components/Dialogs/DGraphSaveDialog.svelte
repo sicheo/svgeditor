@@ -3,8 +3,6 @@
 import { _ } from 'svelte-i18n'
 import {setTree } from '../../../lib/script/api.js'
 import {mock,analytics} from '../../../lib/ustore.js'
-import { v4 as uuidv4 } from 'uuid';
-
 
 
 export let dialogOptions : any

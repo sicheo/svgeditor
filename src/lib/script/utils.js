@@ -704,46 +704,7 @@ export function downloadCSV(file) {
 }
 
 
-export function dragElement(elmnt,elemntheader) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (elemntheader) {
-        // if present, the header is where you move the DIV from:
-        elemntheader.onmousedown = dragMouseDown;
-    } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown;
-    }
 
-    function dragMouseDown(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        document.onmouseup = closeDragElement;
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag;
-    }
-
-    function elementDrag(e) {
-        e = e || window.event;
-        e.preventDefault();
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-        // stop moving when mouse button is released:
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
 
 export function generateTimeSeries(point, from, to, max = 800) {
     const oscillation = 0.1
@@ -799,6 +760,54 @@ function generateTimestamp(from, to, max = 800) {
     return(timestamps)
 }
 
+
+/**
+ * Drag element 
+ * @param {any} element
+ * @param {any} dragzone
+ */
+export const dragElement = (element, dragzone) => {
+    let pos1 = 0,
+        pos2 = 0,
+        pos3 = 0,
+        pos4 = 0;
+
+    const dragMouseUp = () => {
+        document.onmouseup = null;
+        document.onmousemove = null;
+
+        element.classList.remove("drag");
+    };
+
+    const dragMouseMove = (event) => {
+        event.preventDefault();
+
+        pos1 = pos3 - event.clientX;
+        pos3 = event.clientX;
+
+
+        pos2 = pos4 - event.clientY;
+        pos4 = event.clientY;
+
+
+        element.style.top = `${element.offsetTop - pos2}px`;
+        element.style.left = `${element.offsetLeft - pos1}px`;
+    };
+
+    const dragMouseDown = (event) => {
+        //event.preventDefault();
+
+        pos3 = event.clientX;
+        pos4 = event.clientY;
+
+        element.classList.add("drag");
+
+        document.onmouseup = dragMouseUp;
+        document.onmousemove = dragMouseMove;
+    };
+
+    dragzone.onmousedown = dragMouseDown;
+};
 /*
 // sample data
 var obj = { list: [1, { p: 'hello' }, 3] };
