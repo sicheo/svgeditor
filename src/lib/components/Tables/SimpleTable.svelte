@@ -9,8 +9,6 @@
  import {dragElement} from '../../script/utils.js'
 
 
-
-
  import {
     createSvelteTable,
     getCoreRowModel,
@@ -21,10 +19,7 @@
     flexRender
   } from '@tanstack/svelte-table'
     import { writable } from 'svelte/store'
-    import { v4 as uuidv4 } from 'uuid';
-
-
-  
+   
 
   export let data:any
   export let columns:any
@@ -35,7 +30,7 @@
   export let fontsize = '16px'
   export let pagesize = '10'
   export let title = ""
-  export let id = uuidv4()
+  export let id = ""
 
  
   let sorting = []
@@ -215,14 +210,14 @@
   }
 </script>
 
-<div class="p-2" >
-  <div class="h-2" />
+<div class="p-2-table-class" >
+  <div class="h-2-table-class" />
   <table id="{'tanstack-table-id'+id}">
     <thead id="{'dragzone'+id}">
       {#each $table.getHeaderGroups() as headerGroup}
         <tr>
           <th id="headercols" colspan={footcols} style="--font-size:{fontsize}">
-              {title}
+              <div class="tabletoolbar">{title}</div>
          </th>
         </tr>
         <tr>
@@ -297,56 +292,55 @@
   
 </div>
 
-<style>
+<style global>
 
-table {
-  border: 1px solid;
-  border-radius: 6px;
-  position: absolute;
+.p-2-table-class table {
+  /*border: 1px solid;*/
+  /*border-radius: 6px;*/
+  /*position: absolute;*/
 }
 
-/*tbody {
-  border-bottom: 1px solid lightgray;
-}*/
 
-th {
-  /*border-bottom: 1px solid lightgray;
-  border-right: 1px solid lightgray;*/
-  padding: 2px 4px;
+.p-2-table-class th {
+  /*padding: 2px 4px;
   color: white ;
   background-color: var(--background-color) ;
   opacity: 1.0 ;
   font-size: var(--font-size);
   font-weight: normal ;
   text-align: center;
-  vertical-align: top;
+  vertical-align: top;*/
   
 }
 
-.tablefilter{
-    width: 100%;
-    background-color: #eeeeee ;
+.p-2-table-class .tablefilter{
+    /*width: 100%;
+    background-color: #eeeeee ;*/
 }
-tfoot th{
-  color: gray;
+.p-2-table-class tfoot th{
+  /*color: gray;
   text-align: left;
-  font-weight: normal;
+  font-weight: normal;*/
 }
 
-.pagination-tool-class{
-    margin-top: 15px;
+.p-2-table-class .pagination-tool-class{
+    /*margin-top: 15px;
     padding: 3px;
     border: var(--border);
     background-color: var(--background-color) ;
-    color: var(--color);
+    color: var(--color);*/
 }
-#headercols{
-  color: #222222;
+
+.p-2-table-class #headercols{
+  /*color: #222222;
   text-align: left;
   background-color: #dddddd;
   font-size: var(--font-size);
   font-weight: bold ;
-  cursor: grab;
+  cursor: grab;*/
 
+}
+.p-2-table-class .tabletoolbar{
+   /* display:flex;*/
 }
 </style>

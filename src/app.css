@@ -75,3 +75,52 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* GLOBAL STYLES */
+/*  TABLE */
+.p-2-table-class table {
+    border: 1px solid;
+    border-radius: 6px;
+    position: absolute;
+}
+.p-2-table-class th {
+    padding: 2px 4px;
+    color: white;
+    background-color: var(--background-color);
+    opacity: 1.0;
+    font-size: var(--font-size);
+    font-weight: normal;
+    text-align: center;
+    vertical-align: top;
+}
+
+.p-2-table-class .tablefilter {
+    width: 100%;
+    background-color: #eeeeee;
+}
+
+.p-2-table-class tfoot th {
+    color: gray;
+    text-align: left;
+    font-weight: normal;
+}
+
+.p-2-table-class .pagination-tool-class {
+    margin-top: 15px;
+    padding: 3px;
+    border: var(--border);
+    background-color: var(--background-color);
+    color: var(--color);
+}
+
+.p-2-table-class #headercols {
+    color: #222222;
+    text-align: left;
+    background-color: #dddddd;
+    font-size: var(--font-size);
+    font-weight: bold;
+    cursor: grab;
+}
+
+.p-2-table-class .tabletoolbar {
+    display: flex;
+}
