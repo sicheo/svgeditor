@@ -53,7 +53,7 @@
         }
 
   onMount(async ()=>{
-       const div = document.getElementById("tanstack-table-id")
+       const div = document.getElementById("tanstack-table-id"+id)
        if(div)
             div.addEventListener("refreshtable",refreshListener)
         $table.setPageSize(Number(pagesize))
@@ -62,7 +62,6 @@
             footcols = headerGroup[0].headers.length
         const dragable = document.getElementById("tanstack-table-id"+id);
 		const dragzone = document.getElementById("dragzone"+id);
-		console.log("UPDATAMONITOR",dragable,dragzone)
 		dragElement(dragable, dragzone);
     });
 
@@ -210,7 +209,7 @@
   }
 </script>
 
-<div class="p-2-table-class" >
+<div class="up2twin-table-class" >
   <div class="h-2-table-class" />
   <table id="{'tanstack-table-id'+id}">
     <thead id="{'dragzone'+id}">
@@ -294,53 +293,5 @@
 
 <style global>
 
-.p-2-table-class table {
-  /*border: 1px solid;*/
-  /*border-radius: 6px;*/
-  /*position: absolute;*/
-}
 
-
-.p-2-table-class th {
-  /*padding: 2px 4px;
-  color: white ;
-  background-color: var(--background-color) ;
-  opacity: 1.0 ;
-  font-size: var(--font-size);
-  font-weight: normal ;
-  text-align: center;
-  vertical-align: top;*/
-  
-}
-
-.p-2-table-class .tablefilter{
-    /*width: 100%;
-    background-color: #eeeeee ;*/
-}
-.p-2-table-class tfoot th{
-  /*color: gray;
-  text-align: left;
-  font-weight: normal;*/
-}
-
-.p-2-table-class .pagination-tool-class{
-    /*margin-top: 15px;
-    padding: 3px;
-    border: var(--border);
-    background-color: var(--background-color) ;
-    color: var(--color);*/
-}
-
-.p-2-table-class #headercols{
-  /*color: #222222;
-  text-align: left;
-  background-color: #dddddd;
-  font-size: var(--font-size);
-  font-weight: bold ;
-  cursor: grab;*/
-
-}
-.p-2-table-class .tabletoolbar{
-   /* display:flex;*/
-}
 </style>

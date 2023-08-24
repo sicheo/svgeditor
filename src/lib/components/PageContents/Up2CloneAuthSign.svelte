@@ -60,7 +60,7 @@ const authorize = (ev:any)=>{
 	const checked = target.checked
 }
 </script>
-    <div class="sign-dialog-class">
+    <div class="up2twin-dialog-class" style="width: 100%;min-height: 350px;margin:auto">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				{process.description}
 				<div class="class-last-item">
@@ -99,7 +99,8 @@ const authorize = (ev:any)=>{
 		</div>
 	</div>
 
-<style>
+<style global>
+/*
 .sign-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
@@ -114,7 +115,7 @@ const authorize = (ev:any)=>{
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
-}
+}*/
 
 .tree-div{
 	height: 300px;

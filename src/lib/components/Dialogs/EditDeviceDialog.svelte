@@ -57,7 +57,7 @@ const changeValue = (ev:any)=>{
 }
 
 </script>
-    <div class="sign-edit-class">
+    <div class="up2twin-dialog-class" style="width: 90%;height:50%;margin:auto">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				<p>{dialogOptions.dialogDelete} {dialogOptions.row.name}</p>
 				<div class="class-last-item">
@@ -127,33 +127,11 @@ const changeValue = (ev:any)=>{
 		</div>
 	</div>
 
-<style>
-.sign-edit-class{
-	font-family: Arial, Helvetica, sans-serif;
-	color: #777777;
-	background-color: white ;
-	width: 90%;
-	height: 350px;
-	margin: auto;
-}
-.class-panel-header {
-  display: flex;
-  justify-content: space-between;
-  color: var(--color);
-  font-weight: bold ;
-  background-color: #eeeeee;
-}
+<style global>
+
 
 .class-panel-header p{
  margin-left: 8px;
-}
-
-.class-panel-body {
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: var(--color);
-  font-weight:bold ;
 }
 
 label,

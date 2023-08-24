@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import { _ } from 'svelte-i18n'
-import { onMount} from "svelte";
+import { onMount,afterUpdate} from "svelte";
 import { v4 as uuidv4 } from 'uuid';
 import {getPoints,getControllers, setPoint, deletePoint} from '../../script/api.js'
 import {mock} from '../../ustore.js'
@@ -10,11 +10,10 @@ import TableText from  '../Tables/TableText.svelte'
 import SimpleTable from '../Tables/SimpleTable.svelte'
 import {uploadFile,downloadCSV} from '../../script/utils.js'
 import Papa from 'papaparse'
-
+import {dragElement} from '../../script/utils.js'
 
 
 import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
-    import { A, Point } from '@svgdotjs/svg.js';
 
 
 export let data = []
@@ -36,12 +35,21 @@ let newdb = {
 	  name: 'newdb.csv'
 }
 
+
 onMount(async ()=>{
 	   const  res = await getControllers(null,$mock)
        controllers = res.data
 	   if(!controllers)
 			controllers = []
+	  
     });
+
+afterUpdate(async ()=>{
+	 let dragable = document.getElementById("draggable-point-edit-right");
+	 let dragzone = document.getElementById("dragzone-point-edit-right");
+	 if(dragzone && dragable)
+		dragElement(dragable, dragzone);
+})
 
 const exitDialog = (event:any)=>{
 	localdb = null
@@ -296,15 +304,16 @@ const types = [
 ]
 </script>
 
-<div class="load-dialog-class" >
-		{#if dialogOptions.row.type == 'SCANNER'}
+
+<div class="up2twin-dialog-class" style="width: 80%;height: 80%;margin: auto;">
+	{#if dialogOptions.row.type == 'SCANNER'}
 		<div class="class-panel-header" style="border-bottom: 1px solid;">
 				<p>{$_("table-db-agent-db-intro")} {dialogOptions.row.name}</p>
 				<div class="class-last-item">
 					<input type="image" src="/EXIT.svg" on:click={exitDialog} alt="Submit" width="25" height="25"> 
 				</div>
 		</div>
-		<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;--color:{color};">
+		<div class="class-panel-body" style="border-bottom: 1px solid;--color:{color};display:flex;justify-content:left;">
 					<span style="margin-left:5px;margin-right:5px">{$_("table-db-agent-db-choose")}</span>
 					<select name="agent" id="agent-select" value={dbuid} on:change={changeDBValue} style="margin:5px">
 						<option value={null} style="font-weight:bold;font-style:italic;">{$_("table-db-agent-db-new")}</option>
@@ -316,109 +325,105 @@ const types = [
 					<TableImage image='/UPARROW.svg' onClick={clickUpload}/>
 					<TableImage image='/DELETE.svg' onClick={clickDeleteDb}/>
 		</div>
-		<div class="class-panel-body-agent" style="--color:{color};">
+		<div class="class-panel-body-1" style="--color:{color};display:flex;clear: both;">
 			<div class="column left table">
-				<SimpleTable title="SELECT POINT" fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
-				</div>
-			<div class="column right">
-				
-					<div class="class-panel-column-rigth-toolbar" >
-						<span>{$_("table-db-agent-db-edit-point")}</span>
-						<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
-
-						<div class="class-last-item">
-							<TableImage image='/add.svg' onClick={clickAdd}/>
-							<TableImage image='/edit.svg' onClick={clickEdit}/>
-							<TableImage image='/SAVE.svg' onClick={clickSave}/>
-							<TableImage image='/DELETE.svg' onClick={clickDelete}/>
-						</div>
-					</div>
-				{#if currpoint != null}
-					<div class="class-panel-column-rigth-body" >
-						<div class="labels1">
-							<label for="point-tag">{$_("table-db-agent-db-tag")} </label>
-							<label for="point-address">{$_("table-db-agent-db-address")} </label>
-							{#if currpoint.atype == 'ANALOG'}
-								<label for="point-um">{$_("table-db-agent-db-um")} </label>
-								<label for="point-hlim">{$_("table-db-agent-db-hlim")} </label>
-								<label for="point-llim">{$_("table-db-agent-db-llim")} </label>
-							{:else}
-								<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
-							{/if}
-						</div>
-						<div class="inputs1">
-							<input type="text" size="17" style="font-weight:bold;" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
-							<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
-							{#if currpoint.atype == 'ANALOG'}
-								<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
-								<input type="text" value="{currpoint.hlim}" class="class-edit-point" name="point-hlim" id="point-hlim" on:change={changeValuePoint} disabled/>
-								<input type="text" value="{currpoint.llim}" class="class-edit-point" name="point-llim" id="point-llim" on:change={changeValuePoint} disabled/>
-							{:else}
-								<input type="text" value="{currpoint.bit}" class="class-edit-point" name="point-bit" id="point-bit" on:change={changeValuePoint} disabled/>
-							{/if}
-						</div>
-						<div class="labels2">
-							<label for="point-description">{$_("table-db-agent-db-description")} </label>
-							<label for="point-area">{$_("table-db-agent-db-area")} </label>
-							<label for="point-atype">{$_("table-db-agent-db-atype")} </label>
-							<label for="point-type">{$_("table-db-agent-db-type")} </label>
-							<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
-						</div>
-						<div class="inputs2">
-							<input type="text" size="38" value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
-							<input type="text" value="{currpoint.area}" class="class-edit-point" name="point-area" id="point-area" on:change={changeValuePoint} disabled/>
-							<select class="class-edit-point" name="point-atype" id="point-atype"  on:change={changeSelectValue} style="margin:5px" disabled>
-								{#each atypes as Type}
-									{#if Type.value == currpoint.atype}
-										<option value={Type.value} selected>{Type.name}</option>
-									{:else}
-										<option value={Type.value}>{Type.name}</option>
-									{/if}
-								{/each}
-							</select>
-							<select class="class-edit-point" name="point-type" id="point-type"  on:change={changeSelectValue} style="margin:5px" disabled>
-								{#each types as Type}
-									{#if Type.value == currpoint.type}
-										<option value={Type.value} selected>{Type.name}</option>
-									{:else}
-										<option value={Type.value}>{Type.name}</option>
-									{/if}
-								{/each}
-							</select>
-							<select class="class-edit-point" name="point-controller" id="point-controller"  on:change={changeSelectValue} style="margin:5px" disabled>
-								{#each controllers as Controller}
-									{#if Controller.uid == currpoint.controller}
-										<option value={Controller.uid} selected>{Controller.name}</option>
-									{:else}
-										<option value={Controller.uid}>{Controller.name}</option>
-									{/if}
-								{/each}
-							</select>
-						</div>
-					</div>
-				{/if}
+				<SimpleTable id="db-table" title="{$_('table-db-agent-db-select-point')}" fontsize='13px' viewOptions={viewOptions} bind:data={points} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
 			</div>
+				<div class="column right">
+					<div class="up2twin-draggable" id="draggable-point-edit-right">
+						<header id="dragzone-point-edit-right">
+							<div class="class-div-toolbar-flex" >
+								<span>{$_("table-db-agent-db-edit-point")}</span>
+								<input id="file-db-input"name="file-db-input" type='file' accept=".csv" style="visibility:hidden;"  on:change={downloadDB}>
+
+								<div class="class-last-item">
+									<TableImage image='/add.svg' onClick={clickAdd}/>
+									<TableImage image='/edit.svg' onClick={clickEdit}/>
+									<TableImage image='/SAVE.svg' onClick={clickSave}/>
+									<TableImage image='/DELETE.svg' onClick={clickDelete}/>
+								</div>
+							</div>
+						</header>
+						{#if currpoint != null}
+							<div class="class-panel-column-rigth-body" >
+								<div class="labels1">
+									<label for="point-tag">{$_("table-db-agent-db-tag")} </label>
+									<label for="point-address">{$_("table-db-agent-db-address")} </label>
+									{#if currpoint.atype == 'ANALOG'}
+										<label for="point-um">{$_("table-db-agent-db-um")} </label>
+										<label for="point-hlim">{$_("table-db-agent-db-hlim")} </label>
+										<label for="point-llim">{$_("table-db-agent-db-llim")} </label>
+									{:else}
+										<label for="point-bit">{$_("table-db-agent-db-bit")} </label>
+									{/if}
+								</div>
+								<div class="inputs1">
+									<input type="text" size="17" style="font-weight:bold;" value="{currpoint.tag}" class="class-edit-point" name="point-tag" id="point-tag" on:change={changeValuePoint} disabled/>
+									<input type="number" value="{currpoint.address}" class="class-edit-point" name="point-address" id="point-address" on:change={changeValuePoint} disabled/>
+									{#if currpoint.atype == 'ANALOG'}
+										<input type="text" value="{currpoint.um}" class="class-edit-point" name="point-um" id="point-um" on:change={changeValuePoint} disabled/>
+										<input type="text" value="{currpoint.hlim}" class="class-edit-point" name="point-hlim" id="point-hlim" on:change={changeValuePoint} disabled/>
+										<input type="text" value="{currpoint.llim}" class="class-edit-point" name="point-llim" id="point-llim" on:change={changeValuePoint} disabled/>
+									{:else}
+										<input type="text" value="{currpoint.bit}" class="class-edit-point" name="point-bit" id="point-bit" on:change={changeValuePoint} disabled/>
+									{/if}
+								</div>
+								<div class="labels2">
+									<label for="point-description">{$_("table-db-agent-db-description")} </label>
+									<label for="point-area">{$_("table-db-agent-db-area")} </label>
+									<label for="point-atype">{$_("table-db-agent-db-atype")} </label>
+									<label for="point-type">{$_("table-db-agent-db-type")} </label>
+									<label for="point-controller">{$_("table-db-agent-db-controller")} </label>
+								</div>
+								<div class="inputs2">
+									<input type="text" size="22"value="{currpoint.description}" class="class-edit-point" name="point-description" id="point-description" on:change={changeValuePoint} disabled/>
+									<input type="text" value="{currpoint.area}" class="class-edit-point" name="point-area" id="point-area" on:change={changeValuePoint} disabled/>
+									<select class="class-edit-point" name="point-atype" id="point-atype"  on:change={changeSelectValue} style="margin:5px" disabled>
+										{#each atypes as Type}
+											{#if Type.value == currpoint.atype}
+												<option value={Type.value} selected>{Type.name}</option>
+											{:else}
+												<option value={Type.value}>{Type.name}</option>
+											{/if}
+										{/each}
+									</select>
+									<select class="class-edit-point" name="point-type" id="point-type"  on:change={changeSelectValue} style="margin:5px" disabled>
+										{#each types as Type}
+											{#if Type.value == currpoint.type}
+												<option value={Type.value} selected>{Type.name}</option>
+											{:else}
+												<option value={Type.value}>{Type.name}</option>
+											{/if}
+										{/each}
+									</select>
+									<select class="class-edit-point" name="point-controller" id="point-controller"  on:change={changeSelectValue} style="margin:5px" disabled>
+										{#each controllers as Controller}
+											{#if Controller.uid == currpoint.controller}
+												<option value={Controller.uid} selected>{Controller.name}</option>
+											{:else}
+												<option value={Controller.uid}>{Controller.name}</option>
+											{/if}
+										{/each}
+									</select>
+								</div>
+							</div>
+						{/if}
+					</div>
+				</div>
 		</div>
-		{/if}
-	</div>
+	{/if}
+</div>
 
-<style>
-.load-dialog-class{
-	font-family: Arial, Helvetica, sans-serif;
-	color: #777777;
-	background-color: white ;
-	width: 80%;
-	height: 80%;
-	margin: auto;
+<style global>
+
+
+
+#dragzone-point-edit-right{
+	display:flex;
+	justify-content: space-between;
+	background-color: #eeeeee;
 }
 
-.class-panel-header {
-  display: flex;
-  justify-content: space-between;
-  color: var(--color);
-  font-weight: bold ;
-  background-color: #eeeeee;
-}
 .class-panel-header p{
  margin-left: 8px;
 }
@@ -428,12 +433,6 @@ const types = [
   clear: both;
 }
 
-.class-panel-body-toolbar {
-	display:flex;
-	justify-content:left;
-	color: var(--color);
-	font-weight:bold ;
-}
 
 .column {
   float: left;
@@ -447,25 +446,13 @@ const types = [
 }
 
 .right {
-  width: 65%;
-  margin-right: 5px;
-  margin-top: 10px;
-  height:100%;
-  border: 1px solid;
+	width: 100%;
 }
-.class-panel-column-rigth-toolbar{
-	border-bottom: 1px solid;
-	display:flex;
-	justify-content: space-between;
-	background-color: #eeeeee;
-}
-.class-panel-column-rigth-toolbar span{
-	font-weight: bold;
-	margin-left: 5px ;
-	font-size: small;
-}
+
+
 .class-panel-column-rigth-body{
 	font-size: small;
+	background-color: white ;
 }
 
 .class-last-item {
@@ -474,19 +461,19 @@ const types = [
 }
 .labels1 {
     float: left;
-    width: 150px;
+    width: 120px;
 }
 .inputs1 {
     float: left;
-    width: 180px;
+    width: 200px;
 }
 .labels2 {
     float: left;
-    width: 150px;
+    width: 120px;
 }
 .inputs2 {
     float: left;
-    width: 160px;
+    width: 200px;
 }
 label,
 input {

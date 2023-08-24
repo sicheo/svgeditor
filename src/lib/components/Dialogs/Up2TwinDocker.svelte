@@ -202,7 +202,7 @@ const getContainers = (ev:any) =>{
 
 </script>
 
-<div class="docker-dialog-class">
+<div class="up2twin-dialog-class" style="width: 100%;height: 100%;margin: auto;min-height: 300px;">
 	<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 		<span>{title}</span>
 		<div class="class-last-item">
@@ -240,6 +240,7 @@ const getContainers = (ev:any) =>{
 
 
 <style>
+/*
 .docker-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
@@ -255,29 +256,31 @@ const getContainers = (ev:any) =>{
   color: var(--color);
   font-weight: bold ;
   background-color: #eeeeee;
-}
+}*/
 
 .class-panel-header span{
 	margin-left: 5px;
 }
 
+/*
 .class-panel-body {
   display: block;
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
-}
+}*/
 
 .class-panel-body-inner{
 	margin-top: 20px;
 	border-bottom: 1px solid;
 }
 
+/*
 .class-panel-footer{
 	font-weight: bold;
 	color:white;
 	background-color: var(--background-color);
-}
+}*/
 .class-panel-footer span{
 	margin-left: 5px;
 }

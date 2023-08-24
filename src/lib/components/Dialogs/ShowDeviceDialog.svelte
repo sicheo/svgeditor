@@ -42,7 +42,7 @@ const exitPage = (ev:any)=>{
 
 
 </script>
-    <div class="point-graph-class">
+    <div class="up2twin-dialog-class" style="top: 2%;left: 15%;width: 70%;height: 85%;margin: auto;">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				<p>TO BE COMPLETED</p>
 				<div class="class-last-item">
@@ -56,7 +56,8 @@ const exitPage = (ev:any)=>{
 		</div>
 	</div>
 
-<style>
+<style global>
+/*
 .point-graph-class{
 	position:absolute;
 	top: 2%;
@@ -74,17 +75,18 @@ const exitPage = (ev:any)=>{
   color: var(--color);
   font-weight: bold ;
   background-color: #eeeeee;
-}
+}*/
 
 .class-panel-header p{
  margin-left: 8px;
 }
 
+/*
 .class-panel-body {
   display: block;
   text-align: center;
   color: var(--color);
   font-weight:bold ;
-}
+}*/
 
 </style>

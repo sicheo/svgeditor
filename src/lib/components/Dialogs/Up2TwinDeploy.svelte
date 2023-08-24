@@ -14,7 +14,7 @@ const exitPage = (ev:any)=>{
 
 </script>
 
-<div class="deploy-dialog-class">
+<div class="up2twin-dialog-class" style="width: 100%;height: 100%;margin: auto;min-height: 300px;">
 	<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 		<p>{dialogOptions.title} {dialogOptions.device.name}</p>
 		<div class="class-last-item">
@@ -27,6 +27,7 @@ const exitPage = (ev:any)=>{
 
 
 <style>
+/*
 .deploy-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
@@ -44,17 +45,18 @@ const exitPage = (ev:any)=>{
   font-weight: bold ;
    background-color: #eeeeee;
 }
-
+*/
 .class-panel-header p{
  margin-left: 8px;
 }
 
+/*
 .class-panel-body {
   display: flex;
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
-}
+}*/
 
 .class-last-item input{
 	margin-top: 20px;

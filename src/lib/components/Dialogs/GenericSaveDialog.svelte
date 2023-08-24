@@ -38,7 +38,7 @@ const saveFunc = async(event:any) =>{
 
 </script>
 
-<div class="load-dialog-class" >
+<div class="up2twin-dialog-class" style="width: 20%;height: 30%;margin: auto;">
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				<p>{dialogOptions.dialogDelete}</p>
 				<div class="class-last-item">
@@ -49,28 +49,13 @@ const saveFunc = async(event:any) =>{
 				<p>{dialogOptions.row.name}</p>
 		</div>
 		<div class="class-panel-footer">
-				<input type="button" on:click={saveFunc} value="{$_('dialog_save_button')}" width="25" height="25"> 
+				<input type="button" style="margin-bottom: 10px;" on:click={saveFunc} value="{$_('dialog_save_button')}" width="25" height="25"> 
 	    </div>
 		
 	</div>
 
 <style>
-.load-dialog-class{
-	font-family: Arial, Helvetica, sans-serif;
-	color: #777777;
-	background-color: white ;
-	width: 20%;
-	height: 30%;
-	margin: auto;
-}
 
-.class-panel-header {
-  display: flex;
-  justify-content: space-between;
-  color: var(--color);
-  font-weight: bold ;
-  background-color: #eeeeee;
-}
 .class-panel-header p{
  margin-left: 8px;
 }
@@ -92,13 +77,6 @@ const saveFunc = async(event:any) =>{
 .class-panel-body {
   height: 60%;
 }
-.class-panel-footer {
-  display: block;
-  text-align: center;
-  background-color: white ;
-}
-.class-panel-footer input {
-	margin-bottom: 10px;
-}
+
 
 </style>

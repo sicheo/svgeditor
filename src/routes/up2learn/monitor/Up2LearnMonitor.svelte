@@ -4,19 +4,19 @@
   import InnerTab from '../../../lib/components/InnerTab.svelte'
   import NullComponent from '../../../lib/components/NullComponent.svelte'
   import NavigationBar from '../../../lib/components/NavigationBar.svelte'
-  import Up2DataMonitorMP from '../../../lib/components/PageContents/Up2DataMonitorMP.svelte'
-  import {dataNavigation} from '../../../lib/ustore.js'
+  import NullPage from '../../../lib/components/NullPage.svelte'
+  import {learnNavigation} from '../../../lib/ustore.js'
   import { BuddyClick, LogoutClick, SysConfClick } from "../../../lib/script/menufuncs.js"
   import { _ } from 'svelte-i18n'
  
 
   let component = 'MainTabTools'
-  let bgcolor ="#f4e2d2"
-  let color = "#ac611b"
+  let bgcolor ="#eddeeb"
+  let color = "#91618d"
   
-  let pages = $dataNavigation
+  let pages = $learnNavigation
 
-  let page = $_('up2data_nav_monitor')
+  let page = $_('up2learn_nav_monitor')
 
   let onBuddyClick = BuddyClick
 
@@ -28,7 +28,7 @@ let  onLogoutClick = LogoutClick
 
 <main>
   <div class="up2twin-main-content">
-    <MainTab image="/ICO_UP2_DATA.png" title="{$_('up2data_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
+    <MainTab image="/ICO_UP2_LEARN.png" title="{$_('up2learn_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
     <div class="up2twin-page-container">
     <div class="up2twin-page-horizontal">
         <div class="up2twin-navigation-panel" style="--color:{color};">
@@ -36,7 +36,7 @@ let  onLogoutClick = LogoutClick
         </div>
         <div class="up2twin-content-panel">
             <InnerTab component={NullComponent} {color} {bgcolor}/>
-            <Up2DataMonitorMP color={color}/>
+            <NullPage bgcolor="#FFFFFF"/>
         </div>
     </div>
     </div>
@@ -44,5 +44,5 @@ let  onLogoutClick = LogoutClick
 </main>
 
 <style global>
-
+ 
 </style>

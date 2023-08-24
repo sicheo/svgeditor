@@ -235,7 +235,7 @@ const changeButtonDB = (ev:any)=>{
 
 </script>
     
-		<div class="sign-edit-class" id="sign-edit-agent-id">
+		<div class="up2twin-dialog-class" id="sign-edit-agent-id" style="width: 90%;height:50%;margin: auto;">
 			<div id="sign-edit-agent-id-header" class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 					<p>{dialogOptions.dialogDelete} {dialogOptions.row.name}</p>
 					<div class="class-last-item">
@@ -245,7 +245,7 @@ const changeButtonDB = (ev:any)=>{
 	
 			<div class="class-panel-body" style="--color:{color};">
 				<!-- START EDIT DEVICE INPUTS-->
-				<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;--color:{color};">
+				<div class="class-panel-body-toolbar" style="border-bottom: 1px solid;">
 					<span>{$_("table-db-agent-choose")}</span>
 					<select name="agent" id="agent-select" value={agentuid} on:change={changeAgentValue} required style="margin:5px">
 						<!--option value="" disabled selected>{$_("table-db-agent-choose")}</!--option-->
@@ -390,7 +390,7 @@ const changeButtonDB = (ev:any)=>{
 	
 		<div id="agent-db-dialog">
 			<!--EditAgentDBDialog dbs={dbs} /-->
-			<svelte:component this={dialog} bind:data={dbs} dialogOptions={intDialogOptions} {color}/>
+			<svelte:component this={dialog} bind:data={dbs} dialogOptions={intDialogOptions} color={color}/>
 		</div>
 	
 	
@@ -411,24 +411,9 @@ const changeButtonDB = (ev:any)=>{
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
 
-.sign-edit-class{
-	font-family: Arial, Helvetica, sans-serif;
-	color: #777777;
-	background-color: white ;
-	width: 90%;
-	height: 350px;
-	margin: auto;
-	position: relative;
-}
-.class-panel-header {
-  display: flex;
-  justify-content: space-between;
-  color: var(--color);
-  font-weight: bold ;
-  background-color: #eeeeee;
-}
 
-.class-panel-header p{
+
+/*.class-panel-header p{
  margin-left: 8px;
 }
 
@@ -438,7 +423,7 @@ const changeButtonDB = (ev:any)=>{
   margin-top: 20px;
   color: var(--color);
   font-weight:bold ;
-}
+}*/
 
 .class-panel-body-toolbar {
 	display:flex;

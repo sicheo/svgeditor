@@ -143,11 +143,8 @@ onMount(async ()=>{
  }
 
  
- const defcolumns = [
-         
-        columnHelper.group({
-        id:'id',
-        columns: [
+
+const columns = [
             columnHelper.accessor((row:any) => `${row.name}`, {
                 id:'name',
                 header: () => $_('up2clone_auth_table_name'),
@@ -190,8 +187,7 @@ onMount(async ()=>{
             })
 
         ]
-        })
- ]
+ 
 
 </script>
 	
@@ -199,7 +195,7 @@ onMount(async ()=>{
         {#await promise}
 	        <p>...waiting</p>
         {:then response}
-		    <SimpleTable data={response.data} columns={defcolumns} color={color}></SimpleTable>
+		    <SimpleTable data={response.data} columns={columns} color={color}></SimpleTable>
         {:catch error}
 	            <p style="color: red">{error.message}</p>
         {/await}
@@ -239,7 +235,6 @@ onMount(async ()=>{
 .modal-editor-auth-sign-content {
   background-color: #fefefe;
   margin: auto;
-  padding: 20px;
   border: 1px solid #888;
   width: 80%;
 }

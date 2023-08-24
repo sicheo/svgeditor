@@ -59,7 +59,7 @@ export let  onLogoutClick:any = ()=>{}
 </script>
 
 
-<div class="class-main-tab" style="--color:{color}; --background-color:{bgcolor}">
+<div class="up2twin-class-main-tab" style="--color-main-tab:{color}; --background-color-main-tab:{bgcolor}">
      <input type="image" src="{image}" alt="ALT IMAGE" height="{height}" on:click={goToHome}/>
      <span style="--color:{color};" >{title}</span>
      {#if component == "NineDots"}
@@ -76,24 +76,11 @@ export let  onLogoutClick:any = ()=>{}
      <ModalApps  items={toolitems} modalId="{toolModalId}"></ModalApps>
 </div>
 
-<style>
-  .class-main-tab {
-      display:flex;
-      justify-content: space-between;
-      background-color: var(--background-color);
-      color: var(--color) ;
-  }
-  .class-main-tab span{
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: clamp(0.43rem, -0.187rem + 3.1vw, 1.8rem);
-      color: var(--color);
-      padding: 5px ;
-      opacity: 0.7;
-  }
-  .class-main-tab input{
-      margin-right: 20px ;
-  }
-  
-
-
+<style global >
+    .up2twin-class-main-tab {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--background-color-main-tab);
+    color: var(--color-main-tab);
+}
 </style>

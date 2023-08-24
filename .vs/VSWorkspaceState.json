@@ -4,11 +4,8 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\components\\Chart",
-    "\\src\\lib\\components\\PageContents",
-    "\\src\\routes",
-    "\\src\\routes\\up2data\\monitor"
+    "\\src\\lib\\script"
   ],
-  "SelectedNode": "\\src\\lib\\components\\PageContents\\Up2DataMonitorMP.svelte",
+  "SelectedNode": "\\src\\lib\\ustore.js",
   "PreviewInSolutionExplorer": false
 }

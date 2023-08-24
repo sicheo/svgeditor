@@ -17,7 +17,7 @@ const exitPage = (ev:any)=>{
 
 </script>
 
-<div class="install-dialog-class">
+<div class="up2twin-dialog-class" style="width: 100%;height: 100%;margin: auto;min-height: 300px;">
 	<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 		<p>{dialogOptions.title} {dialogOptions.device.uid}</p>
 		<div class="class-last-item">
@@ -31,7 +31,7 @@ const exitPage = (ev:any)=>{
 
 
 <style>
-.install-dialog-class{
+/*.install-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
 	background-color: white ;
@@ -47,7 +47,7 @@ const exitPage = (ev:any)=>{
   color: var(--color);
   font-weight: bold ;
   background-color: #eeeeee;
-}
+}*/
 
 .class-panel-header p{
  margin-left: 8px;
@@ -57,10 +57,10 @@ const exitPage = (ev:any)=>{
 	margin-top: 20px;
 }
 
-.class-panel-body {
+/*.class-panel-body {
   display: flex;
   justify-content: space-between;
   color: var(--color);
   font-weight: bold ;
-}
+}*/
 </style>

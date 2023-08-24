@@ -39,6 +39,8 @@ let refreshDataExtAlms:any
 
 let timeout = 800
 
+
+
 onMount(async ()=>{
 	   let response = await getDevices(null,$mock)
 	   devices = JSON.parse(JSON.stringify(response.data))
@@ -354,12 +356,12 @@ const clickDeviceShow = async (ev:any)=>{
 </script>
 
 
-<div class="monitor-body-class" >
-	<div class="row up">
-		
-			<SimpleTable id="rowup" title="{$_("monitor-page-alarms")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
+<div class="monitor-body-class">
 	
+	<div class="row up">
+			<SimpleTable id="rowup" title="{$_("monitor-page-alarms")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={nackalarms} columns={alarmcolumns} color={color} bind:refreshDataExt={refreshDataExtAlms}></SimpleTable>
 	</div>
+	
 	<div class="row down">
 		<div class="column left">
 			<SimpleTable id="columnleft" title="{$_("monitor-page-device")}" fontsize='16px' pagesize="5" viewOptions={viewOptions} bind:data={devices} columns={devicecolumns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
@@ -440,6 +442,7 @@ const clickDeviceShow = async (ev:any)=>{
       overflow: auto; /* Enable scroll if needed */
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	  border: 1px solid;
   }
 
  

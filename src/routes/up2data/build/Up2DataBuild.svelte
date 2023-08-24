@@ -140,14 +140,14 @@ const menufunctions = {
 </script>
 
 <main>
-  <div class="main-content">
+  <div class="up2twin-main-content">
     <MainTab image="/ICO_UP2_DATA.png" title="{$_('up2data_page_title')}" component="{component}" color={color} bgcolor={bgcolor} {onLogoutClick} {onSysConfClick} {onBuddyClick}/>
-    <div class="page-container">
-    <div class="page-horizontal">
-        <div class="navigation-panel" style="--color:{color};">
+    <div class="up2twin-page-container">
+    <div class="up2twin-page-horizontal">
+        <div class="up2twin-navigation-panel" style="--color:{color};">
             <NavigationBar {page} {color} bgcolor="#FFFFFF" {pages}/>
         </div>
-        <div class="content-panel">
+        <div class="up2twin-content-panel">
             <InnerTab component={BuildTools} bind:dialog={dialogComponent} bind:dialogOptions={dialogOptions} options={menufunctions} {color} {bgcolor}/>
             <Up2DataEditor bind:graph={graph} menufunctions={menufunctions}/>
         </div>
@@ -156,27 +156,6 @@ const menufunctions = {
   </div>
 </main>
 
-<style>
-  .main-content{
-      margin: 0;
-  }
-  .page-container{
-      display:block;
-  }
-  .page-horizontal{
-      display:flex;
-  }
-  .navigation-panel{
-      display:block;
-      min-height: clamp(200px,60vh,0vh); 
-      min-width: clamp(100px,15vw,15vw);  
-      /*border-left: 1px solid var(--color);
-      border-right: 1px solid var(--color);
-      border-bottom: 1px solid var(--color);*/
-      background-color: #ffffff;
-  }
-  .content-panel{
-      display:block;
-      width:100%;
-  }
+<style global>
+  
 </style>

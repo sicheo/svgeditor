@@ -171,7 +171,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
   
 
 </script>
-    <div class= "class-panel-row" id="id-data-conf-table-div">
+    <div class="class-panel-row" id="id-data-conf-table-div">
      
             <SimpleTable  bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
     

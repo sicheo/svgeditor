@@ -789,6 +789,7 @@ export const dragElement = (element, dragzone) => {
         pos2 = pos4 - event.clientY;
         pos4 = event.clientY;
 
+        console.log("DRAG MOUSE MOVE", event.clientX, event.clientY)
 
         element.style.top = `${element.offsetTop - pos2}px`;
         element.style.left = `${element.offsetLeft - pos1}px`;
@@ -799,6 +800,8 @@ export const dragElement = (element, dragzone) => {
 
         pos3 = event.clientX;
         pos4 = event.clientY;
+
+        console.log("DRAG MOUSE DOWN", pos3, pos4)
 
         element.classList.add("drag");
 

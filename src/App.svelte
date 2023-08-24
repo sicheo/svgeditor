@@ -20,10 +20,11 @@ import UP2DATABUILD from "./routes/up2data/build/Up2DataBuild.svelte"
 import UP2DATACONF from "./routes/up2data/configuration/Up2DataConfiguration.svelte" 
 import UP2DATADEPLOY from "./routes/up2data/deploy/Up2DataDeploy.svelte" 
 import UP2AIMONITOR from "./routes/up2ai/monitor/Up2AiMonitor.svelte" 
+import UP2LEARNMONITOR from "./routes/up2learn/monitor/Up2LearnMonitor.svelte" 
 import UP2ADMINLOG from "./routes/up2admin/Up2AdminLog.svelte"
 
 import { register,init, getLocaleFromNavigator, _  } from 'svelte-i18n';
-import {dataNavigation, cloneNavigation, aiNavigation, clonegraphmenuoptions, clonesubmenuoptions, datagraphmenuoptions} from '../src/lib/ustore.js'
+import {dataNavigation, cloneNavigation, aiNavigation, learnNavigation, clonegraphmenuoptions, clonesubmenuoptions, datagraphmenuoptions} from '../src/lib/ustore.js'
 import { onMount} from "svelte";
 
 register('en', () => import('../src/lib/i18n/en.json'));
@@ -90,6 +91,14 @@ const localizeNavigation = ()=>{
                 break;
         }
     }
+    // Localize LEARN navigation
+    for(let i=0; i< $learnNavigation.length; i++){
+        switch($learnNavigation[i].name){
+            case 'MONITOR':
+                $aiNavigation[i].name = $_('up2learn_nav_monitor')
+                break;
+        }
+    }
 }
 
 const localizeGraphContext = ()=>{
@@ -152,6 +161,7 @@ const localizeGraphContext = ()=>{
     <Route path="/UP2DATA/CONFIGURATION" component={UP2DATACONF} />
     <Route path="/UP2DATA/DEPLOY" component={UP2DATADEPLOY} />
     <Route path="/UP2AI/MONITOR" component={UP2AIMONITOR} />
+    <Route path="/UP2LEARN/MONITOR" component={UP2LEARNMONITOR} />
     <Route path="/" component={HOME}/>
   </div>
 </Router>

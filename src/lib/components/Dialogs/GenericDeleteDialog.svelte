@@ -38,7 +38,7 @@ const deleteFunc = async(event:any) =>{
 
 </script>
 
-<div class="load-dialog-class" >
+<div class="up2twin-dialog-class" style="width: 20%;height: 30%;margin: auto;" >
 		<div class="class-panel-header" style="border-bottom: 1px solid;--color:{color};">
 				<p>{dialogOptions.dialogDelete}</p>
 				<div class="class-last-item">
@@ -49,12 +49,13 @@ const deleteFunc = async(event:any) =>{
 				<p>{dialogOptions.row.name}</p>
 		</div>
 		<div class="class-panel-footer">
-				<input type="button" on:click={deleteFunc} value="{$_('dialog_delete_button')}" width="25" height="25"> 
+				<input type="button" style="margin-bottom: 10px;" on:click={deleteFunc} value="{$_('dialog_delete_button')}" width="25" height="25"> 
 	    </div>
 		
 	</div>
 
 <style>
+/*
 .load-dialog-class{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #777777;
@@ -81,6 +82,10 @@ const deleteFunc = async(event:any) =>{
   margin-top: 20px;
   color: var(--color);
   font-weight:bold ;
+}*/
+
+.class-panel-header p{
+ margin-left: 8px;
 }
 
 .class-panel-body p{
@@ -89,10 +94,7 @@ const deleteFunc = async(event:any) =>{
 .class-last-item {
   margin-top: 15px;
 }
-
-.class-panel-body {
-  height: 60%;
-}
+/*
 .class-panel-footer {
   display: block;
   text-align: center;
@@ -101,7 +103,7 @@ const deleteFunc = async(event:any) =>{
 
 .class-panel-footer input {
 	margin-bottom: 10px;
-}
+}*/
 
 
 </style>

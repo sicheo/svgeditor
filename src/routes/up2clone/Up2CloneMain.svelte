@@ -18,27 +18,14 @@
 </script>
 
 <main>
-  <div class="main-content">
+  <div class="up2twin-main-content">
     <MainTab image="ICO_UP2_CLONE.png" title="{$_('up2clone_page_title')}" component="{component}" color={color} bgcolor={bgcolor}/>
-    <div class="login-container">
+    <div class="up2twin-login-container">
         <Login target="/UP2CLONE/MONITOR" color={color} bgcolor={bgcolor} ></Login>
     </div>
   </div>
 </main>
 
-<style>
+<style global>
  
-  .login-container{
-      display:block;
-      position: absolute;
-      margin: auto;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 300px;
-      height: 200px;
-      background-color: #fff;
-      border-radius: 3px;
-  }
 </style>
