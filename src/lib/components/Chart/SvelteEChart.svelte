@@ -3,7 +3,7 @@ import * as echarts from "echarts";
 import { onMount} from "svelte";
 
 
-export let data:any ={data:[],timestamp:[],title:''}
+export let data:any ={data:[],timestamp:[],title:'',legend:[],tag:''}
 export let options:any
 export let component:any
 
@@ -11,18 +11,21 @@ let myChart:any
 let ldata = []
 let labels = []
 let title = ""
+let tag = ""
+let um = ""
 
 onMount(async ()=>{
       ldata = JSON.parse(JSON.stringify(data.data))
       labels = JSON.parse(JSON.stringify(data.timestamp))
+    
       title = data.title
+      tag = data.tag
+      um = data.um
 
     });
 
 const drawChart = (node:any,series:any)=>{
-        console.log("SVELTE ECHART",node,series)
-	    myChart = echarts.init(node);
-         console.log("SVELTE ECHART",node,myChart)
+	  myChart = echarts.init(node);
       // Specify the configuration items and data for the chart
       var option = {
         title: {
@@ -41,16 +44,19 @@ const drawChart = (node:any,series:any)=>{
             }
          },
         legend: {
-          data: ['sales']
+          data: [tag]
         },
+        //legend: data[options.legend,data],
         xAxis: {
           type: 'category',
           data: labels,
         },
-        yAxis: {},
+        yAxis: {
+            name: um
+        },
         series: [
           {
-            name: 'sales',
+            name: data.tag,
             type: 'line',
             data: ldata,
             showAllSymbol: true,
@@ -59,19 +65,24 @@ const drawChart = (node:any,series:any)=>{
         ]
       };
 
+      console.log("DRAW SVELTE ECHART",node,series)
+      console.log("DRAW SVELTE ECHART",option)
       // Display the chart using the configuration items and data just specified.
       myChart.setOption(option);
 
       return {
-         update: (newParams) => {
+         update: (newParams:any) => {
               ldata = JSON.parse(JSON.stringify(newParams.series.data))
               labels = JSON.parse(JSON.stringify(newParams.series.timestamp))
               title = String(newParams.series.title)
               option.title.text=title
               option.series[0].data = ldata
+              option.series[0].name = newParams.series.tag
+              option.legend.data = [newParams.series.tag]
               option.xAxis.data = labels
-              console.log("SVELTE ECHART UPDATEA",option,newParams)
-             myChart.setOption(option);
+              option.yAxis.name = newParams.series.um
+              //console.log("SVELTE ECHART UPDATEA",option,newParams,newParams.tag)
+              myChart.setOption(option,newParams);
          },
     }
 

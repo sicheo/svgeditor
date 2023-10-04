@@ -183,6 +183,11 @@ const clickEdit = () =>{
 	console.log("CLICK EDIT",locagent)
 	toggleInputs(false)
 }
+
+const clickClone = ()=>{
+
+}
+
 const clickSave = async() =>{
 	console.log("CLICK SAVE",locagent)
 	//await setAgent(locagent,$mock)
@@ -255,6 +260,7 @@ const changeButtonDB = (ev:any)=>{
 						{/each}
 					</select>
 					<TableImage image='/edit.svg' onClick={clickEdit}/>
+					<TableImage image='/CLONE.svg' onClick={clickClone}/>
 					<TableImage image='/SAVE.svg' onClick={clickSave}/>
 					<TableImage image='/DELETE.svg' onClick={clickDelete}/>
 				</div>

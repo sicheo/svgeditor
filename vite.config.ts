@@ -2,6 +2,7 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { UserConfig } from 'vite'
 
+
 /*
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +12,9 @@ export default defineConfig({
 const config: UserConfig = {
 	plugins: [svelte()],
 	optimizeDeps: { include: ["@carbon/charts", "svelte-pdf"], exclude: ['@carbon/telemetry'] },
+	server: {
+		port:8080
+	}
 };
 
 export default config;

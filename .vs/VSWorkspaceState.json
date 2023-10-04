@@ -4,8 +4,10 @@
     "\\src",
     "\\src\\lib",
     "\\src\\lib\\components",
-    "\\src\\lib\\script"
+    "\\src\\lib\\components\\Dialogs",
+    "\\src\\routes\\up2data",
+    "\\src\\routes\\up2data\\configuration"
   ],
-  "SelectedNode": "\\src\\lib\\ustore.js",
+  "SelectedNode": "\\src\\lib\\components\\Dialogs\\GenericSaveDialog.svelte",
   "PreviewInSolutionExplorer": false
 }

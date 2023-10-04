@@ -52,6 +52,7 @@ const menusave = async ()=>{
         return
     }
     const tree = await graphutils.getTreeFromDGraph(graph,graph.nodes[0],null)
+    console.log("T R E E ",tree)
    
     // CHECK SAVE
     dialogOptions = {data:{root:tree},selected:''}

@@ -113,7 +113,7 @@
   "table-db-device-plant": "PLANT",
   "table-db-device-department": "DEPARTMENT",
   "table-db-device-line": "LINE",
-  "table-filter-placehoder": "Filter column...",
+  "table-filter-placehoder": "Filter...",
   "table-db-agent-choose": "Choose agent",
   "table-db-agent-new": "NEW AGENT",
   "table-db-agent-db-new": "NEW DB",
@@ -156,10 +156,14 @@
   "table-db-agent-db-llim": "LOW LIMIT",
   "table-db-chart": "CHART",
   "monitor-page-alarms": "ALLARMI",
-  "monitor-page-device": "SELEZIONA DEVICE",
-  "monitor-page-agent": "SELEZIONA AGENT",
-  "monitor-page-point": "SELEZIONA PUNTO",
+  "monitor-page-device": "SELECT DEVICE",
+  "monitor-page-agent": "SELECT AGENT",
+  "monitor-page-point": "SELECT POINT",
   "point-show-detail": "POINT DETAIL",
   "point-show-chart-type": "CHART TYPE",
-  "point-show-chart-chart": "CHART"
+  "point-show-chart-chart": "CHART",
+  "conf-page-device": "CONFIG DEVICE",
+  "deploy-page-device": "DEPLOY DEVICE",
+  "deploy-docker-container": "CONTAINERS",
+  "deploy-docker-image": "IMAGES"
 }

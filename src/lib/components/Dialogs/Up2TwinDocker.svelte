@@ -1,7 +1,12 @@
 <script lang="ts">
 // https://github.com/open-source-labs/Docketeer
  import { _ } from 'svelte-i18n'
- import {dockerInfo, dnsLookup, setDockerEnv, dockerCreate, dockerListContainers, dockerListImages } from '../../script/api.js'
+ import {dockerInfo, 
+	 dnsLookup, 
+	 setDockerEnv, 
+	 dockerCreate, 
+	 dockerListContainers, 
+	 dockerListImages } from '../../script/api.js'
  import {mock} from '../../ustore.js'
  import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
  import SimpleTable from '../Tables/SimpleTable.svelte'
@@ -26,6 +31,7 @@ let statusmessage = ""
 let containers = []
 let datacontainers = []
 let images = []
+let refreshDataExt:any
 
 let dockerfile:any
 
@@ -42,6 +48,10 @@ const exitPage = (ev:any)=>{
 	const div = document.getElementById("modal-master-params-div-id")
     if(div)
         div.style.display = 'none'
+	const divin = document.getElementById("docker-panel-body-id")
+	if(divin)
+		divin.style.visibility = 'hidden'
+	statusmessage = ''
 }
 
 const  readFile = async function(event:any) {
@@ -109,21 +119,26 @@ const dockerSubmit = async (ev:any)=>{
 							for(let i =0; i< containers.length;i++) 
 								containers[i].Created = new Date(containers[i].Created).toISOString()
 						}
-						res = await dockerListImages($mock)
+						res = await dockerListImages({all:true},$mock)
 						res = res.data
 						if(Array.isArray(res)){
 							images = res
 							for(let i =0; i< images.length;i++) 
 								images[i].Created = new Date(images[i].Created).toISOString()
 						}
+						console.log("IMAGES",images)
 					}
 					datacontainers = JSON.parse(JSON.stringify(containers))
+					// SHOW BODY DIV
+					const div = document.getElementById("docker-panel-body-id")
+					if(div)
+						div.style.visibility = 'visible'
 					break
 			}
 		}catch(error){
 			console.log(error)
 			statusmessage += ' NOT CONNECTED '+error
-			//statuscolor = 'red'
+			alert("DEVICE NOT REACHABLE")
 		}
 }
 
@@ -132,12 +147,10 @@ const imgCols = [
 
 ]
 
-let contCols = [
-	columnHelper.group({
-            id:'id',
-            columns:[
-                    columnHelper.accessor('Image', {
-                        id : 'Image',
+const containerColumns = [
+        
+                columnHelper.accessor('Image', {
+                       id : 'Image',
                         header: () => 'IMAGE',
                         cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
                     }),
@@ -153,23 +166,47 @@ let contCols = [
                     }),
                     columnHelper.accessor((row:any) => `${row}`, {
                         id : 'save',
-                        header: () => 'SAVE',
-                        cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave}),
+                        header: () => 'START',
+						enableColumnFilter:false,
+                        cell: (props) =>   flexRender(TableImage,{image:'/START.svg',onClick:onClickStart}),
                     }),
                     columnHelper.accessor((row:any) => `${row}`, {
                         id : 'edit',
-                        header: () => 'EDIT',
-                        cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit}),
+                        header: () => 'STOP',
+						enableColumnFilter:false,
+                        cell: (props) =>   flexRender(TableImage,{image:'/STOP.svg',onClick:onClickStop}),
                     }),
                     columnHelper.accessor((row:any) => `${row}`, {
                         id : 'delete',
                         header: () => 'DELETE',
+						enableColumnFilter:false,
                         cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete}),
                     }),
-            ]
-        })
+  
+  ]
 
-]
+  const imageColumns = [
+        
+                columnHelper.accessor('Id', {
+                       id : 'Id',
+                        header: () => 'Id',
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                    }),
+                    columnHelper.accessor('Created', {
+                        id : 'Created',
+                        header: () => 'Created',
+                        cell: (props) =>  flexRender(TableText,{text:props.getValue()}),
+                    }),
+                    columnHelper.accessor((row:any) => `${row}`, {
+                        id : 'delete',
+                        header: () => 'DELETE',
+						enableColumnFilter:false,
+                        cell: (props) =>   flexRender(TableImage,{image:'/DELETE.svg',onClick:onClickDelete}),
+                    }),
+  
+  ]
+
+
 
 const listContainers = new Promise(async(resolve:any,reject:any)=>{
 	let res 
@@ -188,9 +225,29 @@ const listContainers = new Promise(async(resolve:any,reject:any)=>{
 
 })
 
-const onClickSave = (ev:any) =>{}
-const onClickEdit = (ev:any) =>{}
-const onClickDelete = (ev:any) =>{}
+const listImages = new Promise(async(resolve:any,reject:any)=>{
+	let res 
+	try{
+		res = await dockerListImages({all:true},$mock)
+		res = res.data
+		if(Array.isArray(res)){
+			images = res
+			for(let i =0; i< images.length;i++) 
+				images[i].Created = new Date(images[i].Created).toISOString()
+			resolve(images)
+		}
+	}catch(error){
+		reject(error)
+	}
+
+})
+
+const onClickStart = (ev:any) =>{
+}
+const onClickStop = (ev:any) =>{
+}
+const onClickDelete = (ev:any) =>{
+}
 
 const getImages = (ev:any) =>{
 
@@ -218,38 +275,41 @@ const getContainers = (ev:any) =>{
 			    <input type="image" src="/EXIT.svg" on:click={exitPage} alt="Submit" width="25" height="25"> 
 	    </div>
 	</div>
-	<div class="class-panel-body">
+	<div class="class-panel-status" style="background-color: silver ;">
+		<span>Status: {statusmessage}</span>
+	</div>
+	<div class="class-panel-body" id="docker-panel-body-id">
 		<div class="class-panel-body-inner">
-			<input id="docker-submit" style="--color:{color};opacity:0.3;margin-bottom:2px;"  type="button" value="Containers" disabled on:click={getContainers}/>
-			{#await listContainers}
-				<p>...waiting</p>
-			{:then containers}	
-				<SimpleTable data={containers} bind:columns={contCols} color={color}></SimpleTable>
-			{:catch error}
-				<p style="color: red">{error.message}</p>
+			<div class="container-table-div">
+				{#await listContainers}
+					<p>...waiting</p>
+				{:then containers}	
+					<SimpleTable id="container-table" title="{$_("deploy-docker-container")}" data={containers} columns={containerColumns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+				{:catch error}
+					<p style="color: red">{error.message}</p>
+				{/await}
+			</div>
+			<div class="image-table-div">
+				{#await listImages}
+					<p>...waiting</p>
+				{:then images}	
+					<SimpleTable id="image-table" title="{$_("deploy-docker-image")}" data={images} columns={imageColumns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+				{:catch error}
+					<p style="color: red">{error.message}</p>
 			{/await}
+			</div>
 		</div>
 		<div class="class-panel-body-inner">
 			<input id="docker-submit" style="--color:{color};opacity:0.3;margin-bottom:2px;"  type="button" value="Images" disabled on:click={getImages}/>
 		</div>
 	</div>
-	<div class="class-panel-footer" style="background-color: silver ;">
-		<span>Status: {statusmessage}</span>
-	</div>
 </div>
 
 
 <style>
-/*
-.docker-dialog-class{
-	font-family: Arial, Helvetica, sans-serif;
-	color: #777777;
-	background-color: white ;
-	width: 100%;
-	height: 100%;
-	margin: auto;
-}
 
+
+/*
 .class-panel-header {
   display: flex;
   justify-content: space-between;
@@ -258,30 +318,32 @@ const getContainers = (ev:any) =>{
   background-color: #eeeeee;
 }*/
 
+.up2twin-dialog-class{
+	height: fit-content;
+}
 .class-panel-header span{
 	margin-left: 5px;
 }
 
-/*
-.class-panel-body {
-  display: block;
-  justify-content: space-between;
-  color: var(--color);
-  font-weight: bold ;
-}*/
 
-.class-panel-body-inner{
-	margin-top: 20px;
-	border-bottom: 1px solid;
+.class-panel-body {
+  visibility: hidden;
+  
 }
 
-/*
-.class-panel-footer{
-	font-weight: bold;
-	color:white;
-	background-color: var(--background-color);
-}*/
-.class-panel-footer span{
+.class-panel-body-inner{
+	display:block;
+	margin-top: 20px;
+	height: fit-content;
+	overflow: auto;
+}
+
+
+.class-panel-status{
+	margin-top: auto;
+}
+
+.class-panel-status span{
 	margin-left: 5px;
 }
 .class-last-item{
@@ -323,4 +385,13 @@ input[type="button"] {
         font-weight: bold;
         color: #fff;
       }
+
+.container-table-div{
+	display:block;
+	height: 280px;
+}
+
+.image-table-div{
+	display:block;
+}
 </style>

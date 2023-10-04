@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { getLocalDate, makePointsUid, generateTimeSeries } from '../script/utils.js'
+import { getLocalDate, makePointsUid, generateTimeSeries, fromDbToTree } from '../script/utils.js'
 
 let attempts = 0
 let logs = []
@@ -1953,6 +1953,8 @@ const getFinalNotesCols = async function (body) {
 
 const ping = async function (body) {
     body.data = { host: body.options.hostname, isAlive: true }
+    if (body.options.hostname == "10.112.1.71")
+            body.data.isAlive = false
     return(body) 
 }
 
@@ -2067,10 +2069,13 @@ const setDockerEnv = async function (body) {
 }
 
 const dnsLookup = async function (body) {
-    return body.options.hostname
+    return { address: body.options.hostname }
 }
 
 const dockerCreate = async function (body) {
+    // if DPCKER_HOST == '10.112.1.71' throw an error
+    if (docker.env && docker.env.DOCKER_HOST.includes('10.112.1.71'))
+        throw(new Error('CONNECTION TIMEOUT'))
     return docker
 }
 
@@ -2179,9 +2184,9 @@ const dockerListContainers = async function (body) {
             Id: "8dfafdbc3a40",
             Names:[],
             Image: "quesalid/up2agentdata:latest",
-            ImageID: "d74508fb6632491cea586a1fd7d748dfc5274cd6fdfedee309ecdcbc2bf5cb82",
+            ImageID: "e216a057b1cb1efc11f8a268f37ef62083e70b1b38323ba252e25ac88904a7e8",
             Command: "echo 1",
-            Created: 1367854155,
+            Created: 1467854155000,
             State: "Exited",
             Status: "Exit 0",
             Ports:[],
@@ -2204,7 +2209,7 @@ const dockerListImages = async function (body) {
             ParentId: "",
             RepoTags:[],
             RepoDigests:[],
-            Created: 1474925151,
+            Created: 1464925151000,
             Size: 103579269,
             VirtualSize: 103579269,
             SharedSize: 0,
@@ -2213,6 +2218,56 @@ const dockerListImages = async function (body) {
         },
     ]
     body.data = images
+    return (body)
+}
+
+const dockerStartContainer = async function (body) {
+    // Change state of container
+    return (body)
+}
+
+const dockerStopContainer = async function (body) {
+    // Change state of container
+    return (body)
+}
+const dockerRestartContainer = async function (body) {
+    // Change state of container
+    return (body)
+}
+
+const dockerRemoveContainer = async function (body) {
+    // Remove container
+    return (body)
+}
+
+const dockerRemoveImage = async function (body) {
+    // Remove image
+    body.data = {Deleted: "3e2f21a89f"}
+    return (body)
+}
+
+const dockerPullImage = async function (body) {
+    const newimage = {
+        Id: "sha256:fa563eb1b098c42a9ff38526ef873d10150eab1b3832990252e187c8d904aa34",
+        ParentId: "",
+        RepoTags: [],
+        RepoDigests: [],
+        Created: 1474925151,
+        Size: 103579269,
+        VirtualSize: 103579269,
+        SharedSize: 0,
+        Labels: {},
+        Containers: 2
+    }
+    return (body)
+}
+
+const dockerBuildImage = async function (body) {
+    return (body)
+}
+
+const dockerCreateContainer = async function (body) {
+    body.data = { Id: "e90e34656806", Warnings: [] }
     return (body)
 }
 
@@ -2249,7 +2304,8 @@ const getDBArray = async function(treename) {
         }
     }
     const result = { company: rcompany, plants: rplants, departments: rdepartments, lines: rlines, machines: rmachines, controllers: rcontrollers }
-    return(result)
+    console.log("GET DB ARRAY", result,treename)
+    return (result)
 }
 
 const setDBArray = async function (array) {
@@ -2313,6 +2369,20 @@ const deleteDBArray = async function (array) {
     deleteCompany(body)
 }
 
+const  getTree = (body)=> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let dbarray = await getDBArray(body.options.treename)
+            if (dbarray.company.length == 0)
+                resolve(null)
+            const tree = await fromDbToTree(dbarray)
+            resolve(tree)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 const mocks = {
     login,
     getMenuItems,
@@ -2365,6 +2435,14 @@ const mocks = {
     dockerCreate,
     dockerListContainers,
     dockerListImages,
+    dockerStartContainer,
+    dockerStopContainer,
+    dockerRestartContainer,
+    dockerRemoveContainer,
+    dockerRemoveImage,
+    dockerPullImage,
+    dockerBuildImage,
+    dockerCreateContainer,
     dnsLookup,
     dockerInfo,
     getDBArray,
@@ -2376,7 +2454,8 @@ const mocks = {
     deletePoint,
     getNackAlarms,
     ackAlarm,
-    getMonitorStats
+    getMonitorStats,
+    getTree
 }
 
 export default mocks

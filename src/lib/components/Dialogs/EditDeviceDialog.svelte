@@ -48,6 +48,15 @@ const changeValue = (ev:any)=>{
 		case 'port':
 			found.port = ev.target.value
 			break
+		case 'mac':
+			found.hwdetails.mac = ev.target.value
+			break
+		case 'brand':		
+			found.hwdetails.brand = ev.target.value
+			break
+		case 'model':
+			found.hwdetails.model = ev.target.value
+			break
 	}
 	found.lastmodified = getLocalDate(new Date(Date.now()))
 	// TEST TABLE UPDATE

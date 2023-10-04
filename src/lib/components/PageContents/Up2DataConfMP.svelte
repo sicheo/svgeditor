@@ -142,6 +142,12 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         cell: (props) =>   flexRender(TableImage,{image:'/LOCATION.svg',onClick:onClickLocation,uid:props.getValue()}),
                     }),
                     columnHelper.accessor((row:any) => `${row.uid}`, {
+                        id : 'edit',
+                        enableColumnFilter:false,
+                        header: () => $_("table-db-device-edit"),
+                        cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit,uid:props.getValue()}),
+                    }),
+                    columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'agent',
                         enableColumnFilter:false,
                         header: () => $_("table-db-device-agent"),
@@ -153,12 +159,12 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
                         header: () => $_("table-db-device-save"),
                         cell: (props) =>   flexRender(TableImage,{image:'/SAVE.svg',onClick:onClickSave,uid:props.getValue()}),
                     }),
-                    columnHelper.accessor((row:any) => `${row.uid}`, {
+                    /*columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'edit',
                         enableColumnFilter:false,
                         header: () => $_("table-db-device-edit"),
                         cell: (props) =>   flexRender(TableImage,{image:'/edit.svg',onClick:onClickEdit,uid:props.getValue()}),
-                    }),
+                    }),*/
                     columnHelper.accessor((row:any) => `${row.uid}`, {
                         id : 'delete',
                         enableColumnFilter:false,
@@ -173,7 +179,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
 </script>
     <div class="class-panel-row" id="id-data-conf-table-div">
      
-            <SimpleTable  bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
+            <SimpleTable  title="{$_("conf-page-device")}" bind:data={data} columns={columns} color={color} bind:refreshDataExt={refreshDataExt}></SimpleTable>
     
     </div>
 

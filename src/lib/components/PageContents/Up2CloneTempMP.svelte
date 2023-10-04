@@ -3,7 +3,7 @@
 
 import { onMount} from "svelte";
 import { _ } from 'svelte-i18n'
-import PdfTemplate from 'pdf-template-maker'
+import PdfTemplate from 'pdf-template-makernew'
 
 
 
@@ -41,6 +41,11 @@ import PdfTemplate from 'pdf-template-maker'
 
 
     let dictionary = {
+        page_counter_info: "Sovrascrive il contenuto del footer",
+        page_counter : "Numero della pagina",
+        default_font : "Scegli un font come default per il template",
+        label_margins : "Margini della pagina",
+        label_dimensions: "dimensioni totali 595 x 942 pixels",
         label_header : "Header",
         label_footer : "Footer",
         label_index : "Indice",
@@ -90,13 +95,13 @@ import PdfTemplate from 'pdf-template-maker'
         height : "Altezza",
         max_height : "Altezza Massima",
         auto_height : "Altezza Auto",
+        height_table: "Prima riga",
         dimensions : "Dimensioni",
         max_dimensions : "Dimensioni Massime",
         abs_dimensions : "Dimensioni Assolute",
         fill_expl : "riempie un rettangolo senza distorsione",
         abs_expl : "adatta a un rettangolo con distorsione",
         img_margins : "Margini dell'immagine",
-        svg_margins : "Margini dell'SVG",
         add_text : "Aggiungi Testo",
         add_img : "Aggiungi Immagine",
         add_svg : "Aggiugi SVG",
@@ -104,9 +109,11 @@ import PdfTemplate from 'pdf-template-maker'
         add_row: "Aggiungi Riga",
         layout : "Layout",
         custom : "Custom",
+        border : "Con bordi",
         no_border : "Nessun bordo",
         horizontal_lines : "Solo righe orizzontali",
-        table_color: "Colore della tabella",
+        table_ch_color: "Colore dei caratteri della tabella",
+        table_bg_color: "Colore dello sfondo della tabella",
         attributes : "Riga di Intestazione",
         details : "Dettagli",
         cells : "Celle del campo",
@@ -124,12 +131,14 @@ import PdfTemplate from 'pdf-template-maker'
         letters_big : "Lettere maiuscole",
         circle : "Cerchio",
         square : "Quadrato",
+        svg_margins :"Margini dell'SVG",
         img_margings : "Margini dell'immagine",
         title_index: "Titolo dell'indice",
         id_index: "Identificativo dell'indice",
         create : "Crea",
-        preview : "Preview"
-}
+        preview : "Preview",
+        table_color: "colre della tabella"
+    }
 
 let dd: any
    
@@ -137,7 +146,7 @@ let dd: any
 
 </script>
     <div class= "class-panel-row" id="id-data-conf-table-div">
-       <PdfTemplate fileListpassed={filelist} debug={true} dictionary={dictionary} dd={dd}/>
+       <PdfTemplate fileListpassed={filelist} debug={true} dictionary={dictionary} bind:dd={dd}/>
     </div>
 
    

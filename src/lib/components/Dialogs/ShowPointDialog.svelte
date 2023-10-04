@@ -17,7 +17,7 @@ export let agent:any = {source:{}}
 let controllers = []
 let machines = []
 let chartdata = []
-let echartdata = {data:[],timestamp:[],title:''}
+let echartdata = {data:[],timestamp:[],title:'',tag:'',legend:[],um:''}
 let component = LineChart
 let chartoptions = {
 		"title": "Point "+point.tag+" Macchina: "+point.machine+ " "+point.description,
@@ -35,6 +35,7 @@ let chartoptions = {
         },
         "curve": "curveMonotoneX",
         "height": "400px",
+		"legend":{"data":[point.um]},
         "width": "800px",
         "experimental": true,
         "zoomBar": {
@@ -76,7 +77,7 @@ const refreshChartListener = async (ev:any)=>{
 	chartoptions.axes.left.title = ev.detail.item.type+" "+ev.detail.item.um
 	const ret = await getPointsers(ev.detail.item,null,null,$mock)
 	chartdata = []
-	echartdata = {data:[],timestamp:[],title:''}
+	echartdata = {data:[],timestamp:[],title:'',legend:[],tag:'',um:''}
     for (let i = 0; i < ret.data.length; i++) {
 		const p = ret.data[i]
         var date = new Date(p.timestamp);
@@ -86,7 +87,11 @@ const refreshChartListener = async (ev:any)=>{
 		echartdata.timestamp.push(date.toISOString())
 		echartdata.title = "Point "+ev.detail.item.tag
     }
+	echartdata.legend.push(ev.detail.item.tag)
+	echartdata.tag = ev.detail.item.tag
+	echartdata.um = ev.detail.item.um
 	chartoptions =chartoptions
+	console.log("ECGARTDATA",echartdata)
 }
 
 const exitPage = (ev:any)=>{
@@ -122,7 +127,7 @@ const setGraph = async (ev:any)=>{
 	}
 	const ret = await getPointsers(point,null,null,$mock)
 	chartdata = []
-	echartdata = {data:[],timestamp:[]}
+	echartdata = {data:[],timestamp:[],title:""}
     for (let i = 0; i < ret.data.length; i++) {
 		const point = ret.data[i]
         var date = new Date(point.timestamp);

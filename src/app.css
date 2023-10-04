@@ -182,7 +182,7 @@ button:focus-visible {
 
 /* DIALOG CONTAINERS*/
 .up2twin-dialog-class {
-    background-color: pink;
+    background-color: white;
     color: #000000;
 }
 .up2twin-dialog-class .up2twin-draggable {
@@ -215,13 +215,13 @@ button:focus-visible {
     }
 
 /* DIALOG PANEL HEADER*/
-.up2twin-dialog-class .class-panel-header {
-    display: flex;
-    justify-content: space-between;
-    color: var(--color);
-    font-weight: bold;
-    background-color: yellow;
-}
+    .up2twin-dialog-class .class-panel-header {
+        display: flex;
+        justify-content: space-between;
+        color: var(--color);
+        font-weight: bold;
+        background-color: #dddddd;
+    }
 
     .up2twin-dialog-class .class-panel-header .set-color {
         color: var(--color);

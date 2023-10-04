@@ -29,7 +29,7 @@
     "analytics": "^0.8.9",
     "echarts": "^5.4.3",
     "papaparse": "^5.4.1",
-    "pdf-template-maker": "^1.1.6",
+    "pdf-template-makernew": "^2.0.3",
     "pdfmake": "^0.2.7",
     "pdfmake-unicode": "^0.0.1",
     "socket.io-client": "^4.7.1",

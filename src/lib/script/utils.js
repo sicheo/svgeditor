@@ -1,6 +1,7 @@
 // https://stackoverflow.com/questions/40497262/how-to-version-control-an-object
 import { v4 as uuidv4 } from 'uuid';
 import Papa from 'papaparse'
+import TREE from './tree.js'
 
 
 export function VersionControlled(obj, changeLog = []) {
@@ -703,6 +704,15 @@ export function downloadCSV(file) {
     })
 }
 
+export function downloadJSON(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = event => resolve(event.target.result) // desired file content
+        reader.onerror = error => reject(error)
+        reader.readAsText(file)
+    })
+}
+
 
 
 
@@ -845,3 +855,190 @@ vc = new VersionControlled(obj, changeLog);
 obj = vc.data;
 console.log(`v${vc.getVersion()} ${JSON.stringify(obj)}`);
 */
+
+/**
+ * Given tree structure returns arrays of ISA elements
+ * @param {any} tree
+ * @returns
+ */
+export function fromTreeToDB(tree) {
+    console.log("FROM TREE TO DB", JSON.stringify(tree))
+    const toDb = { company: [], plants: [], departments: [], lines: [], machines: [], controllers: [] }
+    if (tree && !tree.null) {
+        let root = tree.root
+        // GET COMPANIES
+        root.value.data.x = root.value.graph.x
+        root.value.data.y = root.value.graph.y
+        root.value.data.uid = root.value.graph.uid
+        //console.log("COMPANY", root.key, root.value.data)
+        toDb.company.push(root.value.data)
+        // GET PLANTS
+        for (let i = 0; i < root.children.length; i++) {
+            let plant = root.children[i]
+            plant.value.data.company = root.value.graph.uid
+            plant.value.data.x = plant.value.graph.x
+            plant.value.data.y = plant.value.graph.y
+            plant.value.data.uid = plant.value.graph.uid
+            //console.log("PLANTS", plant.key, plant.value.data)
+            toDb.plants.push(plant.value.data)
+            // GET DEPARTMENTS
+            for (let j = 0; j < plant.children.length; j++) {
+                let department = plant.children[j]
+                department.value.data.plant = plant.value.graph.uid
+                department.value.data.x = department.value.graph.x
+                department.value.data.y = department.value.graph.y
+                department.value.data.uid = department.value.graph.uid
+                //console.log("DEPARTMENTS", department.key, department.value.data)
+                toDb.departments.push(department.value.data)
+                // GET LINES
+                for (let k = 0; k < department.children.length; k++) {
+                    let line = department.children[k]
+                    line.value.data.department = department.value.graph.uid
+                    line.value.data.x = line.value.graph.x
+                    line.value.data.y = line.value.graph.y
+                    line.value.data.uid = line.value.graph.uid
+                    //console.log("LINES", line.key, line.value.data)
+                    toDb.lines.push(line.value.data)
+                    // GET MACHINES
+                    for (let h = 0; h < line.children.length; h++) {
+                        let machine = line.children[h]
+                        machine.value.data.line = line.value.graph.uid
+                        machine.value.data.x = machine.value.graph.x
+                        machine.value.data.y = machine.value.graph.y
+                        machine.value.data.uid = machine.value.graph.uid
+                        //console.log("MACHINES", machine.key, machine.value.data)
+                        toDb.machines.push(machine.value.data)
+                        // GET CONTROLLERS
+                        for (let l = 0; l < machine.children.length; l++) {
+                            let controller = machine.children[l]
+                            controller.value.data.machine = machine.value.graph.uid
+                            controller.value.data.x = controller.value.graph.x
+                            controller.value.data.y = controller.value.graph.y
+                            controller.value.data.uid = controller.value.graph.uid
+                            //console.log("CONTROLLERS", controller.key, controller.value.data)
+                            toDb.controllers.push(controller.value.data)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return toDb
+}
+
+/**
+ * Given array of ISA elemnts returs tree strucure
+ ] @param {any} dbarray
+ */
+export function fromDbToTree(dbarray){
+    console.log("FROM DB TO TREE", dbarray)
+    //let key = "draggable"
+    let key = ""
+    let levels = "level"
+    let index = 0
+    let tree = { null: true }
+    if (dbarray && dbarray.company && dbarray.company.length > 0) {
+        // COMPANY
+        let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+        levels = "level1"
+        //key += index
+        key = 'NODE-' + dbarray.company[0].uid
+        value.graph.x = dbarray.company[0].x
+        value.graph.y = dbarray.company[0].y
+        value.graph.level = levels
+        value.graph.uid = dbarray.company[0].uid
+        value.data = dbarray.company[0]
+        tree = new TREE.Tree(key, value)
+        tree.setRootTag(dbarray.company[0].name)
+        index++
+        // PLANTS
+        for (let i = 0; i < dbarray.plants.length; i++) {
+            let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+            levels = "level2"
+            //let keyplants = "draggable" + index
+            let keyplants = 'NODE-' + dbarray.plants[i].uid
+            value.graph.x = dbarray.plants[i].x
+            value.graph.y = dbarray.plants[i].y
+            value.graph.level = levels
+            value.graph.uid = dbarray.plants[i].uid
+            value.data = dbarray.plants[i]
+            tree.insert(tree.root.key, keyplants, value)
+            index++
+            //DEPARTMENTS
+            for (let j = 0; j < dbarray.departments.length; j++) {
+                let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+                levels = "level3"
+                //let keydepartments = "draggable" + index
+                let keydepartments = 'NODE-' + dbarray.departments[j].uid
+                if (dbarray.plants[i].uid == dbarray.departments[j].plant) {
+                    value.graph.x = dbarray.departments[j].x
+                    value.graph.y = dbarray.departments[j].y
+                    value.graph.level = levels
+                    value.graph.uid = dbarray.departments[j].uid
+                    value.data = dbarray.departments[j]
+                    tree.insert(keyplants, keydepartments, value)
+                    index++
+                }
+                //LINES
+                for (let k = 0; k < dbarray.lines.length; k++) {
+                    let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+                    levels = "level4"
+                    //let keylines = "draggable" + index
+                    let keylines = 'NODE-' + dbarray.lines[k].uid
+                    if (dbarray.departments[j].uid == dbarray.lines[k].department && dbarray.plants[i].uid == dbarray.departments[j].plant) {
+                        value.graph.x = dbarray.lines[k].x
+                        value.graph.y = dbarray.lines[k].y
+                        value.graph.level = levels
+                        value.graph.uid = dbarray.lines[k].uid
+                        value.data = dbarray.lines[k]
+                        tree.insert(keydepartments, keylines, value)
+                        index++
+                    }
+                    //MACHINES
+                    for (let l = 0; l < dbarray.machines.length; l++) {
+                        let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+                        levels = "level5"
+                        //let keymachines = "draggable" + index
+                        let keymachines = 'NODE-' + dbarray.machines[l].uid
+                        if (dbarray.lines[k].uid == dbarray.machines[l].line && dbarray.plants[i].uid == dbarray.departments[j].plant && dbarray.departments[j].uid == dbarray.lines[k].department) {
+                            value.graph.x = dbarray.machines[l].x
+                            value.graph.y = dbarray.machines[l].y
+                            value.graph.level = levels
+                            value.graph.uid = dbarray.machines[l].uid
+                            value.data = dbarray.machines[l]
+                            tree.insert(keylines, keymachines, value)
+                            index++
+                        }
+                        //CONTROLLERS
+                        for (let m = 0; m < dbarray.controllers.length; m++) {
+                            let value = { edges: [], graph: { x: 0, y: 0, level: "", uid: 0 }, data: null }
+                            levels = "level6"
+                            //let keycontrollers = "draggable" + index
+                            let keycontrollers = 'NODE-' + dbarray.controllers[m].uid
+                            if (dbarray.machines[l].uid == dbarray.controllers[m].machine && dbarray.lines[k].uid == dbarray.machines[l].line && dbarray.plants[i].uid == dbarray.departments[j].plant && dbarray.departments[j].uid == dbarray.lines[k].department) {
+                                value.graph.x = dbarray.controllers[m].x
+                                value.graph.y = dbarray.controllers[m].y
+                                value.graph.level = levels
+                                value.graph.uid = dbarray.controllers[m].uid
+                                value.data = dbarray.controllers[m]
+                                tree.insert(keymachines, keycontrollers, value)
+                                index++
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // DECIRCULARIZE RESULT
+    let seen = []
+    const strdata = JSON.stringify(tree, function (key, val) {
+        if (typeof val == "object") {
+            if (seen.indexOf(val) >= 0)
+                return
+            seen.push(val)
+        }
+        return val
+    });
+    return (JSON.parse(strdata))
+}

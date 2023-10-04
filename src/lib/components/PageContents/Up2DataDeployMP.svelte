@@ -57,7 +57,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
         const install = document.getElementById("install-img-tool_"+id)
         const deploy = document.getElementById("deploy-img-tool_"+id)
 
-        if(target.style.backgroundColor == 'lightgrey'){
+        if(target.style.backgroundColor == 'lightgrey' || target.style.backgroundColor == 'red'){
             target.style.backgroundColor = 'lightgreen'
             if(docker)
                 docker.setAttribute("style","opacity:0.3;cursor:default;pointer-events: none;")
@@ -85,14 +85,17 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
       if(found){
           // CHECK PING
           const res = await ping(found.host,{ timeout: 5, min_replay: 2 }, $mock)
-           console.log("CONNECTION",res)
-          if(!res.error){
+           console.log("PING",res)
+          if(res.data.isAlive){
               // CHECK CONNECTION
               const conn = await getDeviceInfo(found.host,found.port,'https',$mock)
               console.log("CONNECTION",conn)
                if(!conn.error){
                 toggleConnection(target)
                }
+          }else{
+                  alert("DEVICE NOT REACHABLE")
+                  target.style.backgroundColor = 'red'
           }
       }else{
           alert("DEVICE NOT FOUND")
@@ -199,7 +202,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
      {#await promise}
 	        <p>...waiting</p>
      {:then response}
-            <SimpleTable data={response.data} columns={columns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
+            <SimpleTable title="{$_("deploy-page-device")}" data={response.data} columns={columns} color={color} bind:refreshDataExt={refreshDataExtDev}></SimpleTable>
      {:catch error}
 	         <p style="color: red">{error.message}</p>
       {/await}
@@ -255,6 +258,7 @@ import { flexRender, createColumnHelper } from '@tanstack/svelte-table';
   margin: auto;
   border: 1px solid #888;
   width: 90%;
+  height:80%;
 }
 
 </style>
